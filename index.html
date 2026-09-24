@@ -192,14 +192,26 @@
     100% { box-shadow: 0 0 0 0 rgba(47, 232, 176, 0); }
   }
 
-  /* ================= projectdetails ================= */
-  .details { margin-top: clamp(44px, 6vw, 72px); }
-  .detail { scroll-margin-top: 24px; padding-top: clamp(34px, 4.5vw, 54px); border-top: 1px solid var(--edge); }
-  .detail + .detail { margin-top: clamp(34px, 4.5vw, 54px); }
+  /* ================= projectdetails (alleen zichtbaar na een klik) ================= */
+  .details { margin-top: var(--col-gap); scroll-margin-top: 20px; }
+  .detail {
+    scroll-margin-top: 20px;
+    background: var(--panel);
+    border: 1px solid var(--edge-2);
+    border-radius: 20px;
+    padding: clamp(22px, 3vw, 38px);
+    box-shadow: var(--glow-hi);
+  }
   .d-top { display: flex; flex-wrap: wrap; align-items: center; gap: 12px; }
   .d-when { font-family: var(--mono); font-size: .74rem; color: var(--ink-3); letter-spacing: .06em; }
-  .d-back { margin-left: auto; font-family: var(--mono); font-size: .72rem; color: var(--ink-3); text-decoration: none; }
-  .d-back:hover { color: var(--beam); }
+  .d-close {
+    margin-left: auto;
+    font-family: var(--mono); font-size: .74rem; color: var(--ink-2);
+    background: var(--glass); border: 1px solid var(--edge);
+    padding: 7px 14px; border-radius: 999px; cursor: pointer;
+  }
+  .d-close:hover { border-color: var(--beam); color: var(--ink); }
+  .tile.active a { border-color: var(--beam); box-shadow: var(--glow-hi); }
   .detail h3 {
     font-family: var(--display); font-weight: 700;
     font-size: clamp(1.7rem, 4.2vw, 2.4rem); line-height: 1.07; letter-spacing: -.04em;
@@ -436,7 +448,7 @@
   <div class="wrap">
     <p class="eyebrow">Overzicht</p>
     <h2>Kies waar je naar wil kijken</h2>
-    <p class="intro">Elke tegel is een echt project. Klik erop en je springt naar de uitleg eronder: een voorbeeld uit de praktijk, wat het doet, en drie schermen van de draaiende versie.</p>
+    <p class="intro">Klik op een tegel en de uitleg klapt eronder open: een voorbeeld uit de praktijk, wat het doet, en drie schermen van de draaiende versie.</p>
 
     <div class="filters" id="filters"></div>
     <ul class="tiles row3" id="tiles">
@@ -459,7 +471,7 @@
         <a href="#p-eemland">
           <div class="thumb">
             <span class="pill on"><i></i>In bedrijf</span>
-            <img src="img/t-eemland.webp" width="760" height="475" alt="Inlogportaal van Eemland Boekt met de tekst Uw administratie, perfect geregeld.">
+            <img src="img/t-eemland.webp" width="760" height="475" alt="Onscherp gemaakt inlogportaal van Eemland Boekt.">
           </div>
           <div class="body">
             <h3>Eemland Boekt</h3>
@@ -576,7 +588,7 @@
         <div class="d-top">
           <span class="pill on"><i></i>Live online</span>
           <span class="d-when">augustus &ndash; september 2026</span>
-          <a class="d-back" href="#overzicht">&uarr; overzicht</a>
+          <button class="d-close" type="button">sluiten &times;</button>
         </div>
         <h3>Kozijnfabriek Direct</h3>
         <p class="d-lead">Voor een kozijnenfabrikant in de regio Amsterdam: een website die zelf offertes voorbereidt, en een dashboard waar het personeel de rest afhandelt.</p>
@@ -599,7 +611,6 @@
           <div class="col">
             <h4>Techniek</h4>
             <ul class="stack"><li>React 19</li><li>Node 22</li><li>Supabase</li><li>Google Gemini</li><li>Google Maps</li><li>Railway</li></ul>
-            <p class="numbers">116 opleveringen &middot; 39.642 regels</p>
             <div class="d-cta"><a class="btn btn-main" href="https://kozijnfabriekdirect.nl" target="_blank" rel="noopener">Open de site</a></div>
           </div>
         </div>
@@ -612,8 +623,8 @@
           </figure>
           <figure class="frame">
             <div class="bar"><i></i><i></i><i></i><b>reviews</b></div>
-            <div class="holder"><img src="img/kozijnfabriek-3.webp" width="1400" height="875" loading="lazy" alt="Sectie Wat onze klanten zeggen met drie reviews van vijf sterren."></div>
-            <figcaption>Reviews van echte klanten.</figcaption>
+            <div class="holder"><img src="img/kozijnfabriek-3.webp" width="1400" height="875" loading="lazy" alt="Sectie Wat onze klanten zeggen met drie reviews; de namen eronder zijn onleesbaar gemaakt."></div>
+            <figcaption>Reviews van echte klanten &mdash; namen bewust onleesbaar.</figcaption>
           </figure>
           <figure class="frame">
             <div class="bar"><i></i><i></i><i></i><b>vraag &amp; antwoord</b></div>
@@ -628,7 +639,7 @@
         <div class="d-top">
           <span class="pill on"><i></i>Draait in bedrijf</span>
           <span class="d-when">januari &ndash; september 2026</span>
-          <a class="d-back" href="#overzicht">&uarr; overzicht</a>
+          <button class="d-close" type="button">sluiten &times;</button>
         </div>
         <h3>Eemland Boekt</h3>
         <p class="d-lead">De complete administratie van een bouwbedrijf, van offerte tot btw-aangifte, in &eacute;&eacute;n systeem dat elke dag gebruikt wordt.</p>
@@ -651,7 +662,6 @@
           <div class="col">
             <h4>Techniek</h4>
             <ul class="stack"><li>React 19</li><li>Express</li><li>PostgreSQL</li><li>Supabase Storage</li><li>pdf-lib</li><li>Google Gemini</li></ul>
-            <p class="numbers">196 opleveringen &middot; 30.060 regels</p>
             <p class="note-closed">Besloten klantomgeving &mdash; rondleiding op aanvraag.</p>
           </div>
         </div>
@@ -659,8 +669,8 @@
         <div class="frames row3 solo">
           <figure class="frame">
             <div class="bar"><i></i><i></i><i></i><b>inlogportaal</b></div>
-            <div class="holder"><img src="img/eemland-1.webp" width="1400" height="875" loading="lazy" alt="Inlogscherm met de tekst Uw administratie, perfect geregeld en een formulier om in te loggen."></div>
-            <figcaption>Het portaal waar het bedrijf elke ochtend binnenkomt.</figcaption>
+            <div class="holder"><img src="img/eemland-1.webp" width="1400" height="875" loading="lazy" alt="Onscherp gemaakt inlogscherm van de besloten klantomgeving; alleen de indeling is te zien."></div>
+            <figcaption>Bewust onscherp: dit is een besloten omgeving van een klant.</figcaption>
           </figure>
         </div>
       </article>
@@ -670,7 +680,7 @@
         <div class="d-top">
           <span class="pill on"><i></i>Live online</span>
           <span class="d-when">september 2026</span>
-          <a class="d-back" href="#overzicht">&uarr; overzicht</a>
+          <button class="d-close" type="button">sluiten &times;</button>
         </div>
         <h3>Fun Studios</h3>
         <p class="d-lead">Voor een entertainmentbedrijf: photo booths, 360 booth, low fog, indoor vuurwerk en lichtletters &mdash; met een boekingsflow die de aanvragen binnenhaalt.</p>
@@ -693,7 +703,6 @@
           <div class="col">
             <h4>Techniek</h4>
             <ul class="stack"><li>React 19</li><li>Vite</li><li>Tailwind 4</li><li>Motion</li><li>Express</li><li>sharp</li></ul>
-            <p class="numbers">31 opleveringen &middot; 8.437 regels</p>
             <div class="d-cta"><a class="btn btn-main" href="https://www.funstudios.nl" target="_blank" rel="noopener">Open de site</a></div>
           </div>
         </div>
@@ -722,7 +731,7 @@
         <div class="d-top">
           <span class="pill off"><i></i>Prototype</span>
           <span class="d-when">september 2026</span>
-          <a class="d-back" href="#overzicht">&uarr; overzicht</a>
+          <button class="d-close" type="button">sluiten &times;</button>
         </div>
         <h3>KijkVergunning</h3>
         <p class="d-lead">Zie wat je mag bouwen voordat je begint: adres invullen, en je weet of die uitbouw vergunningvrij kan.</p>
@@ -745,7 +754,6 @@
           <div class="col">
             <h4>Techniek</h4>
             <ul class="stack"><li>Next.js 16</li><li>React 19</li><li>MapLibre</li><li>three.js</li><li>Supabase</li><li>zustand</li></ul>
-            <p class="numbers">10.453 regels &middot; demo draait zonder instellingen</p>
             <p class="note-closed">Draait lokaal &mdash; live demo op afspraak.</p>
           </div>
         </div>
@@ -774,7 +782,7 @@
         <div class="d-top">
           <span class="pill on"><i></i>Live online</span>
           <span class="d-when">januari &ndash; augustus 2026</span>
-          <a class="d-back" href="#overzicht">&uarr; overzicht</a>
+          <button class="d-close" type="button">sluiten &times;</button>
         </div>
         <h3>CourtSwap</h3>
         <p class="d-lead">Een compleet marktplaatsplatform: adverteren, zoeken op de kaart, chatten en afspreken &mdash; als website &eacute;n als app.</p>
@@ -797,7 +805,6 @@
           <div class="col">
             <h4>Techniek</h4>
             <ul class="stack"><li>React</li><li>Express 5</li><li>Prisma</li><li>PostgreSQL</li><li>Cloudinary</li><li>Capacitor</li></ul>
-            <p class="numbers">40 opleveringen &middot; 11.339 regels</p>
             <div class="d-cta"><a class="btn btn-main" href="https://web-production-d363a.up.railway.app" target="_blank" rel="noopener">Open het platform</a></div>
           </div>
         </div>
@@ -816,7 +823,7 @@
         <div class="d-top">
           <span class="pill on"><i></i>Live online</span>
           <span class="d-when">november 2025 &ndash; januari 2026</span>
-          <a class="d-back" href="#overzicht">&uarr; overzicht</a>
+          <button class="d-close" type="button">sluiten &times;</button>
         </div>
         <h3>REMH Bouw &amp; Verbouw</h3>
         <p class="d-lead">Website voor een aannemer, met een configurator die de klant zijn eigen dakkapel laat samenstellen.</p>
@@ -838,7 +845,6 @@
           <div class="col">
             <h4>Techniek</h4>
             <ul class="stack"><li>React 19</li><li>Express</li><li>MySQL</li><li>PDFKit</li><li>three.js</li><li>Railway</li></ul>
-            <p class="numbers">32 opleveringen &middot; 5.760 regels</p>
             <div class="d-cta"><a class="btn btn-main" href="https://remhofficial-production.up.railway.app" target="_blank" rel="noopener">Open de site</a></div>
           </div>
         </div>
@@ -867,7 +873,7 @@
         <div class="d-top">
           <span class="pill on"><i></i>Live online</span>
           <span class="d-when">augustus 2026</span>
-          <a class="d-back" href="#overzicht">&uarr; overzicht</a>
+          <button class="d-close" type="button">sluiten &times;</button>
         </div>
         <h3>Glacio Klimaattechniek</h3>
         <p class="d-lead">Bedrijfssite voor een airco- en klimaatinstallateur, met een keuzehulp, vaste tarieven en online intake.</p>
@@ -889,7 +895,6 @@
           <div class="col">
             <h4>Techniek</h4>
             <ul class="stack"><li>Node</li><li>Railway</li></ul>
-            <p class="numbers">online sinds 28 augustus 2026</p>
             <div class="d-cta"><a class="btn btn-main" href="https://glacio-site-production.up.railway.app" target="_blank" rel="noopener">Open de site</a></div>
           </div>
         </div>
@@ -918,7 +923,7 @@
         <div class="d-top">
           <span class="pill off"><i></i>Prototype</span>
           <span class="d-when">februari 2026</span>
-          <a class="d-back" href="#overzicht">&uarr; overzicht</a>
+          <button class="d-close" type="button">sluiten &times;</button>
         </div>
         <h3>Lumi&egrave;re Dakkapellen</h3>
         <p class="d-lead">Een dakkapel die je in 3D op je eigen dak ziet staan &mdash; draaien, afwerking kiezen, offerte eruit.</p>
@@ -939,7 +944,6 @@
           <div class="col">
             <h4>Techniek</h4>
             <ul class="stack"><li>React 19</li><li>three.js</li><li>React Three Fiber</li><li>Framer Motion</li><li>jsPDF</li></ul>
-            <p class="numbers">1.499 regels</p>
             <p class="note-closed">Werkend prototype &mdash; draait lokaal.</p>
           </div>
         </div>
@@ -958,7 +962,7 @@
         <div class="d-top">
           <span class="pill off"><i></i>Studieproject</span>
           <span class="d-when">maart &ndash; juni 2026</span>
-          <a class="d-back" href="#overzicht">&uarr; overzicht</a>
+          <button class="d-close" type="button">sluiten &times;</button>
         </div>
         <h3>Kiesradar</h3>
         <p class="d-lead">Teamproject aan de Hogeschool van Amsterdam: een fysieke opstelling die studiekiezers helpt kiezen, met sensoren die met een webapp praten.</p>
@@ -980,7 +984,6 @@
           <div class="col">
             <h4>Techniek</h4>
             <ul class="stack"><li>Python</li><li>Flask</li><li>MySQL</li><li>Docker</li><li>ESP32</li><li>GitLab CI</li></ul>
-            <p class="numbers">97 opleveringen &middot; teamproject in tweetal</p>
           </div>
         </div>
 
@@ -1000,7 +1003,7 @@
   <div class="wrap">
     <p class="eyebrow">Tijdlijn</p>
     <h2>Wanneer ik waaraan werkte</h2>
-    <p class="intro">Elk balkje loopt van de eerste tot de laatste keer dat ik code opleverde in dat project &mdash; 521 opleveringen in totaal. Deze cijfers komen niet uit mijn hoofd, ze zijn geteld in de projecten zelf.</p>
+    <p class="intro">Elk balkje loopt van de eerste tot de laatste dag dat ik aan dat project werkte. Niet uit mijn hoofd opgeschreven &mdash; afgelezen uit de projecten zelf.</p>
     <div class="gantt" id="gantt"></div>
     <div class="legend">
       <span><i style="background: linear-gradient(100deg,#5B8CFF,#C06BFF)"></i> staat nu live</span>
@@ -1161,22 +1164,64 @@
     b.addEventListener("click", function () {
       Array.prototype.forEach.call(box.children, function (o) { o.setAttribute("aria-pressed", "false"); });
       b.setAttribute("aria-pressed", "true");
-      tiles.concat(details).forEach(function (el) {
+      sluit();
+      tiles.forEach(function (el) {
         el.hidden = f.key !== "alles" && !has(el, f.key);
       });
     });
     box.appendChild(b);
   });
 
-  /* een verborgen project moet weer zichtbaar worden als je er direct heen linkt */
-  window.addEventListener("hashchange", function () {
-    var t = document.querySelector(window.location.hash || "#none");
-    if (t && t.hidden) {
-      var alles = document.getElementById("filter-alles");
-      if (alles) alles.click();
-      t.scrollIntoView();
-    }
+  /* ---------- details pas tonen als iemand een tegel aanklikt ----------
+     Zonder JavaScript staat alles gewoon open; hier klappen we het dicht. */
+  var openId = null;
+
+  function sluit() {
+    details.forEach(function (d) { d.hidden = true; });
+    tiles.forEach(function (t) { t.classList.remove("active"); });
+    openId = null;
+  }
+
+  function toon(id, scroll) {
+    var doel = document.getElementById(id);
+    if (!doel) return;
+    if (openId === id) { sluit(); return; }
+    sluit();
+    doel.hidden = false;
+    openId = id;
+    tiles.forEach(function (t) {
+      var a = t.querySelector("a");
+      if (a && a.getAttribute("href") === "#" + id) t.classList.add("active");
+    });
+    if (scroll !== false) doel.scrollIntoView({ block: "start" });
+  }
+
+  sluit();
+
+  tiles.forEach(function (t) {
+    var a = t.querySelector("a");
+    if (!a) return;
+    a.addEventListener("click", function (e) {
+      e.preventDefault();
+      toon(a.getAttribute("href").slice(1), true);
+    });
   });
+
+  details.forEach(function (d) {
+    var knop = d.querySelector(".d-close");
+    if (!knop) return;
+    knop.addEventListener("click", function () {
+      var tegel = document.querySelector('.tile a[href="#' + d.id + '"]');
+      sluit();
+      if (tegel) tegel.closest(".tile").scrollIntoView({ block: "center" });
+    });
+  });
+
+  document.addEventListener("keydown", function (e) {
+    if (e.key === "Escape" && openId) sluit();
+  });
+
+  if (window.location.hash) toon(window.location.hash.slice(1), false);
 
   /* ---------- tijdlijn ---------- */
   var ROWS = [
