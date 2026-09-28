@@ -12,19 +12,38 @@
       "label": "Front-end",
       "kop": "Wat de klant ziet",
       "tekst": "Schermen die net zo goed werken op een telefoon in de bouwkeet als op een monitor op kantoor. Foto's worden automatisch omgezet naar het kleinste formaat dat nog scherp is, en animaties draaien zonder de pagina te vertragen.",
-      "techniek": ["React 19", "Next.js 16", "Tailwind 4", "three.js", "Motion"]
+      "techniek": [
+        "React 19",
+        "Next.js 16",
+        "Tailwind 4",
+        "three.js",
+        "Motion"
+      ]
     },
     {
       "label": "Back-end",
       "kop": "Wat eronder draait",
       "tekst": "De database, de inlog, de rechten per medewerker, het versturen van mail, het maken van pdf's en het veilig opslaan van documenten. Wachtwoorden gehasht, aanvraag-eindpunten afgeschermd, en een database die standaard niets vrijgeeft.",
-      "techniek": ["Node 22", "Express", "PostgreSQL", "MySQL", "Supabase", "Python / Flask"]
+      "techniek": [
+        "Node 22",
+        "Express",
+        "PostgreSQL",
+        "MySQL",
+        "Supabase",
+        "Python / Flask"
+      ]
     },
     {
       "label": "Geoptimaliseerd",
       "kop": "Snel, vindbaar en betaalbaar",
       "tekst": "Pagina's worden vooraf klaargezet zodat Google ze leest en bezoekers niet wachten. Beelden laden pas als je er bijna bent. En valt een betaalde kaart- of AI-dienst uit, dan schakelt de site door naar een gratis alternatief in plaats van stuk te gaan.",
-      "techniek": ["SEO-prerender", "Caching", "Lazy loading", "Fallbacks", "één service i.p.v. vijf"]
+      "techniek": [
+        "SEO-prerender",
+        "Caching",
+        "Lazy loading",
+        "Fallbacks",
+        "één service i.p.v. vijf"
+      ]
     }
   ],
   "kunnen": [
@@ -66,16 +85,46 @@
     }
   ],
   "groepen": [
-    { "sleutel": "live", "titel": "Draait nu live", "uitleg": "In gebruik bij een bedrijf, vandaag te bekijken." },
-    { "sleutel": "prototype", "titel": "Prototypes", "uitleg": "Werkend, nog niet op een eigen domein gezet." },
-    { "sleutel": "studie", "titel": "Studieprojecten", "uitleg": "Gemaakt tijdens de opleiding." }
+    {
+      "sleutel": "live",
+      "titel": "Draait nu live",
+      "uitleg": "Staat vandaag online, zelf te bekijken."
+    },
+    {
+      "sleutel": "prototype",
+      "titel": "Prototypes",
+      "uitleg": "Werkend, nog niet op een eigen domein gezet."
+    },
+    {
+      "sleutel": "studie",
+      "titel": "Studieprojecten",
+      "uitleg": "Gemaakt tijdens de opleiding."
+    }
   ],
   "filters": [
-    { "sleutel": "alles", "label": "Alles" },
-    { "sleutel": "software", "label": "Bedrijfssoftware" },
-    { "sleutel": "website", "label": "Websites" },
-    { "sleutel": "3d", "label": "3D" },
-    { "sleutel": "ai", "label": "AI" },
-    { "sleutel": "mobiel", "label": "App & hardware" }
+    {
+      "sleutel": "alles",
+      "label": "Alles"
+    },
+    {
+      "sleutel": "software",
+      "label": "Bedrijfssoftware"
+    },
+    {
+      "sleutel": "website",
+      "label": "Websites"
+    },
+    {
+      "sleutel": "3d",
+      "label": "3D"
+    },
+    {
+      "sleutel": "ai",
+      "label": "AI"
+    },
+    {
+      "sleutel": "mobiel",
+      "label": "App & hardware"
+    }
   ]
 }
