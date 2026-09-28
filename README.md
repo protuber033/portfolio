@@ -81,6 +81,12 @@ niet bij. Verander je daar iets aan, pas dan zelf `laatsteDag` en `periode` aan 
 `data/projects.json`. Bij elk zo'n project staat een `github`-veld zodat je weet
 waar de code ligt.
 
+## Zelf hosten op een VPS
+
+In `vps/` staat een complete opzet om deze site op je eigen Linux-server te
+zetten in plaats van op Railway: server klaarmaken, als service draaien, nginx
+ervoor, gratis ssl, en bijwerken met één commando. Zie `vps/README.md`.
+
 ## Goed om te weten
 
 - Screenshots hebben Chrome of Edge nodig en `sharp`. Ontbreekt sharp, draai dan
