@@ -42,6 +42,14 @@
         "alt": "Onscherp gemaakt inlogscherm van de besloten klantomgeving; alleen de indeling is te zien.",
         "showcase": false
       }
+    ],
+    "stappen": [
+      "Urenbriefje door de scanner",
+      "Systeem leest en telt na",
+      "Uren op het juiste project",
+      "Factuur eruit",
+      "Kwartaalcijfers",
+      "Btw-aangifte"
     ]
   },
   {
@@ -103,6 +111,13 @@
         "bijschrift": "Wat kost het plaatsen van een automaat? Staat er gewoon.",
         "alt": "Sectie Veelgestelde vragen met uitklapbare antwoorden over de balautomaat."
       }
+    ],
+    "stappen": [
+      "Club kiest ballen of automaat",
+      "Automaat hangt aan de muur",
+      "Speler betaalt met pas of telefoon",
+      "Automaat meldt zelf de voorraad",
+      "Club ziet de opbrengst"
     ]
   },
   {
@@ -160,7 +175,14 @@
       }
     ],
     "bereikbaar": true,
-    "gecontroleerd": "28 sep 2026"
+    "gecontroleerd": "28 sep 2026",
+    "stappen": [
+      "Bezoeker kiest een dienst",
+      "Formulier invullen",
+      "Bevestiging in de mail",
+      "Aanvraag in het adminpaneel",
+      "Offerte terug"
+    ]
   },
   {
     "id": "kozijnfabriek",
@@ -219,7 +241,16 @@
       }
     ],
     "bereikbaar": true,
-    "gecontroleerd": "28 sep 2026"
+    "gecontroleerd": "28 sep 2026",
+    "stappen": [
+      "Adres invullen",
+      "Gevelfoto uploaden",
+      "AI herkent de kozijnen",
+      "Materiaal en kleur kiezen",
+      "Offerte aanvragen",
+      "Staat klaar in het dashboard",
+      "Inmeting inplannen"
+    ]
   },
   {
     "id": "courtswap",
@@ -265,7 +296,13 @@
       }
     ],
     "bereikbaar": true,
-    "gecontroleerd": "28 sep 2026"
+    "gecontroleerd": "28 sep 2026",
+    "stappen": [
+      "Advertentie plaatsen met foto's",
+      "Koper vindt hem op de kaart",
+      "Chatten over de staat",
+      "Afspreken"
+    ]
   },
   {
     "id": "glacio",
@@ -319,7 +356,13 @@
     ],
     "bereikbaar": true,
     "gecontroleerd": "28 sep 2026",
-    "github": "protuber033/glacio"
+    "github": "protuber033/glacio",
+    "stappen": [
+      "Drie vragen beantwoorden",
+      "Passende modellen zien",
+      "Prijs inclusief montage",
+      "Intake plannen"
+    ]
   },
   {
     "id": "remh",
@@ -376,7 +419,14 @@
       }
     ],
     "bereikbaar": true,
-    "gecontroleerd": "28 sep 2026"
+    "gecontroleerd": "28 sep 2026",
+    "stappen": [
+      "Dienst kiezen",
+      "Configureren",
+      "Preview op een dakfoto",
+      "Offerte als pdf",
+      "Binnen in het beheerdeel"
+    ]
   },
   {
     "id": "kijkvergunning",
@@ -433,6 +483,13 @@
         "bijschrift": "Hoe de cijfers tot stand komen.",
         "alt": "Uitlegpagina Hoe werkt KijkVergunning met genummerde stappen."
       }
+    ],
+    "stappen": [
+      "Adres invullen",
+      "Perceel opzoeken bij PDOK",
+      "Maten verschuiven",
+      "Zone kleurt groen of rood",
+      "Rapport downloaden"
     ]
   },
   {
@@ -474,6 +531,12 @@
         "bijschrift": "Het 3D-model reageert direct op wat je invult.",
         "alt": "3D-weergave van een dak met dakkapel en schoorsteen, met een paneel Waar gaan we bouwen met velden voor postcode en breedte."
       }
+    ],
+    "stappen": [
+      "Postcode en dakbreedte",
+      "3D-model wordt opgebouwd",
+      "Afwerking kiezen",
+      "Pdf-offerte"
     ]
   },
   {
@@ -511,7 +574,13 @@
     "besloten": "Teamproject HvA — code staat op de GitLab van de hogeschool.",
     "tegel": null,
     "tegelTekst": "HARDWARE · GEEN WEBSITE\nESP32 → FLASK → MYSQL",
-    "beelden": []
+    "beelden": [],
+    "stappen": [
+      "Vraag beantwoorden op de opstelling",
+      "Sensor stuurt het antwoord door",
+      "Webserver zet het in de database",
+      "Uitslag op het scherm"
+    ]
   },
   {
     "id": "eemlandwerkt",
@@ -551,6 +620,11 @@
     "besloten": "Niet meer online — vervangen door Eemland Boekt.",
     "tegel": null,
     "tegelTekst": "EERSTE VERSIE · DEC 2025\nFLASK + REACT",
-    "beelden": []
+    "beelden": [],
+    "stappen": [
+      "Klant logt in op het portaal",
+      "Ziet zijn eigen dossier",
+      "Kantoor ziet hetzelfde dashboard"
+    ]
   }
 ]

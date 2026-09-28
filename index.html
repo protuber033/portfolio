@@ -501,6 +501,113 @@ h1 { font-size: clamp(1.9rem, 4.4vw, 2.9rem); max-width: 22ch; }
 
 .stip.archief { background: var(--tekst-3); }
 .balkje.archief { background: rgba(154, 166, 198, .3); }
+
+/* ============ diagram: hoe een project in elkaar zit ============ */
+.bouw {
+  margin-top: clamp(22px, 3vw, 34px);
+  background: var(--vlak); border: 1px solid var(--rand); border-radius: 16px;
+  padding: clamp(20px, 3vw, 32px);
+  display: flex; flex-direction: column; align-items: center; gap: 0;
+}
+.bouw-kop {
+  font-family: var(--mono); font-size: .7rem; letter-spacing: .14em; text-transform: uppercase;
+  color: var(--tekst-3); margin: 0 0 18px; align-self: flex-start;
+}
+.doos {
+  width: 100%; max-width: 620px;
+  background: var(--grond); border: 1px solid var(--rand-op); border-radius: 12px;
+  padding: 14px 18px; text-align: center;
+}
+.doos b { display: block; font-family: var(--display); font-weight: 700; font-size: 1rem; letter-spacing: -.02em; }
+.doos span { display: block; margin-top: 4px; color: var(--tekst-2); font-size: .88rem; }
+.doos.rand-accent { border-color: var(--accent); color: var(--accent); font-weight: 600; max-width: 340px; }
+.pijl {
+  margin: 0; padding-block: 10px; color: var(--tekst-3);
+  font-size: 1.1rem; line-height: 1; display: flex; align-items: center; gap: 9px;
+}
+.pijl em { font-style: normal; font-family: var(--mono); font-size: .7rem; letter-spacing: .06em; }
+.vier {
+  display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 10px;
+  width: 100%; max-width: 760px;
+}
+.doos.klein { padding: 13px 12px; max-width: none; }
+.doos.klein b { font-size: .88rem; }
+.doos.klein span { font-size: .76rem; margin-top: 3px; }
+.bouw-bij {
+  margin: 20px 0 0; font-size: .86rem; color: var(--tekst-3);
+  max-width: 62ch; text-align: center;
+}
+
+/* ============ staafgrafieken ============ */
+.grafieken { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; margin-top: 24px; }
+.grafiek {
+  margin: 0; background: var(--vlak); border: 1px solid var(--rand); border-radius: 16px;
+  padding: clamp(18px, 2.6vw, 26px);
+}
+.grafiek figcaption {
+  font-family: var(--display); font-weight: 700; font-size: 1.02rem; letter-spacing: -.02em;
+  margin-bottom: 16px;
+}
+.staven { list-style: none; margin: 0; padding: 0; display: grid; gap: 8px; }
+.staven li {
+  display: grid; grid-template-columns: 8.5rem minmax(0, 1fr) 2rem; align-items: center; gap: 10px;
+}
+.staaf-naam { font-size: .86rem; color: var(--tekst-2); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.staaf-spoor { display: block; height: 12px; background: rgba(255, 255, 255, .04); border-radius: 3px; }
+.staaf {
+  display: block; height: 100%; min-width: 4px;
+  background: #5B8CFF;
+  border-radius: 2px 4px 4px 2px;
+}
+.staaf-waarde {
+  font-family: var(--mono); font-size: .82rem; color: var(--tekst);
+  font-variant-numeric: tabular-nums; text-align: right;
+}
+.grafiek-bij { margin: 16px 0 0; font-size: .78rem; color: var(--tekst-3); }
+
+/* ============ stroomdiagram in het projectvenster ============ */
+.stroom { margin-top: 24px; padding-top: 22px; border-top: 1px solid var(--rand); }
+.stroom h4 {
+  font-family: var(--mono); font-size: .68rem; letter-spacing: .14em; text-transform: uppercase;
+  color: var(--tekst-3); margin: 0 0 14px; font-weight: 500;
+}
+.stappen {
+  list-style: none; margin: 0; padding: 0;
+  display: flex; flex-wrap: wrap; align-items: stretch; gap: 8px;
+}
+.stappen li {
+  position: relative;
+  display: flex; align-items: center; gap: 9px;
+  background: var(--grond); border: 1px solid var(--rand);
+  border-radius: 9px; padding: 9px 14px 9px 10px;
+  font-size: .86rem; color: var(--tekst-2);
+}
+.stappen li + li::before {
+  content: "";
+  position: absolute; left: -8px; top: 50%; width: 8px; height: 1px;
+  background: var(--rand-op);
+}
+.stappen .nr {
+  display: grid; place-items: center; flex: none;
+  width: 20px; height: 20px; border-radius: 50%;
+  background: var(--accent-zacht); color: var(--accent);
+  font-family: var(--mono); font-size: .68rem;
+}
+.stappen li:last-child {
+  border-color: var(--accent); color: var(--tekst);
+}
+
+@media (max-width: 960px) {
+  .grafieken { grid-template-columns: minmax(0, 1fr); }
+  .vier { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+@media (max-width: 620px) {
+  .staven li { grid-template-columns: 7rem minmax(0, 1fr) 1.8rem; gap: 8px; }
+  .staaf-naam { font-size: .78rem; }
+  .vier { grid-template-columns: minmax(0, 1fr); }
+  .stappen li { width: 100%; }
+  .stappen li + li::before { left: 50%; top: -8px; width: 1px; height: 8px; }
+}
 </style>
 </head>
 <body>
@@ -512,7 +619,7 @@ h1 { font-size: clamp(1.9rem, 4.4vw, 2.9rem); max-width: 22ch; }
     <nav class="menu">
       <a href="#werk">Werk</a>
       <a href="#lagen">Aanpak</a>
-      <a href="#tijdlijn">Tijdlijn</a>
+      <a href="#cijfers">Cijfers</a>
       <a href="#contact">Contact</a>
     </nav>
     <a class="knop knop-klein" href="#contact">Neem contact op</a>
@@ -784,62 +891,125 @@ h1 { font-size: clamp(1.9rem, 4.4vw, 2.9rem); max-width: 22ch; }
           <p>Pagina's worden vooraf klaargezet zodat Google ze leest en bezoekers niet wachten. Beelden laden pas als je er bijna bent. En valt een betaalde kaart- of AI-dienst uit, dan schakelt de site door naar een gratis alternatief in plaats van stuk te gaan.</p>
           <ul class="techniek"><li>SEO-prerender</li><li>Caching</li><li>Lazy loading</li><li>Fallbacks</li><li>één service i.p.v. vijf</li></ul>
         </article></div>
+
+      <div class="bouw">
+        <p class="bouw-kop">Zo zit zo'n project in elkaar</p>
+        <div class="doos rand-accent">Een bezoeker opent de pagina</div>
+        <p class="pijl">&darr;</p>
+        <div class="doos">
+          <b>De voorkant</b>
+          <span>Wat hij ziet en aanklikt. Draait in zijn browser, op telefoon net zo goed als op een monitor.</span>
+        </div>
+        <p class="pijl">&darr; <em>vraagt gegevens op</em></p>
+        <div class="doos">
+          <b>De achterkant</b>
+          <span>De server die controleert wie je bent, de gegevens ophaalt en het werk doet.</span>
+        </div>
+        <p class="pijl">&darr;</p>
+        <div class="vier">
+          <div class="doos klein"><b>Database</b><span>projecten, klanten, uren</span></div>
+          <div class="doos klein"><b>Documenten</b><span>pdf's en foto's, afgeschermd</span></div>
+          <div class="doos klein"><b>Mail</b><span>bevestiging naar de klant</span></div>
+          <div class="doos klein"><b>AI</b><span>foto's lezen, tekst nakijken</span></div>
+        </div>
+        <p class="bouw-bij">Alles in &eacute;&eacute;n service, niet vijf losse abonnementen. Valt een betaalde dienst weg, dan schakelt de site door naar een gratis alternatief in plaats van stuk te gaan.</p>
+      </div>
     </div>
   </section>
 
-  <section class="sectie" id="tijdlijn">
+  <section class="sectie" id="cijfers">
     <div class="binnen">
-      <h2 class="sectie-kop">Wanneer ik waaraan werkte</h2>
-      <p class="sectie-uitleg">Elk balkje loopt van de eerste tot de laatste dag dat ik aan dat project werkte. Afgelezen uit de projecten zelf.</p>
-      <div class="gantt">
-        <div class="assen" style="grid-template-columns: repeat(11, minmax(0, 1fr))"><span>nov</span><span>dec</span><span class="jaar">jan '26</span><span>feb</span><span>mrt</span><span>apr</span><span>mei</span><span>jun</span><span>jul</span><span>aug</span><span>sep</span></div>
-        
-          <div class="rij">
-            <span class="rij-naam">REMH Bouw &amp; Verbouw</span>
-            <span class="spoor"><span class="balkje live" style="left:7.78%;width:16.47%"></span></span>
-          </div>
-          <div class="rij">
-            <span class="rij-naam">EemlandWerkt</span>
-            <span class="spoor"><span class="balkje archief" style="left:13.77%;width:11.68%"></span></span>
-          </div>
-          <div class="rij">
-            <span class="rij-naam">CourtSwap</span>
-            <span class="spoor"><span class="balkje live" style="left:20.66%;width:69.76%"></span></span>
-          </div>
-          <div class="rij">
-            <span class="rij-naam">Eemland Boekt</span>
-            <span class="spoor"><span class="balkje live" style="left:24.25%;width:73.05%"></span></span>
-          </div>
-          <div class="rij">
-            <span class="rij-naam">Lumière Dakkapellen</span>
-            <span class="spoor"><span class="balkje prototype" style="left:33.83%;width:1.20%"></span></span>
-          </div>
-          <div class="rij">
-            <span class="rij-naam">Kiesradar</span>
-            <span class="spoor"><span class="balkje studie" style="left:42.81%;width:24.85%"></span></span>
-          </div>
-          <div class="rij">
-            <span class="rij-naam">Kozijnfabriek Direct</span>
-            <span class="spoor"><span class="balkje live" style="left:88.02%;width:7.19%"></span></span>
-          </div>
-          <div class="rij">
-            <span class="rij-naam">RALOX Sports</span>
-            <span class="spoor"><span class="balkje live" style="left:89.82%;width:1.20%"></span></span>
-          </div>
-          <div class="rij">
-            <span class="rij-naam">Glacio Klimaattechniek</span>
-            <span class="spoor"><span class="balkje live" style="left:89.82%;width:5.69%"></span></span>
-          </div>
-          <div class="rij">
-            <span class="rij-naam">Fun Studios</span>
-            <span class="spoor"><span class="balkje live" style="left:92.81%;width:4.49%"></span></span>
-          </div>
-          <div class="rij">
-            <span class="rij-naam">KijkVergunning</span>
-            <span class="spoor"><span class="balkje prototype" style="left:94.01%;width:2.99%"></span></span>
-          </div>
+      <h2 class="sectie-kop">Waar het werk in zit</h2>
+      <p class="sectie-uitleg">Geteld over alle 11 projecten op deze pagina. Groeit vanzelf mee als er werk bij komt.</p>
+      <div class="grafieken">
+        <figure class="grafiek">
+          <figcaption>Techniek die in meer dan &eacute;&eacute;n project terugkomt</figcaption>
+          <ul class="staven">
+            <li>
+              <span class="staaf-naam">React</span>
+              <span class="staaf-spoor"><span class="staaf" style="width:100.0%" title="React: 9 projecten"></span></span>
+              <span class="staaf-waarde">9</span>
+            </li>
+            <li>
+              <span class="staaf-naam">Express</span>
+              <span class="staaf-spoor"><span class="staaf" style="width:55.6%" title="Express: 5 projecten"></span></span>
+              <span class="staaf-waarde">5</span>
+            </li>
+            <li>
+              <span class="staaf-naam">Railway</span>
+              <span class="staaf-spoor"><span class="staaf" style="width:55.6%" title="Railway: 5 projecten"></span></span>
+              <span class="staaf-waarde">5</span>
+            </li>
+            <li>
+              <span class="staaf-naam">Google Gemini</span>
+              <span class="staaf-spoor"><span class="staaf" style="width:33.3%" title="Google Gemini: 3 projecten"></span></span>
+              <span class="staaf-waarde">3</span>
+            </li>
+            <li>
+              <span class="staaf-naam">PostgreSQL</span>
+              <span class="staaf-spoor"><span class="staaf" style="width:33.3%" title="PostgreSQL: 3 projecten"></span></span>
+              <span class="staaf-waarde">3</span>
+            </li>
+            <li>
+              <span class="staaf-naam">three.js</span>
+              <span class="staaf-spoor"><span class="staaf" style="width:33.3%" title="three.js: 3 projecten"></span></span>
+              <span class="staaf-waarde">3</span>
+            </li>
+            <li>
+              <span class="staaf-naam">Vite</span>
+              <span class="staaf-spoor"><span class="staaf" style="width:33.3%" title="Vite: 3 projecten"></span></span>
+              <span class="staaf-waarde">3</span>
+            </li>
+            <li>
+              <span class="staaf-naam">Flask</span>
+              <span class="staaf-spoor"><span class="staaf" style="width:22.2%" title="Flask: 2 projecten"></span></span>
+              <span class="staaf-waarde">2</span>
+            </li>
+            <li>
+              <span class="staaf-naam">Motion</span>
+              <span class="staaf-spoor"><span class="staaf" style="width:22.2%" title="Motion: 2 projecten"></span></span>
+              <span class="staaf-waarde">2</span>
+            </li>
+            <li>
+              <span class="staaf-naam">MySQL</span>
+              <span class="staaf-spoor"><span class="staaf" style="width:22.2%" title="MySQL: 2 projecten"></span></span>
+              <span class="staaf-waarde">2</span>
+            </li>
+          </ul>
+          <p class="grafiek-bij">Aantal projecten waarin het gebruikt wordt.</p>
+        </figure>
+        <figure class="grafiek">
+          <figcaption>Wat voor werk het is</figcaption>
+          <ul class="staven">
+            <li>
+              <span class="staaf-naam">Bedrijfssoftware</span>
+              <span class="staaf-spoor"><span class="staaf" style="width:100.0%" title="Bedrijfssoftware: 7 projecten"></span></span>
+              <span class="staaf-waarde">7</span>
+            </li>
+            <li>
+              <span class="staaf-naam">Websites</span>
+              <span class="staaf-spoor"><span class="staaf" style="width:100.0%" title="Websites: 7 projecten"></span></span>
+              <span class="staaf-waarde">7</span>
+            </li>
+            <li>
+              <span class="staaf-naam">AI</span>
+              <span class="staaf-spoor"><span class="staaf" style="width:57.1%" title="AI: 4 projecten"></span></span>
+              <span class="staaf-waarde">4</span>
+            </li>
+            <li>
+              <span class="staaf-naam">3D</span>
+              <span class="staaf-spoor"><span class="staaf" style="width:42.9%" title="3D: 3 projecten"></span></span>
+              <span class="staaf-waarde">3</span>
+            </li>
+            <li>
+              <span class="staaf-naam">App &amp; hardware</span>
+              <span class="staaf-spoor"><span class="staaf" style="width:28.6%" title="App &amp; hardware: 2 projecten"></span></span>
+              <span class="staaf-waarde">2</span>
+            </li>
+          </ul>
+          <p class="grafiek-bij">Een project kan onder meer dan &eacute;&eacute;n soort vallen.</p>
+        </figure>
       </div>
-      <p class="legenda"><span><i class="balkje live"></i> draait live</span><span><i class="balkje prototype"></i> prototype</span><span><i class="balkje studie"></i> studieproject</span></p>
     </div>
   </section>
 
@@ -939,6 +1109,18 @@ h1 { font-size: clamp(1.9rem, 4.4vw, 2.9rem); max-width: 22ch; }
           </div>
         </div>
         
+        <div class="stroom">
+          <h4>Zo loopt het van begin tot eind</h4>
+          <ol class="stappen">
+            <li><span class="nr">1</span><span class="wat">Urenbriefje door de scanner</span></li>
+            <li><span class="nr">2</span><span class="wat">Systeem leest en telt na</span></li>
+            <li><span class="nr">3</span><span class="wat">Uren op het juiste project</span></li>
+            <li><span class="nr">4</span><span class="wat">Factuur eruit</span></li>
+            <li><span class="nr">5</span><span class="wat">Kwartaalcijfers</span></li>
+            <li><span class="nr">6</span><span class="wat">Btw-aangifte</span></li>
+          </ol>
+        </div>
+        
         <div class="galerij" data-galerij>
           <figure class="groot">
             <span class="balk"><i></i><i></i><i></i><b data-rol="titel">inlogportaal</b></span>
@@ -969,6 +1151,17 @@ h1 { font-size: clamp(1.9rem, 4.4vw, 2.9rem); max-width: 22ch; }
             <a class="knop knop-vol" href="https://ralox-production.up.railway.app" target="_blank" rel="noopener">Open de webshop</a>
             
           </div>
+        </div>
+        
+        <div class="stroom">
+          <h4>Zo loopt het van begin tot eind</h4>
+          <ol class="stappen">
+            <li><span class="nr">1</span><span class="wat">Club kiest ballen of automaat</span></li>
+            <li><span class="nr">2</span><span class="wat">Automaat hangt aan de muur</span></li>
+            <li><span class="nr">3</span><span class="wat">Speler betaalt met pas of telefoon</span></li>
+            <li><span class="nr">4</span><span class="wat">Automaat meldt zelf de voorraad</span></li>
+            <li><span class="nr">5</span><span class="wat">Club ziet de opbrengst</span></li>
+          </ol>
         </div>
         
         <div class="galerij" data-galerij>
@@ -1020,6 +1213,17 @@ h1 { font-size: clamp(1.9rem, 4.4vw, 2.9rem); max-width: 22ch; }
           </div>
         </div>
         
+        <div class="stroom">
+          <h4>Zo loopt het van begin tot eind</h4>
+          <ol class="stappen">
+            <li><span class="nr">1</span><span class="wat">Bezoeker kiest een dienst</span></li>
+            <li><span class="nr">2</span><span class="wat">Formulier invullen</span></li>
+            <li><span class="nr">3</span><span class="wat">Bevestiging in de mail</span></li>
+            <li><span class="nr">4</span><span class="wat">Aanvraag in het adminpaneel</span></li>
+            <li><span class="nr">5</span><span class="wat">Offerte terug</span></li>
+          </ol>
+        </div>
+        
         <div class="galerij" data-galerij>
           <div class="duimen" role="tablist" aria-label="Schermen van Fun Studios">
             <button type="button" class="duimknop" role="tab" aria-selected="true"
@@ -1067,6 +1271,19 @@ h1 { font-size: clamp(1.9rem, 4.4vw, 2.9rem); max-width: 22ch; }
             <a class="knop knop-vol" href="https://kozijnfabriekdirect.nl" target="_blank" rel="noopener">Open de site</a>
             
           </div>
+        </div>
+        
+        <div class="stroom">
+          <h4>Zo loopt het van begin tot eind</h4>
+          <ol class="stappen">
+            <li><span class="nr">1</span><span class="wat">Adres invullen</span></li>
+            <li><span class="nr">2</span><span class="wat">Gevelfoto uploaden</span></li>
+            <li><span class="nr">3</span><span class="wat">AI herkent de kozijnen</span></li>
+            <li><span class="nr">4</span><span class="wat">Materiaal en kleur kiezen</span></li>
+            <li><span class="nr">5</span><span class="wat">Offerte aanvragen</span></li>
+            <li><span class="nr">6</span><span class="wat">Staat klaar in het dashboard</span></li>
+            <li><span class="nr">7</span><span class="wat">Inmeting inplannen</span></li>
+          </ol>
         </div>
         
         <div class="galerij" data-galerij>
@@ -1118,6 +1335,16 @@ h1 { font-size: clamp(1.9rem, 4.4vw, 2.9rem); max-width: 22ch; }
           </div>
         </div>
         
+        <div class="stroom">
+          <h4>Zo loopt het van begin tot eind</h4>
+          <ol class="stappen">
+            <li><span class="nr">1</span><span class="wat">Advertentie plaatsen met foto's</span></li>
+            <li><span class="nr">2</span><span class="wat">Koper vindt hem op de kaart</span></li>
+            <li><span class="nr">3</span><span class="wat">Chatten over de staat</span></li>
+            <li><span class="nr">4</span><span class="wat">Afspreken</span></li>
+          </ol>
+        </div>
+        
         <div class="galerij" data-galerij>
           <figure class="groot">
             <span class="balk"><i></i><i></i><i></i><b data-rol="titel">zoeken en filteren</b></span>
@@ -1148,6 +1375,16 @@ h1 { font-size: clamp(1.9rem, 4.4vw, 2.9rem); max-width: 22ch; }
             <a class="knop knop-vol" href="https://glacio-site-production.up.railway.app" target="_blank" rel="noopener">Open de site</a>
             <p class="dicht">Verzonnen bedrijf — de site is echt, de klant niet.</p>
           </div>
+        </div>
+        
+        <div class="stroom">
+          <h4>Zo loopt het van begin tot eind</h4>
+          <ol class="stappen">
+            <li><span class="nr">1</span><span class="wat">Drie vragen beantwoorden</span></li>
+            <li><span class="nr">2</span><span class="wat">Passende modellen zien</span></li>
+            <li><span class="nr">3</span><span class="wat">Prijs inclusief montage</span></li>
+            <li><span class="nr">4</span><span class="wat">Intake plannen</span></li>
+          </ol>
         </div>
         
         <div class="galerij" data-galerij>
@@ -1199,6 +1436,17 @@ h1 { font-size: clamp(1.9rem, 4.4vw, 2.9rem); max-width: 22ch; }
           </div>
         </div>
         
+        <div class="stroom">
+          <h4>Zo loopt het van begin tot eind</h4>
+          <ol class="stappen">
+            <li><span class="nr">1</span><span class="wat">Dienst kiezen</span></li>
+            <li><span class="nr">2</span><span class="wat">Configureren</span></li>
+            <li><span class="nr">3</span><span class="wat">Preview op een dakfoto</span></li>
+            <li><span class="nr">4</span><span class="wat">Offerte als pdf</span></li>
+            <li><span class="nr">5</span><span class="wat">Binnen in het beheerdeel</span></li>
+          </ol>
+        </div>
+        
         <div class="galerij" data-galerij>
           <div class="duimen" role="tablist" aria-label="Schermen van REMH Bouw &amp; Verbouw">
             <button type="button" class="duimknop" role="tab" aria-selected="true"
@@ -1246,6 +1494,17 @@ h1 { font-size: clamp(1.9rem, 4.4vw, 2.9rem); max-width: 22ch; }
             
             <p class="dicht">Draait lokaal — live demo op afspraak.</p>
           </div>
+        </div>
+        
+        <div class="stroom">
+          <h4>Zo loopt het van begin tot eind</h4>
+          <ol class="stappen">
+            <li><span class="nr">1</span><span class="wat">Adres invullen</span></li>
+            <li><span class="nr">2</span><span class="wat">Perceel opzoeken bij PDOK</span></li>
+            <li><span class="nr">3</span><span class="wat">Maten verschuiven</span></li>
+            <li><span class="nr">4</span><span class="wat">Zone kleurt groen of rood</span></li>
+            <li><span class="nr">5</span><span class="wat">Rapport downloaden</span></li>
+          </ol>
         </div>
         
         <div class="galerij" data-galerij>
@@ -1297,6 +1556,16 @@ h1 { font-size: clamp(1.9rem, 4.4vw, 2.9rem); max-width: 22ch; }
           </div>
         </div>
         
+        <div class="stroom">
+          <h4>Zo loopt het van begin tot eind</h4>
+          <ol class="stappen">
+            <li><span class="nr">1</span><span class="wat">Postcode en dakbreedte</span></li>
+            <li><span class="nr">2</span><span class="wat">3D-model wordt opgebouwd</span></li>
+            <li><span class="nr">3</span><span class="wat">Afwerking kiezen</span></li>
+            <li><span class="nr">4</span><span class="wat">Pdf-offerte</span></li>
+          </ol>
+        </div>
+        
         <div class="galerij" data-galerij>
           <figure class="groot">
             <span class="balk"><i></i><i></i><i></i><b data-rol="titel">de configurator</b></span>
@@ -1329,6 +1598,16 @@ h1 { font-size: clamp(1.9rem, 4.4vw, 2.9rem); max-width: 22ch; }
           </div>
         </div>
         
+        <div class="stroom">
+          <h4>Zo loopt het van begin tot eind</h4>
+          <ol class="stappen">
+            <li><span class="nr">1</span><span class="wat">Vraag beantwoorden op de opstelling</span></li>
+            <li><span class="nr">2</span><span class="wat">Sensor stuurt het antwoord door</span></li>
+            <li><span class="nr">3</span><span class="wat">Webserver zet het in de database</span></li>
+            <li><span class="nr">4</span><span class="wat">Uitslag op het scherm</span></li>
+          </ol>
+        </div>
+        
       </article>
       <article class="paneel" id="paneel-eemlandwerkt" data-id="eemlandwerkt" hidden>
         <header class="paneel-kop">
@@ -1352,6 +1631,15 @@ h1 { font-size: clamp(1.9rem, 4.4vw, 2.9rem); max-width: 22ch; }
             
             <p class="dicht">Niet meer online — vervangen door Eemland Boekt.</p>
           </div>
+        </div>
+        
+        <div class="stroom">
+          <h4>Zo loopt het van begin tot eind</h4>
+          <ol class="stappen">
+            <li><span class="nr">1</span><span class="wat">Klant logt in op het portaal</span></li>
+            <li><span class="nr">2</span><span class="wat">Ziet zijn eigen dossier</span></li>
+            <li><span class="nr">3</span><span class="wat">Kantoor ziet hetzelfde dashboard</span></li>
+          </ol>
         </div>
         
       </article></div>

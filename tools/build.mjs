@@ -18,14 +18,12 @@ const esc = (s) => String(s ?? '')
 // **vet** in de opsommingen wordt <strong>
 const vet = (s) => esc(s).replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>');
 
-const MAANDEN = ['jan', 'feb', 'mrt', 'apr', 'mei', 'jun', 'jul', 'aug', 'sep', 'okt', 'nov', 'dec'];
+const gecontroleerd = projecten.map((p) => p.gecontroleerd).filter(Boolean).sort().pop();
 
 /* ---------- afgeleide cijfers: groeien vanzelf mee ---------- */
 const aantal = projecten.length;
 const aantalLive = projecten.filter((p) => p.status === 'live').length;
-const domeinen = projecten
-  .filter((p) => p.url && !/railway\.app/.test(p.url))
-  .length;
+const domeinen = projecten.filter((p) => p.url && !/railway\.app/.test(p.url)).length;
 
 // de showcase pakt automatisch alle schermen van alle projecten mee
 const showcase = projecten.flatMap((p) => (p.beelden || [])
@@ -34,33 +32,33 @@ const showcase = projecten.flatMap((p) => (p.beelden || [])
 const helft = Math.ceil(showcase.length / 2);
 const banen = [showcase.slice(0, helft), showcase.slice(helft)];
 
-const gecontroleerd = projecten.map((p) => p.gecontroleerd).filter(Boolean).sort().pop();
-
-const datums = projecten.flatMap((p) => [p.eersteDag, p.laatsteDag]).filter(Boolean).sort();
-const vanaf = datums[0];
-const totEnMet = datums[datums.length - 1];
-
-function maandBereik(van, tot) {
-  const a = new Date(van + 'T00:00:00Z');
-  const b = new Date(tot + 'T00:00:00Z');
-  const start = Date.UTC(a.getUTCFullYear(), a.getUTCMonth(), 1);
-  const eind = Date.UTC(b.getUTCFullYear(), b.getUTCMonth() + 1, 1);
-  const ticks = [];
-  let y = a.getUTCFullYear();
-  let m = a.getUTCMonth();
-  while (Date.UTC(y, m, 1) < eind) {
-    ticks.push({ y, m });
-    m += 1;
-    if (m > 11) { m = 0; y += 1; }
-  }
-  return { start, eind, ticks };
+/* ---------- wat er in de projecten zit, geteld ---------- */
+function tel(lijst) {
+  const m = new Map();
+  for (const x of lijst) m.set(x, (m.get(x) || 0) + 1);
+  return [...m.entries()].sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0]));
 }
 
-const tijd = maandBereik(vanaf, totEnMet);
+// "React 19" en "React" zijn hetzelfde ding; voor de grafiek tellen we ze samen
+const zonderVersie = (t) => t.replace(/\s+\d+(\.\d+)*$/, '');
+const techniekTelling = tel(projecten.flatMap((p) => [...new Set((p.techniek || []).map(zonderVersie))]))
+  .filter(([, n]) => n > 1).slice(0, 10);
 
-function procent(iso) {
-  const [y, m, d] = iso.split('-').map(Number);
-  return ((Date.UTC(y, m - 1, d) - tijd.start) / (tijd.eind - tijd.start)) * 100;
+const soortTelling = site.filters
+  .filter((f) => f.sleutel !== 'alles')
+  .map((f) => [f.label, projecten.filter((p) => (p.tags || []).includes(f.sleutel)).length])
+  .filter(([, n]) => n > 0)
+  .sort((a, b) => b[1] - a[1]);
+
+function staven(rijen, eenheid) {
+  const top = Math.max(...rijen.map((r) => r[1]), 1);
+  return `<ul class="staven">
+${rijen.map(([naam, n]) => `            <li>
+              <span class="staaf-naam">${esc(naam)}</span>
+              <span class="staaf-spoor"><span class="staaf" style="width:${((n / top) * 100).toFixed(1)}%" title="${esc(naam)}: ${n} ${esc(eenheid)}"></span></span>
+              <span class="staaf-waarde">${n}</span>
+            </li>`).join('\n')}
+          </ul>`;
 }
 
 /* ---------- onderdelen ---------- */
@@ -127,6 +125,18 @@ ${beelden.map((b, i) => `            <button type="button" class="duimknop" role
         </div>`;
 }
 
+function stroom(p) {
+  const stappen = p.stappen || [];
+  if (!stappen.length) return '';
+  return `
+        <div class="stroom">
+          <h4>Zo loopt het van begin tot eind</h4>
+          <ol class="stappen">
+${stappen.map((st, i) => `            <li><span class="nr">${i + 1}</span><span class="wat">${esc(st)}</span></li>`).join('\n')}
+          </ol>
+        </div>`;
+}
+
 function paneel(p) {
   const knop = p.url
     ? `<a class="knop knop-vol" href="${esc(p.url)}" target="_blank" rel="noopener">${esc(p.urlLabel)}</a>`
@@ -157,6 +167,7 @@ function paneel(p) {
             ${dicht}
           </div>
         </div>
+        ${stroom(p)}
         ${schermen}
       </article>`;
 }
@@ -187,13 +198,9 @@ const balkje = (p) => {
           </div>`;
 };
 
-const tijdlijnRijen = [...projecten]
-  .sort((a, b) => (a.eersteDag < b.eersteDag ? -1 : 1))
-  .map(balkje).join('');
 
-const assen = tijd.ticks.map((t) => t.m === 0
-  ? `<span class="jaar">${MAANDEN[t.m]} '${String(t.y).slice(2)}</span>`
-  : `<span>${MAANDEN[t.m]}</span>`).join('');
+
+
 
 const filterKnoppen = site.filters.map((f, i) => {
   const n = f.sleutel === 'alles'
@@ -203,7 +210,10 @@ const filterKnoppen = site.filters.map((f, i) => {
   return `<button type="button" class="filter" data-filter="${esc(f.sleutel)}" aria-pressed="${i === 0}">${esc(f.label)} <i>${n}</i></button>`;
 }).join('');
 
-const css = readFileSync(join(WORTEL, 'tools/stijl.css'), 'utf8');
+const css = [
+  readFileSync(join(WORTEL, 'tools/stijl.css'), 'utf8'),
+  readFileSync(join(WORTEL, 'tools/extra.css'), 'utf8')
+].join('\n');
 const js = readFileSync(join(WORTEL, 'tools/gedrag.js'), 'utf8');
 
 const kopstuk = `<title>${esc(site.titel)}</title>
@@ -220,7 +230,7 @@ const binnenkant = `<a class="overslaan" href="#werk">Direct naar het werk</a>
     <nav class="menu">
       <a href="#werk">Werk</a>
       <a href="#lagen">Aanpak</a>
-      <a href="#tijdlijn">Tijdlijn</a>
+      <a href="#cijfers">Cijfers</a>
       <a href="#contact">Contact</a>
     </nav>
     <a class="knop knop-klein" href="#contact">Neem contact op</a>
@@ -278,18 +288,48 @@ ${[...baan, ...baan].map((b) => `          <img src="img/m-${esc(b.bestand)}" wi
       <h2 class="sectie-kop">Voorkant én achterkant, door dezelfde handen</h2>
       <p class="sectie-uitleg">Bij de meeste bureaus bouwt de een de website en moet je voor alles wat erachter zit bij iemand anders zijn. Wij doen allebei, en juist daar zit de winst: de knop die de klant indrukt en de database die het antwoord geeft zijn samen ontworpen.</p>
       <div class="lagen">${site.lagen.map(laag).join('')}</div>
+
+      <div class="bouw">
+        <p class="bouw-kop">Zo zit zo'n project in elkaar</p>
+        <div class="doos rand-accent">Een bezoeker opent de pagina</div>
+        <p class="pijl">&darr;</p>
+        <div class="doos">
+          <b>De voorkant</b>
+          <span>Wat hij ziet en aanklikt. Draait in zijn browser, op telefoon net zo goed als op een monitor.</span>
+        </div>
+        <p class="pijl">&darr; <em>vraagt gegevens op</em></p>
+        <div class="doos">
+          <b>De achterkant</b>
+          <span>De server die controleert wie je bent, de gegevens ophaalt en het werk doet.</span>
+        </div>
+        <p class="pijl">&darr;</p>
+        <div class="vier">
+          <div class="doos klein"><b>Database</b><span>projecten, klanten, uren</span></div>
+          <div class="doos klein"><b>Documenten</b><span>pdf's en foto's, afgeschermd</span></div>
+          <div class="doos klein"><b>Mail</b><span>bevestiging naar de klant</span></div>
+          <div class="doos klein"><b>AI</b><span>foto's lezen, tekst nakijken</span></div>
+        </div>
+        <p class="bouw-bij">Alles in &eacute;&eacute;n service, niet vijf losse abonnementen. Valt een betaalde dienst weg, dan schakelt de site door naar een gratis alternatief in plaats van stuk te gaan.</p>
+      </div>
     </div>
   </section>
 
-  <section class="sectie" id="tijdlijn">
+  <section class="sectie" id="cijfers">
     <div class="binnen">
-      <h2 class="sectie-kop">Wanneer ik waaraan werkte</h2>
-      <p class="sectie-uitleg">Elk balkje loopt van de eerste tot de laatste dag dat ik aan dat project werkte. Afgelezen uit de projecten zelf.</p>
-      <div class="gantt">
-        <div class="assen" style="grid-template-columns: repeat(${tijd.ticks.length}, minmax(0, 1fr))">${assen}</div>
-        ${tijdlijnRijen}
+      <h2 class="sectie-kop">Waar het werk in zit</h2>
+      <p class="sectie-uitleg">Geteld over alle ${aantal} projecten op deze pagina. Groeit vanzelf mee als er werk bij komt.</p>
+      <div class="grafieken">
+        <figure class="grafiek">
+          <figcaption>Techniek die in meer dan &eacute;&eacute;n project terugkomt</figcaption>
+          ${staven(techniekTelling, 'projecten')}
+          <p class="grafiek-bij">Aantal projecten waarin het gebruikt wordt.</p>
+        </figure>
+        <figure class="grafiek">
+          <figcaption>Wat voor werk het is</figcaption>
+          ${staven(soortTelling, 'projecten')}
+          <p class="grafiek-bij">Een project kan onder meer dan &eacute;&eacute;n soort vallen.</p>
+        </figure>
       </div>
-      <p class="legenda"><span><i class="balkje live"></i> draait live</span><span><i class="balkje prototype"></i> prototype</span><span><i class="balkje studie"></i> studieproject</span></p>
     </div>
   </section>
 
@@ -362,7 +402,7 @@ const artifact = `${kopstuk}\n${binnenkant}\n${script}\n`;
 
 writeFileSync(join(WORTEL, 'index.html'), pagina);
 writeFileSync(join(WORTEL, 'artifact.html'), artifact);
-console.log(`index.html gebouwd — ${aantal} projecten, ${aantalLive} live, tijdlijn ${vanaf} t/m ${totEnMet}`);
+console.log(`index.html gebouwd — ${aantal} projecten, ${aantalLive} live`);
 if (wachtkamer.length) {
   console.log(`${wachtkamer.length} in de wachtkamer (nog niet gepubliceerd): ` +
     wachtkamer.map((p) => p.naam).join(', '));
