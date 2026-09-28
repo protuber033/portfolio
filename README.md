@@ -77,3 +77,25 @@ npm run dev             bouwen en lokaal draaien op poort 3000
   nieuwe opname na op namen, adressen en inloggegevens voordat je hem publiceert.
 - De server serveert bewust alleen `index.html`, `robots.txt` en `img/`. De map
   `data/` staat dus niet op internet.
+
+## Automatisch, elke zondag
+
+In de Windows-taakplanner staat een taak **Portfolio bijwerken**. Die draait elke
+zondag om 10:00 `tools/wekelijks.cmd`, dat op zijn beurt `npm run update` doet en
+alles wegschrijft naar `update-log.txt` in deze map.
+
+De taak publiceert bewust **niets**. Hij werkt alleen de datums, de live-controle
+en ontbrekende screenshots bij. Onderaan het logbestand staat de uitvoer van
+`git status`: is die leeg, dan was er niets te doen. Staat er iets, dan wacht er
+werk op je — een tekst schrijven of `git push`.
+
+De taak aanpassen of uitzetten:
+
+```powershell
+Get-ScheduledTask -TaskName 'Portfolio bijwerken'          # bekijken
+Disable-ScheduledTask -TaskName 'Portfolio bijwerken'      # tijdelijk uit
+Unregister-ScheduledTask -TaskName 'Portfolio bijwerken'   # helemaal weg
+```
+
+Een ander tijdstip? Pas het aan in de Taakplanner (Windows-toets, "Taakplanner"),
+of maak de taak opnieuw aan met een andere `-At`.
