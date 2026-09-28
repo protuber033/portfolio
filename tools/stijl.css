@@ -452,3 +452,32 @@ body.vast { overflow: hidden; }
 /* het grote scherm mag het venster niet opslokken */
 .groot img { max-height: 52vh; object-fit: cover; object-position: top center; }
 .duimen { margin: 0 0 10px; }
+
+/* ============ eerst beeld, dan pas woorden ============ */
+.toonbank { padding-top: clamp(14px, 2.4vw, 28px); }
+.toonbank .showcase { margin-top: 0; }
+.sleep img { width: 320px; }
+.showcase-bij { margin-top: 15px; }
+
+.kop-blok { padding-block: clamp(26px, 3.6vw, 46px) clamp(16px, 2.4vw, 28px); }
+h1 { font-size: clamp(1.9rem, 4.4vw, 2.9rem); max-width: 22ch; }
+.kop-blok .cijfers { margin-top: 20px; }
+
+/* het binnenkomen opnieuw verdelen nu de band vooraan staat */
+@media (prefers-reduced-motion: no-preference) {
+  .showcase { animation: opkomen .5s cubic-bezier(.2, .7, .3, 1) both; animation-delay: 0s; }
+  .showcase-bij { animation-delay: .1s; }
+  .kop-blok .rol { animation-delay: .14s; }
+  .kop-blok h1 { animation-delay: .19s; }
+  .kop-blok .cijfers { animation-delay: .24s; }
+}
+
+@media (max-width: 620px) {
+  .sleep img { width: 210px; }
+}
+
+/* het gat tussen kop en werk dichttrekken */
+.kop-blok + .sectie { padding-top: clamp(18px, 2.4vw, 32px); }
+
+.showcase-bij { align-items: flex-start; }
+.showcase-bij .stip { margin-top: .5em; flex: none; }

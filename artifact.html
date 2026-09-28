@@ -456,6 +456,35 @@ body.vast { overflow: hidden; }
 /* het grote scherm mag het venster niet opslokken */
 .groot img { max-height: 52vh; object-fit: cover; object-position: top center; }
 .duimen { margin: 0 0 10px; }
+
+/* ============ eerst beeld, dan pas woorden ============ */
+.toonbank { padding-top: clamp(14px, 2.4vw, 28px); }
+.toonbank .showcase { margin-top: 0; }
+.sleep img { width: 320px; }
+.showcase-bij { margin-top: 15px; }
+
+.kop-blok { padding-block: clamp(26px, 3.6vw, 46px) clamp(16px, 2.4vw, 28px); }
+h1 { font-size: clamp(1.9rem, 4.4vw, 2.9rem); max-width: 22ch; }
+.kop-blok .cijfers { margin-top: 20px; }
+
+/* het binnenkomen opnieuw verdelen nu de band vooraan staat */
+@media (prefers-reduced-motion: no-preference) {
+  .showcase { animation: opkomen .5s cubic-bezier(.2, .7, .3, 1) both; animation-delay: 0s; }
+  .showcase-bij { animation-delay: .1s; }
+  .kop-blok .rol { animation-delay: .14s; }
+  .kop-blok h1 { animation-delay: .19s; }
+  .kop-blok .cijfers { animation-delay: .24s; }
+}
+
+@media (max-width: 620px) {
+  .sleep img { width: 210px; }
+}
+
+/* het gat tussen kop en werk dichttrekken */
+.kop-blok + .sectie { padding-top: clamp(18px, 2.4vw, 32px); }
+
+.showcase-bij { align-items: flex-start; }
+.showcase-bij .stip { margin-top: .5em; flex: none; }
 </style>
 <a class="overslaan" href="#werk">Direct naar het werk</a>
 
@@ -463,8 +492,8 @@ body.vast { overflow: hidden; }
   <div class="binnen">
     <a class="merk" href="#top"><span class="merk-stip"></span>Samih Tichtti</a>
     <nav class="menu">
-      <a href="#lagen">Aanpak</a>
       <a href="#werk">Werk</a>
+      <a href="#lagen">Aanpak</a>
       <a href="#tijdlijn">Tijdlijn</a>
       <a href="#contact">Contact</a>
     </nav>
@@ -474,17 +503,7 @@ body.vast { overflow: hidden; }
 
 <main id="top">
 
-  <section class="kop-blok">
-    <div class="binnen">
-      <p class="rol">Websites en bedrijfssoftware</p>
-      <h1>Ik bouw de voorkant én de achterkant.</h1>
-      <p class="onderkop">Websites en bedrijfssoftware voor Nederlandse bedrijven. Geen mooie plaatjes die niets doen — dingen die elke dag gebruikt worden.</p>
-      <ul class="cijfers">
-        <li><b>9</b> projecten</li>
-        <li><b>6</b> draaien nu live</li>
-        <li><b>2</b> op een eigen domein</li>
-      </ul>
-    </div>
+  <section class="toonbank">
     <div class="showcase" aria-hidden="true">
       <div class="baan baan-1">
         <div class="sleep">
@@ -529,32 +548,18 @@ body.vast { overflow: hidden; }
         </div>
       </div>
     </div>
-    <p class="showcase-bij"><span class="stip live"></span>Echte schermen uit 9 projecten &mdash; hieronder kun je ze een voor een bekijken.</p>
+    <p class="showcase-bij"><span class="stip live"></span>Echte schermen uit 9 projecten. Hieronder kun je ze een voor een bekijken.</p>
   </section>
 
-  <section class="sectie" id="lagen">
+  <section class="kop-blok">
     <div class="binnen">
-      <h2 class="sectie-kop">Voorkant én achterkant, door dezelfde handen</h2>
-      <p class="sectie-uitleg">Bij de meeste bureaus bouwt de een de website en moet je voor alles wat erachter zit bij iemand anders zijn. Wij doen allebei, en juist daar zit de winst: de knop die de klant indrukt en de database die het antwoord geeft zijn samen ontworpen.</p>
-      <div class="lagen">
-        <article class="laag">
-          <p class="laag-label">Front-end</p>
-          <h3>Wat de klant ziet</h3>
-          <p>Schermen die net zo goed werken op een telefoon in de bouwkeet als op een monitor op kantoor. Foto's worden automatisch omgezet naar het kleinste formaat dat nog scherp is, en animaties draaien zonder de pagina te vertragen.</p>
-          <ul class="techniek"><li>React 19</li><li>Next.js 16</li><li>Tailwind 4</li><li>three.js</li><li>Motion</li></ul>
-        </article>
-        <article class="laag">
-          <p class="laag-label">Back-end</p>
-          <h3>Wat eronder draait</h3>
-          <p>De database, de inlog, de rechten per medewerker, het versturen van mail, het maken van pdf's en het veilig opslaan van documenten. Wachtwoorden gehasht, aanvraag-eindpunten afgeschermd, en een database die standaard niets vrijgeeft.</p>
-          <ul class="techniek"><li>Node 22</li><li>Express</li><li>PostgreSQL</li><li>MySQL</li><li>Supabase</li><li>Python / Flask</li></ul>
-        </article>
-        <article class="laag">
-          <p class="laag-label">Geoptimaliseerd</p>
-          <h3>Snel, vindbaar en betaalbaar</h3>
-          <p>Pagina's worden vooraf klaargezet zodat Google ze leest en bezoekers niet wachten. Beelden laden pas als je er bijna bent. En valt een betaalde kaart- of AI-dienst uit, dan schakelt de site door naar een gratis alternatief in plaats van stuk te gaan.</p>
-          <ul class="techniek"><li>SEO-prerender</li><li>Caching</li><li>Lazy loading</li><li>Fallbacks</li><li>één service i.p.v. vijf</li></ul>
-        </article></div>
+      <p class="rol">Websites en bedrijfssoftware</p>
+      <h1>Ik bouw de voorkant én de achterkant.</h1>
+      <ul class="cijfers">
+        <li><b>9</b> projecten</li>
+        <li><b>6</b> draaien nu live</li>
+        <li><b>2</b> op een eigen domein</li>
+      </ul>
     </div>
   </section>
 
@@ -699,6 +704,32 @@ body.vast { overflow: hidden; }
         </li></ul>
       </section></div>
       <p class="niets" id="niets" hidden>Geen project gevonden. Probeer een andere zoekterm of zet het filter op Alles.</p>
+    </div>
+  </section>
+
+  <section class="sectie" id="lagen">
+    <div class="binnen">
+      <h2 class="sectie-kop">Voorkant én achterkant, door dezelfde handen</h2>
+      <p class="sectie-uitleg">Bij de meeste bureaus bouwt de een de website en moet je voor alles wat erachter zit bij iemand anders zijn. Wij doen allebei, en juist daar zit de winst: de knop die de klant indrukt en de database die het antwoord geeft zijn samen ontworpen.</p>
+      <div class="lagen">
+        <article class="laag">
+          <p class="laag-label">Front-end</p>
+          <h3>Wat de klant ziet</h3>
+          <p>Schermen die net zo goed werken op een telefoon in de bouwkeet als op een monitor op kantoor. Foto's worden automatisch omgezet naar het kleinste formaat dat nog scherp is, en animaties draaien zonder de pagina te vertragen.</p>
+          <ul class="techniek"><li>React 19</li><li>Next.js 16</li><li>Tailwind 4</li><li>three.js</li><li>Motion</li></ul>
+        </article>
+        <article class="laag">
+          <p class="laag-label">Back-end</p>
+          <h3>Wat eronder draait</h3>
+          <p>De database, de inlog, de rechten per medewerker, het versturen van mail, het maken van pdf's en het veilig opslaan van documenten. Wachtwoorden gehasht, aanvraag-eindpunten afgeschermd, en een database die standaard niets vrijgeeft.</p>
+          <ul class="techniek"><li>Node 22</li><li>Express</li><li>PostgreSQL</li><li>MySQL</li><li>Supabase</li><li>Python / Flask</li></ul>
+        </article>
+        <article class="laag">
+          <p class="laag-label">Geoptimaliseerd</p>
+          <h3>Snel, vindbaar en betaalbaar</h3>
+          <p>Pagina's worden vooraf klaargezet zodat Google ze leest en bezoekers niet wachten. Beelden laden pas als je er bijna bent. En valt een betaalde kaart- of AI-dienst uit, dan schakelt de site door naar een gratis alternatief in plaats van stuk te gaan.</p>
+          <ul class="techniek"><li>SEO-prerender</li><li>Caching</li><li>Lazy loading</li><li>Fallbacks</li><li>één service i.p.v. vijf</li></ul>
+        </article></div>
     </div>
   </section>
 

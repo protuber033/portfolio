@@ -218,8 +218,8 @@ const binnenkant = `<a class="overslaan" href="#werk">Direct naar het werk</a>
   <div class="binnen">
     <a class="merk" href="#top"><span class="merk-stip"></span>${esc(site.naam)}</a>
     <nav class="menu">
-      <a href="#lagen">Aanpak</a>
       <a href="#werk">Werk</a>
+      <a href="#lagen">Aanpak</a>
       <a href="#tijdlijn">Tijdlijn</a>
       <a href="#contact">Contact</a>
     </nav>
@@ -229,17 +229,7 @@ const binnenkant = `<a class="overslaan" href="#werk">Direct naar het werk</a>
 
 <main id="top">
 
-  <section class="kop-blok">
-    <div class="binnen">
-      <p class="rol">${esc(site.rol)}</p>
-      <h1>${esc(site.kop)}</h1>
-      <p class="onderkop">${esc(site.onderkop)}</p>
-      <ul class="cijfers">
-        <li><b>${aantal}</b> projecten</li>
-        <li><b>${aantalLive}</b> draaien nu live</li>
-        <li><b>${domeinen}</b> op een eigen domein</li>
-      </ul>
-    </div>
+  <section class="toonbank">
     <div class="showcase" aria-hidden="true">
 ${banen.map((baan, i) => `      <div class="baan baan-${i + 1}">
         <div class="sleep">
@@ -247,14 +237,18 @@ ${[...baan, ...baan].map((b) => `          <img src="img/m-${esc(b.bestand)}" wi
         </div>
       </div>`).join('\n')}
     </div>
-    <p class="showcase-bij"><span class="stip live"></span>Echte schermen uit ${aantal} projecten &mdash; hieronder kun je ze een voor een bekijken.</p>
+    <p class="showcase-bij"><span class="stip live"></span>Echte schermen uit ${aantal} projecten. Hieronder kun je ze een voor een bekijken.</p>
   </section>
 
-  <section class="sectie" id="lagen">
+  <section class="kop-blok">
     <div class="binnen">
-      <h2 class="sectie-kop">Voorkant én achterkant, door dezelfde handen</h2>
-      <p class="sectie-uitleg">Bij de meeste bureaus bouwt de een de website en moet je voor alles wat erachter zit bij iemand anders zijn. Wij doen allebei, en juist daar zit de winst: de knop die de klant indrukt en de database die het antwoord geeft zijn samen ontworpen.</p>
-      <div class="lagen">${site.lagen.map(laag).join('')}</div>
+      <p class="rol">${esc(site.rol)}</p>
+      <h1>${esc(site.kop)}</h1>
+      <ul class="cijfers">
+        <li><b>${aantal}</b> projecten</li>
+        <li><b>${aantalLive}</b> draaien nu live</li>
+        <li><b>${domeinen}</b> op een eigen domein</li>
+      </ul>
     </div>
   </section>
 
@@ -276,6 +270,14 @@ ${[...baan, ...baan].map((b) => `          <img src="img/m-${esc(b.bestand)}" wi
     <div class="binnen">
       <div id="groepen">${site.groepen.map(groep).join('')}</div>
       <p class="niets" id="niets" hidden>Geen project gevonden. Probeer een andere zoekterm of zet het filter op Alles.</p>
+    </div>
+  </section>
+
+  <section class="sectie" id="lagen">
+    <div class="binnen">
+      <h2 class="sectie-kop">Voorkant én achterkant, door dezelfde handen</h2>
+      <p class="sectie-uitleg">Bij de meeste bureaus bouwt de een de website en moet je voor alles wat erachter zit bij iemand anders zijn. Wij doen allebei, en juist daar zit de winst: de knop die de klant indrukt en de database die het antwoord geeft zijn samen ontworpen.</p>
+      <div class="lagen">${site.lagen.map(laag).join('')}</div>
     </div>
   </section>
 
