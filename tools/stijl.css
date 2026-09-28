@@ -343,3 +343,112 @@ body.vast { overflow: hidden; }
   html { scroll-behavior: auto; }
   * { transition: none !important; animation: none !important; }
 }
+
+/* ============ showcase in de kop ============ */
+.showcase {
+  margin-top: clamp(30px, 4vw, 48px);
+  display: grid; gap: 14px;
+  -webkit-mask-image: linear-gradient(90deg, transparent, #000 7%, #000 93%, transparent);
+  mask-image: linear-gradient(90deg, transparent, #000 7%, #000 93%, transparent);
+}
+.baan { overflow: hidden; }
+.sleep { display: flex; gap: 14px; width: max-content; will-change: transform; }
+.baan-1 .sleep { animation: schuif 76s linear infinite; }
+.baan-2 .sleep { animation: schuif 92s linear infinite reverse; }
+.showcase:hover .sleep { animation-play-state: paused; }
+.sleep img {
+  width: 260px; height: auto; flex: none;
+  border: 1px solid var(--rand); border-radius: 9px;
+  background: #0C1120;
+}
+@keyframes schuif {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+.showcase-bij {
+  display: flex; align-items: center; gap: 9px;
+  margin: 16px 0 0; font-size: .86rem; color: var(--tekst-3);
+  max-width: 1200px; padding-inline: clamp(18px, 4vw, 40px);
+  margin-inline: auto;
+}
+
+/* ============ kleine extra's ============ */
+.gecheckt {
+  display: inline-flex; align-items: center; gap: 7px;
+  font-family: var(--mono); font-size: .72rem; color: var(--tekst-3);
+  margin-left: auto;
+}
+.sneltoets {
+  position: absolute; right: 10px; top: 50%; transform: translateY(-50%);
+  font-family: var(--mono); font-size: .72rem; color: var(--tekst-3);
+  border: 1px solid var(--rand); border-radius: 5px; padding: 1px 6px;
+  pointer-events: none;
+}
+.zoek { position: relative; }
+.zoek input { padding-right: 34px; }
+
+.deel {
+  margin-top: 14px;
+  font-family: var(--mono); font-size: .72rem; color: var(--tekst-3);
+  background: transparent; border: 1px solid var(--rand); border-radius: 7px;
+  padding: 6px 11px; cursor: pointer;
+}
+.deel:hover { border-color: var(--accent); color: var(--accent); }
+
+/* ============ galerij in het projectvenster ============ */
+.galerij { margin-top: 22px; }
+.groot { margin: 0; background: var(--grond); border: 1px solid var(--rand); border-radius: 12px; overflow: hidden; }
+.groot img { width: 100%; }
+.groot figcaption { padding: 11px 14px; font-size: .86rem; color: var(--tekst-2); border-top: 1px solid var(--rand); }
+.duimen { display: flex; gap: 10px; margin-top: 10px; flex-wrap: wrap; }
+.duimknop {
+  padding: 0; border: 1px solid var(--rand); border-radius: 8px; overflow: hidden;
+  background: var(--grond); cursor: pointer; line-height: 0; width: 132px;
+  transition: border-color .14s ease, opacity .14s ease;
+  opacity: .55;
+}
+.duimknop img { width: 100%; height: auto; }
+.duimknop:hover { opacity: .85; border-color: var(--rand-op); }
+.duimknop[aria-selected="true"] { opacity: 1; border-color: var(--accent); }
+
+/* ============ kaarten: licht dat de muis volgt ============ */
+.kaart-knop { position: relative; }
+.kaart-knop::after {
+  content: ""; position: absolute; inset: 0; pointer-events: none; opacity: 0;
+  background: radial-gradient(240px circle at var(--mx, 50%) var(--my, 50%), rgba(91, 140, 255, .16), transparent 70%);
+  transition: opacity .2s ease;
+}
+.kaart-knop:hover::after { opacity: 1; }
+
+/* ============ rustig binnenkomen ============ */
+@media (prefers-reduced-motion: no-preference) {
+  .kop-blok > .binnen > *, .showcase, .showcase-bij {
+    animation: opkomen .5s cubic-bezier(.2, .7, .3, 1) both;
+  }
+  .kop-blok .rol { animation-delay: .02s; }
+  .kop-blok h1 { animation-delay: .07s; }
+  .kop-blok .onderkop { animation-delay: .13s; }
+  .kop-blok .cijfers { animation-delay: .19s; }
+  .showcase { animation-delay: .25s; }
+  .showcase-bij { animation-delay: .3s; }
+  .kaart { animation: opkomen .42s cubic-bezier(.2, .7, .3, 1) both; }
+  .kaart:nth-child(2) { animation-delay: .05s; }
+  .kaart:nth-child(3) { animation-delay: .1s; }
+  .kaart:nth-child(4) { animation-delay: .15s; }
+  .kaart:nth-child(5) { animation-delay: .2s; }
+  .kaart:nth-child(6) { animation-delay: .25s; }
+}
+@keyframes opkomen {
+  from { opacity: 0; transform: translateY(14px); }
+  to { opacity: 1; transform: none; }
+}
+
+@media (max-width: 620px) {
+  .sleep img { width: 190px; }
+  .gecheckt { margin-left: 0; }
+  .duimknop { width: 92px; }
+}
+
+/* het grote scherm mag het venster niet opslokken */
+.groot img { max-height: 52vh; object-fit: cover; object-position: top center; }
+.duimen { margin: 0 0 10px; }

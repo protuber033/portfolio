@@ -150,6 +150,9 @@ for (const p of projecten) {
     const bestand = `${p.id}-${i + 1}.webp`;
     await sharp(ruw).resize({ width: 1400, withoutEnlargement: true })
       .webp({ quality: 72 }).toFile(join(IMG, bestand));
+    // klein formaat voor de showcase bovenaan de pagina
+    await sharp(ruw).resize({ width: 440 })
+      .webp({ quality: 64 }).toFile(join(IMG, 'm-' + bestand));
     beelden.push({
       bestand,
       titel: i === 0 ? 'homepage' : `sectie ${i + 1}`,

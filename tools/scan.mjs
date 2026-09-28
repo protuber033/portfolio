@@ -178,11 +178,16 @@ for (const [sleutel, map] of kandidaten) {
 /* ---------- live-adressen controleren ---------- */
 const stuk = [];
 async function controleer() {
+  const vandaag = new Date().toLocaleDateString('nl-NL', { day: 'numeric', month: 'short', year: 'numeric' });
   await Promise.all(projecten.filter((p) => p.url).map(async (p) => {
     try {
       const antwoord = await fetch(p.url, { redirect: 'follow', signal: AbortSignal.timeout(12000) });
+      p.bereikbaar = antwoord.ok;
+      p.gecontroleerd = vandaag;
       if (!antwoord.ok) stuk.push(`${p.naam}: ${p.url} geeft ${antwoord.status}`);
     } catch {
+      p.bereikbaar = false;
+      p.gecontroleerd = vandaag;
       stuk.push(`${p.naam}: ${p.url} reageert niet`);
     }
   }));

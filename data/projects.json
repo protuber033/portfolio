@@ -39,7 +39,8 @@
         "bestand": "eemland-1.webp",
         "titel": "inlogportaal",
         "bijschrift": "Bewust onscherp: dit is een besloten omgeving van een klant.",
-        "alt": "Onscherp gemaakt inlogscherm van de besloten klantomgeving; alleen de indeling is te zien."
+        "alt": "Onscherp gemaakt inlogscherm van de besloten klantomgeving; alleen de indeling is te zien.",
+        "showcase": false
       }
     ]
   },
@@ -96,7 +97,9 @@
         "bijschrift": "Cijfers die de klant overtuigen.",
         "alt": "Sectie Cijfers die overtuigen met 50 plus events, 10K volgers en een 4,9 beoordeling."
       }
-    ]
+    ],
+    "bereikbaar": true,
+    "gecontroleerd": "28 sep 2026"
   },
   {
     "id": "kozijnfabriek",
@@ -153,7 +156,9 @@
         "bijschrift": "Veelgestelde vragen op de pagina zelf.",
         "alt": "Uitklapbare vragen over de AI-scan, offertes en subsidie."
       }
-    ]
+    ],
+    "bereikbaar": true,
+    "gecontroleerd": "28 sep 2026"
   },
   {
     "id": "courtswap",
@@ -197,7 +202,9 @@
         "bijschrift": "Filteren op sport, merk, prijs, staat en afstand.",
         "alt": "Overzichtspagina met filters voor sport, merk, prijs en staat naast het advertentieraster."
       }
-    ]
+    ],
+    "bereikbaar": true,
+    "gecontroleerd": "28 sep 2026"
   },
   {
     "id": "glacio",
@@ -247,7 +254,9 @@
         "bijschrift": "Geen verrassingen achteraf.",
         "alt": "Sectie Montage zit in de prijs met tarieven voor jaarlijks onderhoud en een aansluitpakket."
       }
-    ]
+    ],
+    "bereikbaar": true,
+    "gecontroleerd": "28 sep 2026"
   },
   {
     "id": "remh",
@@ -302,7 +311,9 @@
         "bijschrift": "Waarom de klant hier zou boeken.",
         "alt": "Drie blokken: Direct een prijs, Online plannen en Garantie en kwaliteit."
       }
-    ]
+    ],
+    "bereikbaar": true,
+    "gecontroleerd": "28 sep 2026"
   },
   {
     "id": "kijkvergunning",

@@ -347,6 +347,115 @@ body.vast { overflow: hidden; }
   html { scroll-behavior: auto; }
   * { transition: none !important; animation: none !important; }
 }
+
+/* ============ showcase in de kop ============ */
+.showcase {
+  margin-top: clamp(30px, 4vw, 48px);
+  display: grid; gap: 14px;
+  -webkit-mask-image: linear-gradient(90deg, transparent, #000 7%, #000 93%, transparent);
+  mask-image: linear-gradient(90deg, transparent, #000 7%, #000 93%, transparent);
+}
+.baan { overflow: hidden; }
+.sleep { display: flex; gap: 14px; width: max-content; will-change: transform; }
+.baan-1 .sleep { animation: schuif 76s linear infinite; }
+.baan-2 .sleep { animation: schuif 92s linear infinite reverse; }
+.showcase:hover .sleep { animation-play-state: paused; }
+.sleep img {
+  width: 260px; height: auto; flex: none;
+  border: 1px solid var(--rand); border-radius: 9px;
+  background: #0C1120;
+}
+@keyframes schuif {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+.showcase-bij {
+  display: flex; align-items: center; gap: 9px;
+  margin: 16px 0 0; font-size: .86rem; color: var(--tekst-3);
+  max-width: 1200px; padding-inline: clamp(18px, 4vw, 40px);
+  margin-inline: auto;
+}
+
+/* ============ kleine extra's ============ */
+.gecheckt {
+  display: inline-flex; align-items: center; gap: 7px;
+  font-family: var(--mono); font-size: .72rem; color: var(--tekst-3);
+  margin-left: auto;
+}
+.sneltoets {
+  position: absolute; right: 10px; top: 50%; transform: translateY(-50%);
+  font-family: var(--mono); font-size: .72rem; color: var(--tekst-3);
+  border: 1px solid var(--rand); border-radius: 5px; padding: 1px 6px;
+  pointer-events: none;
+}
+.zoek { position: relative; }
+.zoek input { padding-right: 34px; }
+
+.deel {
+  margin-top: 14px;
+  font-family: var(--mono); font-size: .72rem; color: var(--tekst-3);
+  background: transparent; border: 1px solid var(--rand); border-radius: 7px;
+  padding: 6px 11px; cursor: pointer;
+}
+.deel:hover { border-color: var(--accent); color: var(--accent); }
+
+/* ============ galerij in het projectvenster ============ */
+.galerij { margin-top: 22px; }
+.groot { margin: 0; background: var(--grond); border: 1px solid var(--rand); border-radius: 12px; overflow: hidden; }
+.groot img { width: 100%; }
+.groot figcaption { padding: 11px 14px; font-size: .86rem; color: var(--tekst-2); border-top: 1px solid var(--rand); }
+.duimen { display: flex; gap: 10px; margin-top: 10px; flex-wrap: wrap; }
+.duimknop {
+  padding: 0; border: 1px solid var(--rand); border-radius: 8px; overflow: hidden;
+  background: var(--grond); cursor: pointer; line-height: 0; width: 132px;
+  transition: border-color .14s ease, opacity .14s ease;
+  opacity: .55;
+}
+.duimknop img { width: 100%; height: auto; }
+.duimknop:hover { opacity: .85; border-color: var(--rand-op); }
+.duimknop[aria-selected="true"] { opacity: 1; border-color: var(--accent); }
+
+/* ============ kaarten: licht dat de muis volgt ============ */
+.kaart-knop { position: relative; }
+.kaart-knop::after {
+  content: ""; position: absolute; inset: 0; pointer-events: none; opacity: 0;
+  background: radial-gradient(240px circle at var(--mx, 50%) var(--my, 50%), rgba(91, 140, 255, .16), transparent 70%);
+  transition: opacity .2s ease;
+}
+.kaart-knop:hover::after { opacity: 1; }
+
+/* ============ rustig binnenkomen ============ */
+@media (prefers-reduced-motion: no-preference) {
+  .kop-blok > .binnen > *, .showcase, .showcase-bij {
+    animation: opkomen .5s cubic-bezier(.2, .7, .3, 1) both;
+  }
+  .kop-blok .rol { animation-delay: .02s; }
+  .kop-blok h1 { animation-delay: .07s; }
+  .kop-blok .onderkop { animation-delay: .13s; }
+  .kop-blok .cijfers { animation-delay: .19s; }
+  .showcase { animation-delay: .25s; }
+  .showcase-bij { animation-delay: .3s; }
+  .kaart { animation: opkomen .42s cubic-bezier(.2, .7, .3, 1) both; }
+  .kaart:nth-child(2) { animation-delay: .05s; }
+  .kaart:nth-child(3) { animation-delay: .1s; }
+  .kaart:nth-child(4) { animation-delay: .15s; }
+  .kaart:nth-child(5) { animation-delay: .2s; }
+  .kaart:nth-child(6) { animation-delay: .25s; }
+}
+@keyframes opkomen {
+  from { opacity: 0; transform: translateY(14px); }
+  to { opacity: 1; transform: none; }
+}
+
+@media (max-width: 620px) {
+  .sleep img { width: 190px; }
+  .gecheckt { margin-left: 0; }
+  .duimknop { width: 92px; }
+}
+
+/* het grote scherm mag het venster niet opslokken */
+.groot img { max-height: 52vh; object-fit: cover; object-position: top center; }
+.duimen { margin: 0 0 10px; }
 </style>
 <a class="overslaan" href="#werk">Direct naar het werk</a>
 
@@ -376,6 +485,51 @@ body.vast { overflow: hidden; }
         <li><b>2</b> op een eigen domein</li>
       </ul>
     </div>
+    <div class="showcase" aria-hidden="true">
+      <div class="baan baan-1">
+        <div class="sleep">
+          <img src="img/m-funstudios-1.webp" width="440" height="275" loading="eager" alt="">
+          <img src="img/m-funstudios-2.webp" width="440" height="275" loading="eager" alt="">
+          <img src="img/m-funstudios-4.webp" width="440" height="275" loading="eager" alt="">
+          <img src="img/m-kozijnfabriek-1.webp" width="440" height="275" loading="eager" alt="">
+          <img src="img/m-kozijnfabriek-3.webp" width="440" height="275" loading="eager" alt="">
+          <img src="img/m-kozijnfabriek-2.webp" width="440" height="275" loading="eager" alt="">
+          <img src="img/m-courtswap-1.webp" width="440" height="275" loading="eager" alt="">
+          <img src="img/m-glacio-1.webp" width="440" height="275" loading="eager" alt="">
+          <img src="img/m-glacio-2.webp" width="440" height="275" loading="eager" alt="">
+          <img src="img/m-funstudios-1.webp" width="440" height="275" loading="eager" alt="">
+          <img src="img/m-funstudios-2.webp" width="440" height="275" loading="eager" alt="">
+          <img src="img/m-funstudios-4.webp" width="440" height="275" loading="eager" alt="">
+          <img src="img/m-kozijnfabriek-1.webp" width="440" height="275" loading="eager" alt="">
+          <img src="img/m-kozijnfabriek-3.webp" width="440" height="275" loading="eager" alt="">
+          <img src="img/m-kozijnfabriek-2.webp" width="440" height="275" loading="eager" alt="">
+          <img src="img/m-courtswap-1.webp" width="440" height="275" loading="eager" alt="">
+          <img src="img/m-glacio-1.webp" width="440" height="275" loading="eager" alt="">
+          <img src="img/m-glacio-2.webp" width="440" height="275" loading="eager" alt="">
+        </div>
+      </div>
+      <div class="baan baan-2">
+        <div class="sleep">
+          <img src="img/m-glacio-3.webp" width="440" height="275" loading="lazy" alt="">
+          <img src="img/m-remh-1.webp" width="440" height="275" loading="lazy" alt="">
+          <img src="img/m-remh-2.webp" width="440" height="275" loading="lazy" alt="">
+          <img src="img/m-remh-3.webp" width="440" height="275" loading="lazy" alt="">
+          <img src="img/m-kijkvergunning-2.webp" width="440" height="275" loading="lazy" alt="">
+          <img src="img/m-kijkvergunning-1.webp" width="440" height="275" loading="lazy" alt="">
+          <img src="img/m-kijkvergunning-3.webp" width="440" height="275" loading="lazy" alt="">
+          <img src="img/m-lumiere-1.webp" width="440" height="275" loading="lazy" alt="">
+          <img src="img/m-glacio-3.webp" width="440" height="275" loading="lazy" alt="">
+          <img src="img/m-remh-1.webp" width="440" height="275" loading="lazy" alt="">
+          <img src="img/m-remh-2.webp" width="440" height="275" loading="lazy" alt="">
+          <img src="img/m-remh-3.webp" width="440" height="275" loading="lazy" alt="">
+          <img src="img/m-kijkvergunning-2.webp" width="440" height="275" loading="lazy" alt="">
+          <img src="img/m-kijkvergunning-1.webp" width="440" height="275" loading="lazy" alt="">
+          <img src="img/m-kijkvergunning-3.webp" width="440" height="275" loading="lazy" alt="">
+          <img src="img/m-lumiere-1.webp" width="440" height="275" loading="lazy" alt="">
+        </div>
+      </div>
+    </div>
+    <p class="showcase-bij"><span class="stip live"></span>Echte schermen uit 9 projecten &mdash; hieronder kun je ze een voor een bekijken.</p>
   </section>
 
   <section class="sectie" id="lagen">
@@ -415,6 +569,7 @@ body.vast { overflow: hidden; }
         <label class="zoek">
           <span class="vzw">Zoek in projecten</span>
           <input type="search" id="zoekveld" placeholder="Zoek op naam of techniek" autocomplete="off">
+          <kbd class="sneltoets">/</kbd>
         </label>
       </div>
     </div>
@@ -424,6 +579,7 @@ body.vast { overflow: hidden; }
         <div class="groep-kop">
           <h3>Draait nu live <span class="telling">6</span></h3>
           <p>In gebruik bij een bedrijf, vandaag te bekijken.</p>
+          <span class="gecheckt"><span class="stip live"></span>alle 6 reageerden bij de laatste controle op 28 sep 2026</span>
         </div>
         <ul class="raster">
         <li class="kaart" data-id="eemland" data-tags="software ai" data-zoek="eemland boekt offertes, facturen, urenbriefjes scannen en btw-aangifte in één systeem. react 19 express postgresql supabase storage pdf-lib google gemini">
@@ -497,6 +653,7 @@ body.vast { overflow: hidden; }
         <div class="groep-kop">
           <h3>Prototypes <span class="telling">2</span></h3>
           <p>Werkend, nog niet op een eigen domein gezet.</p>
+          
         </div>
         <ul class="raster">
         <li class="kaart" data-id="kijkvergunning" data-tags="software 3d ai" data-zoek="kijkvergunning adres invullen en zien of je uitbouw vergunningvrij mag — op kaart en in 3d. next.js 16 react 19 maplibre three.js supabase zustand">
@@ -526,6 +683,7 @@ body.vast { overflow: hidden; }
         <div class="groep-kop">
           <h3>Studieprojecten <span class="telling">1</span></h3>
           <p>Gemaakt tijdens de opleiding.</p>
+          
         </div>
         <ul class="raster">
         <li class="kaart" data-id="kiesradar" data-tags="software mobiel" data-zoek="kiesradar fysieke opstelling met sensoren die met een webapp en database praten. python flask mysql docker esp32 gitlab ci">
@@ -664,11 +822,12 @@ body.vast { overflow: hidden; }
   <div class="venster" role="dialog" aria-modal="true" aria-labelledby="venster-titel" tabindex="-1">
     <button type="button" class="sluit" id="sluit" aria-label="Sluiten">&times;</button>
     <div id="venster-inhoud">
-      <article class="paneel" id="paneel-eemland" hidden>
+      <article class="paneel" id="paneel-eemland" data-id="eemland" hidden>
         <header class="paneel-kop">
           <p class="paneel-meta"><span class="stip live" aria-hidden="true"></span>Draait in bedrijf <span class="punt">·</span> januari – september 2026</p>
           <h2>Eemland Boekt</h2>
           <p class="paneel-lead">De complete administratie van een bouwbedrijf, van offerte tot btw-aangifte, in één systeem dat elke dag gebruikt wordt.</p>
+          <button type="button" class="deel" data-deel="eemland">Kopieer link naar dit project</button>
         </header>
         <div class="paneel-cols">
           <div class="vak voorbeeld">
@@ -686,18 +845,21 @@ body.vast { overflow: hidden; }
             <p class="dicht">Besloten klantomgeving — rondleiding op aanvraag.</p>
           </div>
         </div>
-        <div class="schermen">
-            <figure class="scherm">
-              <span class="balk"><i></i><i></i><i></i><b>inlogportaal</b></span>
-              <img src="img/eemland-1.webp" width="1400" height="875" loading="lazy" alt="Onscherp gemaakt inlogscherm van de besloten klantomgeving; alleen de indeling is te zien.">
-              <figcaption>Bewust onscherp: dit is een besloten omgeving van een klant.</figcaption>
-            </figure></div>
+        
+        <div class="galerij" data-galerij>
+          <figure class="groot">
+            <span class="balk"><i></i><i></i><i></i><b data-rol="titel">inlogportaal</b></span>
+            <img data-rol="groot" src="img/eemland-1.webp" width="1400" height="875" loading="lazy" alt="Onscherp gemaakt inlogscherm van de besloten klantomgeving; alleen de indeling is te zien.">
+            <figcaption data-rol="bijschrift">Bewust onscherp: dit is een besloten omgeving van een klant.</figcaption>
+          </figure>
+        </div>
       </article>
-      <article class="paneel" id="paneel-funstudios" hidden>
+      <article class="paneel" id="paneel-funstudios" data-id="funstudios" hidden>
         <header class="paneel-kop">
           <p class="paneel-meta"><span class="stip live" aria-hidden="true"></span>Live online <span class="punt">·</span> september 2026</p>
           <h2>Fun Studios</h2>
           <p class="paneel-lead">Voor een entertainmentbedrijf: photo booths, 360 booth, low fog, indoor vuurwerk en lichtletters — met een boekingsflow die de aanvragen binnenhaalt.</p>
+          <button type="button" class="deel" data-deel="funstudios">Kopieer link naar dit project</button>
         </header>
         <div class="paneel-cols">
           <div class="vak voorbeeld">
@@ -715,28 +877,38 @@ body.vast { overflow: hidden; }
             
           </div>
         </div>
-        <div class="schermen">
-            <figure class="scherm">
-              <span class="balk"><i></i><i></i><i></i><b>homepage</b></span>
-              <img src="img/funstudios-1.webp" width="1400" height="875" loading="lazy" alt="Donkere homepage met de kop Wij maken jouw event onvergetelijk en zwevende polaroidfoto's.">
-              <figcaption>Opent met echte foto's van eerdere events.</figcaption>
-            </figure>
-            <figure class="scherm">
-              <span class="balk"><i></i><i></i><i></i><b>projecten</b></span>
-              <img src="img/funstudios-2.webp" width="1400" height="875" loading="lazy" alt="Sectie Dit hebben we laatst gedaan met een raster van eventfoto's.">
-              <figcaption>Uitgelichte projecten.</figcaption>
-            </figure>
-            <figure class="scherm">
-              <span class="balk"><i></i><i></i><i></i><b>cijfers</b></span>
-              <img src="img/funstudios-4.webp" width="1400" height="875" loading="lazy" alt="Sectie Cijfers die overtuigen met 50 plus events, 10K volgers en een 4,9 beoordeling.">
-              <figcaption>Cijfers die de klant overtuigen.</figcaption>
-            </figure></div>
+        
+        <div class="galerij" data-galerij>
+          <div class="duimen" role="tablist" aria-label="Schermen van Fun Studios">
+            <button type="button" class="duimknop" role="tab" aria-selected="true"
+              data-bestand="funstudios-1.webp" data-titel="homepage"
+              data-bijschrift="Opent met echte foto's van eerdere events." data-alt="Donkere homepage met de kop Wij maken jouw event onvergetelijk en zwevende polaroidfoto's.">
+              <img src="img/m-funstudios-1.webp" width="440" height="275" loading="lazy" alt="homepage">
+            </button>
+            <button type="button" class="duimknop" role="tab" aria-selected="false"
+              data-bestand="funstudios-2.webp" data-titel="projecten"
+              data-bijschrift="Uitgelichte projecten." data-alt="Sectie Dit hebben we laatst gedaan met een raster van eventfoto's.">
+              <img src="img/m-funstudios-2.webp" width="440" height="275" loading="lazy" alt="projecten">
+            </button>
+            <button type="button" class="duimknop" role="tab" aria-selected="false"
+              data-bestand="funstudios-4.webp" data-titel="cijfers"
+              data-bijschrift="Cijfers die de klant overtuigen." data-alt="Sectie Cijfers die overtuigen met 50 plus events, 10K volgers en een 4,9 beoordeling.">
+              <img src="img/m-funstudios-4.webp" width="440" height="275" loading="lazy" alt="cijfers">
+            </button>
+          </div>
+          <figure class="groot">
+            <span class="balk"><i></i><i></i><i></i><b data-rol="titel">homepage</b></span>
+            <img data-rol="groot" src="img/funstudios-1.webp" width="1400" height="875" loading="lazy" alt="Donkere homepage met de kop Wij maken jouw event onvergetelijk en zwevende polaroidfoto's.">
+            <figcaption data-rol="bijschrift">Opent met echte foto's van eerdere events.</figcaption>
+          </figure>
+        </div>
       </article>
-      <article class="paneel" id="paneel-kozijnfabriek" hidden>
+      <article class="paneel" id="paneel-kozijnfabriek" data-id="kozijnfabriek" hidden>
         <header class="paneel-kop">
           <p class="paneel-meta"><span class="stip live" aria-hidden="true"></span>Live online <span class="punt">·</span> augustus – september 2026</p>
           <h2>Kozijnfabriek Direct</h2>
           <p class="paneel-lead">Voor een kozijnenfabrikant in de regio Amsterdam: een website die zelf offertes voorbereidt, en een dashboard waar het personeel de rest afhandelt.</p>
+          <button type="button" class="deel" data-deel="kozijnfabriek">Kopieer link naar dit project</button>
         </header>
         <div class="paneel-cols">
           <div class="vak voorbeeld">
@@ -754,28 +926,38 @@ body.vast { overflow: hidden; }
             
           </div>
         </div>
-        <div class="schermen">
-            <figure class="scherm">
-              <span class="balk"><i></i><i></i><i></i><b>homepage</b></span>
-              <img src="img/kozijnfabriek-1.webp" width="1400" height="875" loading="lazy" alt="Homepage met de tekst Scan uw woning in 30 seconden en een formulier voor het adres.">
-              <figcaption>De klant begint met zijn adres.</figcaption>
-            </figure>
-            <figure class="scherm">
-              <span class="balk"><i></i><i></i><i></i><b>reviews</b></span>
-              <img src="img/kozijnfabriek-3.webp" width="1400" height="875" loading="lazy" alt="Sectie Wat onze klanten zeggen met drie reviews; de namen eronder zijn onleesbaar gemaakt.">
-              <figcaption>Reviews van echte klanten — namen bewust onleesbaar.</figcaption>
-            </figure>
-            <figure class="scherm">
-              <span class="balk"><i></i><i></i><i></i><b>vraag &amp; antwoord</b></span>
-              <img src="img/kozijnfabriek-2.webp" width="1400" height="875" loading="lazy" alt="Uitklapbare vragen over de AI-scan, offertes en subsidie.">
-              <figcaption>Veelgestelde vragen op de pagina zelf.</figcaption>
-            </figure></div>
+        
+        <div class="galerij" data-galerij>
+          <div class="duimen" role="tablist" aria-label="Schermen van Kozijnfabriek Direct">
+            <button type="button" class="duimknop" role="tab" aria-selected="true"
+              data-bestand="kozijnfabriek-1.webp" data-titel="homepage"
+              data-bijschrift="De klant begint met zijn adres." data-alt="Homepage met de tekst Scan uw woning in 30 seconden en een formulier voor het adres.">
+              <img src="img/m-kozijnfabriek-1.webp" width="440" height="275" loading="lazy" alt="homepage">
+            </button>
+            <button type="button" class="duimknop" role="tab" aria-selected="false"
+              data-bestand="kozijnfabriek-3.webp" data-titel="reviews"
+              data-bijschrift="Reviews van echte klanten — namen bewust onleesbaar." data-alt="Sectie Wat onze klanten zeggen met drie reviews; de namen eronder zijn onleesbaar gemaakt.">
+              <img src="img/m-kozijnfabriek-3.webp" width="440" height="275" loading="lazy" alt="reviews">
+            </button>
+            <button type="button" class="duimknop" role="tab" aria-selected="false"
+              data-bestand="kozijnfabriek-2.webp" data-titel="vraag &amp; antwoord"
+              data-bijschrift="Veelgestelde vragen op de pagina zelf." data-alt="Uitklapbare vragen over de AI-scan, offertes en subsidie.">
+              <img src="img/m-kozijnfabriek-2.webp" width="440" height="275" loading="lazy" alt="vraag &amp; antwoord">
+            </button>
+          </div>
+          <figure class="groot">
+            <span class="balk"><i></i><i></i><i></i><b data-rol="titel">homepage</b></span>
+            <img data-rol="groot" src="img/kozijnfabriek-1.webp" width="1400" height="875" loading="lazy" alt="Homepage met de tekst Scan uw woning in 30 seconden en een formulier voor het adres.">
+            <figcaption data-rol="bijschrift">De klant begint met zijn adres.</figcaption>
+          </figure>
+        </div>
       </article>
-      <article class="paneel" id="paneel-courtswap" hidden>
+      <article class="paneel" id="paneel-courtswap" data-id="courtswap" hidden>
         <header class="paneel-kop">
           <p class="paneel-meta"><span class="stip live" aria-hidden="true"></span>Live online <span class="punt">·</span> januari – augustus 2026</p>
           <h2>CourtSwap</h2>
           <p class="paneel-lead">Een compleet marktplaatsplatform: adverteren, zoeken op de kaart, chatten en afspreken — als website én als app.</p>
+          <button type="button" class="deel" data-deel="courtswap">Kopieer link naar dit project</button>
         </header>
         <div class="paneel-cols">
           <div class="vak voorbeeld">
@@ -793,18 +975,21 @@ body.vast { overflow: hidden; }
             
           </div>
         </div>
-        <div class="schermen">
-            <figure class="scherm">
-              <span class="balk"><i></i><i></i><i></i><b>zoeken en filteren</b></span>
-              <img src="img/courtswap-1.webp" width="1400" height="875" loading="lazy" alt="Overzichtspagina met filters voor sport, merk, prijs en staat naast het advertentieraster.">
-              <figcaption>Filteren op sport, merk, prijs, staat en afstand.</figcaption>
-            </figure></div>
+        
+        <div class="galerij" data-galerij>
+          <figure class="groot">
+            <span class="balk"><i></i><i></i><i></i><b data-rol="titel">zoeken en filteren</b></span>
+            <img data-rol="groot" src="img/courtswap-1.webp" width="1400" height="875" loading="lazy" alt="Overzichtspagina met filters voor sport, merk, prijs en staat naast het advertentieraster.">
+            <figcaption data-rol="bijschrift">Filteren op sport, merk, prijs, staat en afstand.</figcaption>
+          </figure>
+        </div>
       </article>
-      <article class="paneel" id="paneel-glacio" hidden>
+      <article class="paneel" id="paneel-glacio" data-id="glacio" hidden>
         <header class="paneel-kop">
           <p class="paneel-meta"><span class="stip live" aria-hidden="true"></span>Live online <span class="punt">·</span> augustus 2026</p>
           <h2>Glacio Klimaattechniek</h2>
           <p class="paneel-lead">Bedrijfssite voor een airco- en klimaatinstallateur, met een keuzehulp, vaste tarieven en online intake.</p>
+          <button type="button" class="deel" data-deel="glacio">Kopieer link naar dit project</button>
         </header>
         <div class="paneel-cols">
           <div class="vak voorbeeld">
@@ -822,28 +1007,38 @@ body.vast { overflow: hidden; }
             
           </div>
         </div>
-        <div class="schermen">
-            <figure class="scherm">
-              <span class="balk"><i></i><i></i><i></i><b>homepage</b></span>
-              <img src="img/glacio-1.webp" width="1400" height="875" loading="lazy" alt="Donkere homepage met de kop Koeling die net zo strak oogt als hij presteert.">
-              <figcaption>Vaste prijs vooraf, direct zichtbaar.</figcaption>
-            </figure>
-            <figure class="scherm">
-              <span class="balk"><i></i><i></i><i></i><b>keuzehulp</b></span>
-              <img src="img/glacio-2.webp" width="1400" height="875" loading="lazy" alt="Keuzehulp met vragen over de te koelen ruimte naast een lijst favoriete modellen.">
-              <figcaption>Drie vragen, dan een passend model.</figcaption>
-            </figure>
-            <figure class="scherm">
-              <span class="balk"><i></i><i></i><i></i><b>tarieven</b></span>
-              <img src="img/glacio-3.webp" width="1400" height="875" loading="lazy" alt="Sectie Montage zit in de prijs met tarieven voor jaarlijks onderhoud en een aansluitpakket.">
-              <figcaption>Geen verrassingen achteraf.</figcaption>
-            </figure></div>
+        
+        <div class="galerij" data-galerij>
+          <div class="duimen" role="tablist" aria-label="Schermen van Glacio Klimaattechniek">
+            <button type="button" class="duimknop" role="tab" aria-selected="true"
+              data-bestand="glacio-1.webp" data-titel="homepage"
+              data-bijschrift="Vaste prijs vooraf, direct zichtbaar." data-alt="Donkere homepage met de kop Koeling die net zo strak oogt als hij presteert.">
+              <img src="img/m-glacio-1.webp" width="440" height="275" loading="lazy" alt="homepage">
+            </button>
+            <button type="button" class="duimknop" role="tab" aria-selected="false"
+              data-bestand="glacio-2.webp" data-titel="keuzehulp"
+              data-bijschrift="Drie vragen, dan een passend model." data-alt="Keuzehulp met vragen over de te koelen ruimte naast een lijst favoriete modellen.">
+              <img src="img/m-glacio-2.webp" width="440" height="275" loading="lazy" alt="keuzehulp">
+            </button>
+            <button type="button" class="duimknop" role="tab" aria-selected="false"
+              data-bestand="glacio-3.webp" data-titel="tarieven"
+              data-bijschrift="Geen verrassingen achteraf." data-alt="Sectie Montage zit in de prijs met tarieven voor jaarlijks onderhoud en een aansluitpakket.">
+              <img src="img/m-glacio-3.webp" width="440" height="275" loading="lazy" alt="tarieven">
+            </button>
+          </div>
+          <figure class="groot">
+            <span class="balk"><i></i><i></i><i></i><b data-rol="titel">homepage</b></span>
+            <img data-rol="groot" src="img/glacio-1.webp" width="1400" height="875" loading="lazy" alt="Donkere homepage met de kop Koeling die net zo strak oogt als hij presteert.">
+            <figcaption data-rol="bijschrift">Vaste prijs vooraf, direct zichtbaar.</figcaption>
+          </figure>
+        </div>
       </article>
-      <article class="paneel" id="paneel-remh" hidden>
+      <article class="paneel" id="paneel-remh" data-id="remh" hidden>
         <header class="paneel-kop">
           <p class="paneel-meta"><span class="stip live" aria-hidden="true"></span>Live online <span class="punt">·</span> november 2025 – januari 2026</p>
           <h2>REMH Bouw &amp; Verbouw</h2>
           <p class="paneel-lead">Website voor een aannemer, met een configurator die de klant zijn eigen dakkapel laat samenstellen.</p>
+          <button type="button" class="deel" data-deel="remh">Kopieer link naar dit project</button>
         </header>
         <div class="paneel-cols">
           <div class="vak voorbeeld">
@@ -861,28 +1056,38 @@ body.vast { overflow: hidden; }
             
           </div>
         </div>
-        <div class="schermen">
-            <figure class="scherm">
-              <span class="balk"><i></i><i></i><i></i><b>homepage</b></span>
-              <img src="img/remh-1.webp" width="1400" height="875" loading="lazy" alt="Homepage met een foto van een woning in aanbouw en de kop REMH Bouw en Verbouw.">
-              <figcaption>Direct door naar diensten of een intake.</figcaption>
-            </figure>
-            <figure class="scherm">
-              <span class="balk"><i></i><i></i><i></i><b>diensten</b></span>
-              <img src="img/remh-2.webp" width="1400" height="875" loading="lazy" alt="Raster met zes diensten: aanbouw, dakkapel, stucwerk, kozijnen, loodgieter en duurzame installaties, elk met richtprijs.">
-              <figcaption>Elke dienst met richtprijs en configurator.</figcaption>
-            </figure>
-            <figure class="scherm">
-              <span class="balk"><i></i><i></i><i></i><b>beloftes</b></span>
-              <img src="img/remh-3.webp" width="1400" height="875" loading="lazy" alt="Drie blokken: Direct een prijs, Online plannen en Garantie en kwaliteit.">
-              <figcaption>Waarom de klant hier zou boeken.</figcaption>
-            </figure></div>
+        
+        <div class="galerij" data-galerij>
+          <div class="duimen" role="tablist" aria-label="Schermen van REMH Bouw &amp; Verbouw">
+            <button type="button" class="duimknop" role="tab" aria-selected="true"
+              data-bestand="remh-1.webp" data-titel="homepage"
+              data-bijschrift="Direct door naar diensten of een intake." data-alt="Homepage met een foto van een woning in aanbouw en de kop REMH Bouw en Verbouw.">
+              <img src="img/m-remh-1.webp" width="440" height="275" loading="lazy" alt="homepage">
+            </button>
+            <button type="button" class="duimknop" role="tab" aria-selected="false"
+              data-bestand="remh-2.webp" data-titel="diensten"
+              data-bijschrift="Elke dienst met richtprijs en configurator." data-alt="Raster met zes diensten: aanbouw, dakkapel, stucwerk, kozijnen, loodgieter en duurzame installaties, elk met richtprijs.">
+              <img src="img/m-remh-2.webp" width="440" height="275" loading="lazy" alt="diensten">
+            </button>
+            <button type="button" class="duimknop" role="tab" aria-selected="false"
+              data-bestand="remh-3.webp" data-titel="beloftes"
+              data-bijschrift="Waarom de klant hier zou boeken." data-alt="Drie blokken: Direct een prijs, Online plannen en Garantie en kwaliteit.">
+              <img src="img/m-remh-3.webp" width="440" height="275" loading="lazy" alt="beloftes">
+            </button>
+          </div>
+          <figure class="groot">
+            <span class="balk"><i></i><i></i><i></i><b data-rol="titel">homepage</b></span>
+            <img data-rol="groot" src="img/remh-1.webp" width="1400" height="875" loading="lazy" alt="Homepage met een foto van een woning in aanbouw en de kop REMH Bouw en Verbouw.">
+            <figcaption data-rol="bijschrift">Direct door naar diensten of een intake.</figcaption>
+          </figure>
+        </div>
       </article>
-      <article class="paneel" id="paneel-kijkvergunning" hidden>
+      <article class="paneel" id="paneel-kijkvergunning" data-id="kijkvergunning" hidden>
         <header class="paneel-kop">
           <p class="paneel-meta"><span class="stip prototype" aria-hidden="true"></span>Prototype <span class="punt">·</span> september 2026</p>
           <h2>KijkVergunning</h2>
           <p class="paneel-lead">Zie wat je mag bouwen voordat je begint: adres invullen, en je weet of die uitbouw vergunningvrij kan.</p>
+          <button type="button" class="deel" data-deel="kijkvergunning">Kopieer link naar dit project</button>
         </header>
         <div class="paneel-cols">
           <div class="vak voorbeeld">
@@ -900,28 +1105,38 @@ body.vast { overflow: hidden; }
             <p class="dicht">Draait lokaal — live demo op afspraak.</p>
           </div>
         </div>
-        <div class="schermen">
-            <figure class="scherm">
-              <span class="balk"><i></i><i></i><i></i><b>de uitkomst</b></span>
-              <img src="img/kijkvergunning-2.webp" width="1400" height="875" loading="lazy" alt="Resultaatscherm met luchtfoto, perceelgrens en de melding dat uitbouwen waarschijnlijk mag, maximaal 4 meter diep.">
-              <figcaption>4 meter diep, 5 breed, betrouwbaarheid 8,8.</figcaption>
-            </figure>
-            <figure class="scherm">
-              <span class="balk"><i></i><i></i><i></i><b>startpagina</b></span>
-              <img src="img/kijkvergunning-1.webp" width="1400" height="875" loading="lazy" alt="Startpagina met de vraag Wat mag ik bouwen op mijn adres en een zoekveld.">
-              <figcaption>Eén vraag, één invoerveld.</figcaption>
-            </figure>
-            <figure class="scherm">
-              <span class="balk"><i></i><i></i><i></i><b>uitleg</b></span>
-              <img src="img/kijkvergunning-3.webp" width="1400" height="875" loading="lazy" alt="Uitlegpagina Hoe werkt KijkVergunning met genummerde stappen.">
-              <figcaption>Hoe de cijfers tot stand komen.</figcaption>
-            </figure></div>
+        
+        <div class="galerij" data-galerij>
+          <div class="duimen" role="tablist" aria-label="Schermen van KijkVergunning">
+            <button type="button" class="duimknop" role="tab" aria-selected="true"
+              data-bestand="kijkvergunning-2.webp" data-titel="de uitkomst"
+              data-bijschrift="4 meter diep, 5 breed, betrouwbaarheid 8,8." data-alt="Resultaatscherm met luchtfoto, perceelgrens en de melding dat uitbouwen waarschijnlijk mag, maximaal 4 meter diep.">
+              <img src="img/m-kijkvergunning-2.webp" width="440" height="275" loading="lazy" alt="de uitkomst">
+            </button>
+            <button type="button" class="duimknop" role="tab" aria-selected="false"
+              data-bestand="kijkvergunning-1.webp" data-titel="startpagina"
+              data-bijschrift="Eén vraag, één invoerveld." data-alt="Startpagina met de vraag Wat mag ik bouwen op mijn adres en een zoekveld.">
+              <img src="img/m-kijkvergunning-1.webp" width="440" height="275" loading="lazy" alt="startpagina">
+            </button>
+            <button type="button" class="duimknop" role="tab" aria-selected="false"
+              data-bestand="kijkvergunning-3.webp" data-titel="uitleg"
+              data-bijschrift="Hoe de cijfers tot stand komen." data-alt="Uitlegpagina Hoe werkt KijkVergunning met genummerde stappen.">
+              <img src="img/m-kijkvergunning-3.webp" width="440" height="275" loading="lazy" alt="uitleg">
+            </button>
+          </div>
+          <figure class="groot">
+            <span class="balk"><i></i><i></i><i></i><b data-rol="titel">de uitkomst</b></span>
+            <img data-rol="groot" src="img/kijkvergunning-2.webp" width="1400" height="875" loading="lazy" alt="Resultaatscherm met luchtfoto, perceelgrens en de melding dat uitbouwen waarschijnlijk mag, maximaal 4 meter diep.">
+            <figcaption data-rol="bijschrift">4 meter diep, 5 breed, betrouwbaarheid 8,8.</figcaption>
+          </figure>
+        </div>
       </article>
-      <article class="paneel" id="paneel-lumiere" hidden>
+      <article class="paneel" id="paneel-lumiere" data-id="lumiere" hidden>
         <header class="paneel-kop">
           <p class="paneel-meta"><span class="stip prototype" aria-hidden="true"></span>Prototype <span class="punt">·</span> februari 2026</p>
           <h2>Lumière Dakkapellen</h2>
           <p class="paneel-lead">Een dakkapel die je in 3D op je eigen dak ziet staan — draaien, afwerking kiezen, offerte eruit.</p>
+          <button type="button" class="deel" data-deel="lumiere">Kopieer link naar dit project</button>
         </header>
         <div class="paneel-cols">
           <div class="vak voorbeeld">
@@ -939,18 +1154,21 @@ body.vast { overflow: hidden; }
             <p class="dicht">Werkend prototype — draait lokaal.</p>
           </div>
         </div>
-        <div class="schermen">
-            <figure class="scherm">
-              <span class="balk"><i></i><i></i><i></i><b>de configurator</b></span>
-              <img src="img/lumiere-1.webp" width="1400" height="875" loading="lazy" alt="3D-weergave van een dak met dakkapel en schoorsteen, met een paneel Waar gaan we bouwen met velden voor postcode en breedte.">
-              <figcaption>Het 3D-model reageert direct op wat je invult.</figcaption>
-            </figure></div>
+        
+        <div class="galerij" data-galerij>
+          <figure class="groot">
+            <span class="balk"><i></i><i></i><i></i><b data-rol="titel">de configurator</b></span>
+            <img data-rol="groot" src="img/lumiere-1.webp" width="1400" height="875" loading="lazy" alt="3D-weergave van een dak met dakkapel en schoorsteen, met een paneel Waar gaan we bouwen met velden voor postcode en breedte.">
+            <figcaption data-rol="bijschrift">Het 3D-model reageert direct op wat je invult.</figcaption>
+          </figure>
+        </div>
       </article>
-      <article class="paneel" id="paneel-kiesradar" hidden>
+      <article class="paneel" id="paneel-kiesradar" data-id="kiesradar" hidden>
         <header class="paneel-kop">
           <p class="paneel-meta"><span class="stip studie" aria-hidden="true"></span>Studieproject <span class="punt">·</span> maart – juni 2026</p>
           <h2>Kiesradar</h2>
           <p class="paneel-lead">Teamproject aan de Hogeschool van Amsterdam: een fysieke opstelling die studiekiezers helpt kiezen, met sensoren die met een webapp praten.</p>
+          <button type="button" class="deel" data-deel="kiesradar">Kopieer link naar dit project</button>
         </header>
         <div class="paneel-cols">
           <div class="vak voorbeeld">
@@ -1037,15 +1255,29 @@ body.vast { overflow: hidden; }
     overlay.hidden = false;
     document.body.classList.add('vast');
     laatsteKnop = knop || null;
+    open.huidig = id;
     if (venster) { venster.scrollTop = 0; venster.focus(); }
     overlay.scrollTop = 0;
+    try { history.replaceState(null, '', '#' + id); } catch (e) { /* geeft niet */ }
   }
 
   function sluit() {
     if (!overlay || overlay.hidden) return;
     overlay.hidden = true;
+    open.huidig = null;
     document.body.classList.remove('vast');
     if (laatsteKnop) { laatsteKnop.focus(); laatsteKnop = null; }
+    try { history.replaceState(null, '', location.pathname + location.search); } catch (e) { /* geeft niet */ }
+  }
+
+  // vorige of volgende project, alleen door wat nu zichtbaar is
+  function stap(richting) {
+    if (!open.huidig) return;
+    var zichtbaar = kaarten.filter(function (k) { return !k.hidden; });
+    var nu = zichtbaar.findIndex(function (k) { return k.getAttribute('data-id') === open.huidig; });
+    if (nu === -1) return;
+    var volgende = zichtbaar[(nu + richting + zichtbaar.length) % zichtbaar.length];
+    if (volgende) open(volgende.getAttribute('data-id'), volgende.querySelector('.kaart-knop'));
   }
 
   kaarten.forEach(function (k) {
@@ -1057,6 +1289,56 @@ body.vast { overflow: hidden; }
   var sluitknop = document.getElementById('sluit');
   if (sluitknop) sluitknop.addEventListener('click', sluit);
 
+  /* ---------- galerij: klik een klein scherm, zie het groot ---------- */
+  [].forEach.call(document.querySelectorAll('[data-galerij]'), function (galerij) {
+    var groot = galerij.querySelector('[data-rol="groot"]');
+    var titel = galerij.querySelector('[data-rol="titel"]');
+    var bijschrift = galerij.querySelector('[data-rol="bijschrift"]');
+    var duimen = [].slice.call(galerij.querySelectorAll('.duimknop'));
+    duimen.forEach(function (d) {
+      d.addEventListener('click', function () {
+        duimen.forEach(function (o) { o.setAttribute('aria-selected', 'false'); });
+        d.setAttribute('aria-selected', 'true');
+        groot.src = 'img/' + d.getAttribute('data-bestand');
+        groot.alt = d.getAttribute('data-alt') || '';
+        titel.textContent = d.getAttribute('data-titel') || '';
+        bijschrift.textContent = d.getAttribute('data-bijschrift') || '';
+      });
+    });
+  });
+
+  /* ---------- link naar één project kopieren ---------- */
+  [].forEach.call(document.querySelectorAll('[data-deel]'), function (knop) {
+    knop.addEventListener('click', function () {
+      var adres = location.origin + location.pathname + '#' + knop.getAttribute('data-deel');
+      var klaar = function (tekst) {
+        knop.textContent = tekst;
+        setTimeout(function () { knop.textContent = 'Kopieer link naar dit project'; }, 2200);
+      };
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(adres).then(function () { klaar('Link gekopieerd'); },
+          function () { klaar(adres); });
+      } else {
+        klaar(adres);
+      }
+    });
+  });
+
+  /* ---------- licht dat de muis volgt ---------- */
+  var bezig = false;
+  document.addEventListener('mousemove', function (e) {
+    if (bezig) return;
+    bezig = true;
+    requestAnimationFrame(function () {
+      bezig = false;
+      var knop = e.target && e.target.closest ? e.target.closest('.kaart-knop') : null;
+      if (!knop) return;
+      var vak = knop.getBoundingClientRect();
+      knop.style.setProperty('--mx', (e.clientX - vak.left) + 'px');
+      knop.style.setProperty('--my', (e.clientY - vak.top) + 'px');
+    });
+  });
+
   if (overlay) {
     overlay.addEventListener('mousedown', function (e) {
       if (e.target === overlay) sluit();
@@ -1064,8 +1346,28 @@ body.vast { overflow: hidden; }
   }
 
   document.addEventListener('keydown', function (e) {
-    if (e.key === 'Escape') sluit();
+    var inVeld = /^(INPUT|TEXTAREA|SELECT)$/.test((e.target && e.target.tagName) || '');
+    if (e.key === 'Escape') { sluit(); return; }
+    if (e.key === '/' && !inVeld && zoekveld) {
+      e.preventDefault();
+      zoekveld.focus();
+      zoekveld.select();
+      return;
+    }
+    if (overlay && !overlay.hidden) {
+      if (e.key === 'ArrowRight') { e.preventDefault(); stap(1); }
+      if (e.key === 'ArrowLeft') { e.preventDefault(); stap(-1); }
+    }
   });
+
+  // een link als .../#kozijnfabriek opent dat project meteen
+  function volgHash() {
+    var id = (location.hash || '').replace('#', '');
+    if (!id) return;
+    var kaart = kaarten.filter(function (k) { return k.getAttribute('data-id') === id; })[0];
+    if (kaart) open(id, kaart.querySelector('.kaart-knop'));
+  }
+  window.addEventListener('hashchange', volgHash);
 
   /* ---------- e-mailadres kopieren ---------- */
   var knopKopieer = document.getElementById('kopieer');
@@ -1098,5 +1400,6 @@ body.vast { overflow: hidden; }
   }
 
   ververs();
+  volgHash();
 })();
 </script>

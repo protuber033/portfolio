@@ -18,6 +18,10 @@ Dat doet drie dingen achter elkaar:
    eruit, en zet ze als webp in `img/`.
 3. **build** — schrijft `index.html` en `artifact.html` opnieuw.
 
+Screenshots komen in drie maten in `img/`: groot voor het projectvenster,
+`t-` voor de tegel en `m-` voor de showcase-band bovenaan. Een nieuw project
+verschijnt daarmee vanzelf ook in die band.
+
 ### De wachtkamer
 
 Wat de scanner nieuw vindt komt **niet meteen op de site**. Het krijgt

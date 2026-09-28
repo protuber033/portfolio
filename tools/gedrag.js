@@ -62,15 +62,29 @@
     overlay.hidden = false;
     document.body.classList.add('vast');
     laatsteKnop = knop || null;
+    open.huidig = id;
     if (venster) { venster.scrollTop = 0; venster.focus(); }
     overlay.scrollTop = 0;
+    try { history.replaceState(null, '', '#' + id); } catch (e) { /* geeft niet */ }
   }
 
   function sluit() {
     if (!overlay || overlay.hidden) return;
     overlay.hidden = true;
+    open.huidig = null;
     document.body.classList.remove('vast');
     if (laatsteKnop) { laatsteKnop.focus(); laatsteKnop = null; }
+    try { history.replaceState(null, '', location.pathname + location.search); } catch (e) { /* geeft niet */ }
+  }
+
+  // vorige of volgende project, alleen door wat nu zichtbaar is
+  function stap(richting) {
+    if (!open.huidig) return;
+    var zichtbaar = kaarten.filter(function (k) { return !k.hidden; });
+    var nu = zichtbaar.findIndex(function (k) { return k.getAttribute('data-id') === open.huidig; });
+    if (nu === -1) return;
+    var volgende = zichtbaar[(nu + richting + zichtbaar.length) % zichtbaar.length];
+    if (volgende) open(volgende.getAttribute('data-id'), volgende.querySelector('.kaart-knop'));
   }
 
   kaarten.forEach(function (k) {
@@ -82,6 +96,56 @@
   var sluitknop = document.getElementById('sluit');
   if (sluitknop) sluitknop.addEventListener('click', sluit);
 
+  /* ---------- galerij: klik een klein scherm, zie het groot ---------- */
+  [].forEach.call(document.querySelectorAll('[data-galerij]'), function (galerij) {
+    var groot = galerij.querySelector('[data-rol="groot"]');
+    var titel = galerij.querySelector('[data-rol="titel"]');
+    var bijschrift = galerij.querySelector('[data-rol="bijschrift"]');
+    var duimen = [].slice.call(galerij.querySelectorAll('.duimknop'));
+    duimen.forEach(function (d) {
+      d.addEventListener('click', function () {
+        duimen.forEach(function (o) { o.setAttribute('aria-selected', 'false'); });
+        d.setAttribute('aria-selected', 'true');
+        groot.src = 'img/' + d.getAttribute('data-bestand');
+        groot.alt = d.getAttribute('data-alt') || '';
+        titel.textContent = d.getAttribute('data-titel') || '';
+        bijschrift.textContent = d.getAttribute('data-bijschrift') || '';
+      });
+    });
+  });
+
+  /* ---------- link naar één project kopieren ---------- */
+  [].forEach.call(document.querySelectorAll('[data-deel]'), function (knop) {
+    knop.addEventListener('click', function () {
+      var adres = location.origin + location.pathname + '#' + knop.getAttribute('data-deel');
+      var klaar = function (tekst) {
+        knop.textContent = tekst;
+        setTimeout(function () { knop.textContent = 'Kopieer link naar dit project'; }, 2200);
+      };
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(adres).then(function () { klaar('Link gekopieerd'); },
+          function () { klaar(adres); });
+      } else {
+        klaar(adres);
+      }
+    });
+  });
+
+  /* ---------- licht dat de muis volgt ---------- */
+  var bezig = false;
+  document.addEventListener('mousemove', function (e) {
+    if (bezig) return;
+    bezig = true;
+    requestAnimationFrame(function () {
+      bezig = false;
+      var knop = e.target && e.target.closest ? e.target.closest('.kaart-knop') : null;
+      if (!knop) return;
+      var vak = knop.getBoundingClientRect();
+      knop.style.setProperty('--mx', (e.clientX - vak.left) + 'px');
+      knop.style.setProperty('--my', (e.clientY - vak.top) + 'px');
+    });
+  });
+
   if (overlay) {
     overlay.addEventListener('mousedown', function (e) {
       if (e.target === overlay) sluit();
@@ -89,8 +153,28 @@
   }
 
   document.addEventListener('keydown', function (e) {
-    if (e.key === 'Escape') sluit();
+    var inVeld = /^(INPUT|TEXTAREA|SELECT)$/.test((e.target && e.target.tagName) || '');
+    if (e.key === 'Escape') { sluit(); return; }
+    if (e.key === '/' && !inVeld && zoekveld) {
+      e.preventDefault();
+      zoekveld.focus();
+      zoekveld.select();
+      return;
+    }
+    if (overlay && !overlay.hidden) {
+      if (e.key === 'ArrowRight') { e.preventDefault(); stap(1); }
+      if (e.key === 'ArrowLeft') { e.preventDefault(); stap(-1); }
+    }
   });
+
+  // een link als .../#kozijnfabriek opent dat project meteen
+  function volgHash() {
+    var id = (location.hash || '').replace('#', '');
+    if (!id) return;
+    var kaart = kaarten.filter(function (k) { return k.getAttribute('data-id') === id; })[0];
+    if (kaart) open(id, kaart.querySelector('.kaart-knop'));
+  }
+  window.addEventListener('hashchange', volgHash);
 
   /* ---------- e-mailadres kopieren ---------- */
   var knopKopieer = document.getElementById('kopieer');
@@ -123,4 +207,5 @@
   }
 
   ververs();
+  volgHash();
 })();

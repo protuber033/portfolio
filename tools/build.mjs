@@ -27,6 +27,15 @@ const domeinen = projecten
   .filter((p) => p.url && !/railway\.app/.test(p.url))
   .length;
 
+// de showcase pakt automatisch alle schermen van alle projecten mee
+const showcase = projecten.flatMap((p) => (p.beelden || [])
+  .filter((b) => b.showcase !== false)
+  .map((b) => ({ bestand: b.bestand, naam: p.naam, id: p.id })));
+const helft = Math.ceil(showcase.length / 2);
+const banen = [showcase.slice(0, helft), showcase.slice(helft)];
+
+const gecontroleerd = projecten.map((p) => p.gecontroleerd).filter(Boolean).sort().pop();
+
 const datums = projecten.flatMap((p) => [p.eersteDag, p.laatsteDag]).filter(Boolean).sort();
 const vanaf = datums[0];
 const totEnMet = datums[datums.length - 1];
@@ -82,23 +91,40 @@ function kaart(p) {
 function groep(g) {
   const leden = projecten.filter((p) => p.status === g.sleutel);
   if (!leden.length) return '';
+  const gecheckt = g.sleutel === 'live' && gecontroleerd
+    ? `<span class="gecheckt"><span class="stip live"></span>alle ${leden.length} reageerden bij de laatste controle op ${esc(gecontroleerd)}</span>`
+    : '';
   return `
       <section class="groep" data-groep="${esc(g.sleutel)}">
         <div class="groep-kop">
           <h3>${esc(g.titel)} <span class="telling">${leden.length}</span></h3>
           <p>${esc(g.uitleg)}</p>
+          ${gecheckt}
         </div>
         <ul class="raster">${leden.map(kaart).join('')}</ul>
       </section>`;
 }
 
-function beeldFiguur(b) {
+function galerij(p) {
+  const beelden = p.beelden || [];
+  if (!beelden.length) return '';
+  const eerste = beelden[0];
+  const duimen = beelden.length > 1 ? `
+          <div class="duimen" role="tablist" aria-label="Schermen van ${esc(p.naam)}">
+${beelden.map((b, i) => `            <button type="button" class="duimknop" role="tab" aria-selected="${i === 0}"
+              data-bestand="${esc(b.bestand)}" data-titel="${esc(b.titel)}"
+              data-bijschrift="${esc(b.bijschrift)}" data-alt="${esc(b.alt)}">
+              <img src="img/m-${esc(b.bestand)}" width="440" height="275" loading="lazy" alt="${esc(b.titel)}">
+            </button>`).join('\n')}
+          </div>` : '';
   return `
-            <figure class="scherm">
-              <span class="balk"><i></i><i></i><i></i><b>${esc(b.titel)}</b></span>
-              <img src="img/${esc(b.bestand)}" width="1400" height="875" loading="lazy" alt="${esc(b.alt)}">
-              <figcaption>${esc(b.bijschrift)}</figcaption>
-            </figure>`;
+        <div class="galerij" data-galerij>${duimen}
+          <figure class="groot">
+            <span class="balk"><i></i><i></i><i></i><b data-rol="titel">${esc(eerste.titel)}</b></span>
+            <img data-rol="groot" src="img/${esc(eerste.bestand)}" width="1400" height="875" loading="lazy" alt="${esc(eerste.alt)}">
+            <figcaption data-rol="bijschrift">${esc(eerste.bijschrift)}</figcaption>
+          </figure>
+        </div>`;
 }
 
 function paneel(p) {
@@ -106,15 +132,14 @@ function paneel(p) {
     ? `<a class="knop knop-vol" href="${esc(p.url)}" target="_blank" rel="noopener">${esc(p.urlLabel)}</a>`
     : '';
   const dicht = p.besloten ? `<p class="dicht">${esc(p.besloten)}</p>` : '';
-  const schermen = (p.beelden || []).length
-    ? `<div class="schermen">${p.beelden.map(beeldFiguur).join('')}</div>`
-    : '';
+  const schermen = galerij(p);
   return `
-      <article class="paneel" id="paneel-${esc(p.id)}" hidden>
+      <article class="paneel" id="paneel-${esc(p.id)}" data-id="${esc(p.id)}" hidden>
         <header class="paneel-kop">
           <p class="paneel-meta">${statusStip(p.status)}${esc(p.statusLabel)} <span class="punt">·</span> ${esc(p.periode)}</p>
           <h2>${esc(p.naam)}</h2>
           <p class="paneel-lead">${esc(p.voorWie)}</p>
+          <button type="button" class="deel" data-deel="${esc(p.id)}">Kopieer link naar dit project</button>
         </header>
         <div class="paneel-cols">
           <div class="vak voorbeeld">
@@ -215,6 +240,14 @@ const binnenkant = `<a class="overslaan" href="#werk">Direct naar het werk</a>
         <li><b>${domeinen}</b> op een eigen domein</li>
       </ul>
     </div>
+    <div class="showcase" aria-hidden="true">
+${banen.map((baan, i) => `      <div class="baan baan-${i + 1}">
+        <div class="sleep">
+${[...baan, ...baan].map((b) => `          <img src="img/m-${esc(b.bestand)}" width="440" height="275" loading="${i === 0 ? 'eager' : 'lazy'}" alt="">`).join('\n')}
+        </div>
+      </div>`).join('\n')}
+    </div>
+    <p class="showcase-bij"><span class="stip live"></span>Echte schermen uit ${aantal} projecten &mdash; hieronder kun je ze een voor een bekijken.</p>
   </section>
 
   <section class="sectie" id="lagen">
@@ -236,6 +269,7 @@ const binnenkant = `<a class="overslaan" href="#werk">Direct naar het werk</a>
         <label class="zoek">
           <span class="vzw">Zoek in projecten</span>
           <input type="search" id="zoekveld" placeholder="Zoek op naam of techniek" autocomplete="off">
+          <kbd class="sneltoets">/</kbd>
         </label>
       </div>
     </div>
