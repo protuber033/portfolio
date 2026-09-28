@@ -196,7 +196,7 @@ async function controleer() {
 await controleer();
 
 projecten.sort((a, b) => {
-  const orde = { live: 0, prototype: 1, studie: 2 };
+  const orde = { live: 0, prototype: 1, studie: 2, archief: 3 };
   if (orde[a.status] !== orde[b.status]) return orde[a.status] - orde[b.status];
   return b.laatsteDag.localeCompare(a.laatsteDag);
 });

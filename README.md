@@ -73,6 +73,14 @@ npm run build           bouw de pagina
 npm run dev             bouwen en lokaal draaien op poort 3000
 ```
 
+## Projecten die alleen in de cloud staan
+
+RALOX, Glacio en EemlandWerkt liggen niet op deze computer, alleen op GitHub.
+De scanner kijkt bewust alleen op de schijf, dus van die drie werkt hij de datums
+niet bij. Verander je daar iets aan, pas dan zelf `laatsteDag` en `periode` aan in
+`data/projects.json`. Bij elk zo'n project staat een `github`-veld zodat je weet
+waar de code ligt.
+
 ## Goed om te weten
 
 - Screenshots hebben Chrome of Edge nodig en `sharp`. Ontbreekt sharp, draai dan

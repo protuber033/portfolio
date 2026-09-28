@@ -485,6 +485,9 @@ h1 { font-size: clamp(1.9rem, 4.4vw, 2.9rem); max-width: 22ch; }
 
 .showcase-bij { align-items: flex-start; }
 .showcase-bij .stip { margin-top: .5em; flex: none; }
+
+.stip.archief { background: var(--tekst-3); }
+.balkje.archief { background: rgba(154, 166, 198, .3); }
 </style>
 <a class="overslaan" href="#werk">Direct naar het werk</a>
 
@@ -554,7 +557,7 @@ h1 { font-size: clamp(1.9rem, 4.4vw, 2.9rem); max-width: 22ch; }
         </div>
       </div>
     </div>
-    <p class="showcase-bij"><span class="stip live"></span>Echte schermen uit 10 projecten. Hieronder kun je ze een voor een bekijken.</p>
+    <p class="showcase-bij"><span class="stip live"></span>Echte schermen uit 11 projecten. Hieronder kun je ze een voor een bekijken.</p>
   </section>
 
   <section class="kop-blok">
@@ -562,7 +565,7 @@ h1 { font-size: clamp(1.9rem, 4.4vw, 2.9rem); max-width: 22ch; }
       <p class="rol">Websites en bedrijfssoftware</p>
       <h1>Ik bouw de voorkant én de achterkant.</h1>
       <ul class="cijfers">
-        <li><b>10</b> projecten</li>
+        <li><b>11</b> projecten</li>
         <li><b>7</b> draaien nu live</li>
         <li><b>2</b> op een eigen domein</li>
       </ul>
@@ -576,7 +579,7 @@ h1 { font-size: clamp(1.9rem, 4.4vw, 2.9rem); max-width: 22ch; }
     </div>
     <div class="regelbalk">
       <div class="binnen regelbalk-binnen">
-        <div class="filters"><button type="button" class="filter" data-filter="alles" aria-pressed="true">Alles <i>10</i></button><button type="button" class="filter" data-filter="software" aria-pressed="false">Bedrijfssoftware <i>6</i></button><button type="button" class="filter" data-filter="website" aria-pressed="false">Websites <i>6</i></button><button type="button" class="filter" data-filter="3d" aria-pressed="false">3D <i>3</i></button><button type="button" class="filter" data-filter="ai" aria-pressed="false">AI <i>4</i></button><button type="button" class="filter" data-filter="mobiel" aria-pressed="false">App &amp; hardware <i>2</i></button></div>
+        <div class="filters"><button type="button" class="filter" data-filter="alles" aria-pressed="true">Alles <i>11</i></button><button type="button" class="filter" data-filter="software" aria-pressed="false">Bedrijfssoftware <i>7</i></button><button type="button" class="filter" data-filter="website" aria-pressed="false">Websites <i>7</i></button><button type="button" class="filter" data-filter="3d" aria-pressed="false">3D <i>3</i></button><button type="button" class="filter" data-filter="ai" aria-pressed="false">AI <i>4</i></button><button type="button" class="filter" data-filter="mobiel" aria-pressed="false">App &amp; hardware <i>2</i></button></div>
         <label class="zoek">
           <span class="vzw">Zoek in projecten</span>
           <input type="search" id="zoekveld" placeholder="Zoek op naam of techniek" autocomplete="off">
@@ -719,6 +722,25 @@ h1 { font-size: clamp(1.9rem, 4.4vw, 2.9rem); max-width: 22ch; }
             </span>
           </button>
         </li></ul>
+      </section>
+      <section class="groep" data-groep="archief">
+        <div class="groep-kop">
+          <h3>Waar het begon <span class="telling">1</span></h3>
+          <p>Eerdere versies, inmiddels vervangen door wat er nu staat.</p>
+          
+        </div>
+        <ul class="raster">
+        <li class="kaart" data-id="eemlandwerkt" data-tags="software website" data-zoek="eemlandwerkt waar eemland boekt begon: bedrijfssite met klantportaal, op een python-backend. react vite typescript flask sqlalchemy postgresql railway">
+          <button type="button" class="kaart-knop" aria-haspopup="dialog">
+            <span class="duim"><span class="geenbeeld">EERSTE VERSIE · DEC 2025<br>FLASK + REACT</span></span>
+            <span class="kaart-tekst">
+              <span class="kaart-status"><span class="stip archief" aria-hidden="true"></span>Eerste versie</span>
+              <span class="kaart-naam">EemlandWerkt</span>
+              <span class="kaart-regel">Waar Eemland Boekt begon: bedrijfssite met klantportaal, op een Python-backend.</span>
+              <span class="kaart-chips"><span>React</span><span>Vite</span><span>TypeScript</span></span>
+            </span>
+          </button>
+        </li></ul>
       </section></div>
       <p class="niets" id="niets" hidden>Geen project gevonden. Probeer een andere zoekterm of zet het filter op Alles.</p>
     </div>
@@ -760,6 +782,10 @@ h1 { font-size: clamp(1.9rem, 4.4vw, 2.9rem); max-width: 22ch; }
           <div class="rij">
             <span class="rij-naam">REMH Bouw &amp; Verbouw</span>
             <span class="spoor"><span class="balkje live" style="left:7.78%;width:16.47%"></span></span>
+          </div>
+          <div class="rij">
+            <span class="rij-naam">EemlandWerkt</span>
+            <span class="spoor"><span class="balkje archief" style="left:13.77%;width:11.68%"></span></span>
           </div>
           <div class="rij">
             <span class="rij-naam">CourtSwap</span>
@@ -866,7 +892,7 @@ h1 { font-size: clamp(1.9rem, 4.4vw, 2.9rem); max-width: 22ch; }
 <footer class="voet">
   <div class="binnen">
     <p>Alle schermen op deze pagina zijn echte screenshots van de draaiende projecten. Klantgegevens zijn onleesbaar gemaakt. Samih Tichtti · HBO-ICT, Hogeschool van Amsterdam.</p>
-    <p class="bijgewerkt">Bijgewerkt 28 september 2026 · 10 projecten</p>
+    <p class="bijgewerkt">Bijgewerkt 28 september 2026 · 11 projecten</p>
   </div>
 </footer>
 
@@ -910,7 +936,7 @@ h1 { font-size: clamp(1.9rem, 4.4vw, 2.9rem); max-width: 22ch; }
         <header class="paneel-kop">
           <p class="paneel-meta"><span class="stip live" aria-hidden="true"></span>Live online <span class="punt">·</span> augustus 2026</p>
           <h2>RALOX Sports</h2>
-          <p class="paneel-lead">Een webshop voor padelballen en grips, met daarnaast een balautomaat voor clubs: ballen uit de muur, betalen met pin of telefoon, en de club verdient mee.</p>
+          <p class="paneel-lead">Voor een padelmerk: een webshop voor ballen en grips, met daarnaast een balautomaat voor clubs — ballen uit de muur, betalen met pin of telefoon, en de club verdient mee.</p>
           <button type="button" class="deel" data-deel="ralox">Kopieer link naar dit project</button>
         </header>
         <div class="paneel-cols">
@@ -1285,6 +1311,31 @@ h1 { font-size: clamp(1.9rem, 4.4vw, 2.9rem); max-width: 22ch; }
             <ul class="techniek"><li>Python</li><li>Flask</li><li>MySQL</li><li>Docker</li><li>ESP32</li><li>GitLab CI</li></ul>
             
             <p class="dicht">Teamproject HvA — code staat op de GitLab van de hogeschool.</p>
+          </div>
+        </div>
+        
+      </article>
+      <article class="paneel" id="paneel-eemlandwerkt" data-id="eemlandwerkt" hidden>
+        <header class="paneel-kop">
+          <p class="paneel-meta"><span class="stip archief" aria-hidden="true"></span>Eerste versie <span class="punt">·</span> december 2025 – januari 2026</p>
+          <h2>EemlandWerkt</h2>
+          <p class="paneel-lead">De eerste versie voor hetzelfde bouwbedrijf: een bedrijfssite met diensten, vacatures en een klantportaal, met Flask en PostgreSQL erachter. Een jaar later opnieuw opgebouwd in Node — dat werd Eemland Boekt.</p>
+          <button type="button" class="deel" data-deel="eemlandwerkt">Kopieer link naar dit project</button>
+        </header>
+        <div class="paneel-cols">
+          <div class="vak voorbeeld">
+            <h4>Zo gaat het in de praktijk</h4>
+            <p>Een klant logde in op het portaal en zag zijn eigen dossier; op kantoor stond hetzelfde in een dashboard. De rekenhulp op de site gaf alvast een prijsindicatie voordat iemand de telefoon pakte.</p>
+          </div>
+          <div class="vak">
+            <h4>Wat het doet</h4>
+            <ul class="doet"><li>Bedrijfssite met diensten, detailpagina's en vacatures.</li><li>Rekenhulp die vooraf een prijsindicatie geeft.</li><li>Inloggen en aanmelden, met een klantportaal én een dashboard voor kantoor.</li><li>Python-backend met Flask en SQLAlchemy op PostgreSQL, uitgerold op Railway.</li><li><strong>Opgevolgd door Eemland Boekt</strong>, dat opnieuw is opgebouwd op Node.</li></ul>
+          </div>
+          <div class="vak">
+            <h4>Techniek</h4>
+            <ul class="techniek"><li>React</li><li>Vite</li><li>TypeScript</li><li>Flask</li><li>SQLAlchemy</li><li>PostgreSQL</li><li>Railway</li></ul>
+            
+            <p class="dicht">Niet meer online — vervangen door Eemland Boekt.</p>
           </div>
         </div>
         

@@ -481,3 +481,6 @@ h1 { font-size: clamp(1.9rem, 4.4vw, 2.9rem); max-width: 22ch; }
 
 .showcase-bij { align-items: flex-start; }
 .showcase-bij .stip { margin-top: .5em; flex: none; }
+
+.stip.archief { background: var(--tekst-3); }
+.balkje.archief { background: rgba(154, 166, 198, .3); }

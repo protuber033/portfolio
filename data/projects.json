@@ -55,7 +55,7 @@
     "eersteDag": "2026-08-28",
     "laatsteDag": "2026-08-30",
     "eenRegel": "Webshop voor padelballen, plus een balautomaat die clubs 24/7 laat verkopen.",
-    "voorWie": "Een webshop voor padelballen en grips, met daarnaast een balautomaat voor clubs: ballen uit de muur, betalen met pin of telefoon, en de club verdient mee.",
+    "voorWie": "Voor een padelmerk: een webshop voor ballen en grips, met daarnaast een balautomaat voor clubs — ballen uit de muur, betalen met pin of telefoon, en de club verdient mee.",
     "voorbeeld": "Een speler staat om elf uur 's avonds zonder ballen op de baan. Hij houdt zijn pas tegen de automaat, haalt een koker en speelt door. De club ziet de opbrengst binnenkomen zonder dat er iemand achter de bar hoefde te staan.",
     "doet": [
       "Webshop met winkelwagen, prijzen en gratis verzending boven de €50.",
@@ -511,6 +511,46 @@
     "besloten": "Teamproject HvA — code staat op de GitLab van de hogeschool.",
     "tegel": null,
     "tegelTekst": "HARDWARE · GEEN WEBSITE\nESP32 → FLASK → MYSQL",
+    "beelden": []
+  },
+  {
+    "id": "eemlandwerkt",
+    "naam": "EemlandWerkt",
+    "status": "archief",
+    "statusLabel": "Eerste versie",
+    "map": null,
+    "github": "protuber033/eemlandwerkt",
+    "periode": "december 2025 – januari 2026",
+    "eersteDag": "2025-12-17",
+    "laatsteDag": "2026-01-25",
+    "eenRegel": "Waar Eemland Boekt begon: bedrijfssite met klantportaal, op een Python-backend.",
+    "voorWie": "De eerste versie voor hetzelfde bouwbedrijf: een bedrijfssite met diensten, vacatures en een klantportaal, met Flask en PostgreSQL erachter. Een jaar later opnieuw opgebouwd in Node — dat werd Eemland Boekt.",
+    "voorbeeld": "Een klant logde in op het portaal en zag zijn eigen dossier; op kantoor stond hetzelfde in een dashboard. De rekenhulp op de site gaf alvast een prijsindicatie voordat iemand de telefoon pakte.",
+    "doet": [
+      "Bedrijfssite met diensten, detailpagina's en vacatures.",
+      "Rekenhulp die vooraf een prijsindicatie geeft.",
+      "Inloggen en aanmelden, met een klantportaal én een dashboard voor kantoor.",
+      "Python-backend met Flask en SQLAlchemy op PostgreSQL, uitgerold op Railway.",
+      "**Opgevolgd door Eemland Boekt**, dat opnieuw is opgebouwd op Node."
+    ],
+    "techniek": [
+      "React",
+      "Vite",
+      "TypeScript",
+      "Flask",
+      "SQLAlchemy",
+      "PostgreSQL",
+      "Railway"
+    ],
+    "tags": [
+      "software",
+      "website"
+    ],
+    "url": null,
+    "urlLabel": null,
+    "besloten": "Niet meer online — vervangen door Eemland Boekt.",
+    "tegel": null,
+    "tegelTekst": "EERSTE VERSIE · DEC 2025\nFLASK + REACT",
     "beelden": []
   }
 ]

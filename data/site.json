@@ -99,6 +99,11 @@
       "sleutel": "studie",
       "titel": "Studieprojecten",
       "uitleg": "Gemaakt tijdens de opleiding."
+    },
+    {
+      "sleutel": "archief",
+      "titel": "Waar het begon",
+      "uitleg": "Eerdere versies, inmiddels vervangen door wat er nu staat."
     }
   ],
   "filters": [
