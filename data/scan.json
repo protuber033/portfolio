@@ -1,0 +1,38 @@
+{
+  "mappen": [
+    "C:/Users/mstic/Desktop",
+    "C:/Users/mstic/Documents",
+    "C:/Users/mstic",
+    "C:/framescan"
+  ],
+  "diepte": 3,
+  "negeer": [
+    "node_modules",
+    ".next",
+    ".nuxt",
+    "dist",
+    "build",
+    "out",
+    "vendor",
+    "target",
+    "AppData",
+    "Cisco Packet Tracer 8.2.0",
+    "Cisco Packet Tracer 8.2.1",
+    "Cisco Packet Tracer 8.2.2",
+    ".venv",
+    ".cache",
+    ".git",
+    "OneDrive",
+    "Downloads"
+  ],
+  "minimumCommits": 3,
+  "negeerPaden": [
+    "C:/Users/mstic/Desktop/Samih Tichtti/Nieuwe map",
+    "C:/Users/mstic/hva/beekoohiitii66",
+    "C:/Users/mstic/hva/beekoohiitii66-wrapped",
+    "C:/Users/mstic/hva/faazeemaamoo80",
+    "C:/Users/mstic/hva/faazeemaamoo80-main d en d",
+    "C:/Users/mstic/hva/programming-101-van-samih-tichtti",
+    "C:/Users/mstic/programming-101-van-samih-tichtti"
+  ]
+}

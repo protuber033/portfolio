@@ -1,0 +1,81 @@
+{
+  "naam": "Samih Tichtti",
+  "rol": "Websites en bedrijfssoftware",
+  "titel": "Samih bouwt",
+  "kop": "Ik bouw de voorkant én de achterkant.",
+  "onderkop": "Websites en bedrijfssoftware voor Nederlandse bedrijven. Geen mooie plaatjes die niets doen — dingen die elke dag gebruikt worden.",
+  "email": "tichtti@gmail.com",
+  "github": "https://github.com/protuber033",
+  "opleiding": "HBO-ICT, Hogeschool van Amsterdam",
+  "lagen": [
+    {
+      "label": "Front-end",
+      "kop": "Wat de klant ziet",
+      "tekst": "Schermen die net zo goed werken op een telefoon in de bouwkeet als op een monitor op kantoor. Foto's worden automatisch omgezet naar het kleinste formaat dat nog scherp is, en animaties draaien zonder de pagina te vertragen.",
+      "techniek": ["React 19", "Next.js 16", "Tailwind 4", "three.js", "Motion"]
+    },
+    {
+      "label": "Back-end",
+      "kop": "Wat eronder draait",
+      "tekst": "De database, de inlog, de rechten per medewerker, het versturen van mail, het maken van pdf's en het veilig opslaan van documenten. Wachtwoorden gehasht, aanvraag-eindpunten afgeschermd, en een database die standaard niets vrijgeeft.",
+      "techniek": ["Node 22", "Express", "PostgreSQL", "MySQL", "Supabase", "Python / Flask"]
+    },
+    {
+      "label": "Geoptimaliseerd",
+      "kop": "Snel, vindbaar en betaalbaar",
+      "tekst": "Pagina's worden vooraf klaargezet zodat Google ze leest en bezoekers niet wachten. Beelden laden pas als je er bijna bent. En valt een betaalde kaart- of AI-dienst uit, dan schakelt de site door naar een gratis alternatief in plaats van stuk te gaan.",
+      "techniek": ["SEO-prerender", "Caching", "Lazy loading", "Fallbacks", "één service i.p.v. vijf"]
+    }
+  ],
+  "kunnen": [
+    {
+      "label": "Beeldherkenning",
+      "kop": "Een foto erin, gegevens eruit",
+      "tekst": "Een gevelfoto waar de kozijnen uit herkend worden. Een papieren urenbriefje dat gescand én nagerekend wordt. Werk dat anders met de hand overgetypt moet worden.",
+      "bewijs": "Kozijnfabriek Direct, Eemland Boekt"
+    },
+    {
+      "label": "Administratie",
+      "kop": "De hele papierwinkel in één systeem",
+      "tekst": "Aanvraag, offerte, order, factuur, btw en jaarcijfers achter elkaar, zonder dat iemand hetzelfde nummer drie keer overtypt. Pdf's automatisch opgemaakt.",
+      "bewijs": "Eemland Boekt, Kozijnfabriek Direct, REMH"
+    },
+    {
+      "label": "3D in de browser",
+      "kop": "Producten die de klant zelf kan draaien",
+      "tekst": "Een dakkapel die echt in het dakvlak staat. Een perceel in 3D met de bouwzone eroverheen. Alles in de browser, zonder plug-in.",
+      "bewijs": "Lumière, KijkVergunning, REMH"
+    },
+    {
+      "label": "Kaart en adresdata",
+      "kop": "Nederlandse adres- en perceeldata",
+      "tekst": "Adres opzoeken via PDOK, perceelgrenzen en bouwjaren erbij, Street View voor de gevel, zoeken op afstand. Met een gratis alternatief als een betaalde kaartdienst uitvalt.",
+      "bewijs": "KijkVergunning, Kozijnfabriek Direct, CourtSwap"
+    },
+    {
+      "label": "Beheer en rollen",
+      "kop": "Dashboards waar personeel mee werkt",
+      "tekst": "Inloggen, rechten per rol, de zakelijke mailbox erin, planning en leveranciersorders. Met gehashte wachtwoorden en een database die standaard niets vrijgeeft.",
+      "bewijs": "Kozijnfabriek Direct, Eemland Boekt, CourtSwap"
+    },
+    {
+      "label": "Live zetten",
+      "kop": "Van laptop naar eigen domein",
+      "tekst": "Hosting, domein, ssl, database met back-ups en zakelijke mail. En waar het nodig is verder dan de browser: dezelfde code als app voor iOS en Android, of sensoren die hun metingen naar een webserver sturen.",
+      "bewijs": "Railway, Cloudflare, Supabase · CourtSwap, Kiesradar"
+    }
+  ],
+  "groepen": [
+    { "sleutel": "live", "titel": "Draait nu live", "uitleg": "In gebruik bij een bedrijf, vandaag te bekijken." },
+    { "sleutel": "prototype", "titel": "Prototypes", "uitleg": "Werkend, nog niet op een eigen domein gezet." },
+    { "sleutel": "studie", "titel": "Studieprojecten", "uitleg": "Gemaakt tijdens de opleiding." }
+  ],
+  "filters": [
+    { "sleutel": "alles", "label": "Alles" },
+    { "sleutel": "software", "label": "Bedrijfssoftware" },
+    { "sleutel": "website", "label": "Websites" },
+    { "sleutel": "3d", "label": "3D" },
+    { "sleutel": "ai", "label": "AI" },
+    { "sleutel": "mobiel", "label": "App & hardware" }
+  ]
+}

@@ -1,0 +1,442 @@
+[
+  {
+    "id": "eemland",
+    "naam": "Eemland Boekt",
+    "status": "live",
+    "statusLabel": "Draait in bedrijf",
+    "map": "C:/Users/mstic/Desktop/Samih Tichtti/voor-papa/eemlandboekt",
+    "periode": "januari – september 2026",
+    "eersteDag": "2026-01-21",
+    "laatsteDag": "2026-09-22",
+    "eenRegel": "Offertes, facturen, urenbriefjes scannen en btw-aangifte in één systeem.",
+    "voorWie": "De complete administratie van een bouwbedrijf, van offerte tot btw-aangifte, in één systeem dat elke dag gebruikt wordt.",
+    "voorbeeld": "De stapel papieren urenbriefjes gaat door de scanner. Het systeem leest ze uit, telt na of de totalen op het briefje zelf wel kloppen, en zet de uren op het juiste project. Aan het eind van het kwartaal rolt de btw-aangifte er kant-en-klaar uit.",
+    "doet": [
+      "Offertes en facturen maken, versturen en als pdf bewaren.",
+      "Urenbriefjes scannen **én narekenen**, zodat fouten opvallen.",
+      "Kwartaalcijfers, btw-overzicht en meerjarenrapport zonder handwerk.",
+      "Projecten, klanten, personeel en vacatures bij elkaar.",
+      "Documenten in beveiligde opslag, downloads via afgeschermde links."
+    ],
+    "techniek": [
+      "React 19",
+      "Express",
+      "PostgreSQL",
+      "Supabase Storage",
+      "pdf-lib",
+      "Google Gemini"
+    ],
+    "tags": [
+      "software",
+      "ai"
+    ],
+    "url": null,
+    "urlLabel": null,
+    "besloten": "Besloten klantomgeving — rondleiding op aanvraag.",
+    "tegel": "t-eemland.webp",
+    "beelden": [
+      {
+        "bestand": "eemland-1.webp",
+        "titel": "inlogportaal",
+        "bijschrift": "Bewust onscherp: dit is een besloten omgeving van een klant.",
+        "alt": "Onscherp gemaakt inlogscherm van de besloten klantomgeving; alleen de indeling is te zien."
+      }
+    ]
+  },
+  {
+    "id": "funstudios",
+    "naam": "Fun Studios",
+    "status": "live",
+    "statusLabel": "Live online",
+    "map": "C:/Users/mstic/Desktop/funstudios",
+    "periode": "september 2026",
+    "eersteDag": "2026-09-07",
+    "laatsteDag": "2026-09-22",
+    "eenRegel": "Eventsite met boekingsflow: photo booths, low fog en indoor vuurwerk.",
+    "voorWie": "Voor een entertainmentbedrijf: photo booths, 360 booth, low fog, indoor vuurwerk en lichtletters — met een boekingsflow die de aanvragen binnenhaalt.",
+    "voorbeeld": "Iemand plant een bruiloft, klikt op \"Plan mijn event\" en verstuurt het formulier. Hij krijgt meteen een bevestiging in zijn mail. De aanvraag staat op dat moment al in het adminpaneel — ook als het mailen hapert, raakt er niets kwijt.",
+    "doet": [
+      "Offerteformulier dat opslaat **én** mailt, met bevestiging naar de klant.",
+      "Adminpaneel waar elke aanvraag binnenkomt.",
+      "Foto's worden automatisch bijgesneden en geoptimaliseerd.",
+      "Animaties die de site niet traag maken.",
+      "Projectenpagina en Instagram-feed die zichzelf bijwerkt."
+    ],
+    "techniek": [
+      "React 19",
+      "Vite",
+      "Tailwind 4",
+      "Motion",
+      "Express",
+      "sharp"
+    ],
+    "tags": [
+      "website"
+    ],
+    "url": "https://www.funstudios.nl",
+    "urlLabel": "Open de site",
+    "besloten": null,
+    "tegel": "t-funstudios.webp",
+    "beelden": [
+      {
+        "bestand": "funstudios-1.webp",
+        "titel": "homepage",
+        "bijschrift": "Opent met echte foto's van eerdere events.",
+        "alt": "Donkere homepage met de kop Wij maken jouw event onvergetelijk en zwevende polaroidfoto's."
+      },
+      {
+        "bestand": "funstudios-2.webp",
+        "titel": "projecten",
+        "bijschrift": "Uitgelichte projecten.",
+        "alt": "Sectie Dit hebben we laatst gedaan met een raster van eventfoto's."
+      },
+      {
+        "bestand": "funstudios-4.webp",
+        "titel": "cijfers",
+        "bijschrift": "Cijfers die de klant overtuigen.",
+        "alt": "Sectie Cijfers die overtuigen met 50 plus events, 10K volgers en een 4,9 beoordeling."
+      }
+    ]
+  },
+  {
+    "id": "kozijnfabriek",
+    "naam": "Kozijnfabriek Direct",
+    "status": "live",
+    "statusLabel": "Live online",
+    "map": "C:/framescan",
+    "periode": "augustus – september 2026",
+    "eersteDag": "2026-08-22",
+    "laatsteDag": "2026-09-15",
+    "eenRegel": "Gevelfoto erin, offerte eruit — plus een dashboard voor het personeel.",
+    "voorWie": "Voor een kozijnenfabrikant in de regio Amsterdam: een website die zelf offertes voorbereidt, en een dashboard waar het personeel de rest afhandelt.",
+    "voorbeeld": "Een klant typt zijn adres in en uploadt een foto van zijn gevel. Binnen dertig seconden ziet hij welke kozijnen erin zitten en wat vervanging ongeveer kost. Op kantoor staat die aanvraag dan al klaar in het dashboard, klaar om in te plannen voor een inmeting.",
+    "doet": [
+      "De AI herkent de kozijnen op de gevelfoto en **stelt maten voor**.",
+      "Klant kiest zelf materiaal, kleur en beglazing.",
+      "Aanvragen, inmetingen, planning en leveranciersorders op één plek.",
+      "De zakelijke mailbox zit in het dashboard.",
+      "Klanten volgen hun dossier in een eigen portaal."
+    ],
+    "techniek": [
+      "React 19",
+      "Node 22",
+      "Supabase",
+      "Google Gemini",
+      "Google Maps",
+      "Railway"
+    ],
+    "tags": [
+      "software",
+      "website",
+      "ai"
+    ],
+    "url": "https://kozijnfabriekdirect.nl",
+    "urlLabel": "Open de site",
+    "besloten": null,
+    "tegel": "t-kozijnfabriek.webp",
+    "beelden": [
+      {
+        "bestand": "kozijnfabriek-1.webp",
+        "titel": "homepage",
+        "bijschrift": "De klant begint met zijn adres.",
+        "alt": "Homepage met de tekst Scan uw woning in 30 seconden en een formulier voor het adres."
+      },
+      {
+        "bestand": "kozijnfabriek-3.webp",
+        "titel": "reviews",
+        "bijschrift": "Reviews van echte klanten — namen bewust onleesbaar.",
+        "alt": "Sectie Wat onze klanten zeggen met drie reviews; de namen eronder zijn onleesbaar gemaakt."
+      },
+      {
+        "bestand": "kozijnfabriek-2.webp",
+        "titel": "vraag & antwoord",
+        "bijschrift": "Veelgestelde vragen op de pagina zelf.",
+        "alt": "Uitklapbare vragen over de AI-scan, offertes en subsidie."
+      }
+    ]
+  },
+  {
+    "id": "courtswap",
+    "naam": "CourtSwap",
+    "status": "live",
+    "statusLabel": "Live online",
+    "map": "C:/Users/mstic/Desktop/Samih Tichtti/matchpoint/matchpoint",
+    "periode": "januari – augustus 2026",
+    "eersteDag": "2026-01-09",
+    "laatsteDag": "2026-08-30",
+    "eenRegel": "Marktplaatsplatform met chat, kaart en accounts — ook als app.",
+    "voorWie": "Een compleet marktplaatsplatform: adverteren, zoeken op de kaart, chatten en afspreken — als website én als app.",
+    "voorbeeld": "Je zet je oude racket te koop met vier foto's erbij. Iemand uit je buurt ziet hem op de kaart, stelt via de chat een vraag over de staat, en jullie spreken af. Diezelfde flow werkt in de browser en in de app op je telefoon.",
+    "doet": [
+      "Adverteren met foto's, zoeken op afstand en op de kaart.",
+      "Chat tussen koper en verkoper, met bewaartermijn.",
+      "Accounts met e-mailverificatie en rate limiting.",
+      "Foto's in de cloud; de database bewaart alleen de links.",
+      "Klaar voor lancering: SEO, sitemap, 404 en security headers."
+    ],
+    "techniek": [
+      "React",
+      "Express 5",
+      "Prisma",
+      "PostgreSQL",
+      "Cloudinary",
+      "Capacitor"
+    ],
+    "tags": [
+      "software",
+      "mobiel"
+    ],
+    "url": "https://web-production-d363a.up.railway.app",
+    "urlLabel": "Open het platform",
+    "besloten": null,
+    "tegel": "t-courtswap.webp",
+    "beelden": [
+      {
+        "bestand": "courtswap-1.webp",
+        "titel": "zoeken en filteren",
+        "bijschrift": "Filteren op sport, merk, prijs, staat en afstand.",
+        "alt": "Overzichtspagina met filters voor sport, merk, prijs en staat naast het advertentieraster."
+      }
+    ]
+  },
+  {
+    "id": "glacio",
+    "naam": "Glacio Klimaattechniek",
+    "status": "live",
+    "statusLabel": "Live online",
+    "map": null,
+    "periode": "augustus 2026",
+    "eersteDag": "2026-08-28",
+    "laatsteDag": "2026-08-28",
+    "eenRegel": "Airco-installateur met keuzehulp, vaste prijzen en online intake.",
+    "voorWie": "Bedrijfssite voor een airco- en klimaatinstallateur, met een keuzehulp, vaste tarieven en online intake.",
+    "voorbeeld": "Een bezoeker zoekt koeling voor de slaapkamer, beantwoordt drie vragen in de keuzehulp en ziet welke modellen daarbij passen, met garantie en levertijd erbij. Daarna plant hij meteen een gratis intake — zonder te hoeven bellen.",
+    "doet": [
+      "Keuzehulp die vraagt welke ruimte gekoeld moet worden.",
+      "Modellen naast elkaar, met garantie en energielabel.",
+      "**Montage zit in de prijs** — tarieven staan op de pagina.",
+      "Het hele traject uitgelegd, van eerste contact tot koeling in huis."
+    ],
+    "techniek": [
+      "Node",
+      "Railway"
+    ],
+    "tags": [
+      "website"
+    ],
+    "url": "https://glacio-site-production.up.railway.app",
+    "urlLabel": "Open de site",
+    "besloten": null,
+    "tegel": "t-glacio.webp",
+    "beelden": [
+      {
+        "bestand": "glacio-1.webp",
+        "titel": "homepage",
+        "bijschrift": "Vaste prijs vooraf, direct zichtbaar.",
+        "alt": "Donkere homepage met de kop Koeling die net zo strak oogt als hij presteert."
+      },
+      {
+        "bestand": "glacio-2.webp",
+        "titel": "keuzehulp",
+        "bijschrift": "Drie vragen, dan een passend model.",
+        "alt": "Keuzehulp met vragen over de te koelen ruimte naast een lijst favoriete modellen."
+      },
+      {
+        "bestand": "glacio-3.webp",
+        "titel": "tarieven",
+        "bijschrift": "Geen verrassingen achteraf.",
+        "alt": "Sectie Montage zit in de prijs met tarieven voor jaarlijks onderhoud en een aansluitpakket."
+      }
+    ]
+  },
+  {
+    "id": "remh",
+    "naam": "REMH Bouw & Verbouw",
+    "status": "live",
+    "statusLabel": "Live online",
+    "map": "C:/Users/mstic/Desktop/Samih Tichtti/remh_official",
+    "periode": "november 2025 – januari 2026",
+    "eersteDag": "2025-11-27",
+    "laatsteDag": "2026-01-21",
+    "eenRegel": "Aannemerssite waar de klant zijn eigen dakkapel samenstelt.",
+    "voorWie": "Website voor een aannemer, met een configurator die de klant zijn eigen dakkapel laat samenstellen.",
+    "voorbeeld": "Een huiseigenaar kiest \"Dakkapel plaatsen\", stelt zijn configuratie samen en ziet het resultaat op een dakfoto. De offerte komt als pdf binnen, en de aanvraag staat meteen in het beveiligde beheerdeel.",
+    "doet": [
+      "Gelaagde preview die dakfoto's en dakkapellen over elkaar legt.",
+      "Offerte als pdf, automatisch opgemaakt op de server.",
+      "Beveiligd beheerdeel met inlog en database.",
+      "Zes diensten met elk een **richtprijs vooraf**."
+    ],
+    "techniek": [
+      "React 19",
+      "Express",
+      "MySQL",
+      "PDFKit",
+      "three.js",
+      "Railway"
+    ],
+    "tags": [
+      "website",
+      "3d"
+    ],
+    "url": "https://remhofficial-production.up.railway.app",
+    "urlLabel": "Open de site",
+    "besloten": null,
+    "tegel": "t-remh.webp",
+    "beelden": [
+      {
+        "bestand": "remh-1.webp",
+        "titel": "homepage",
+        "bijschrift": "Direct door naar diensten of een intake.",
+        "alt": "Homepage met een foto van een woning in aanbouw en de kop REMH Bouw en Verbouw."
+      },
+      {
+        "bestand": "remh-2.webp",
+        "titel": "diensten",
+        "bijschrift": "Elke dienst met richtprijs en configurator.",
+        "alt": "Raster met zes diensten: aanbouw, dakkapel, stucwerk, kozijnen, loodgieter en duurzame installaties, elk met richtprijs."
+      },
+      {
+        "bestand": "remh-3.webp",
+        "titel": "beloftes",
+        "bijschrift": "Waarom de klant hier zou boeken.",
+        "alt": "Drie blokken: Direct een prijs, Online plannen en Garantie en kwaliteit."
+      }
+    ]
+  },
+  {
+    "id": "kijkvergunning",
+    "naam": "KijkVergunning",
+    "status": "prototype",
+    "statusLabel": "Prototype",
+    "map": "C:/Users/mstic/Desktop/kijkvergunning",
+    "periode": "september 2026",
+    "eersteDag": "2026-09-11",
+    "laatsteDag": "2026-09-21",
+    "eenRegel": "Adres invullen en zien of je uitbouw vergunningvrij mag — op kaart en in 3D.",
+    "voorWie": "Zie wat je mag bouwen voordat je begint: adres invullen, en je weet of die uitbouw vergunningvrij kan.",
+    "voorbeeld": "Je vult \"Voorbeeldstraat 12, Amersfoort\" in. Een minuut later weet je dat je daar waarschijnlijk vier meter diep mag uitbouwen, zie je de toegestane zone op de luchtfoto en in 3D, en kun je het rapport downloaden voor je aannemer.",
+    "doet": [
+      "Adres opzoeken via PDOK, met perceel- en gebouwgegevens.",
+      "Schuifregelaars met een zone die live meekleurt: **groen, oranje, rood**.",
+      "3D-weergave van het perceel en een camera-overlay als AR-prototype.",
+      "Rapport downloaden en je plan later weer openen.",
+      "Gelabeld als hulpmiddel, niet als officiële vergunning."
+    ],
+    "techniek": [
+      "Next.js 16",
+      "React 19",
+      "MapLibre",
+      "three.js",
+      "Supabase",
+      "zustand"
+    ],
+    "tags": [
+      "software",
+      "3d",
+      "ai"
+    ],
+    "url": null,
+    "urlLabel": null,
+    "besloten": "Draait lokaal — live demo op afspraak.",
+    "tegel": "t-kijkvergunning.webp",
+    "beelden": [
+      {
+        "bestand": "kijkvergunning-2.webp",
+        "titel": "de uitkomst",
+        "bijschrift": "4 meter diep, 5 breed, betrouwbaarheid 8,8.",
+        "alt": "Resultaatscherm met luchtfoto, perceelgrens en de melding dat uitbouwen waarschijnlijk mag, maximaal 4 meter diep."
+      },
+      {
+        "bestand": "kijkvergunning-1.webp",
+        "titel": "startpagina",
+        "bijschrift": "Eén vraag, één invoerveld.",
+        "alt": "Startpagina met de vraag Wat mag ik bouwen op mijn adres en een zoekveld."
+      },
+      {
+        "bestand": "kijkvergunning-3.webp",
+        "titel": "uitleg",
+        "bijschrift": "Hoe de cijfers tot stand komen.",
+        "alt": "Uitlegpagina Hoe werkt KijkVergunning met genummerde stappen."
+      }
+    ]
+  },
+  {
+    "id": "lumiere",
+    "naam": "Lumière Dakkapellen",
+    "status": "prototype",
+    "statusLabel": "Prototype",
+    "map": "C:/Users/mstic/Documents/tije lumiere",
+    "periode": "februari 2026",
+    "eersteDag": "2026-02-22",
+    "laatsteDag": "2026-02-22",
+    "eenRegel": "Je dakkapel in 3D op je eigen dak, met pdf-offerte eruit.",
+    "voorWie": "Een dakkapel die je in 3D op je eigen dak ziet staan — draaien, afwerking kiezen, offerte eruit.",
+    "voorbeeld": "Je geeft je postcode en de breedte van je dak op. Het model wordt opgebouwd met de dakkapel echt in het dakvlak gezet, inclusief aansluiting en loodslabben. Je draait eromheen, kiest de afwerking, en haalt er een pdf-offerte uit.",
+    "doet": [
+      "Echte 3D in de browser, **zonder plug-in of installatie**.",
+      "De dakkapel zit in het dak, niet er los overheen geplakt.",
+      "Offerte als pdf, rechtstreeks vanuit de configurator."
+    ],
+    "techniek": [
+      "React 19",
+      "three.js",
+      "React Three Fiber",
+      "Framer Motion",
+      "jsPDF"
+    ],
+    "tags": [
+      "website",
+      "3d"
+    ],
+    "url": null,
+    "urlLabel": null,
+    "besloten": "Werkend prototype — draait lokaal.",
+    "tegel": "t-lumiere.webp",
+    "beelden": [
+      {
+        "bestand": "lumiere-1.webp",
+        "titel": "de configurator",
+        "bijschrift": "Het 3D-model reageert direct op wat je invult.",
+        "alt": "3D-weergave van een dak met dakkapel en schoorsteen, met een paneel Waar gaan we bouwen met velden voor postcode en breedte."
+      }
+    ]
+  },
+  {
+    "id": "kiesradar",
+    "naam": "Kiesradar",
+    "status": "studie",
+    "statusLabel": "Studieproject",
+    "map": "C:/Users/mstic/HBO-ICT x Studiekiezers - PF104- 10",
+    "periode": "maart – juni 2026",
+    "eersteDag": "2026-03-24",
+    "laatsteDag": "2026-06-15",
+    "eenRegel": "Fysieke opstelling met sensoren die met een webapp en database praten.",
+    "voorWie": "Teamproject aan de Hogeschool van Amsterdam: een fysieke opstelling die studiekiezers helpt kiezen, met sensoren die met een webapp praten.",
+    "voorbeeld": "Een studiekiezer beantwoordt vragen op de opstelling zelf. De sensoren op de ESP32 sturen elk antwoord naar de webserver, die het in de database zet, en op het scherm verschijnt meteen waar hij het beste bij past.",
+    "doet": [
+      "ESP32 met sensoren stuurt metingen via http naar de webserver.",
+      "Flask-applicatie met MySQL erachter, draaiend in Docker.",
+      "De webserver werkt **ook zonder hardware**, zodat het team kon doorwerken.",
+      "Projectdocumentatie als website via MkDocs."
+    ],
+    "techniek": [
+      "Python",
+      "Flask",
+      "MySQL",
+      "Docker",
+      "ESP32",
+      "GitLab CI"
+    ],
+    "tags": [
+      "software",
+      "mobiel"
+    ],
+    "url": null,
+    "urlLabel": null,
+    "besloten": "Teamproject HvA — code staat op de GitLab van de hogeschool.",
+    "tegel": null,
+    "tegelTekst": "HARDWARE · GEEN WEBSITE\nESP32 → FLASK → MYSQL",
+    "beelden": []
+  }
+]
