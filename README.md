@@ -63,6 +63,34 @@ Railway bouwt daarna vanzelf opnieuw.
 | `index.html` | gegenereerd — niet met de hand aanpassen |
 | `artifact.html` | dezelfde pagina, zonder eigen html-omhulsel |
 
+## Controleren voor je pusht
+
+```
+npm run check            alles behalve het internet
+npm run check -- net     ook of je live adressen nog antwoorden
+```
+
+Dit draait **automatisch bij elke `git push`**. Zijn er fouten, dan gaat de push
+niet door. Moet je er toch langs: `git push --no-verify`.
+
+Wat hij nakijkt, en waarom elk punt erin staat:
+
+| Controle | Omdat |
+| --- | --- |
+| velden en datums in `projects.json` | een typfout levert een halve pagina op zonder klacht |
+| elk beeld waarnaar verwezen wordt bestaat | er is een keer gepubliceerd met lege tegels |
+| syntax van server.js en de tools | een kapotte regex liet Railway crashen |
+| `index.html` is opnieuw gebouwd | anders push je de oude pagina bij nieuwe gegevens |
+| de server start écht en geeft 200 | dit is de controle die die crash had voorkomen |
+| `data/` geeft 404 | je gegevens horen niet op internet te staan |
+| shellscripts hebben LF | met CRLF weigert bash ze op Linux |
+
+Na een verse clone staat de hook er niet, want die gaat niet mee in git:
+
+```
+bash tools/installeer-hook.sh
+```
+
 ## Losse commando's
 
 ```

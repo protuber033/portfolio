@@ -3,13 +3,16 @@
   "version": "2.0.0",
   "private": true,
   "type": "module",
-  "engines": { "node": ">=20" },
+  "engines": {
+    "node": ">=20"
+  },
   "scripts": {
     "start": "node server.js",
     "scan": "node tools/scan.mjs",
     "shots": "node tools/shots.mjs",
     "build": "node tools/build.mjs",
-    "update": "npm run scan && npm run shots && npm run build",
-    "dev": "node tools/build.mjs && node server.js"
+    "update": "npm run scan && npm run shots && npm run build && npm run check",
+    "dev": "node tools/build.mjs && node server.js",
+    "check": "node tools/controle.mjs"
   }
 }
