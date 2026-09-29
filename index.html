@@ -608,6 +608,63 @@ h1 { font-size: clamp(1.9rem, 4.4vw, 2.9rem); max-width: 22ch; }
   .stappen li { width: 100%; }
   .stappen li + li::before { left: 50%; top: -8px; width: 1px; height: 8px; }
 }
+
+/* ============ wat je krijgt als klant ============ */
+.stroom-los {
+  margin-top: 26px;
+  padding: clamp(18px, 2.6vw, 26px);
+  border: 1px solid var(--rand);
+  border-radius: 16px;
+  background: var(--vlak);
+}
+.stroom-los h4 { margin-top: 0; }
+
+.blokken {
+  display: grid; grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 16px; margin-top: 18px;
+}
+.blok {
+  background: var(--vlak); border: 1px solid var(--rand); border-radius: 16px;
+  padding: clamp(20px, 2.6vw, 28px);
+  display: flex; flex-direction: column; gap: 10px;
+  position: relative; overflow: hidden;
+}
+.blok::before {
+  content: ""; position: absolute; inset: 0 0 auto 0; height: 2px;
+  background: var(--accent); opacity: .6;
+}
+.blok-label {
+  font-family: var(--mono); font-size: .7rem; letter-spacing: .14em; text-transform: uppercase;
+  color: var(--accent); margin: 0;
+}
+.blok h3 {
+  font-family: var(--display); font-weight: 700; font-size: 1.16rem;
+  letter-spacing: -.02em; margin: 0; text-wrap: balance;
+}
+.punten { list-style: none; margin: 4px 0 0; padding: 0; display: grid; gap: 9px; }
+.punten li {
+  position: relative; padding-left: 26px;
+  color: var(--tekst-2); font-size: .94rem;
+}
+.punten li::before {
+  content: ""; position: absolute; left: 2px; top: .34em;
+  width: 16px; height: 16px; border-radius: 50%;
+  background: var(--accent-zacht);
+}
+.punten li::after {
+  content: ""; position: absolute; left: 6px; top: .6em;
+  width: 7px; height: 3px;
+  border-left: 1.5px solid var(--accent);
+  border-bottom: 1.5px solid var(--accent);
+  transform: rotate(-45deg);
+}
+
+@media (max-width: 960px) {
+  .blokken { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+@media (max-width: 620px) {
+  .blokken { grid-template-columns: minmax(0, 1fr); }
+}
 </style>
 </head>
 <body>
@@ -619,7 +676,7 @@ h1 { font-size: clamp(1.9rem, 4.4vw, 2.9rem); max-width: 22ch; }
     <nav class="menu">
       <a href="#werk">Werk</a>
       <a href="#lagen">Aanpak</a>
-      <a href="#cijfers">Cijfers</a>
+      <a href="#traject">Samenwerken</a>
       <a href="#contact">Contact</a>
     </nav>
     <a class="knop knop-klein" href="#contact">Neem contact op</a>
@@ -871,7 +928,7 @@ h1 { font-size: clamp(1.9rem, 4.4vw, 2.9rem); max-width: 22ch; }
   <section class="sectie" id="lagen">
     <div class="binnen">
       <h2 class="sectie-kop">Voorkant én achterkant, door dezelfde handen</h2>
-      <p class="sectie-uitleg">Bij de meeste bureaus bouwt de een de website en moet je voor alles wat erachter zit bij iemand anders zijn. Wij doen allebei, en juist daar zit de winst: de knop die de klant indrukt en de database die het antwoord geeft zijn samen ontworpen.</p>
+      <p class="sectie-uitleg">Bij de meeste bureaus bouwt de een de website en moet je voor alles wat erachter zit bij iemand anders zijn. Ik doe allebei, en juist daar zit de winst: de knop die de klant indrukt en de database die het antwoord geeft zijn samen ontworpen.</p>
       <div class="lagen">
         <article class="laag">
           <p class="laag-label">Front-end</p>
@@ -1057,6 +1114,41 @@ h1 { font-size: clamp(1.9rem, 4.4vw, 2.9rem); max-width: 22ch; }
     </div>
   </section>
 
+  <section class="sectie" id="traject">
+    <div class="binnen">
+      <h2 class="sectie-kop">Wat je krijgt als je met mij werkt</h2>
+      <p class="sectie-uitleg">Geen offerte van drie kantjes met vaktermen erin. Zo loopt het, en dit zit er standaard bij.</p>
+
+      <div class="stroom stroom-los">
+        <h4>Zo loopt het</h4>
+        <ol class="stappen">
+          <li><span class="nr">1</span><span class="wat">We gaan zitten en je vertelt wat er blijft liggen</span></li>
+          <li><span class="nr">2</span><span class="wat">Je krijgt een voorstel: wat ik bouw, wat het kost, hoe lang het duurt</span></li>
+          <li><span class="nr">3</span><span class="wat">Ik bouw in stukken, je ziet steeds de echte versie</span></li>
+          <li><span class="nr">4</span><span class="wat">Live op je eigen domein, met ssl en back-ups</span></li>
+          <li><span class="nr">5</span><span class="wat">Daarna aanpassen wanneer je bedrijf verandert</span></li>
+        </ol>
+      </div>
+
+      <div class="blokken">
+        <article class="blok">
+          <p class="blok-label">Zit er altijd bij</p>
+          <h3>Waar je niet over hoeft na te denken</h3>
+          <ul class="punten"><li>Je eigen domein met een geldig ssl-slotje</li><li>Database met back-ups</li><li>Zakelijke mail die goed is ingesteld, zodat hij niet in de spambox belandt</li><li>Werkt op telefoon, tablet en computer</li><li>Zo opgezet dat Google de pagina's kan lezen</li></ul>
+        </article>
+        <article class="blok">
+          <p class="blok-label">Je eigen beheer</p>
+          <h3>Waar je zelf bij kan</h3>
+          <ul class="punten"><li>Aanvragen en klanten inzien</li><li>Prijzen en teksten aanpassen</li><li>Foto's toevoegen of vervangen</li><li>Je personeel eigen inloggegevens geven</li><li>Zonder dat je mij hoeft te bellen</li></ul>
+        </article>
+        <article class="blok">
+          <p class="blok-label">Waar je het voor doet</p>
+          <h3>Wat het je scheelt</h3>
+          <ul class="punten"><li>Aanvragen komen binnen terwijl je slaapt</li><li>Niet meer hetzelfde nummer op drie plekken overtypen</li><li>Klanten zien zelf hoe hun dossier ervoor staat</li><li>Offertes eruit zonder er zelf voor te gaan zitten</li><li>Minder telefoontjes over steeds dezelfde vraag</li></ul>
+        </article></div>
+    </div>
+  </section>
+
   <section class="sectie" id="contact">
     <div class="binnen">
       <div class="contact">
@@ -1076,7 +1168,7 @@ h1 { font-size: clamp(1.9rem, 4.4vw, 2.9rem); max-width: 22ch; }
 
 <footer class="voet">
   <div class="binnen">
-    <p>Alle schermen op deze pagina zijn echte screenshots van de draaiende projecten. Klantgegevens zijn onleesbaar gemaakt. Samih Tichtti · HBO-ICT, Hogeschool van Amsterdam.</p>
+    <p>Alle schermen op deze pagina zijn echte screenshots van de draaiende projecten. Klantgegevens zijn onleesbaar gemaakt. Samih Tichtti · Eemland Digital · HBO-ICT, Hogeschool van Amsterdam.</p>
     <p class="bijgewerkt">Bijgewerkt 29 september 2026 · 11 projecten</p>
   </div>
 </footer>

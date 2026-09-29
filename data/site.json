@@ -131,5 +131,52 @@
       "sleutel": "mobiel",
       "label": "App & hardware"
     }
-  ]
+  ],
+  "bedrijf": "Eemland Digital",
+  "traject": {
+    "kop": "Wat je krijgt als je met mij werkt",
+    "intro": "Geen offerte van drie kantjes met vaktermen erin. Zo loopt het, en dit zit er standaard bij.",
+    "stappen": [
+      "We gaan zitten en je vertelt wat er blijft liggen",
+      "Je krijgt een voorstel: wat ik bouw, wat het kost, hoe lang het duurt",
+      "Ik bouw in stukken, je ziet steeds de echte versie",
+      "Live op je eigen domein, met ssl en back-ups",
+      "Daarna aanpassen wanneer je bedrijf verandert"
+    ],
+    "blokken": [
+      {
+        "label": "Zit er altijd bij",
+        "kop": "Waar je niet over hoeft na te denken",
+        "punten": [
+          "Je eigen domein met een geldig ssl-slotje",
+          "Database met back-ups",
+          "Zakelijke mail die goed is ingesteld, zodat hij niet in de spambox belandt",
+          "Werkt op telefoon, tablet en computer",
+          "Zo opgezet dat Google de pagina's kan lezen"
+        ]
+      },
+      {
+        "label": "Je eigen beheer",
+        "kop": "Waar je zelf bij kan",
+        "punten": [
+          "Aanvragen en klanten inzien",
+          "Prijzen en teksten aanpassen",
+          "Foto's toevoegen of vervangen",
+          "Je personeel eigen inloggegevens geven",
+          "Zonder dat je mij hoeft te bellen"
+        ]
+      },
+      {
+        "label": "Waar je het voor doet",
+        "kop": "Wat het je scheelt",
+        "punten": [
+          "Aanvragen komen binnen terwijl je slaapt",
+          "Niet meer hetzelfde nummer op drie plekken overtypen",
+          "Klanten zien zelf hoe hun dossier ervoor staat",
+          "Offertes eruit zonder er zelf voor te gaan zitten",
+          "Minder telefoontjes over steeds dezelfde vraag"
+        ]
+      }
+    ]
+  }
 }

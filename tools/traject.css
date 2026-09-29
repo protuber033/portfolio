@@ -1,0 +1,56 @@
+/* ============ wat je krijgt als klant ============ */
+.stroom-los {
+  margin-top: 26px;
+  padding: clamp(18px, 2.6vw, 26px);
+  border: 1px solid var(--rand);
+  border-radius: 16px;
+  background: var(--vlak);
+}
+.stroom-los h4 { margin-top: 0; }
+
+.blokken {
+  display: grid; grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 16px; margin-top: 18px;
+}
+.blok {
+  background: var(--vlak); border: 1px solid var(--rand); border-radius: 16px;
+  padding: clamp(20px, 2.6vw, 28px);
+  display: flex; flex-direction: column; gap: 10px;
+  position: relative; overflow: hidden;
+}
+.blok::before {
+  content: ""; position: absolute; inset: 0 0 auto 0; height: 2px;
+  background: var(--accent); opacity: .6;
+}
+.blok-label {
+  font-family: var(--mono); font-size: .7rem; letter-spacing: .14em; text-transform: uppercase;
+  color: var(--accent); margin: 0;
+}
+.blok h3 {
+  font-family: var(--display); font-weight: 700; font-size: 1.16rem;
+  letter-spacing: -.02em; margin: 0; text-wrap: balance;
+}
+.punten { list-style: none; margin: 4px 0 0; padding: 0; display: grid; gap: 9px; }
+.punten li {
+  position: relative; padding-left: 26px;
+  color: var(--tekst-2); font-size: .94rem;
+}
+.punten li::before {
+  content: ""; position: absolute; left: 2px; top: .34em;
+  width: 16px; height: 16px; border-radius: 50%;
+  background: var(--accent-zacht);
+}
+.punten li::after {
+  content: ""; position: absolute; left: 6px; top: .6em;
+  width: 7px; height: 3px;
+  border-left: 1.5px solid var(--accent);
+  border-bottom: 1.5px solid var(--accent);
+  transform: rotate(-45deg);
+}
+
+@media (max-width: 960px) {
+  .blokken { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+@media (max-width: 620px) {
+  .blokken { grid-template-columns: minmax(0, 1fr); }
+}

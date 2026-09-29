@@ -180,6 +180,13 @@ const laag = (l) => `
           <ul class="techniek">${l.techniek.map((t) => `<li>${esc(t)}</li>`).join('')}</ul>
         </article>`;
 
+const blok = (b) => `
+        <article class="blok">
+          <p class="blok-label">${esc(b.label)}</p>
+          <h3>${esc(b.kop)}</h3>
+          <ul class="punten">${b.punten.map((x) => `<li>${esc(x)}</li>`).join('')}</ul>
+        </article>`;
+
 const kunde = (k) => `
         <article class="kunde">
           <p class="kunde-label">${esc(k.label)}</p>
@@ -212,7 +219,8 @@ const filterKnoppen = site.filters.map((f, i) => {
 
 const css = [
   readFileSync(join(WORTEL, 'tools/stijl.css'), 'utf8'),
-  readFileSync(join(WORTEL, 'tools/extra.css'), 'utf8')
+  readFileSync(join(WORTEL, 'tools/extra.css'), 'utf8'),
+  readFileSync(join(WORTEL, 'tools/traject.css'), 'utf8')
 ].join('\n');
 const js = readFileSync(join(WORTEL, 'tools/gedrag.js'), 'utf8');
 
@@ -230,7 +238,7 @@ const binnenkant = `<a class="overslaan" href="#werk">Direct naar het werk</a>
     <nav class="menu">
       <a href="#werk">Werk</a>
       <a href="#lagen">Aanpak</a>
-      <a href="#cijfers">Cijfers</a>
+      <a href="#traject">Samenwerken</a>
       <a href="#contact">Contact</a>
     </nav>
     <a class="knop knop-klein" href="#contact">Neem contact op</a>
@@ -286,7 +294,7 @@ ${[...baan, ...baan].map((b) => `          <img src="img/m-${esc(b.bestand)}" wi
   <section class="sectie" id="lagen">
     <div class="binnen">
       <h2 class="sectie-kop">Voorkant én achterkant, door dezelfde handen</h2>
-      <p class="sectie-uitleg">Bij de meeste bureaus bouwt de een de website en moet je voor alles wat erachter zit bij iemand anders zijn. Wij doen allebei, en juist daar zit de winst: de knop die de klant indrukt en de database die het antwoord geeft zijn samen ontworpen.</p>
+      <p class="sectie-uitleg">Bij de meeste bureaus bouwt de een de website en moet je voor alles wat erachter zit bij iemand anders zijn. Ik doe allebei, en juist daar zit de winst: de knop die de klant indrukt en de database die het antwoord geeft zijn samen ontworpen.</p>
       <div class="lagen">${site.lagen.map(laag).join('')}</div>
 
       <div class="bouw">
@@ -341,6 +349,22 @@ ${[...baan, ...baan].map((b) => `          <img src="img/m-${esc(b.bestand)}" wi
     </div>
   </section>
 
+  <section class="sectie" id="traject">
+    <div class="binnen">
+      <h2 class="sectie-kop">${esc(site.traject.kop)}</h2>
+      <p class="sectie-uitleg">${esc(site.traject.intro)}</p>
+
+      <div class="stroom stroom-los">
+        <h4>Zo loopt het</h4>
+        <ol class="stappen">
+${site.traject.stappen.map((st, i) => `          <li><span class="nr">${i + 1}</span><span class="wat">${esc(st)}</span></li>`).join('\n')}
+        </ol>
+      </div>
+
+      <div class="blokken">${site.traject.blokken.map(blok).join('')}</div>
+    </div>
+  </section>
+
   <section class="sectie" id="contact">
     <div class="binnen">
       <div class="contact">
@@ -360,7 +384,7 @@ ${[...baan, ...baan].map((b) => `          <img src="img/m-${esc(b.bestand)}" wi
 
 <footer class="voet">
   <div class="binnen">
-    <p>Alle schermen op deze pagina zijn echte screenshots van de draaiende projecten. Klantgegevens zijn onleesbaar gemaakt. ${esc(site.naam)} · ${esc(site.opleiding)}.</p>
+    <p>Alle schermen op deze pagina zijn echte screenshots van de draaiende projecten. Klantgegevens zijn onleesbaar gemaakt. ${esc(site.naam)} · ${esc(site.bedrijf)} · ${esc(site.opleiding)}.</p>
     <p class="bijgewerkt">Bijgewerkt ${new Date().toLocaleDateString('nl-NL', { day: 'numeric', month: 'long', year: 'numeric' })} · ${aantal} projecten</p>
   </div>
 </footer>
