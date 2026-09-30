@@ -429,6 +429,257 @@
     ]
   },
   {
+    "status": "live",
+    "statusLabel": "Live · eigen concept",
+    "periode": "september 2026",
+    "eersteDag": "2026-09-30",
+    "laatsteDag": "2026-09-30",
+    "github": "https://github.com/protuber033/portfolio",
+    "urlLabel": "Probeer de demo",
+    "id": "kaapnoord",
+    "naam": "Kaap Noord",
+    "eenRegel": "Een webshop waar je echt doorheen kunt lopen, tot en met de betaling.",
+    "voorWie": "Een bedachte koffiebranderij, gebouwd om te laten zien hoe online verkopen er van binnen uitziet. Niet alleen het winkeltje, maar ook wat er misgaat: voorraad die op is, een code die niet bestaat, een betaling die afbreekt.",
+    "voorbeeld": "Iemand legt twee zakken in zijn mand, kiest hoe ze gemalen moeten worden en typt een kortingscode in. Bij het afrekenen kiest hij tussen post, bakfiets of afhalen — boven de drempel vervallen de verzendkosten vanzelf. Daarna komt een nagebootste iDEAL-stap waarin je zelf mag kiezen of de betaling lukt. Kiest hij \"annuleren\", dan blijft zijn mand netjes staan en gaat er geen voorraad af.",
+    "doet": [
+      "Winkelwagen met **maling per zak**, dus dezelfde koffie twee keer met een andere keuze.",
+      "Voorraad die live meeloopt en pas afgaat bij een **geslaagde** betaling.",
+      "Kortingscodes met echte controle — een verzonnen code wordt geweigerd.",
+      "Bezorgkosten met een drempel voor gratis verzenden.",
+      "Btw wordt eruit gerekend en apart getoond, zoals het hoort bij een Nederlandse prijs."
+    ],
+    "stappen": [
+      "Koffie kiezen",
+      "Maling en aantal",
+      "Mand en kortingscode",
+      "Bezorging kiezen",
+      "Gegevens invullen",
+      "iDEAL-stap",
+      "Bevestiging met bon"
+    ],
+    "techniek": [
+      "Node 22",
+      "Server-side rekenen",
+      "Sessies per bezoeker",
+      "SVG",
+      "Railway"
+    ],
+    "tags": [
+      "website",
+      "software"
+    ],
+    "url": "https://demos-production-4ca7.up.railway.app/koffie/",
+    "besloten": "Verzonnen bedrijf — de site is echt, de klant niet.",
+    "tegelTekst": "Kaap Noord\nwebshop",
+    "tegel": "t-kaapnoord.webp",
+    "beelden": [
+      {
+        "bestand": "kaapnoord-1.webp",
+        "titel": "de winkel",
+        "bijschrift": "Warm en op papier — bewust het tegenovergestelde van een dashboard.",
+        "alt": "Homepage van koffiebranderij Kaap Noord met een getekende kop koffie en de kop Koffie die nog naar de brander ruikt."
+      },
+      {
+        "bestand": "kaapnoord-2.webp",
+        "titel": "de koffiekaart",
+        "bijschrift": "Elke koffie een eigen getekende zak, geen stockfoto.",
+        "alt": "Raster met koffiesoorten, elk met een getekende zak in een eigen kleur, prijs en voorraad."
+      },
+      {
+        "bestand": "kaapnoord-3.webp",
+        "titel": "per soort",
+        "bijschrift": "Herkomst, hoogte, proces en brandingsgraad in één blik.",
+        "alt": "Productpaneel met herkomst, hoogte, proces, een brandingsmeter en keuzeknoppen voor de maling."
+      }
+    ]
+  },
+  {
+    "status": "live",
+    "statusLabel": "Live · eigen concept",
+    "periode": "september 2026",
+    "eersteDag": "2026-09-30",
+    "laatsteDag": "2026-09-30",
+    "github": "https://github.com/protuber033/portfolio",
+    "urlLabel": "Probeer de demo",
+    "id": "vandijk",
+    "naam": "Van Dijk Installatie",
+    "eenRegel": "Een klantportaal waarin je zelf kunt proberen of je bij andermans dossier komt.",
+    "voorWie": "Een bedacht installatiebedrijf. Het laat zien wat een portaal echt moet doen: niet mooie schermen, maar sluitende afspraken over wie wat mag zien. Er zitten drie accounts in — twee klanten en een medewerker.",
+    "voorbeeld": "Log in als Marieke en je ziet je eigen offertes, facturen en onderhoudsrapporten. In het blok \"probeer het zelf\" vraag je vervolgens het dossier van Hotel De Eemhof op. Dat krijg je niet, en je ziet precies waarom. Log daarna in als monteur en dezelfde vraag wordt wél beantwoord.",
+    "doet": [
+      "Rechten worden **op de server** bepaald, niet in het scherm verstopt.",
+      "Een vervalst dossiernummer in een verzoek wordt genegeerd.",
+      "Fout wachtwoord en onbekend adres geven dezelfde melding, zodat je niet kunt aftasten welke adressen bestaan.",
+      "Offertes ter plekke accepteren of afwijzen.",
+      "Een storing melden die meteen als afspraak in het dossier komt."
+    ],
+    "stappen": [
+      "Inloggen",
+      "Je eigen dossier zien",
+      "Een offerte beoordelen",
+      "Proberen wat niet van jou is",
+      "De weigering lezen",
+      "Als medewerker opnieuw kijken"
+    ],
+    "techniek": [
+      "Node 22",
+      "Sessies",
+      "Rechten per rol",
+      "Railway"
+    ],
+    "tags": [
+      "software"
+    ],
+    "url": "https://demos-production-4ca7.up.railway.app/portaal/",
+    "besloten": "Verzonnen bedrijf — de site is echt, de klant niet.",
+    "tegelTekst": "Van Dijk\nklantportaal",
+    "tegel": "t-vandijk.webp",
+    "beelden": [
+      {
+        "bestand": "vandijk-1.webp",
+        "titel": "inloggen",
+        "bijschrift": "Drie accounts klaar: twee klanten en een monteur.",
+        "alt": "Inlogscherm van het klantportaal met drie voorgevulde proefaccounts eronder."
+      },
+      {
+        "bestand": "vandijk-2.webp",
+        "titel": "je eigen dossier",
+        "bijschrift": "De server vertelt erbij wat hij heeft opgezocht — en wat niet.",
+        "alt": "Dossieroverzicht met openstaand bedrag, offertes en facturen, en een balk waarin de server meldt welke gegevens zijn ingeladen."
+      },
+      {
+        "bestand": "vandijk-3.webp",
+        "titel": "de weigering",
+        "bijschrift": "Vraag een dossier op dat niet van je is en je ziet waarom het niet mag.",
+        "alt": "Het blok Probeer het zelf met een keuzelijst van dossiers en een antwoord van de server met code 403 Verboden."
+      }
+    ]
+  },
+  {
+    "status": "live",
+    "statusLabel": "Live · eigen concept",
+    "periode": "september 2026",
+    "eersteDag": "2026-09-30",
+    "laatsteDag": "2026-09-30",
+    "github": "https://github.com/protuber033/portfolio",
+    "urlLabel": "Probeer de demo",
+    "id": "wilgenhof",
+    "naam": "Hovenier Wilgenhof",
+    "eenRegel": "Klussen over ploegen verdelen, met een kaart en een reistijd die meerekent.",
+    "voorWie": "Een bedacht hoveniersbedrijf met vier ploegen. Voor iedereen die zijn dag nu nog op een whiteboard of in een groepsapp verdeelt en wil zien wat het alternatief is.",
+    "voorbeeld": "Je sleept een klus naar Ploeg Noord in de ochtend. De server rekent meteen de rit uit vanaf de loods langs alle klussen en weer terug, en zegt of dat dagdeel nog past of hoeveel minuten je tekortkomt. De kaart tekent de rit mee. Met één knop verdeelt hij alles wat nog openstaat over de ploeg die er het dichtst langs rijdt.",
+    "doet": [
+      "Slepen met de muis, of aantikken en het vak aanwijzen op een telefoon.",
+      "Reistijd en werktijd samen tegen de lengte van het dagdeel — **te vol is meteen zichtbaar**.",
+      "Automatisch verdelen op wie er het dichtst langs rijdt, spoed eerst.",
+      "De volgorde binnen een rit aanpassen, de kaart volgt.",
+      "De kaart wordt zelf getekend uit de coördinaten, dus er hangt geen kaartendienst van derden aan."
+    ],
+    "stappen": [
+      "Openstaande klussen bekijken",
+      "Naar een ploeg slepen",
+      "Rit en reistijd zien meerekenen",
+      "Volgorde bijstellen",
+      "De rest automatisch laten verdelen"
+    ],
+    "techniek": [
+      "Node 22",
+      "SVG-kaart",
+      "Afstandsberekening",
+      "Slepen en neerzetten",
+      "Railway"
+    ],
+    "tags": [
+      "software",
+      "mobiel"
+    ],
+    "url": "https://demos-production-4ca7.up.railway.app/planning/",
+    "besloten": "Verzonnen bedrijf — de site is echt, de klant niet.",
+    "tegelTekst": "Wilgenhof\ndagplanning",
+    "tegel": "t-wilgenhof.webp",
+    "beelden": [
+      {
+        "bestand": "wilgenhof-1.webp",
+        "titel": "de dag verdelen",
+        "bijschrift": "Sleep een klus naar een ploeg; de reistijd rekent meteen mee.",
+        "alt": "Planningsscherm met een kolom openstaande klussen links en vier ploegen met ochtend- en middagvakken ernaast."
+      },
+      {
+        "bestand": "wilgenhof-2.webp",
+        "titel": "past het nog?",
+        "bijschrift": "Werk plus rijden tegen de lengte van het dagdeel.",
+        "alt": "Dagdeelvak met een capaciteitsbalk en de tekst drie uur vijftig werk plus achttien minuten rijden, tweeentwintig minuten over."
+      },
+      {
+        "bestand": "wilgenhof-3.webp",
+        "titel": "de rit op de kaart",
+        "bijschrift": "Zelf getekend uit de coördinaten — geen kaartendienst van derden.",
+        "alt": "Schematische kaart van de regio Amersfoort met genummerde klussen en per ploeg een gekleurde route vanaf de loods."
+      }
+    ]
+  },
+  {
+    "status": "live",
+    "statusLabel": "Live · eigen concept",
+    "periode": "september 2026",
+    "eersteDag": "2026-09-30",
+    "laatsteDag": "2026-09-30",
+    "github": "https://github.com/protuber033/portfolio",
+    "urlLabel": "Probeer de demo",
+    "id": "kempen",
+    "naam": "Kempen Transport",
+    "eenRegel": "Een dashboard dat uit zichzelf bijwerkt, zonder de pagina te verversen.",
+    "voorWie": "Een bedacht transportbedrijf. Voor wie een scherm aan de muur wil dat altijd klopt, en wil weten hoe dat kan zonder dat er elke seconde iets wordt opgevraagd.",
+    "voorbeeld": "Je opent het dashboard en de cijfers beginnen te lopen: ritten die binnenkomen, stiptheid die meebeweegt, wagens die van laden naar onderweg gaan. De pagina vraagt zelf niets op — de server houdt één verbinding open en duwt er een regel doorheen zodra er iets gebeurt. Zet je twee tabbladen naast elkaar, dan lopen ze gelijk.",
+    "doet": [
+      "Eén open verbinding in plaats van elke paar seconden opnieuw vragen.",
+      "Cijfers, grafiek en meldingen bewegen **samen** mee.",
+      "Valt de verbinding weg, dan herstelt hij zichzelf en zegt het scherm dat eerlijk.",
+      "Kijkt er niemand meer, dan stopt de simulatie vanzelf — geen werk voor niets.",
+      "Status draagt nooit alleen kleur: er staat altijd een teken en een woord bij."
+    ],
+    "stappen": [
+      "Dashboard openen",
+      "Verbinding komt tot stand",
+      "Ritten komen binnen",
+      "Grafiek loopt mee",
+      "Tweede tabblad ernaast"
+    ],
+    "techniek": [
+      "Node 22",
+      "Server-sent events",
+      "SVG-grafiek",
+      "Railway"
+    ],
+    "tags": [
+      "software"
+    ],
+    "url": "https://demos-production-4ca7.up.railway.app/vloot/",
+    "besloten": "Verzonnen bedrijf — de site is echt, de klant niet.",
+    "tegelTekst": "Kempen\nlive dashboard",
+    "tegel": "t-kempen.webp",
+    "beelden": [
+      {
+        "bestand": "kempen-1.webp",
+        "titel": "het dashboard",
+        "bijschrift": "De cijfers lopen terwijl je kijkt; de pagina vraagt zelf niets op.",
+        "alt": "Donker dashboard met het aantal geleverde ritten als groot getal en daaronder tegels voor stiptheid en wagens onderweg."
+      },
+      {
+        "bestand": "kempen-2.webp",
+        "titel": "wat er binnenkomt",
+        "bijschrift": "Elke regel verschijnt op het moment dat het gebeurt.",
+        "alt": "Lijst met meldingen van geloste ritten en statuswisselingen, elk met een tijdstip."
+      },
+      {
+        "bestand": "kempen-3.webp",
+        "titel": "de vloot",
+        "bijschrift": "Acht wagens, met de toestand waarin ze nu zijn.",
+        "alt": "Lijst met vrachtwagens, chauffeurs en hun toestand: onderweg, laden, pauze of werkplaats."
+      }
+    ]
+  },
+  {
     "id": "kijkvergunning",
     "naam": "KijkVergunning",
     "status": "prototype",
