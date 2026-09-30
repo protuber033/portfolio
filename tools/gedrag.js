@@ -190,7 +190,18 @@
         knop.textContent = tekst;
         setTimeout(function () { knop.textContent = 'Kopieer link naar dit project'; }, 2200);
       };
-      if (navigator.clipboard && navigator.clipboard.writeText) {
+      // Op een telefoon is het deelvenster van het toestel zelf handiger dan
+      // een link op het klembord: dan kies je meteen WhatsApp of mail.
+      var kaartje = knop.closest('.paneel');
+      var titel = kaartje ? (kaartje.querySelector('h2') || {}).textContent : document.title;
+      if (navigator.share && matchMedia('(pointer: coarse)').matches) {
+        navigator.share({ title: titel, url: adres }).then(function () {
+          klaar('Gedeeld');
+        }, function () { /* afgebroken of geweigerd: dan maar het klembord */
+          if (navigator.clipboard) navigator.clipboard.writeText(adres).then(function () { klaar('Link gekopieerd'); }, function () { klaar(adres); });
+          else klaar(adres);
+        });
+      } else if (navigator.clipboard && navigator.clipboard.writeText) {
         navigator.clipboard.writeText(adres).then(function () { klaar('Link gekopieerd'); },
           function () { klaar(adres); });
       } else {
@@ -281,7 +292,9 @@
      precies de dingen die je met een losse div zelf fout doet. */
   var hulp = document.getElementById('hulp');
   var hulpBron = document.getElementById('hulp-data');
-  var hulpKan = hulp && hulpBron && typeof hulp.showModal === 'function';
+  var hulpKan = hulp && hulpBron &&
+    typeof hulp.showPopover === 'function' &&
+    HTMLElement.prototype.hasOwnProperty('popover');
 
   // kan de browser er niets mee, dan halen we de knop weg: een knop die niets
   // doet is erger dan een knop die er niet is
@@ -373,7 +386,7 @@
       [].forEach.call(lijf.querySelectorAll('[data-project]'), function (k) {
         k.addEventListener('click', function () {
           var id = k.getAttribute('data-project');
-          hulp.close();
+          hulp.hidePopover();
           var kaart = kaarten.filter(function (c) { return c.getAttribute('data-id') === id; })[0];
           if (kaart) {
             kaart.scrollIntoView({ block: 'center', behavior: mindBeweging() ? 'auto' : 'smooth' });
@@ -391,15 +404,141 @@
       k.addEventListener('click', function () {
         antwoorden = [];
         toonVraag(0);
-        hulp.showModal();
+        hulp.showPopover();
       });
     });
     [].forEach.call(document.querySelectorAll('[data-hulp-sluit]'), function (k) {
-      k.addEventListener('click', function () { hulp.close(); });
+      k.addEventListener('click', function () { hulp.hidePopover(); });
     });
-    // klikken naast het venster sluit het ook
-    hulp.addEventListener('click', function (e) {
-      if (e.target === hulp) hulp.close();
+    // Escape en klikken naast het paneel regelt de browser zelf, omdat het
+    // een popover="auto" is. Scheelt code en het gedraagt zich zoals mensen
+    // van elke andere popover gewend zijn.
+
+    /* het lipje rechtsonder. Wie het wegklikt, krijgt het deze bezoeker
+       niet meer te zien — dat is het verschil tussen een uitnodiging en
+       iets dat zich opdringt. */
+    var houder = document.getElementById('hulptab-houder');
+    if (houder) {
+      var weggeklikt = false;
+      try { weggeklikt = sessionStorage.getItem('hulptab-weg') === 'ja'; } catch (e) { /* privémodus */ }
+      houder.hidden = weggeklikt;
+      var weg = houder.querySelector('[data-hulp-tab-weg]');
+      if (weg) {
+        weg.addEventListener('click', function () {
+          houder.hidden = true;
+          try { sessionStorage.setItem('hulptab-weg', 'ja'); } catch (e) { /* geeft niet */ }
+        });
+      }
+    }
+  }
+
+  /* ---------- snelzoeker (Ctrl/Cmd + K) ----------
+     Springen naar elk project vanaf elke plek, zonder je muis. Weer een
+     popover="auto", dus Escape en wegklikken hoeven we niet te schrijven. */
+  var palet = document.getElementById('palet');
+  if (palet && typeof palet.showPopover === 'function' && hulpBron) {
+    var pData = JSON.parse(hulpBron.textContent);
+    var invoer = document.getElementById('palet-invoer');
+    var lijst = document.getElementById('palet-lijst');
+    var keuze = 0;
+
+    var opMac = /Mac|iPhone|iPad/.test(navigator.userAgent);
+    [].forEach.call(document.querySelectorAll('[data-palet-toets]'), function (k) {
+      k.textContent = opMac ? '⌘ K' : 'Ctrl K';
+    });
+
+    var plekken = [
+      { soort: 'plek', naam: 'Het werk', bij: 'Alle projecten', doel: '#werk' },
+      { soort: 'plek', naam: 'Aanpak', bij: 'Voorkant én achterkant', doel: '#lagen' },
+      { soort: 'plek', naam: 'Samenwerken', bij: 'Hoe het gaat als je met mij werkt', doel: '#traject' },
+      { soort: 'plek', naam: 'Contact', bij: 'Laat je site doormeten', doel: 'contact/' }
+    ];
+    var alles = pData.projecten.map(function (p) {
+      return { soort: 'project', naam: p.naam, bij: p.eenRegel, id: p.id, tegel: p.tegel, zoek: p.zoek };
+    }).concat(plekken.map(function (p) { p.zoek = (p.naam + ' ' + p.bij).toLowerCase(); return p; }));
+
+    function treffers() {
+      var t = invoer.value.trim().toLowerCase();
+      if (!t) return alles.slice(0, 8);
+      return alles.filter(function (x) { return x.zoek.indexOf(t) !== -1; }).slice(0, 8);
+    }
+
+    function tekenPalet() {
+      var rijen = treffers();
+      if (keuze >= rijen.length) keuze = Math.max(0, rijen.length - 1);
+      if (!rijen.length) {
+        lijst.innerHTML = '<li class="palet-leeg">Niets gevonden. Probeer een andere term.</li>';
+        return;
+      }
+      lijst.innerHTML = rijen.map(function (r, i) {
+        return '<li><button type="button" class="palet-rij" role="option" data-i="' + i + '" aria-selected="' + (i === keuze) + '">' +
+          (r.tegel ? '<img src="img/' + r.tegel + '" width="52" height="33" alt="" loading="lazy">' : '<span class="vak"></span>') +
+          '<span><b>' + r.naam + '</b><small>' + r.bij + '</small></span>' +
+          '<span class="soort">' + (r.soort === 'plek' ? 'ga naar' : 'project') + '</span>' +
+        '</button></li>';
+      }).join('');
+      [].forEach.call(lijst.querySelectorAll('[data-i]'), function (k) {
+        k.addEventListener('click', function () { kiesUitPalet(rijen[Number(k.getAttribute('data-i'))]); });
+        k.addEventListener('mousemove', function () {
+          keuze = Number(k.getAttribute('data-i'));
+          [].forEach.call(lijst.querySelectorAll('[data-i]'), function (o) {
+            o.setAttribute('aria-selected', o === k);
+          });
+        });
+      });
+    }
+
+    function kiesUitPalet(r) {
+      if (!r) return;
+      palet.hidePopover();
+      if (r.soort === 'plek') {
+        if (r.doel.charAt(0) === '#') {
+          var doel = document.querySelector(r.doel);
+          if (doel) doel.scrollIntoView({ behavior: mindBeweging() ? 'auto' : 'smooth', block: 'start' });
+        } else {
+          location.href = r.doel;
+        }
+        return;
+      }
+      var kaart = kaarten.filter(function (c) { return c.getAttribute('data-id') === r.id; })[0];
+      if (kaart) {
+        kaart.scrollIntoView({ block: 'center', behavior: 'auto' });
+        open(r.id, kaart.querySelector('.kaart-knop'));
+      }
+    }
+
+    function openPalet() {
+      keuze = 0;
+      invoer.value = '';
+      tekenPalet();
+      palet.showPopover();
+      invoer.focus();
+    }
+
+    invoer.addEventListener('input', function () { keuze = 0; tekenPalet(); });
+    invoer.addEventListener('keydown', function (e) {
+      var rijen = treffers();
+      if (e.key === 'ArrowDown' || e.key === 'ArrowUp') {
+        e.preventDefault();
+        keuze = (keuze + (e.key === 'ArrowDown' ? 1 : rijen.length - 1)) % Math.max(1, rijen.length);
+        tekenPalet();
+        var aan = lijst.querySelector('[aria-selected="true"]');
+        if (aan) aan.scrollIntoView({ block: 'nearest' });
+      } else if (e.key === 'Enter') {
+        e.preventDefault();
+        kiesUitPalet(rijen[keuze]);
+      }
+    });
+
+    [].forEach.call(document.querySelectorAll('[data-palet-open]'), function (k) {
+      k.addEventListener('click', openPalet);
+    });
+
+    document.addEventListener('keydown', function (e) {
+      if ((e.metaKey || e.ctrlKey) && (e.key === 'k' || e.key === 'K')) {
+        e.preventDefault();
+        if (palet.matches(':popover-open')) palet.hidePopover(); else openPalet();
+      }
     });
   }
 

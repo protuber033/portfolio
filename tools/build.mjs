@@ -74,7 +74,7 @@ function kaart(p, pre = '') {
   const chips = (p.techniek || []).slice(0, 3)
     .map((t) => `<span>${esc(t)}</span>`).join('');
   return `
-        <li class="kaart" data-id="${esc(p.id)}" data-tags="${esc((p.tags || []).join(' '))}" data-zoek="${esc((p.naam + ' ' + p.eenRegel + ' ' + (p.techniek || []).join(' ')).toLowerCase())}">
+        <li class="kaart" data-id="${esc(p.id)}" data-tags="${esc((p.tags || []).join(' '))}" data-zoek="${esc((p.naam + ' ' + p.eenRegel + ' ' + (p.voorWie || '') + ' ' + (p.techniek || []).join(' ')).toLowerCase())}">
           <a class="kaart-knop" href="${pre}werk/${esc(p.id)}/" aria-haspopup="dialog">
             <span class="duim">${beeld}</span>
             <span class="kaart-tekst">
@@ -389,7 +389,14 @@ const kopstuk = `<title>${esc(site.titel)}</title>\n${middelen}`;
 const keuzehulp = () => {
   const h = site.keuzehulp;
   return `
-<dialog class="hulp" id="hulp" aria-labelledby="hulp-titel">
+<div class="hulptab-houder" id="hulptab-houder" hidden>
+  <button type="button" class="hulptab" data-hulp-open>
+    <i aria-hidden="true"></i>${esc(h.kop)}
+  </button>
+  <button type="button" class="hulptab-weg" data-hulp-tab-weg aria-label="Verberg deze knop">&times;</button>
+</div>
+
+<div popover="auto" class="hulp" id="hulp" aria-labelledby="hulp-titel">
   <button type="button" class="hulp-sluit" data-hulp-sluit aria-label="Sluiten">&times;</button>
   <div class="hulp-kop">
     <h2 id="hulp-titel">${esc(h.kop)}</h2>
@@ -397,7 +404,7 @@ const keuzehulp = () => {
   </div>
   <div class="hulp-stappen" id="hulp-stappen">${h.vragen.map(() => '<i></i>').join('')}<i></i></div>
   <div class="hulp-lijf" id="hulp-lijf"></div>
-</dialog>`;
+</div>`;
 };
 
 const binnenkant = `<a class="overslaan" href="#werk">Direct naar het werk</a>
@@ -412,6 +419,10 @@ const binnenkant = `<a class="overslaan" href="#werk">Direct naar het werk</a>
       <a href="#traject">Samenwerken</a>
       <a href="${abs('contact/')}">Contact</a>
     </nav>
+    <button type="button" class="palet-hint" data-palet-open>
+      <svg viewBox="0 0 16 16" fill="none" aria-hidden="true"><circle cx="7" cy="7" r="4.6" stroke="currentColor" stroke-width="1.5"/><path d="M10.6 10.6L14 14" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+      Zoek <kbd data-palet-toets>Ctrl K</kbd>
+    </button>
     <a class="knop knop-klein" href="${abs('contact/')}">Neem contact op</a>
   </div>
 </header>
@@ -574,12 +585,41 @@ ${site.traject.stappen.map((st, i) => `          <li><span class="nr">${i + 1}</
 
 ${keuzehulp()}
 
+<div popover="auto" class="palet" id="palet" aria-label="Snel zoeken">
+  <div class="palet-veld">
+    <svg viewBox="0 0 16 16" fill="none" aria-hidden="true"><circle cx="7" cy="7" r="4.6" stroke="currentColor" stroke-width="1.5"/><path d="M10.6 10.6L14 14" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+    <input id="palet-invoer" type="text" autocomplete="off" spellcheck="false"
+      placeholder="Zoek een project of een onderdeel…" aria-controls="palet-lijst">
+  </div>
+  <ul class="palet-lijst" id="palet-lijst" role="listbox" aria-label="Resultaten"></ul>
+  <p class="palet-voet">
+    <span><kbd>&uarr;</kbd> <kbd>&darr;</kbd> kiezen</span>
+    <span><kbd>Enter</kbd> openen</span>
+    <span><kbd>Esc</kbd> sluiten</span>
+  </p>
+</div>
+
+<!-- De browser laadt een projectpagina alvast zodra je met je muis in de
+     buurt komt. Klik je erop, dan staat hij er al. -->
+<script type="speculationrules">
+{
+  "prerender": [
+    { "where": { "href_matches": "/werk/*" }, "eagerness": "moderate" },
+    { "where": { "href_matches": "/contact/" }, "eagerness": "moderate" }
+  ]
+}
+</script>
+
 <script type="application/json" id="hulp-data">${JSON.stringify({
   vragen: site.keuzehulp.vragen,
   slot: site.keuzehulp.slot,
   email: site.email,
   projecten: projecten.map((p) => ({
-    id: p.id, naam: p.naam, eenRegel: p.eenRegel, tags: p.tags || [], tegel: p.tegel || null
+    id: p.id, naam: p.naam, eenRegel: p.eenRegel, tags: p.tags || [], tegel: p.tegel || null,
+    // vooraf samengesteld: iemand zoekt op "koffie" of "hovenier", en die
+    // woorden staan alleen in de uitgebreide omschrijving
+    zoek: [p.naam, p.eenRegel, p.voorWie, (p.tags || []).join(' '), (p.techniek || []).join(' ')]
+      .join(' ').toLowerCase()
   }))
 }).replace(/</g, '\\u003c')}</script>
 

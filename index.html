@@ -689,7 +689,13 @@ h1 { font-size: clamp(1.9rem, 4.4vw, 2.9rem); max-width: 22ch; }
 h1, h2, h3, .kaart-naam, .blok h3 { text-wrap: balance; }
 p, .kaart-regel, .paneel-lead, li { text-wrap: pretty; }
 
-/* ---------- 2. de overgang van tegel naar venster ----------
+/* ---------- 2. overgangen ----------
+   Deze regel laat de browser ook tússen pagina's een overgang maken:
+   van de homepage naar een projectpagina, of van het ene project naar
+   het andere. Eén regel css, geen javascript. */
+@view-transition { navigation: auto; }
+
+/* ---------- 2b. de overgang van tegel naar venster ----------
    Met de View Transition API groeit de tegel die je aanklikt uit
    tot het scherm in het venster. De browser maakt daar zelf een
    beweging van; wij wijzen alleen aan welke twee elementen bij
@@ -824,32 +830,86 @@ p, .kaart-regel, .paneel-lead, li { text-wrap: pretty; }
 }
 
 /* ---------- 5. de keuzehulp ----------
-   Een echte <dialog>: de browser zet de rest van de pagina op
-   inert, vangt Escape af en houdt de toetsvolgorde binnen het
-   venster. Allemaal dingen die je met een losse div zelf fout doet. */
-dialog.hulp {
-  width: min(560px, calc(100vw - 28px));
-  max-height: min(86vh, 760px);
-  padding: 0; border: 1px solid var(--rand-op); border-radius: 20px;
+   Een paneel aan de zijkant, geen scherm dat je overneemt. Bewust een
+   popover en geen modaal venster: de pagina blijft eronder gewoon
+   bruikbaar en scrollbaar, en wie hem wegklikt is klaar. De browser
+   regelt Escape en het wegklikken zelf.
+
+   Het randje links maakt zichtbaar dat het paneel ergens aan vastzit in
+   plaats van over de pagina te zweven. */
+.hulp {
+  position: fixed; inset: 0 0 0 auto; margin: 0;
+  width: min(408px, 100vw);
+  max-height: 100dvh;
+  padding: 0; border: 0; border-left: 1px solid var(--rand-op);
+  border-radius: 0;
   background: var(--vlak); color: var(--tekst);
-  box-shadow: 0 40px 110px rgba(0, 0, 0, .7);
+  box-shadow: -30px 0 90px rgba(0, 0, 0, .55);
   overflow: hidden;
+  display: flex; flex-direction: column;
 }
-dialog.hulp::backdrop { background: rgba(6, 9, 16, .72); backdrop-filter: blur(5px); }
+.hulp:not(:popover-open) { display: none; }
+/* geen donker waas: de pagina eronder moet leesbaar blijven */
+.hulp::backdrop { background: transparent; }
+
+@media (min-width: 620px) {
+  .hulp {
+    inset: 14px 14px 14px auto;
+    max-height: calc(100dvh - 28px);
+    border: 1px solid var(--rand-op); border-radius: 18px;
+  }
+}
 
 @media (prefers-reduced-motion: no-preference) {
-  dialog.hulp {
-    transition: opacity .26s ease, translate .26s cubic-bezier(.2, .7, .3, 1), overlay .26s allow-discrete, display .26s allow-discrete;
-    opacity: 0; translate: 0 16px;
+  .hulp {
+    transition: opacity .3s ease, translate .34s cubic-bezier(.2, .8, .25, 1),
+                overlay .34s allow-discrete, display .34s allow-discrete;
   }
-  dialog.hulp[open] { opacity: 1; translate: 0 0; }
-  @starting-style { dialog.hulp[open] { opacity: 0; translate: 0 16px; } }
-  dialog.hulp::backdrop {
-    transition: opacity .26s ease, overlay .26s allow-discrete, display .26s allow-discrete;
-    opacity: 0;
+  .hulp:popover-open { opacity: 1; translate: 0 0; }
+  @starting-style { .hulp:popover-open { opacity: 0; translate: 26px 0; } }
+  .hulp { opacity: 0; translate: 26px 0; }
+}
+
+/* het lipje waarmee je hem opent — klein, rechtsonder, weg te klikken */
+.hulptab {
+  position: fixed; right: 16px; bottom: 16px; z-index: 80;
+  display: inline-flex; align-items: center; gap: 9px;
+  padding: 11px 16px 11px 14px; border-radius: 999px; cursor: pointer;
+  font: inherit; font-size: .9rem; font-weight: 600;
+  background: var(--vlak-2); color: var(--tekst);
+  border: 1px solid var(--rand-op);
+  box-shadow: 0 12px 34px rgba(0, 0, 0, .45);
+  transition: border-color .15s ease, transform .15s ease, background .15s ease;
+}
+.hulptab:hover { border-color: var(--accent); transform: translateY(-2px); background: var(--vlak); }
+.hulptab i {
+  width: 8px; height: 8px; border-radius: 50%; background: var(--accent); flex: none;
+  box-shadow: 0 0 0 3px var(--accent-zacht);
+}
+.hulptab-weg {
+  position: fixed; right: 16px; bottom: 16px; z-index: 81;
+  width: 22px; height: 22px; border-radius: 50%; cursor: pointer;
+  translate: 8px -8px;
+  background: var(--rand); color: var(--tekst-2); border: 1px solid var(--rand-op);
+  font-size: .72rem; line-height: 1; display: grid; place-items: center; padding: 0;
+  opacity: 0; transition: opacity .15s ease;
+}
+.hulptab-houder:hover .hulptab-weg, .hulptab-weg:focus-visible { opacity: 1; }
+.hulptab-weg:hover { color: var(--tekst); border-color: var(--slecht); }
+
+/* pas tonen als iemand voorbij de kop is — bovenaan staat de knop al */
+@supports (animation-timeline: scroll()) {
+  @media (prefers-reduced-motion: no-preference) {
+    .hulptab-houder {
+      animation: tabErbij linear both;
+      animation-timeline: scroll(root block);
+      animation-range: 320px 520px;
+    }
+    @keyframes tabErbij {
+      from { opacity: 0; translate: 0 18px; visibility: hidden; }
+      to { opacity: 1; translate: 0 0; visibility: visible; }
+    }
   }
-  dialog.hulp[open]::backdrop { opacity: 1; }
-  @starting-style { dialog.hulp[open]::backdrop { opacity: 0; } }
 }
 
 .hulp-kop { padding: 24px 26px 0; }
@@ -924,6 +984,101 @@ dialog.hulp::backdrop { background: rgba(6, 9, 16, .72); backdrop-filter: blur(5
   margin: clamp(22px, 3vw, 32px) 0 0;
 }
 .kop-knoppen .knop { cursor: pointer; }
+
+/* het paneel is een kolom: kop vast, vragen scrollen */
+.hulp-lijf { flex: 1 1 auto; min-height: 0; }
+.hulp-kop, .hulp-stappen { flex: none; }
+
+/* ============================================================
+   8. Snelzoeker (Ctrl/Cmd + K)
+   ------------------------------------------------------------
+   Springen naar elk project, vanaf elke plek op de pagina, zonder
+   je muis. Ook een popover, dus Escape en wegklikken zijn gratis.
+   ============================================================ */
+.palet {
+  position: fixed; inset: 12vh auto auto 50%; translate: -50% 0; margin: 0;
+  width: min(560px, calc(100vw - 28px));
+  max-height: min(70dvh, 560px);
+  padding: 0; border: 1px solid var(--rand-op); border-radius: 16px;
+  background: var(--vlak); color: var(--tekst);
+  box-shadow: 0 40px 110px rgba(0, 0, 0, .7);
+  overflow: hidden; display: flex; flex-direction: column;
+}
+.palet:not(:popover-open) { display: none; }
+.palet::backdrop { background: rgba(6, 9, 16, .55); backdrop-filter: blur(3px); }
+@media (prefers-reduced-motion: no-preference) {
+  .palet {
+    transition: opacity .18s ease, translate .18s cubic-bezier(.2,.8,.25,1),
+                overlay .18s allow-discrete, display .18s allow-discrete;
+    opacity: 0; translate: -50% -10px;
+  }
+  .palet:popover-open { opacity: 1; translate: -50% 0; }
+  @starting-style { .palet:popover-open { opacity: 0; translate: -50% -10px; } }
+  .palet::backdrop { transition: opacity .18s ease, overlay .18s allow-discrete, display .18s allow-discrete; opacity: 0; }
+  .palet:popover-open::backdrop { opacity: 1; }
+  @starting-style { .palet:popover-open::backdrop { opacity: 0; } }
+}
+.palet-veld { display: flex; align-items: center; gap: 11px; padding: 15px 18px; border-bottom: 1px solid var(--rand); flex: none; }
+.palet-veld svg { width: 17px; height: 17px; color: var(--tekst-3); flex: none; }
+.palet-veld input {
+  flex: 1; min-width: 0; background: none; border: 0; outline: none;
+  color: var(--tekst); font: inherit; font-size: 1.02rem;
+}
+.palet-veld input::placeholder { color: var(--tekst-3); }
+.palet-lijst { flex: 1 1 auto; min-height: 0; overflow-y: auto; padding: 8px; list-style: none; margin: 0; }
+.palet-rij {
+  display: grid; grid-template-columns: 52px 1fr auto; gap: 12px; align-items: center;
+  width: 100%; padding: 9px 10px; border-radius: 10px; border: 0; cursor: pointer;
+  background: transparent; color: inherit; text-align: left; font: inherit;
+}
+.palet-rij[aria-selected="true"] { background: var(--accent-zacht); outline: 1px solid var(--accent); }
+.palet-rij img { width: 52px; height: 33px; object-fit: cover; object-position: top center; border-radius: 6px; display: block; }
+.palet-rij .vak { width: 52px; height: 33px; border-radius: 6px; background: var(--vlak-2); }
+.palet-rij b { font-weight: 600; font-size: .95rem; display: block; }
+.palet-rij small { color: var(--tekst-3); font-size: .82rem; display: block; }
+.palet-rij .soort { font-family: var(--mono); font-size: .68rem; color: var(--tekst-3); letter-spacing: .08em; text-transform: uppercase; }
+.palet-leeg { padding: 26px 18px; text-align: center; color: var(--tekst-3); font-size: .9rem; }
+.palet-voet {
+  flex: none; padding: 9px 16px; border-top: 1px solid var(--rand);
+  display: flex; gap: 14px; flex-wrap: wrap; font-size: .76rem; color: var(--tekst-3);
+}
+.palet-voet kbd {
+  font-family: var(--mono); font-size: .72rem; background: var(--vlak-2);
+  border: 1px solid var(--rand-op); border-bottom-width: 2px; border-radius: 5px; padding: 1px 6px;
+}
+/* het hintje in de balk bovenin */
+.palet-hint {
+  display: inline-flex; align-items: center; gap: 6px; cursor: pointer;
+  font: inherit; font-size: .8rem; color: var(--tekst-3);
+  background: var(--vlak); border: 1px solid var(--rand); border-radius: 8px;
+  padding: 6px 10px;
+}
+.palet-hint:hover { color: var(--tekst); border-color: var(--rand-op); }
+.palet-hint kbd {
+  font-family: var(--mono); font-size: .72rem; color: var(--tekst-2);
+  background: var(--vlak-2); border: 1px solid var(--rand-op); border-radius: 4px; padding: 0 5px;
+}
+@media (max-width: 900px) { .palet-hint { display: none; } }
+
+/* ============================================================
+   9. Afdrukken
+   ------------------------------------------------------------
+   Een klant die dit aan zijn compagnon wil laten zien, drukt het
+   af of maakt er een pdf van. Dan hoort er geen donkere pagina
+   met vaste balken uit te komen.
+   ============================================================ */
+@media print {
+  :root { --grond: #fff; --vlak: #fff; --vlak-2: #fff; --tekst: #000; --tekst-2: #333; --tekst-3: #555; --rand: #ccc; --rand-op: #999; }
+  body { background: #fff !important; color: #000 !important; }
+  .balk-boven, .leesbalk, .hulptab-houder, .hulp, .palet, .overlay,
+  .toonbank, .filters, .zoek, .overslaan, .deel, .palet-hint,
+  .kop-knoppen, .stoom { display: none !important; }
+  .kaart, .laag, .blok, .kunde { break-inside: avoid; border: 1px solid #ccc !important; }
+  .raster { grid-template-columns: repeat(2, 1fr) !important; }
+  a[href^="http"]::after { content: " (" attr(href) ")"; font-size: .8em; color: #555; word-break: break-all; }
+  h1, h2, h3 { break-after: avoid; }
+  * { animation: none !important; transition: none !important; box-shadow: none !important; }
+}
 </style>
 <script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"WebSite","@id":"https://eemland-digital.nl/#site","url":"https://eemland-digital.nl/","name":"Eemland Digital","alternateName":"Samih Tichtti","inLanguage":"nl-NL","publisher":{"@id":"https://eemland-digital.nl/#bedrijf"}},{"@type":"Person","@id":"https://eemland-digital.nl/#samih","name":"Samih Tichtti","givenName":"Samih","familyName":"Tichtti","jobTitle":"Webdeveloper — front-end en back-end","description":"Websites en bedrijfssoftware voor Nederlandse bedrijven. Geen mooie plaatjes die niets doen — dingen die elke dag gebruikt worden.","url":"https://eemland-digital.nl/","email":"mailto:info@eemland-digital.nl","sameAs":["https://github.com/protuber033"],"knowsLanguage":["nl","en"],"knowsAbout":["Afstandsberekening","Anthropic SDK","Capacitor","Cloudinary","Docker","ESP32","Express","Flask","Framer Motion","GitLab CI","Google Gemini","Google Maps","MapLibre","Motion","MySQL","Next.js","Node","PDFKit","PostgreSQL","Prisma","Python","Railway","React","React Three Fiber","Rechten per rol","SQLAlchemy","SVG","SVG-grafiek","SVG-kaart","Server-sent events","Server-side rekenen","Sessies","Sessies per bezoeker","Slepen en neerzetten","Supabase","Supabase Storage","Tailwind","TypeScript","Vite","jsPDF","pdf-lib","sharp","three.js","zustand"],"alumniOf":{"@type":"CollegeOrUniversity","name":"Hogeschool van Amsterdam"},"worksFor":{"@id":"https://eemland-digital.nl/#bedrijf"},"address":{"@type":"PostalAddress","addressLocality":"Amersfoort","addressCountry":"NL"}},{"@type":"ProfessionalService","@id":"https://eemland-digital.nl/#bedrijf","name":"Eemland Digital","alternateName":"Samih Tichtti","description":"Websites en bedrijfssoftware voor Nederlandse bedrijven. Geen mooie plaatjes die niets doen — dingen die elke dag gebruikt worden.","url":"https://eemland-digital.nl/","email":"mailto:info@eemland-digital.nl","image":"https://eemland-digital.nl/img/kozijnfabriek-1.webp","founder":{"@id":"https://eemland-digital.nl/#samih"},"employee":{"@id":"https://eemland-digital.nl/#samih"},"priceRange":"Op aanvraag","address":{"@type":"PostalAddress","addressLocality":"Amersfoort","addressCountry":"NL"},"areaServed":[{"@type":"Place","name":"Amersfoort"},{"@type":"Place","name":"Utrecht"},{"@type":"Place","name":"Amsterdam"},{"@type":"Place","name":"Nederland"}],"knowsAbout":["Afstandsberekening","Anthropic SDK","Capacitor","Cloudinary","Docker","ESP32","Express","Flask","Framer Motion","GitLab CI","Google Gemini","Google Maps","MapLibre","Motion","MySQL","Next.js","Node","PDFKit","PostgreSQL","Prisma","Python","Railway","React","React Three Fiber","Rechten per rol","SQLAlchemy","SVG","SVG-grafiek","SVG-kaart","Server-sent events","Server-side rekenen","Sessies","Sessies per bezoeker","Slepen en neerzetten","Supabase","Supabase Storage","Tailwind","TypeScript","Vite","jsPDF","pdf-lib","sharp","three.js","zustand"],"hasOfferCatalog":{"@type":"OfferCatalog","name":"Waar ik je mee kan helpen","itemListElement":[{"@type":"Offer","itemOffered":{"@type":"Service","name":"Beeldherkenning","alternateName":"Een foto erin, gegevens eruit","description":"Een gevelfoto waar de kozijnen uit herkend worden. Een papieren urenbriefje dat gescand én nagerekend wordt. Werk dat anders met de hand overgetypt moet worden."}},{"@type":"Offer","itemOffered":{"@type":"Service","name":"Administratie","alternateName":"De hele papierwinkel in één systeem","description":"Aanvraag, offerte, order, factuur, btw en jaarcijfers achter elkaar, zonder dat iemand hetzelfde nummer drie keer overtypt. Pdf's automatisch opgemaakt."}},{"@type":"Offer","itemOffered":{"@type":"Service","name":"3D in de browser","alternateName":"Producten die de klant zelf kan draaien","description":"Een dakkapel die echt in het dakvlak staat. Een perceel in 3D met de bouwzone eroverheen. Alles in de browser, zonder plug-in."}},{"@type":"Offer","itemOffered":{"@type":"Service","name":"Kaart en adresdata","alternateName":"Nederlandse adres- en perceeldata","description":"Adres opzoeken via PDOK, perceelgrenzen en bouwjaren erbij, Street View voor de gevel, zoeken op afstand. Met een gratis alternatief als een betaalde kaartdienst uitvalt."}},{"@type":"Offer","itemOffered":{"@type":"Service","name":"Beheer en rollen","alternateName":"Dashboards waar personeel mee werkt","description":"Inloggen, rechten per rol, de zakelijke mailbox erin, planning en leveranciersorders. Met gehashte wachtwoorden en een database die standaard niets vrijgeeft."}},{"@type":"Offer","itemOffered":{"@type":"Service","name":"Live zetten","alternateName":"Van laptop naar eigen domein","description":"Hosting, domein, ssl, database met back-ups en zakelijke mail. En waar het nodig is verder dan de browser: dezelfde code als app voor iOS en Android, of sensoren die hun metingen naar een webserver sturen."}}]}},{"@type":"CollectionPage","@id":"https://eemland-digital.nl/#werk","url":"https://eemland-digital.nl/","name":"Het werk","isPartOf":{"@id":"https://eemland-digital.nl/#site"},"about":{"@id":"https://eemland-digital.nl/#samih"},"mainEntity":{"@type":"ItemList","name":"Projecten","numberOfItems":15,"itemListElement":[{"@type":"ListItem","position":1,"name":"Eemland Boekt","url":"https://eemland-digital.nl/werk/eemland/"},{"@type":"ListItem","position":2,"name":"RALOX Sports","url":"https://eemland-digital.nl/werk/ralox/"},{"@type":"ListItem","position":3,"name":"Fun Studios","url":"https://eemland-digital.nl/werk/funstudios/"},{"@type":"ListItem","position":4,"name":"Kozijnfabriek Direct","url":"https://eemland-digital.nl/werk/kozijnfabriek/"},{"@type":"ListItem","position":5,"name":"CourtSwap","url":"https://eemland-digital.nl/werk/courtswap/"},{"@type":"ListItem","position":6,"name":"Glacio Klimaattechniek","url":"https://eemland-digital.nl/werk/glacio/"},{"@type":"ListItem","position":7,"name":"REMH Bouw & Verbouw","url":"https://eemland-digital.nl/werk/remh/"},{"@type":"ListItem","position":8,"name":"Kaap Noord","url":"https://eemland-digital.nl/werk/kaapnoord/"},{"@type":"ListItem","position":9,"name":"Van Dijk Installatie","url":"https://eemland-digital.nl/werk/vandijk/"},{"@type":"ListItem","position":10,"name":"Hovenier Wilgenhof","url":"https://eemland-digital.nl/werk/wilgenhof/"},{"@type":"ListItem","position":11,"name":"Kempen Transport","url":"https://eemland-digital.nl/werk/kempen/"},{"@type":"ListItem","position":12,"name":"KijkVergunning","url":"https://eemland-digital.nl/werk/kijkvergunning/"},{"@type":"ListItem","position":13,"name":"Lumière Dakkapellen","url":"https://eemland-digital.nl/werk/lumiere/"},{"@type":"ListItem","position":14,"name":"Kiesradar","url":"https://eemland-digital.nl/werk/kiesradar/"},{"@type":"ListItem","position":15,"name":"EemlandWerkt","url":"https://eemland-digital.nl/werk/eemlandwerkt/"}]}}]}</script>
 </head>
@@ -940,6 +1095,10 @@ dialog.hulp::backdrop { background: rgba(6, 9, 16, .72); backdrop-filter: blur(5
       <a href="#traject">Samenwerken</a>
       <a href="https://eemland-digital.nl/contact/">Contact</a>
     </nav>
+    <button type="button" class="palet-hint" data-palet-open>
+      <svg viewBox="0 0 16 16" fill="none" aria-hidden="true"><circle cx="7" cy="7" r="4.6" stroke="currentColor" stroke-width="1.5"/><path d="M10.6 10.6L14 14" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+      Zoek <kbd data-palet-toets>Ctrl K</kbd>
+    </button>
     <a class="knop knop-klein" href="https://eemland-digital.nl/contact/">Neem contact op</a>
   </div>
 </header>
@@ -1064,7 +1223,7 @@ dialog.hulp::backdrop { background: rgba(6, 9, 16, .72); backdrop-filter: blur(5
           <span class="gecheckt"><span class="stip live"></span>alle 11 reageerden bij de laatste controle op 28 sep 2026</span>
         </div>
         <ul class="raster">
-        <li class="kaart" data-id="eemland" data-tags="software ai" data-zoek="eemland boekt offertes, facturen, urenbriefjes scannen en btw-aangifte in één systeem. react 19 express postgresql supabase storage pdf-lib google gemini">
+        <li class="kaart" data-id="eemland" data-tags="software ai" data-zoek="eemland boekt offertes, facturen, urenbriefjes scannen en btw-aangifte in één systeem. de complete administratie van een bouwbedrijf, van offerte tot btw-aangifte, in één systeem dat elke dag gebruikt wordt. react 19 express postgresql supabase storage pdf-lib google gemini">
           <a class="kaart-knop" href="werk/eemland/" aria-haspopup="dialog">
             <span class="duim"><img src="img/t-eemland.webp" width="760" height="475" loading="lazy" alt="Scherm van Eemland Boekt"></span>
             <span class="kaart-tekst">
@@ -1075,7 +1234,7 @@ dialog.hulp::backdrop { background: rgba(6, 9, 16, .72); backdrop-filter: blur(5
             </span>
           </a>
         </li>
-        <li class="kaart" data-id="ralox" data-tags="website software ai" data-zoek="ralox sports webshop voor padelballen, plus een balautomaat die clubs 24/7 laat verkopen. react vite tailwind 4 express anthropic sdk google gemini motion railway">
+        <li class="kaart" data-id="ralox" data-tags="website software ai" data-zoek="ralox sports webshop voor padelballen, plus een balautomaat die clubs 24/7 laat verkopen. voor een padelmerk: een webshop voor ballen en grips, met daarnaast een balautomaat voor clubs — ballen uit de muur, betalen met pin of telefoon, en de club verdient mee. react vite tailwind 4 express anthropic sdk google gemini motion railway">
           <a class="kaart-knop" href="werk/ralox/" aria-haspopup="dialog">
             <span class="duim"><img src="img/t-ralox.webp" width="760" height="475" loading="lazy" alt="Scherm van RALOX Sports"></span>
             <span class="kaart-tekst">
@@ -1086,7 +1245,7 @@ dialog.hulp::backdrop { background: rgba(6, 9, 16, .72); backdrop-filter: blur(5
             </span>
           </a>
         </li>
-        <li class="kaart" data-id="funstudios" data-tags="website" data-zoek="fun studios eventsite met boekingsflow: photo booths, low fog en indoor vuurwerk. react 19 vite tailwind 4 motion express sharp">
+        <li class="kaart" data-id="funstudios" data-tags="website" data-zoek="fun studios eventsite met boekingsflow: photo booths, low fog en indoor vuurwerk. voor een entertainmentbedrijf: photo booths, 360 booth, low fog, indoor vuurwerk en lichtletters — met een boekingsflow die de aanvragen binnenhaalt. react 19 vite tailwind 4 motion express sharp">
           <a class="kaart-knop" href="werk/funstudios/" aria-haspopup="dialog">
             <span class="duim"><img src="img/t-funstudios.webp" width="760" height="475" loading="lazy" alt="Scherm van Fun Studios"></span>
             <span class="kaart-tekst">
@@ -1097,7 +1256,7 @@ dialog.hulp::backdrop { background: rgba(6, 9, 16, .72); backdrop-filter: blur(5
             </span>
           </a>
         </li>
-        <li class="kaart" data-id="kozijnfabriek" data-tags="software website ai" data-zoek="kozijnfabriek direct gevelfoto erin, offerte eruit — plus een dashboard voor het personeel. react 19 node 22 supabase google gemini google maps railway">
+        <li class="kaart" data-id="kozijnfabriek" data-tags="software website ai" data-zoek="kozijnfabriek direct gevelfoto erin, offerte eruit — plus een dashboard voor het personeel. voor een kozijnenfabrikant in de regio amsterdam: een website die zelf offertes voorbereidt, en een dashboard waar het personeel de rest afhandelt. react 19 node 22 supabase google gemini google maps railway">
           <a class="kaart-knop" href="werk/kozijnfabriek/" aria-haspopup="dialog">
             <span class="duim"><img src="img/t-kozijnfabriek.webp" width="760" height="475" loading="lazy" alt="Scherm van Kozijnfabriek Direct"></span>
             <span class="kaart-tekst">
@@ -1108,7 +1267,7 @@ dialog.hulp::backdrop { background: rgba(6, 9, 16, .72); backdrop-filter: blur(5
             </span>
           </a>
         </li>
-        <li class="kaart" data-id="courtswap" data-tags="software mobiel" data-zoek="courtswap marktplaatsplatform met chat, kaart en accounts — ook als app. react express 5 prisma postgresql cloudinary capacitor">
+        <li class="kaart" data-id="courtswap" data-tags="software mobiel" data-zoek="courtswap marktplaatsplatform met chat, kaart en accounts — ook als app. een compleet marktplaatsplatform: adverteren, zoeken op de kaart, chatten en afspreken — als website én als app. react express 5 prisma postgresql cloudinary capacitor">
           <a class="kaart-knop" href="werk/courtswap/" aria-haspopup="dialog">
             <span class="duim"><img src="img/t-courtswap.webp" width="760" height="475" loading="lazy" alt="Scherm van CourtSwap"></span>
             <span class="kaart-tekst">
@@ -1119,7 +1278,7 @@ dialog.hulp::backdrop { background: rgba(6, 9, 16, .72); backdrop-filter: blur(5
             </span>
           </a>
         </li>
-        <li class="kaart" data-id="glacio" data-tags="website" data-zoek="glacio klimaattechniek eigen concept: hoe een installatiebedrijf zijn site zou kunnen inrichten. node railway">
+        <li class="kaart" data-id="glacio" data-tags="website" data-zoek="glacio klimaattechniek eigen concept: hoe een installatiebedrijf zijn site zou kunnen inrichten. zelf bedacht en gebouwd voor een verzonnen airco-installateur. geen klantopdracht, maar een uitgewerkt voorbeeld van hoe zo'n bedrijf online kan werken: keuzehulp, vaste tarieven en een intake zonder telefoontje. node railway">
           <a class="kaart-knop" href="werk/glacio/" aria-haspopup="dialog">
             <span class="duim"><img src="img/t-glacio.webp" width="760" height="475" loading="lazy" alt="Scherm van Glacio Klimaattechniek"></span>
             <span class="kaart-tekst">
@@ -1130,7 +1289,7 @@ dialog.hulp::backdrop { background: rgba(6, 9, 16, .72); backdrop-filter: blur(5
             </span>
           </a>
         </li>
-        <li class="kaart" data-id="remh" data-tags="website 3d" data-zoek="remh bouw &amp; verbouw aannemerssite waar de klant zijn eigen dakkapel samenstelt. react 19 express mysql pdfkit three.js railway">
+        <li class="kaart" data-id="remh" data-tags="website 3d" data-zoek="remh bouw &amp; verbouw aannemerssite waar de klant zijn eigen dakkapel samenstelt. website voor een aannemer, met een configurator die de klant zijn eigen dakkapel laat samenstellen. react 19 express mysql pdfkit three.js railway">
           <a class="kaart-knop" href="werk/remh/" aria-haspopup="dialog">
             <span class="duim"><img src="img/t-remh.webp" width="760" height="475" loading="lazy" alt="Scherm van REMH Bouw &amp; Verbouw"></span>
             <span class="kaart-tekst">
@@ -1141,7 +1300,7 @@ dialog.hulp::backdrop { background: rgba(6, 9, 16, .72); backdrop-filter: blur(5
             </span>
           </a>
         </li>
-        <li class="kaart" data-id="kaapnoord" data-tags="website software" data-zoek="kaap noord een webshop waar je echt doorheen kunt lopen, tot en met de betaling. node 22 server-side rekenen sessies per bezoeker svg railway">
+        <li class="kaart" data-id="kaapnoord" data-tags="website software" data-zoek="kaap noord een webshop waar je echt doorheen kunt lopen, tot en met de betaling. een bedachte koffiebranderij, gebouwd om te laten zien hoe online verkopen er van binnen uitziet. niet alleen het winkeltje, maar ook wat er misgaat: voorraad die op is, een code die niet bestaat, een betaling die afbreekt. node 22 server-side rekenen sessies per bezoeker svg railway">
           <a class="kaart-knop" href="werk/kaapnoord/" aria-haspopup="dialog">
             <span class="duim"><img src="img/t-kaapnoord.webp" width="760" height="475" loading="lazy" alt="Scherm van Kaap Noord"></span>
             <span class="kaart-tekst">
@@ -1152,7 +1311,7 @@ dialog.hulp::backdrop { background: rgba(6, 9, 16, .72); backdrop-filter: blur(5
             </span>
           </a>
         </li>
-        <li class="kaart" data-id="vandijk" data-tags="software" data-zoek="van dijk installatie een klantportaal waarin je zelf kunt proberen of je bij andermans dossier komt. node 22 sessies rechten per rol railway">
+        <li class="kaart" data-id="vandijk" data-tags="software" data-zoek="van dijk installatie een klantportaal waarin je zelf kunt proberen of je bij andermans dossier komt. een bedacht installatiebedrijf. het laat zien wat een portaal echt moet doen: niet mooie schermen, maar sluitende afspraken over wie wat mag zien. er zitten drie accounts in — twee klanten en een medewerker. node 22 sessies rechten per rol railway">
           <a class="kaart-knop" href="werk/vandijk/" aria-haspopup="dialog">
             <span class="duim"><img src="img/t-vandijk.webp" width="760" height="475" loading="lazy" alt="Scherm van Van Dijk Installatie"></span>
             <span class="kaart-tekst">
@@ -1163,7 +1322,7 @@ dialog.hulp::backdrop { background: rgba(6, 9, 16, .72); backdrop-filter: blur(5
             </span>
           </a>
         </li>
-        <li class="kaart" data-id="wilgenhof" data-tags="software mobiel" data-zoek="hovenier wilgenhof klussen over ploegen verdelen, met een kaart en een reistijd die meerekent. node 22 svg-kaart afstandsberekening slepen en neerzetten railway">
+        <li class="kaart" data-id="wilgenhof" data-tags="software mobiel" data-zoek="hovenier wilgenhof klussen over ploegen verdelen, met een kaart en een reistijd die meerekent. een bedacht hoveniersbedrijf met vier ploegen. voor iedereen die zijn dag nu nog op een whiteboard of in een groepsapp verdeelt en wil zien wat het alternatief is. node 22 svg-kaart afstandsberekening slepen en neerzetten railway">
           <a class="kaart-knop" href="werk/wilgenhof/" aria-haspopup="dialog">
             <span class="duim"><img src="img/t-wilgenhof.webp" width="760" height="475" loading="lazy" alt="Scherm van Hovenier Wilgenhof"></span>
             <span class="kaart-tekst">
@@ -1174,7 +1333,7 @@ dialog.hulp::backdrop { background: rgba(6, 9, 16, .72); backdrop-filter: blur(5
             </span>
           </a>
         </li>
-        <li class="kaart" data-id="kempen" data-tags="software" data-zoek="kempen transport een dashboard dat uit zichzelf bijwerkt, zonder de pagina te verversen. node 22 server-sent events svg-grafiek railway">
+        <li class="kaart" data-id="kempen" data-tags="software" data-zoek="kempen transport een dashboard dat uit zichzelf bijwerkt, zonder de pagina te verversen. een bedacht transportbedrijf. voor wie een scherm aan de muur wil dat altijd klopt, en wil weten hoe dat kan zonder dat er elke seconde iets wordt opgevraagd. node 22 server-sent events svg-grafiek railway">
           <a class="kaart-knop" href="werk/kempen/" aria-haspopup="dialog">
             <span class="duim"><img src="img/t-kempen.webp" width="760" height="475" loading="lazy" alt="Scherm van Kempen Transport"></span>
             <span class="kaart-tekst">
@@ -1193,7 +1352,7 @@ dialog.hulp::backdrop { background: rgba(6, 9, 16, .72); backdrop-filter: blur(5
           
         </div>
         <ul class="raster">
-        <li class="kaart" data-id="kijkvergunning" data-tags="software 3d ai" data-zoek="kijkvergunning adres invullen en zien of je uitbouw vergunningvrij mag — op kaart en in 3d. next.js 16 react 19 maplibre three.js supabase zustand">
+        <li class="kaart" data-id="kijkvergunning" data-tags="software 3d ai" data-zoek="kijkvergunning adres invullen en zien of je uitbouw vergunningvrij mag — op kaart en in 3d. zie wat je mag bouwen voordat je begint: adres invullen, en je weet of die uitbouw vergunningvrij kan. next.js 16 react 19 maplibre three.js supabase zustand">
           <a class="kaart-knop" href="werk/kijkvergunning/" aria-haspopup="dialog">
             <span class="duim"><img src="img/t-kijkvergunning.webp" width="760" height="475" loading="lazy" alt="Scherm van KijkVergunning"></span>
             <span class="kaart-tekst">
@@ -1204,7 +1363,7 @@ dialog.hulp::backdrop { background: rgba(6, 9, 16, .72); backdrop-filter: blur(5
             </span>
           </a>
         </li>
-        <li class="kaart" data-id="lumiere" data-tags="website 3d" data-zoek="lumière dakkapellen je dakkapel in 3d op je eigen dak, met pdf-offerte eruit. react 19 three.js react three fiber framer motion jspdf">
+        <li class="kaart" data-id="lumiere" data-tags="website 3d" data-zoek="lumière dakkapellen je dakkapel in 3d op je eigen dak, met pdf-offerte eruit. een dakkapel die je in 3d op je eigen dak ziet staan — draaien, afwerking kiezen, offerte eruit. react 19 three.js react three fiber framer motion jspdf">
           <a class="kaart-knop" href="werk/lumiere/" aria-haspopup="dialog">
             <span class="duim"><img src="img/t-lumiere.webp" width="760" height="475" loading="lazy" alt="Scherm van Lumière Dakkapellen"></span>
             <span class="kaart-tekst">
@@ -1223,7 +1382,7 @@ dialog.hulp::backdrop { background: rgba(6, 9, 16, .72); backdrop-filter: blur(5
           
         </div>
         <ul class="raster">
-        <li class="kaart" data-id="kiesradar" data-tags="software mobiel" data-zoek="kiesradar fysieke opstelling met sensoren die met een webapp en database praten. python flask mysql docker esp32 gitlab ci">
+        <li class="kaart" data-id="kiesradar" data-tags="software mobiel" data-zoek="kiesradar fysieke opstelling met sensoren die met een webapp en database praten. teamproject aan de hogeschool van amsterdam: een fysieke opstelling die studiekiezers helpt kiezen, met sensoren die met een webapp praten. python flask mysql docker esp32 gitlab ci">
           <a class="kaart-knop" href="werk/kiesradar/" aria-haspopup="dialog">
             <span class="duim"><span class="geenbeeld">HARDWARE · GEEN WEBSITE<br>ESP32 → FLASK → MYSQL</span></span>
             <span class="kaart-tekst">
@@ -1242,7 +1401,7 @@ dialog.hulp::backdrop { background: rgba(6, 9, 16, .72); backdrop-filter: blur(5
           
         </div>
         <ul class="raster">
-        <li class="kaart" data-id="eemlandwerkt" data-tags="software website" data-zoek="eemlandwerkt waar eemland boekt begon: bedrijfssite met klantportaal, op een python-backend. react vite typescript flask sqlalchemy postgresql railway">
+        <li class="kaart" data-id="eemlandwerkt" data-tags="software website" data-zoek="eemlandwerkt waar eemland boekt begon: bedrijfssite met klantportaal, op een python-backend. de eerste versie voor hetzelfde bouwbedrijf: een bedrijfssite met diensten, vacatures en een klantportaal, met flask en postgresql erachter. een jaar later opnieuw opgebouwd in node — dat werd eemland boekt. react vite typescript flask sqlalchemy postgresql railway">
           <a class="kaart-knop" href="werk/eemlandwerkt/" aria-haspopup="dialog">
             <span class="duim"><span class="geenbeeld">EERSTE VERSIE · DEC 2025<br>FLASK + REACT</span></span>
             <span class="kaart-tekst">
@@ -2316,7 +2475,14 @@ dialog.hulp::backdrop { background: rgba(6, 9, 16, .72); backdrop-filter: blur(5
 </div>
 
 
-<dialog class="hulp" id="hulp" aria-labelledby="hulp-titel">
+<div class="hulptab-houder" id="hulptab-houder" hidden>
+  <button type="button" class="hulptab" data-hulp-open>
+    <i aria-hidden="true"></i>Wat past bij jou?
+  </button>
+  <button type="button" class="hulptab-weg" data-hulp-tab-weg aria-label="Verberg deze knop">&times;</button>
+</div>
+
+<div popover="auto" class="hulp" id="hulp" aria-labelledby="hulp-titel">
   <button type="button" class="hulp-sluit" data-hulp-sluit aria-label="Sluiten">&times;</button>
   <div class="hulp-kop">
     <h2 id="hulp-titel">Wat past bij jou?</h2>
@@ -2324,9 +2490,34 @@ dialog.hulp::backdrop { background: rgba(6, 9, 16, .72); backdrop-filter: blur(5
   </div>
   <div class="hulp-stappen" id="hulp-stappen"><i></i><i></i><i></i><i></i></div>
   <div class="hulp-lijf" id="hulp-lijf"></div>
-</dialog>
+</div>
 
-<script type="application/json" id="hulp-data">{"vragen":[{"id":"wat","vraag":"Wat zoek je?","opties":[{"id":"website","label":"Een website","bij":"Een nieuwe site, of de huidige vervangen","tags":["website"]},{"id":"software","label":"Software die werk uit handen neemt","bij":"Een dashboard, een portaal, een koppeling","tags":["software"]},{"id":"verkopen","label":"Online kunnen verkopen","bij":"Bestellingen, betalingen, voorraad","tags":["website","software"]},{"id":"weetniet","label":"Dat weet ik nog niet","bij":"Er gaat iets stroef en ik zoek de oplossing","tags":[]}]},{"id":"wie","vraag":"Wie gaat het gebruiken?","opties":[{"id":"klanten","label":"Mijn klanten","bij":"Zij bestellen, vragen aan of kijken mee","tags":["website"]},{"id":"personeel","label":"Mijn personeel","bij":"Binnen het bedrijf, om werk te regelen","tags":["software"]},{"id":"allebei","label":"Allebei","bij":"Een voorkant voor klanten, een achterkant voor kantoor","tags":["website","software"]}]},{"id":"nu","vraag":"Wat heb je nu?","opties":[{"id":"niets","label":"Nog niets","bij":"We beginnen bij nul","tags":[]},{"id":"oud","label":"Iets dat verouderd is","bij":"Het werkt, maar het kan niet meer mee","tags":[]},{"id":"handmatig","label":"Veel handwerk","bij":"Excel, mailtjes, overtypen","tags":["ai","software"]},{"id":"goed","label":"Iets dat prima werkt","bij":"Maar het moet meer kunnen","tags":[]}]}],"slot":{"kop":"Dit lijkt me het interessantst voor jou","bij":"Klik op een project om te zien hoe het werkt, of stuur me meteen een bericht — je antwoorden staan er dan alvast in.","knop":"Stuur me dit"},"email":"info@eemland-digital.nl","projecten":[{"id":"eemland","naam":"Eemland Boekt","eenRegel":"Offertes, facturen, urenbriefjes scannen en btw-aangifte in één systeem.","tags":["software","ai"],"tegel":"t-eemland.webp"},{"id":"ralox","naam":"RALOX Sports","eenRegel":"Webshop voor padelballen, plus een balautomaat die clubs 24/7 laat verkopen.","tags":["website","software","ai"],"tegel":"t-ralox.webp"},{"id":"funstudios","naam":"Fun Studios","eenRegel":"Eventsite met boekingsflow: photo booths, low fog en indoor vuurwerk.","tags":["website"],"tegel":"t-funstudios.webp"},{"id":"kozijnfabriek","naam":"Kozijnfabriek Direct","eenRegel":"Gevelfoto erin, offerte eruit — plus een dashboard voor het personeel.","tags":["software","website","ai"],"tegel":"t-kozijnfabriek.webp"},{"id":"courtswap","naam":"CourtSwap","eenRegel":"Marktplaatsplatform met chat, kaart en accounts — ook als app.","tags":["software","mobiel"],"tegel":"t-courtswap.webp"},{"id":"glacio","naam":"Glacio Klimaattechniek","eenRegel":"Eigen concept: hoe een installatiebedrijf zijn site zou kunnen inrichten.","tags":["website"],"tegel":"t-glacio.webp"},{"id":"remh","naam":"REMH Bouw & Verbouw","eenRegel":"Aannemerssite waar de klant zijn eigen dakkapel samenstelt.","tags":["website","3d"],"tegel":"t-remh.webp"},{"id":"kaapnoord","naam":"Kaap Noord","eenRegel":"Een webshop waar je echt doorheen kunt lopen, tot en met de betaling.","tags":["website","software"],"tegel":"t-kaapnoord.webp"},{"id":"vandijk","naam":"Van Dijk Installatie","eenRegel":"Een klantportaal waarin je zelf kunt proberen of je bij andermans dossier komt.","tags":["software"],"tegel":"t-vandijk.webp"},{"id":"wilgenhof","naam":"Hovenier Wilgenhof","eenRegel":"Klussen over ploegen verdelen, met een kaart en een reistijd die meerekent.","tags":["software","mobiel"],"tegel":"t-wilgenhof.webp"},{"id":"kempen","naam":"Kempen Transport","eenRegel":"Een dashboard dat uit zichzelf bijwerkt, zonder de pagina te verversen.","tags":["software"],"tegel":"t-kempen.webp"},{"id":"kijkvergunning","naam":"KijkVergunning","eenRegel":"Adres invullen en zien of je uitbouw vergunningvrij mag — op kaart en in 3D.","tags":["software","3d","ai"],"tegel":"t-kijkvergunning.webp"},{"id":"lumiere","naam":"Lumière Dakkapellen","eenRegel":"Je dakkapel in 3D op je eigen dak, met pdf-offerte eruit.","tags":["website","3d"],"tegel":"t-lumiere.webp"},{"id":"kiesradar","naam":"Kiesradar","eenRegel":"Fysieke opstelling met sensoren die met een webapp en database praten.","tags":["software","mobiel"],"tegel":null},{"id":"eemlandwerkt","naam":"EemlandWerkt","eenRegel":"Waar Eemland Boekt begon: bedrijfssite met klantportaal, op een Python-backend.","tags":["software","website"],"tegel":null}]}</script>
+<div popover="auto" class="palet" id="palet" aria-label="Snel zoeken">
+  <div class="palet-veld">
+    <svg viewBox="0 0 16 16" fill="none" aria-hidden="true"><circle cx="7" cy="7" r="4.6" stroke="currentColor" stroke-width="1.5"/><path d="M10.6 10.6L14 14" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+    <input id="palet-invoer" type="text" autocomplete="off" spellcheck="false"
+      placeholder="Zoek een project of een onderdeel…" aria-controls="palet-lijst">
+  </div>
+  <ul class="palet-lijst" id="palet-lijst" role="listbox" aria-label="Resultaten"></ul>
+  <p class="palet-voet">
+    <span><kbd>&uarr;</kbd> <kbd>&darr;</kbd> kiezen</span>
+    <span><kbd>Enter</kbd> openen</span>
+    <span><kbd>Esc</kbd> sluiten</span>
+  </p>
+</div>
+
+<!-- De browser laadt een projectpagina alvast zodra je met je muis in de
+     buurt komt. Klik je erop, dan staat hij er al. -->
+<script type="speculationrules">
+{
+  "prerender": [
+    { "where": { "href_matches": "/werk/*" }, "eagerness": "moderate" },
+    { "where": { "href_matches": "/contact/" }, "eagerness": "moderate" }
+  ]
+}
+</script>
+
+<script type="application/json" id="hulp-data">{"vragen":[{"id":"wat","vraag":"Wat zoek je?","opties":[{"id":"website","label":"Een website","bij":"Een nieuwe site, of de huidige vervangen","tags":["website"]},{"id":"software","label":"Software die werk uit handen neemt","bij":"Een dashboard, een portaal, een koppeling","tags":["software"]},{"id":"verkopen","label":"Online kunnen verkopen","bij":"Bestellingen, betalingen, voorraad","tags":["website","software"]},{"id":"weetniet","label":"Dat weet ik nog niet","bij":"Er gaat iets stroef en ik zoek de oplossing","tags":[]}]},{"id":"wie","vraag":"Wie gaat het gebruiken?","opties":[{"id":"klanten","label":"Mijn klanten","bij":"Zij bestellen, vragen aan of kijken mee","tags":["website"]},{"id":"personeel","label":"Mijn personeel","bij":"Binnen het bedrijf, om werk te regelen","tags":["software"]},{"id":"allebei","label":"Allebei","bij":"Een voorkant voor klanten, een achterkant voor kantoor","tags":["website","software"]}]},{"id":"nu","vraag":"Wat heb je nu?","opties":[{"id":"niets","label":"Nog niets","bij":"We beginnen bij nul","tags":[]},{"id":"oud","label":"Iets dat verouderd is","bij":"Het werkt, maar het kan niet meer mee","tags":[]},{"id":"handmatig","label":"Veel handwerk","bij":"Excel, mailtjes, overtypen","tags":["ai","software"]},{"id":"goed","label":"Iets dat prima werkt","bij":"Maar het moet meer kunnen","tags":[]}]}],"slot":{"kop":"Dit lijkt me het interessantst voor jou","bij":"Klik op een project om te zien hoe het werkt, of stuur me meteen een bericht — je antwoorden staan er dan alvast in.","knop":"Stuur me dit"},"email":"info@eemland-digital.nl","projecten":[{"id":"eemland","naam":"Eemland Boekt","eenRegel":"Offertes, facturen, urenbriefjes scannen en btw-aangifte in één systeem.","tags":["software","ai"],"tegel":"t-eemland.webp","zoek":"eemland boekt offertes, facturen, urenbriefjes scannen en btw-aangifte in één systeem. de complete administratie van een bouwbedrijf, van offerte tot btw-aangifte, in één systeem dat elke dag gebruikt wordt. software ai react 19 express postgresql supabase storage pdf-lib google gemini"},{"id":"ralox","naam":"RALOX Sports","eenRegel":"Webshop voor padelballen, plus een balautomaat die clubs 24/7 laat verkopen.","tags":["website","software","ai"],"tegel":"t-ralox.webp","zoek":"ralox sports webshop voor padelballen, plus een balautomaat die clubs 24/7 laat verkopen. voor een padelmerk: een webshop voor ballen en grips, met daarnaast een balautomaat voor clubs — ballen uit de muur, betalen met pin of telefoon, en de club verdient mee. website software ai react vite tailwind 4 express anthropic sdk google gemini motion railway"},{"id":"funstudios","naam":"Fun Studios","eenRegel":"Eventsite met boekingsflow: photo booths, low fog en indoor vuurwerk.","tags":["website"],"tegel":"t-funstudios.webp","zoek":"fun studios eventsite met boekingsflow: photo booths, low fog en indoor vuurwerk. voor een entertainmentbedrijf: photo booths, 360 booth, low fog, indoor vuurwerk en lichtletters — met een boekingsflow die de aanvragen binnenhaalt. website react 19 vite tailwind 4 motion express sharp"},{"id":"kozijnfabriek","naam":"Kozijnfabriek Direct","eenRegel":"Gevelfoto erin, offerte eruit — plus een dashboard voor het personeel.","tags":["software","website","ai"],"tegel":"t-kozijnfabriek.webp","zoek":"kozijnfabriek direct gevelfoto erin, offerte eruit — plus een dashboard voor het personeel. voor een kozijnenfabrikant in de regio amsterdam: een website die zelf offertes voorbereidt, en een dashboard waar het personeel de rest afhandelt. software website ai react 19 node 22 supabase google gemini google maps railway"},{"id":"courtswap","naam":"CourtSwap","eenRegel":"Marktplaatsplatform met chat, kaart en accounts — ook als app.","tags":["software","mobiel"],"tegel":"t-courtswap.webp","zoek":"courtswap marktplaatsplatform met chat, kaart en accounts — ook als app. een compleet marktplaatsplatform: adverteren, zoeken op de kaart, chatten en afspreken — als website én als app. software mobiel react express 5 prisma postgresql cloudinary capacitor"},{"id":"glacio","naam":"Glacio Klimaattechniek","eenRegel":"Eigen concept: hoe een installatiebedrijf zijn site zou kunnen inrichten.","tags":["website"],"tegel":"t-glacio.webp","zoek":"glacio klimaattechniek eigen concept: hoe een installatiebedrijf zijn site zou kunnen inrichten. zelf bedacht en gebouwd voor een verzonnen airco-installateur. geen klantopdracht, maar een uitgewerkt voorbeeld van hoe zo'n bedrijf online kan werken: keuzehulp, vaste tarieven en een intake zonder telefoontje. website node railway"},{"id":"remh","naam":"REMH Bouw & Verbouw","eenRegel":"Aannemerssite waar de klant zijn eigen dakkapel samenstelt.","tags":["website","3d"],"tegel":"t-remh.webp","zoek":"remh bouw & verbouw aannemerssite waar de klant zijn eigen dakkapel samenstelt. website voor een aannemer, met een configurator die de klant zijn eigen dakkapel laat samenstellen. website 3d react 19 express mysql pdfkit three.js railway"},{"id":"kaapnoord","naam":"Kaap Noord","eenRegel":"Een webshop waar je echt doorheen kunt lopen, tot en met de betaling.","tags":["website","software"],"tegel":"t-kaapnoord.webp","zoek":"kaap noord een webshop waar je echt doorheen kunt lopen, tot en met de betaling. een bedachte koffiebranderij, gebouwd om te laten zien hoe online verkopen er van binnen uitziet. niet alleen het winkeltje, maar ook wat er misgaat: voorraad die op is, een code die niet bestaat, een betaling die afbreekt. website software node 22 server-side rekenen sessies per bezoeker svg railway"},{"id":"vandijk","naam":"Van Dijk Installatie","eenRegel":"Een klantportaal waarin je zelf kunt proberen of je bij andermans dossier komt.","tags":["software"],"tegel":"t-vandijk.webp","zoek":"van dijk installatie een klantportaal waarin je zelf kunt proberen of je bij andermans dossier komt. een bedacht installatiebedrijf. het laat zien wat een portaal echt moet doen: niet mooie schermen, maar sluitende afspraken over wie wat mag zien. er zitten drie accounts in — twee klanten en een medewerker. software node 22 sessies rechten per rol railway"},{"id":"wilgenhof","naam":"Hovenier Wilgenhof","eenRegel":"Klussen over ploegen verdelen, met een kaart en een reistijd die meerekent.","tags":["software","mobiel"],"tegel":"t-wilgenhof.webp","zoek":"hovenier wilgenhof klussen over ploegen verdelen, met een kaart en een reistijd die meerekent. een bedacht hoveniersbedrijf met vier ploegen. voor iedereen die zijn dag nu nog op een whiteboard of in een groepsapp verdeelt en wil zien wat het alternatief is. software mobiel node 22 svg-kaart afstandsberekening slepen en neerzetten railway"},{"id":"kempen","naam":"Kempen Transport","eenRegel":"Een dashboard dat uit zichzelf bijwerkt, zonder de pagina te verversen.","tags":["software"],"tegel":"t-kempen.webp","zoek":"kempen transport een dashboard dat uit zichzelf bijwerkt, zonder de pagina te verversen. een bedacht transportbedrijf. voor wie een scherm aan de muur wil dat altijd klopt, en wil weten hoe dat kan zonder dat er elke seconde iets wordt opgevraagd. software node 22 server-sent events svg-grafiek railway"},{"id":"kijkvergunning","naam":"KijkVergunning","eenRegel":"Adres invullen en zien of je uitbouw vergunningvrij mag — op kaart en in 3D.","tags":["software","3d","ai"],"tegel":"t-kijkvergunning.webp","zoek":"kijkvergunning adres invullen en zien of je uitbouw vergunningvrij mag — op kaart en in 3d. zie wat je mag bouwen voordat je begint: adres invullen, en je weet of die uitbouw vergunningvrij kan. software 3d ai next.js 16 react 19 maplibre three.js supabase zustand"},{"id":"lumiere","naam":"Lumière Dakkapellen","eenRegel":"Je dakkapel in 3D op je eigen dak, met pdf-offerte eruit.","tags":["website","3d"],"tegel":"t-lumiere.webp","zoek":"lumière dakkapellen je dakkapel in 3d op je eigen dak, met pdf-offerte eruit. een dakkapel die je in 3d op je eigen dak ziet staan — draaien, afwerking kiezen, offerte eruit. website 3d react 19 three.js react three fiber framer motion jspdf"},{"id":"kiesradar","naam":"Kiesradar","eenRegel":"Fysieke opstelling met sensoren die met een webapp en database praten.","tags":["software","mobiel"],"tegel":null,"zoek":"kiesradar fysieke opstelling met sensoren die met een webapp en database praten. teamproject aan de hogeschool van amsterdam: een fysieke opstelling die studiekiezers helpt kiezen, met sensoren die met een webapp praten. software mobiel python flask mysql docker esp32 gitlab ci"},{"id":"eemlandwerkt","naam":"EemlandWerkt","eenRegel":"Waar Eemland Boekt begon: bedrijfssite met klantportaal, op een Python-backend.","tags":["software","website"],"tegel":null,"zoek":"eemlandwerkt waar eemland boekt begon: bedrijfssite met klantportaal, op een python-backend. de eerste versie voor hetzelfde bouwbedrijf: een bedrijfssite met diensten, vacatures en een klantportaal, met flask en postgresql erachter. een jaar later opnieuw opgebouwd in node — dat werd eemland boekt. software website react vite typescript flask sqlalchemy postgresql railway"}]}</script>
 
 <div popover id="uitleg-afstandsberekening" class="uitleg"><b>Afstandsberekening</b>Rekent uit hoe ver twee punten uit elkaar liggen en hoe lang je daarover doet.</div>
 <div popover id="uitleg-anthropic-sdk" class="uitleg"><b>Anthropic SDK</b>De koppeling met Claude, om tekst te laten lezen, samenvatten of controleren.</div>
@@ -2571,7 +2762,18 @@ dialog.hulp::backdrop { background: rgba(6, 9, 16, .72); backdrop-filter: blur(5
         knop.textContent = tekst;
         setTimeout(function () { knop.textContent = 'Kopieer link naar dit project'; }, 2200);
       };
-      if (navigator.clipboard && navigator.clipboard.writeText) {
+      // Op een telefoon is het deelvenster van het toestel zelf handiger dan
+      // een link op het klembord: dan kies je meteen WhatsApp of mail.
+      var kaartje = knop.closest('.paneel');
+      var titel = kaartje ? (kaartje.querySelector('h2') || {}).textContent : document.title;
+      if (navigator.share && matchMedia('(pointer: coarse)').matches) {
+        navigator.share({ title: titel, url: adres }).then(function () {
+          klaar('Gedeeld');
+        }, function () { /* afgebroken of geweigerd: dan maar het klembord */
+          if (navigator.clipboard) navigator.clipboard.writeText(adres).then(function () { klaar('Link gekopieerd'); }, function () { klaar(adres); });
+          else klaar(adres);
+        });
+      } else if (navigator.clipboard && navigator.clipboard.writeText) {
         navigator.clipboard.writeText(adres).then(function () { klaar('Link gekopieerd'); },
           function () { klaar(adres); });
       } else {
@@ -2662,7 +2864,9 @@ dialog.hulp::backdrop { background: rgba(6, 9, 16, .72); backdrop-filter: blur(5
      precies de dingen die je met een losse div zelf fout doet. */
   var hulp = document.getElementById('hulp');
   var hulpBron = document.getElementById('hulp-data');
-  var hulpKan = hulp && hulpBron && typeof hulp.showModal === 'function';
+  var hulpKan = hulp && hulpBron &&
+    typeof hulp.showPopover === 'function' &&
+    HTMLElement.prototype.hasOwnProperty('popover');
 
   // kan de browser er niets mee, dan halen we de knop weg: een knop die niets
   // doet is erger dan een knop die er niet is
@@ -2754,7 +2958,7 @@ dialog.hulp::backdrop { background: rgba(6, 9, 16, .72); backdrop-filter: blur(5
       [].forEach.call(lijf.querySelectorAll('[data-project]'), function (k) {
         k.addEventListener('click', function () {
           var id = k.getAttribute('data-project');
-          hulp.close();
+          hulp.hidePopover();
           var kaart = kaarten.filter(function (c) { return c.getAttribute('data-id') === id; })[0];
           if (kaart) {
             kaart.scrollIntoView({ block: 'center', behavior: mindBeweging() ? 'auto' : 'smooth' });
@@ -2772,15 +2976,141 @@ dialog.hulp::backdrop { background: rgba(6, 9, 16, .72); backdrop-filter: blur(5
       k.addEventListener('click', function () {
         antwoorden = [];
         toonVraag(0);
-        hulp.showModal();
+        hulp.showPopover();
       });
     });
     [].forEach.call(document.querySelectorAll('[data-hulp-sluit]'), function (k) {
-      k.addEventListener('click', function () { hulp.close(); });
+      k.addEventListener('click', function () { hulp.hidePopover(); });
     });
-    // klikken naast het venster sluit het ook
-    hulp.addEventListener('click', function (e) {
-      if (e.target === hulp) hulp.close();
+    // Escape en klikken naast het paneel regelt de browser zelf, omdat het
+    // een popover="auto" is. Scheelt code en het gedraagt zich zoals mensen
+    // van elke andere popover gewend zijn.
+
+    /* het lipje rechtsonder. Wie het wegklikt, krijgt het deze bezoeker
+       niet meer te zien — dat is het verschil tussen een uitnodiging en
+       iets dat zich opdringt. */
+    var houder = document.getElementById('hulptab-houder');
+    if (houder) {
+      var weggeklikt = false;
+      try { weggeklikt = sessionStorage.getItem('hulptab-weg') === 'ja'; } catch (e) { /* privémodus */ }
+      houder.hidden = weggeklikt;
+      var weg = houder.querySelector('[data-hulp-tab-weg]');
+      if (weg) {
+        weg.addEventListener('click', function () {
+          houder.hidden = true;
+          try { sessionStorage.setItem('hulptab-weg', 'ja'); } catch (e) { /* geeft niet */ }
+        });
+      }
+    }
+  }
+
+  /* ---------- snelzoeker (Ctrl/Cmd + K) ----------
+     Springen naar elk project vanaf elke plek, zonder je muis. Weer een
+     popover="auto", dus Escape en wegklikken hoeven we niet te schrijven. */
+  var palet = document.getElementById('palet');
+  if (palet && typeof palet.showPopover === 'function' && hulpBron) {
+    var pData = JSON.parse(hulpBron.textContent);
+    var invoer = document.getElementById('palet-invoer');
+    var lijst = document.getElementById('palet-lijst');
+    var keuze = 0;
+
+    var opMac = /Mac|iPhone|iPad/.test(navigator.userAgent);
+    [].forEach.call(document.querySelectorAll('[data-palet-toets]'), function (k) {
+      k.textContent = opMac ? '⌘ K' : 'Ctrl K';
+    });
+
+    var plekken = [
+      { soort: 'plek', naam: 'Het werk', bij: 'Alle projecten', doel: '#werk' },
+      { soort: 'plek', naam: 'Aanpak', bij: 'Voorkant én achterkant', doel: '#lagen' },
+      { soort: 'plek', naam: 'Samenwerken', bij: 'Hoe het gaat als je met mij werkt', doel: '#traject' },
+      { soort: 'plek', naam: 'Contact', bij: 'Laat je site doormeten', doel: 'contact/' }
+    ];
+    var alles = pData.projecten.map(function (p) {
+      return { soort: 'project', naam: p.naam, bij: p.eenRegel, id: p.id, tegel: p.tegel, zoek: p.zoek };
+    }).concat(plekken.map(function (p) { p.zoek = (p.naam + ' ' + p.bij).toLowerCase(); return p; }));
+
+    function treffers() {
+      var t = invoer.value.trim().toLowerCase();
+      if (!t) return alles.slice(0, 8);
+      return alles.filter(function (x) { return x.zoek.indexOf(t) !== -1; }).slice(0, 8);
+    }
+
+    function tekenPalet() {
+      var rijen = treffers();
+      if (keuze >= rijen.length) keuze = Math.max(0, rijen.length - 1);
+      if (!rijen.length) {
+        lijst.innerHTML = '<li class="palet-leeg">Niets gevonden. Probeer een andere term.</li>';
+        return;
+      }
+      lijst.innerHTML = rijen.map(function (r, i) {
+        return '<li><button type="button" class="palet-rij" role="option" data-i="' + i + '" aria-selected="' + (i === keuze) + '">' +
+          (r.tegel ? '<img src="img/' + r.tegel + '" width="52" height="33" alt="" loading="lazy">' : '<span class="vak"></span>') +
+          '<span><b>' + r.naam + '</b><small>' + r.bij + '</small></span>' +
+          '<span class="soort">' + (r.soort === 'plek' ? 'ga naar' : 'project') + '</span>' +
+        '</button></li>';
+      }).join('');
+      [].forEach.call(lijst.querySelectorAll('[data-i]'), function (k) {
+        k.addEventListener('click', function () { kiesUitPalet(rijen[Number(k.getAttribute('data-i'))]); });
+        k.addEventListener('mousemove', function () {
+          keuze = Number(k.getAttribute('data-i'));
+          [].forEach.call(lijst.querySelectorAll('[data-i]'), function (o) {
+            o.setAttribute('aria-selected', o === k);
+          });
+        });
+      });
+    }
+
+    function kiesUitPalet(r) {
+      if (!r) return;
+      palet.hidePopover();
+      if (r.soort === 'plek') {
+        if (r.doel.charAt(0) === '#') {
+          var doel = document.querySelector(r.doel);
+          if (doel) doel.scrollIntoView({ behavior: mindBeweging() ? 'auto' : 'smooth', block: 'start' });
+        } else {
+          location.href = r.doel;
+        }
+        return;
+      }
+      var kaart = kaarten.filter(function (c) { return c.getAttribute('data-id') === r.id; })[0];
+      if (kaart) {
+        kaart.scrollIntoView({ block: 'center', behavior: 'auto' });
+        open(r.id, kaart.querySelector('.kaart-knop'));
+      }
+    }
+
+    function openPalet() {
+      keuze = 0;
+      invoer.value = '';
+      tekenPalet();
+      palet.showPopover();
+      invoer.focus();
+    }
+
+    invoer.addEventListener('input', function () { keuze = 0; tekenPalet(); });
+    invoer.addEventListener('keydown', function (e) {
+      var rijen = treffers();
+      if (e.key === 'ArrowDown' || e.key === 'ArrowUp') {
+        e.preventDefault();
+        keuze = (keuze + (e.key === 'ArrowDown' ? 1 : rijen.length - 1)) % Math.max(1, rijen.length);
+        tekenPalet();
+        var aan = lijst.querySelector('[aria-selected="true"]');
+        if (aan) aan.scrollIntoView({ block: 'nearest' });
+      } else if (e.key === 'Enter') {
+        e.preventDefault();
+        kiesUitPalet(rijen[keuze]);
+      }
+    });
+
+    [].forEach.call(document.querySelectorAll('[data-palet-open]'), function (k) {
+      k.addEventListener('click', openPalet);
+    });
+
+    document.addEventListener('keydown', function (e) {
+      if ((e.metaKey || e.ctrlKey) && (e.key === 'k' || e.key === 'K')) {
+        e.preventDefault();
+        if (palet.matches(':popover-open')) palet.hidePopover(); else openPalet();
+      }
     });
   }
 
