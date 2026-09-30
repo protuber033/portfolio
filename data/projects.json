@@ -835,47 +835,67 @@
   },
   {
     "id": "eemlandwerkt",
-    "naam": "EemlandWerkt",
-    "status": "archief",
-    "statusLabel": "Eerste versie",
+    "naam": "Eemlandwerkt",
+    "status": "live",
+    "statusLabel": "Live online",
     "map": null,
     "github": "protuber033/eemlandwerkt",
     "periode": "december 2025 – januari 2026",
     "eersteDag": "2025-12-17",
     "laatsteDag": "2026-01-25",
-    "eenRegel": "Waar Eemland Boekt begon: bedrijfssite met klantportaal, op een Python-backend.",
-    "voorWie": "De eerste versie voor hetzelfde bouwbedrijf: een bedrijfssite met diensten, vacatures en een klantportaal, met Flask en PostgreSQL erachter. Een jaar later opnieuw opgebouwd in Node — dat werd Eemland Boekt.",
-    "voorbeeld": "Een klant logde in op het portaal en zag zijn eigen dossier; op kantoor stond hetzelfde in een dashboard. De rekenhulp op de site gaf alvast een prijsindicatie voordat iemand de telefoon pakte.",
+    "eenRegel": "Bedrijfssite voor een detacheerder: diensten, vacatures en een eigen inlog.",
+    "voorWie": "Voor een detacheringsbureau dat professionals levert aan overheid, zorg en techniek. De site moet twee kanten bedienen: opdrachtgevers die personeel zoeken, en professionals die een functie zoeken.",
+    "voorbeeld": "Een gemeente zoekt tijdelijk een jurist omgevingsrecht en klikt door naar het Legal Team. Een verpleegkundige komt binnen op de vacaturepagina, filtert op regio en uren, en meldt zich aan. Beide routes komen uit bij dezelfde intake, en achter de inlog zit het dossier.",
     "doet": [
-      "Bedrijfssite met diensten, detailpagina's en vacatures.",
-      "Rekenhulp die vooraf een prijsindicatie geeft.",
-      "Inloggen en aanmelden, met een klantportaal én een dashboard voor kantoor.",
-      "Python-backend met Flask en SQLAlchemy op PostgreSQL, uitgerold op Railway.",
-      "**Opgevolgd door Eemland Boekt**, dat opnieuw is opgebouwd op Node."
+      "Vier vakgebieden met een eigen pagina: legal, zorg, verzuimregie en engineering.",
+      "Vacatures met **filters op vakgebied, regio en uren**.",
+      "Een rekenhulp die vooraf een indicatie geeft.",
+      "Inloggen en account aanmaken voor een eigen omgeving.",
+      "Referenties per sector, met een filter erop."
     ],
     "techniek": [
-      "React",
+      "React 19",
+      "React Router 7",
+      "Tailwind",
       "Vite",
       "TypeScript",
-      "Flask",
-      "SQLAlchemy",
-      "PostgreSQL",
-      "Railway"
+      "PostgreSQL"
     ],
     "tags": [
-      "software",
-      "website"
+      "website",
+      "software"
     ],
-    "url": null,
-    "urlLabel": null,
-    "besloten": "Niet meer online — vervangen door Eemland Boekt.",
-    "tegel": null,
-    "tegelTekst": "EERSTE VERSIE · DEC 2025\nFLASK + REACT",
-    "beelden": [],
+    "url": "https://eemlandwerkt.com",
+    "urlLabel": "Open de site",
+    "besloten": null,
+    "tegel": "t-eemlandwerkt.webp",
+    "tegelTekst": null,
+    "beelden": [
+      {
+        "bestand": "eemlandwerkt-1.webp",
+        "titel": "de homepage",
+        "bijschrift": "Rustig en zakelijk, met de cijfers meteen in beeld.",
+        "alt": "Homepage van Eemlandwerkt met de kop Kennis met resultaat en daaronder sinds 1998, 30 plus overheidsinstanties en 500 plus projecten."
+      },
+      {
+        "bestand": "eemlandwerkt-2.webp",
+        "titel": "de vakgebieden",
+        "bijschrift": "Vier disciplines, elk met een eigen ingang.",
+        "alt": "Vier blokken naast elkaar: Legal Team, Zorgprofessionals, Verzuimregie en Technical Engineering, elk met een korte omschrijving."
+      },
+      {
+        "bestand": "eemlandwerkt-3.webp",
+        "titel": "vacatures",
+        "bijschrift": "Te filteren op vakgebied, regio en uren.",
+        "alt": "Lijst met openstaande functies, elk met vakgebied, plaats en aantal uren per week."
+      }
+    ],
     "stappen": [
-      "Klant logt in op het portaal",
-      "Ziet zijn eigen dossier",
-      "Kantoor ziet hetzelfde dashboard"
+      "Binnenkomen op je vakgebied",
+      "Vacature of dienst bekijken",
+      "Indicatie via de rekenhulp",
+      "Intake aanvragen",
+      "Inloggen op je eigen omgeving"
     ]
   }
 ]
