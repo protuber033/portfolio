@@ -55,7 +55,7 @@ function staven(rijen, eenheid) {
   const top = Math.max(...rijen.map((r) => r[1]), 1);
   return `<ul class="staven">
 ${rijen.map(([naam, n]) => `            <li>
-              <span class="staaf-naam">${esc(naam)}</span>
+              <span class="staaf-naam">${term(naam)}</span>
               <span class="staaf-spoor"><span class="staaf" style="width:${((n / top) * 100).toFixed(1)}%" title="${esc(naam)}: ${n} ${esc(eenheid)}"></span></span>
               <span class="staaf-waarde">${n}</span>
             </li>`).join('\n')}
@@ -168,7 +168,7 @@ function paneel(p, { pre = '', los = false } = {}) {
           </div>
           <div class="vak">
             <h4>Techniek</h4>
-            <ul class="techniek">${(p.techniek || []).map((t) => `<li>${esc(t)}</li>`).join('')}</ul>
+            <ul class="techniek">${(p.techniek || []).map((t) => `<li>${term(t)}</li>`).join('')}</ul>
             ${knop}
             ${dicht}
           </div>
@@ -183,7 +183,7 @@ const laag = (l) => `
           <p class="laag-label">${esc(l.label)}</p>
           <h3>${esc(l.kop)}</h3>
           <p>${esc(l.tekst)}</p>
-          <ul class="techniek">${l.techniek.map((t) => `<li>${esc(t)}</li>`).join('')}</ul>
+          <ul class="techniek">${l.techniek.map((t) => `<li>${term(t)}</li>`).join('')}</ul>
         </article>`;
 
 const blok = (b) => `
@@ -226,8 +226,34 @@ const filterKnoppen = site.filters.map((f, i) => {
 const css = [
   readFileSync(join(WORTEL, 'tools/stijl.css'), 'utf8'),
   readFileSync(join(WORTEL, 'tools/extra.css'), 'utf8'),
-  readFileSync(join(WORTEL, 'tools/traject.css'), 'utf8')
+  readFileSync(join(WORTEL, 'tools/traject.css'), 'utf8'),
+  readFileSync(join(WORTEL, 'tools/vloeiend.css'), 'utf8')
 ].join('\n');
+
+/* ---------- vaktermen uitleggen ----------
+   Op de site staan vijftig termen waar een ondernemer niets aan heeft.
+   Elke term die in het woordenboek staat wordt een knopje dat een native
+   popover opent. Eén popover per term, hoe vaak de term ook voorkomt —
+   anders staan er honderden dezelfde uitleggen in de pagina. */
+const woordenboek = site.woordenboek || {};
+const sleutelVan = (t) => 'uitleg-' + String(t).toLowerCase()
+  .replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+const gebruikteTermen = new Set();
+
+function term(tekst) {
+  const kaal = zonderVersie(tekst);
+  const uitleg = woordenboek[kaal];
+  if (!uitleg) return esc(tekst);
+  gebruikteTermen.add(kaal);
+  return `<button type="button" class="term" popovertarget="${sleutelVan(kaal)}">${esc(tekst)}</button>`;
+}
+
+const uitlegVoor = (termen) => [...termen].sort()
+  .filter((t) => woordenboek[t])
+  .map((t) => `<div popover id="${sleutelVan(t)}" class="uitleg"><b>${esc(t)}</b>${esc(woordenboek[t])}</div>`)
+  .join('\n');
+
+const uitlegVensters = () => uitlegVoor(gebruikteTermen);
 const js = readFileSync(join(WORTEL, 'tools/gedrag.js'), 'utf8');
 const werkCss = readFileSync(join(WORTEL, 'tools/werkpagina.css'), 'utf8');
 const werkJs = readFileSync(join(WORTEL, 'tools/werkpagina.js'), 'utf8');
@@ -360,7 +386,22 @@ const middelen = `<link rel="preconnect" href="https://fonts.googleapis.com">
 // het artifact heeft geen eigen <head>, dus daar blijft de titel erbij horen
 const kopstuk = `<title>${esc(site.titel)}</title>\n${middelen}`;
 
+const keuzehulp = () => {
+  const h = site.keuzehulp;
+  return `
+<dialog class="hulp" id="hulp" aria-labelledby="hulp-titel">
+  <button type="button" class="hulp-sluit" data-hulp-sluit aria-label="Sluiten">&times;</button>
+  <div class="hulp-kop">
+    <h2 id="hulp-titel">${esc(h.kop)}</h2>
+    <p>${esc(h.intro)}</p>
+  </div>
+  <div class="hulp-stappen" id="hulp-stappen">${h.vragen.map(() => '<i></i>').join('')}<i></i></div>
+  <div class="hulp-lijf" id="hulp-lijf"></div>
+</dialog>`;
+};
+
 const binnenkant = `<a class="overslaan" href="#werk">Direct naar het werk</a>
+<div class="leesbalk" aria-hidden="true"></div>
 
 <header class="balk-boven">
   <div class="binnen">
@@ -397,6 +438,10 @@ ${[...baan, ...baan].map((b) => `          <img src="img/m-${esc(b.bestand)}" wi
         <li><b>${aantalLive}</b> draaien nu live</li>
         <li><b>${domeinen}</b> op een eigen domein</li>
       </ul>
+      <p class="kop-knoppen">
+        <button type="button" class="knop knop-vol" data-hulp-open>Wat past bij jou?</button>
+        <a class="knop knop-klein" href="#werk">Of blader zelf door het werk</a>
+      </p>
     </div>
   </section>
 
@@ -526,6 +571,19 @@ ${site.traject.stappen.map((st, i) => `          <li><span class="nr">${i + 1}</
     <div id="venster-inhoud">${projecten.map((p) => paneel(p)).join('')}</div>
   </div>
 </div>
+
+${keuzehulp()}
+
+<script type="application/json" id="hulp-data">${JSON.stringify({
+  vragen: site.keuzehulp.vragen,
+  slot: site.keuzehulp.slot,
+  email: site.email,
+  projecten: projecten.map((p) => ({
+    id: p.id, naam: p.naam, eenRegel: p.eenRegel, tags: p.tags || [], tegel: p.tegel || null
+  }))
+}).replace(/</g, '\\u003c')}</script>
+
+${uitlegVensters()}
 `;
 
 const script = `<script>${js}</script>`;
@@ -653,6 +711,8 @@ ${anderen.map((q) => `        <li><a href="/werk/${esc(q.id)}/">${esc(q.naam)}</
     </div>
   </div>
 </main>
+
+${uitlegVoor(new Set((p.techniek || []).map(zonderVersie)))}
 
 <footer class="voet">
   <div class="binnen">

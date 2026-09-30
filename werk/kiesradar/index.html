@@ -674,6 +674,256 @@ h1 { font-size: clamp(1.9rem, 4.4vw, 2.9rem); max-width: 22ch; }
 @media (max-width: 620px) {
   .blokken { grid-template-columns: minmax(0, 1fr); }
 }
+
+/* ============================================================
+   Vloeiend — de nieuwere browserfuncties
+   ------------------------------------------------------------
+   Alles hier is opgebouwd zodat het wegvalt als een browser het
+   niet kent. Vandaar de @supports om alles wat iets onzichtbaar
+   maakt: zonder die vangnetten zou een oudere browser een lege
+   pagina tonen, en dat is precies de fout die je pas ontdekt als
+   een klant belt.
+   ============================================================ */
+
+/* ---------- 1. tekst die netjes afbreekt ---------- */
+h1, h2, h3, .kaart-naam, .blok h3 { text-wrap: balance; }
+p, .kaart-regel, .paneel-lead, li { text-wrap: pretty; }
+
+/* ---------- 2. de overgang van tegel naar venster ----------
+   Met de View Transition API groeit de tegel die je aanklikt uit
+   tot het scherm in het venster. De browser maakt daar zelf een
+   beweging van; wij wijzen alleen aan welke twee elementen bij
+   elkaar horen. Kan de browser het niet, dan opent het venster
+   gewoon zoals eerst. */
+@media (prefers-reduced-motion: no-preference) {
+  ::view-transition-old(beeld), ::view-transition-new(beeld) {
+    animation-duration: .42s;
+    animation-timing-function: cubic-bezier(.2, .7, .25, 1);
+  }
+  ::view-transition-group(beeld) { animation-duration: .42s; }
+  ::view-transition-old(root), ::view-transition-new(root) { animation-duration: .28s; }
+}
+@media (prefers-reduced-motion: reduce) {
+  ::view-transition-group(*), ::view-transition-old(*), ::view-transition-new(*) { animation: none !important; }
+}
+
+/* ---------- 3. onthullen tijdens het scrollen ----------
+   Geen javascript en geen waarnemer die meeloopt: de browser
+   koppelt de animatie aan de scrollpositie. Daardoor blijft het
+   soepel, ook op een oude telefoon. */
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    .kaart, .laag, .kunde, .blok, .stroom-los, .contact, .schermen > * {
+      animation: onthullen linear both;
+      animation-timeline: view();
+      animation-range: entry 2% cover 26%;
+    }
+    @keyframes onthullen {
+      from { opacity: 0; transform: translateY(22px); }
+      to { opacity: 1; transform: none; }
+    }
+
+    /* de staafjes groeien uit de basislijn zodra ze in beeld komen */
+    .staaf {
+      transform-origin: left center;
+      animation: groeien linear both;
+      animation-timeline: view();
+      animation-range: entry 10% cover 34%;
+    }
+    @keyframes groeien { from { transform: scaleX(0); } to { transform: scaleX(1); } }
+
+    /* de balk bovenin wordt compacter zodra je begint te scrollen */
+    .balk-boven {
+      animation: aanklampen linear both;
+      animation-timeline: scroll(root block);
+      animation-range: 0 140px;
+    }
+    @keyframes aanklampen {
+      to {
+        box-shadow: 0 10px 34px rgba(0, 0, 0, .45);
+        border-bottom-color: var(--rand-op);
+      }
+    }
+  }
+}
+
+/* een leesbalk bovenin: hoe ver ben je op de pagina */
+@supports (animation-timeline: scroll()) {
+  .leesbalk {
+    position: fixed; inset: 0 0 auto 0; height: 2px; z-index: 90;
+    transform-origin: left center; transform: scaleX(0);
+    background: linear-gradient(90deg, var(--accent), var(--live));
+    animation: lezen linear both;
+    animation-timeline: scroll(root block);
+  }
+  @keyframes lezen { to { transform: scaleX(1); } }
+}
+@supports not (animation-timeline: scroll()) { .leesbalk { display: none; } }
+
+/* ---------- 4. uitleg bij een vakterm ----------
+   Een native popover: de browser regelt het openen, het sluiten
+   met Escape, het klikken ernaast en de plek in de toetsvolgorde.
+   Dat is minder code én het werkt beter dan wat je zelf bouwt. */
+.term {
+  font: inherit; cursor: help; padding: 0; border: 0; background: none;
+  color: inherit; text-align: left;
+  border-bottom: 1px dashed var(--rand-op);
+  transition: border-color .15s ease, color .15s ease;
+}
+.term:hover, .term:focus-visible { color: var(--accent); border-bottom-color: var(--accent); }
+.term::after {
+  content: "?"; font-size: .62em; vertical-align: super; margin-left: 2px;
+  color: var(--tekst-3); font-weight: 600;
+}
+.term:hover::after, .term:focus-visible::after { color: var(--accent); }
+
+[popover].uitleg {
+  max-width: min(330px, calc(100vw - 32px));
+  margin: 0; padding: 14px 16px;
+  border: 1px solid var(--rand-op); border-radius: 12px;
+  background: var(--vlak-2); color: var(--tekst-2);
+  font-size: .89rem; line-height: 1.55;
+  box-shadow: 0 18px 50px rgba(0, 0, 0, .55);
+  inset: auto; position: fixed;
+  left: 50%; bottom: 24px; translate: -50% 0;
+}
+[popover].uitleg b { display: block; color: var(--tekst); font-size: .95rem; margin-bottom: 4px; }
+[popover].uitleg::backdrop { background: rgba(6, 9, 16, .35); }
+
+@media (prefers-reduced-motion: no-preference) {
+  [popover].uitleg {
+    transition: opacity .2s ease, translate .2s cubic-bezier(.2, .7, .3, 1), overlay .2s allow-discrete, display .2s allow-discrete;
+    opacity: 0; translate: -50% 12px;
+  }
+  [popover].uitleg:popover-open { opacity: 1; translate: -50% 0; }
+  @starting-style { [popover].uitleg:popover-open { opacity: 0; translate: -50% 12px; } }
+}
+
+/* op een breed scherm mag hij bij de term zelf gaan staan */
+/* Een popover die met popovertarget geopend wordt, krijgt zijn knop
+   automatisch als anker. Met position-area zeggen we alleen "erboven, over
+   de volle breedte" en laat de browser hem zelf binnen het scherm houden —
+   met bottom/left uitrekenen loopt hij over de rand bij een term die links
+   in beeld staat. Past hij er boven niet, dan gaat hij eronder. */
+@supports (position-area: block-start) {
+  @media (min-width: 720px) {
+    [popover].uitleg {
+      position-area: block-start span-all;
+      position-try-fallbacks: block-end span-all;
+      justify-self: anchor-center;
+      inset: auto; left: auto; bottom: auto;
+      margin-block: 10px; margin-inline: 12px;
+      translate: none;
+    }
+    @media (prefers-reduced-motion: no-preference) {
+      [popover].uitleg { translate: 0 6px; }
+      [popover].uitleg:popover-open { translate: 0 0; }
+      @starting-style { [popover].uitleg:popover-open { translate: 0 6px; } }
+    }
+  }
+}
+
+/* ---------- 5. de keuzehulp ----------
+   Een echte <dialog>: de browser zet de rest van de pagina op
+   inert, vangt Escape af en houdt de toetsvolgorde binnen het
+   venster. Allemaal dingen die je met een losse div zelf fout doet. */
+dialog.hulp {
+  width: min(560px, calc(100vw - 28px));
+  max-height: min(86vh, 760px);
+  padding: 0; border: 1px solid var(--rand-op); border-radius: 20px;
+  background: var(--vlak); color: var(--tekst);
+  box-shadow: 0 40px 110px rgba(0, 0, 0, .7);
+  overflow: hidden;
+}
+dialog.hulp::backdrop { background: rgba(6, 9, 16, .72); backdrop-filter: blur(5px); }
+
+@media (prefers-reduced-motion: no-preference) {
+  dialog.hulp {
+    transition: opacity .26s ease, translate .26s cubic-bezier(.2, .7, .3, 1), overlay .26s allow-discrete, display .26s allow-discrete;
+    opacity: 0; translate: 0 16px;
+  }
+  dialog.hulp[open] { opacity: 1; translate: 0 0; }
+  @starting-style { dialog.hulp[open] { opacity: 0; translate: 0 16px; } }
+  dialog.hulp::backdrop {
+    transition: opacity .26s ease, overlay .26s allow-discrete, display .26s allow-discrete;
+    opacity: 0;
+  }
+  dialog.hulp[open]::backdrop { opacity: 1; }
+  @starting-style { dialog.hulp[open]::backdrop { opacity: 0; } }
+}
+
+.hulp-kop { padding: 24px 26px 0; }
+.hulp-kop h2 { font-family: var(--display); font-weight: 700; font-size: 1.5rem; letter-spacing: -.03em; margin: 0; }
+.hulp-kop p { color: var(--tekst-2); margin: 8px 0 0; font-size: .95rem; }
+.hulp-stappen { display: flex; gap: 6px; padding: 18px 26px 0; }
+.hulp-stappen i { flex: 1; height: 3px; border-radius: 999px; background: var(--rand); transition: background .3s ease; }
+.hulp-stappen i.aan { background: var(--accent); }
+.hulp-lijf { padding: 20px 26px 26px; overflow-y: auto; }
+.hulp-vraag { font-family: var(--display); font-weight: 700; font-size: 1.16rem; margin: 0 0 14px; letter-spacing: -.02em; }
+.hulp-opties { display: grid; gap: 9px; }
+.hulp-optie {
+  display: grid; grid-template-columns: 1fr auto; gap: 4px 12px; align-items: center;
+  width: 100%; text-align: left; cursor: pointer; font: inherit;
+  padding: 14px 16px; border-radius: 13px;
+  border: 1px solid var(--rand); background: var(--vlak-2); color: var(--tekst);
+  transition: border-color .15s ease, background .15s ease, transform .15s ease;
+}
+.hulp-optie:hover { border-color: var(--accent); background: var(--accent-zacht); transform: translateX(3px); }
+.hulp-optie b { grid-column: 1; grid-row: 1; font-weight: 600; font-size: .98rem; }
+.hulp-optie small { grid-column: 1; grid-row: 2; color: var(--tekst-3); font-size: .84rem; }
+/* zonder een expliciete kolom belandt de pijl vóór het label */
+.hulp-optie .pijl { grid-column: 2; grid-row: 1 / span 2; color: var(--tekst-3); font-size: 1.1rem; }
+.hulp-optie:hover .pijl { color: var(--accent); }
+
+.hulp-uit { display: grid; gap: 14px; }
+.hulp-antwoorden { display: flex; flex-wrap: wrap; gap: 6px; }
+.hulp-antwoorden span {
+  font-family: var(--mono); font-size: .74rem; color: var(--tekst-2);
+  border: 1px solid var(--rand); border-radius: 999px; padding: 4px 11px;
+}
+.hulp-treffers { display: grid; gap: 8px; }
+.hulp-treffer {
+  display: grid; grid-template-columns: 64px 1fr; gap: 12px; align-items: center;
+  padding: 10px; border: 1px solid var(--rand); border-radius: 12px;
+  background: var(--vlak-2); cursor: pointer; text-align: left; font: inherit; color: inherit;
+  transition: border-color .15s ease;
+}
+.hulp-treffer:hover { border-color: var(--accent); }
+.hulp-treffer img { width: 64px; height: 40px; object-fit: cover; object-position: top center; border-radius: 7px; display: block; }
+.hulp-treffer b { font-weight: 600; font-size: .95rem; display: block; }
+.hulp-treffer small { color: var(--tekst-3); font-size: .83rem; }
+.hulp-knoppen { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 4px; }
+.hulp-terug {
+  background: none; border: 0; color: var(--tekst-3); cursor: pointer;
+  font: inherit; font-size: .88rem; text-decoration: underline; padding: 0;
+}
+.hulp-terug:hover { color: var(--tekst); }
+.hulp-sluit {
+  position: absolute; right: 16px; top: 16px; z-index: 3;
+  width: 34px; height: 34px; border-radius: 50%; cursor: pointer;
+  background: var(--vlak-2); border: 1px solid var(--rand); color: var(--tekst-2);
+  font-size: 1.1rem; line-height: 1; display: grid; place-items: center;
+}
+.hulp-sluit:hover { color: var(--tekst); border-color: var(--rand-op); }
+
+/* ---------- 6. kleine dingen die het geheel rustiger maken ---------- */
+:where(a, button, input, [tabindex]):focus-visible {
+  outline: 2px solid var(--accent); outline-offset: 2px; border-radius: 4px;
+}
+@supports (scrollbar-color: auto) {
+  html { scrollbar-color: var(--rand-op) transparent; scrollbar-width: thin; }
+}
+/* de zoekbalk groeit mee met wat je typt */
+@supports (field-sizing: content) {
+  .zoek input { field-sizing: content; min-width: 14ch; max-width: 30ch; }
+}
+
+/* ---------- 7. de knoppen onder de kop ---------- */
+.kop-knoppen {
+  display: flex; flex-wrap: wrap; gap: 10px; align-items: center;
+  margin: clamp(22px, 3vw, 32px) 0 0;
+}
+.kop-knoppen .knop { cursor: pointer; }
 </style>
 <style>/* ============ losse projectpagina ============
    Elk project heeft ook een eigen adres, zodat Google er een echte pagina
@@ -756,7 +1006,7 @@ h1 { font-size: clamp(1.9rem, 4.4vw, 2.9rem); max-width: 22ch; }
           </div>
           <div class="vak">
             <h4>Techniek</h4>
-            <ul class="techniek"><li>Python</li><li>Flask</li><li>MySQL</li><li>Docker</li><li>ESP32</li><li>GitLab CI</li></ul>
+            <ul class="techniek"><li><button type="button" class="term" popovertarget="uitleg-python">Python</button></li><li><button type="button" class="term" popovertarget="uitleg-flask">Flask</button></li><li><button type="button" class="term" popovertarget="uitleg-mysql">MySQL</button></li><li><button type="button" class="term" popovertarget="uitleg-docker">Docker</button></li><li><button type="button" class="term" popovertarget="uitleg-esp32">ESP32</button></li><li><button type="button" class="term" popovertarget="uitleg-gitlab-ci">GitLab CI</button></li></ul>
             
             <p class="dicht">Teamproject HvA — code staat op de GitLab van de hogeschool.</p>
           </div>
@@ -794,6 +1044,13 @@ h1 { font-size: clamp(1.9rem, 4.4vw, 2.9rem); max-width: 22ch; }
     </div>
   </div>
 </main>
+
+<div popover id="uitleg-docker" class="uitleg"><b>Docker</b>Verpakt een applicatie met alles erin, zodat hij overal hetzelfde draait.</div>
+<div popover id="uitleg-esp32" class="uitleg"><b>ESP32</b>Een klein chipje in de kast dat meet en meldt. Zo wordt hardware onderdeel van de software.</div>
+<div popover id="uitleg-flask" class="uitleg"><b>Flask</b>Hetzelfde idee als Express, maar in Python.</div>
+<div popover id="uitleg-gitlab-ci" class="uitleg"><b>GitLab CI</b>Controleert elke wijziging automatisch voordat hij live kan.</div>
+<div popover id="uitleg-mysql" class="uitleg"><b>MySQL</b>Ook een database, iets ouder en heel breed ondersteund.</div>
+<div popover id="uitleg-python" class="uitleg"><b>Python</b>Een taal die sterk is in rekenen en in alles met beeld of gegevens.</div>
 
 <footer class="voet">
   <div class="binnen">

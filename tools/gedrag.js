@@ -52,7 +52,51 @@
   }
 
   /* ---------- venster met de projectuitleg ---------- */
+  var mindBeweging = function () {
+    return window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  };
+
+  // De tegel die je aanklikt groeit uit tot het scherm in het venster. De
+  // browser regelt de beweging zelf; wij geven de twee beelden dezelfde naam
+  // zodat hij weet dat het hetzelfde ding is. Let op: die naam mag op één
+  // moment maar bij één element horen, dus we halen hem bij de tegel weg op
+  // het moment dat het venster hem overneemt.
+  function metOvergang(bron, doel, doen) {
+    if (!document.startViewTransition || mindBeweging()) { doen(); return; }
+    var wis = function () {
+      if (bron) bron.style.viewTransitionName = '';
+      if (doel()) doel().style.viewTransitionName = '';
+    };
+    if (bron) bron.style.viewTransitionName = 'beeld';
+    try {
+      var overgang = document.startViewTransition(function () {
+        if (bron) bron.style.viewTransitionName = '';
+        doen();
+        var d = doel();
+        if (d) d.style.viewTransitionName = 'beeld';
+      });
+      overgang.finished.then(wis, wis);
+    } catch (e) {
+      wis();
+      doen();
+    }
+  }
+
   function open(id, knop) {
+    var paneel = document.getElementById('paneel-' + id);
+    if (!paneel || !overlay) return;
+    if (overlay.hidden) {
+      metOvergang(
+        knop && knop.querySelector('img'),
+        function () { return paneel.querySelector('[data-rol="groot"]') || paneel.querySelector('img'); },
+        function () { openNu(id, knop); }
+      );
+      return;
+    }
+    openNu(id, knop);
+  }
+
+  function openNu(id, knop) {
     var paneel = document.getElementById('paneel-' + id);
     if (!paneel || !overlay) return;
     [].forEach.call(overlay.querySelectorAll('.paneel'), function (p) { p.hidden = true; });
@@ -69,6 +113,18 @@
   }
 
   function sluit() {
+    if (!overlay || overlay.hidden) return;
+    // dezelfde beweging, maar dan terug: het scherm krimpt naar zijn tegel
+    var paneel = document.getElementById('paneel-' + open.huidig);
+    var tegel = laatsteKnop;
+    metOvergang(
+      paneel && (paneel.querySelector('[data-rol="groot"]') || paneel.querySelector('img')),
+      function () { return tegel && tegel.querySelector('img'); },
+      sluitNu
+    );
+  }
+
+  function sluitNu() {
     if (!overlay || overlay.hidden) return;
     overlay.hidden = true;
     open.huidig = null;
@@ -215,6 +271,135 @@
       } else {
         selecteer();
       }
+    });
+  }
+
+  /* ---------- keuzehulp ----------
+     Drie vragen, en dan laten zien wat er bij iemand past. Het staat in een
+     echte <dialog>, zodat de browser Escape afvangt, de rest van de pagina
+     op inert zet en de toetsvolgorde binnen het venster houdt. Dat zijn
+     precies de dingen die je met een losse div zelf fout doet. */
+  var hulp = document.getElementById('hulp');
+  var hulpBron = document.getElementById('hulp-data');
+  var hulpKan = hulp && hulpBron && typeof hulp.showModal === 'function';
+
+  // kan de browser er niets mee, dan halen we de knop weg: een knop die niets
+  // doet is erger dan een knop die er niet is
+  if (!hulpKan) {
+    [].forEach.call(document.querySelectorAll('[data-hulp-open]'), function (k) { k.hidden = true; });
+  }
+
+  if (hulpKan) {
+    var H = JSON.parse(hulpBron.textContent);
+    var lijf = document.getElementById('hulp-lijf');
+    var balkjes = document.getElementById('hulp-stappen');
+    var antwoorden = [];
+
+    var schrijf = function (t) { var d = document.createElement('div'); d.textContent = t == null ? '' : String(t); return d.innerHTML; };
+
+    function stappenBij(n) {
+      [].forEach.call(balkjes.children, function (i, x) {
+        i.className = x <= n ? 'aan' : '';
+      });
+    }
+
+    function toonVraag(n) {
+      var v = H.vragen[n];
+      stappenBij(n);
+      lijf.innerHTML =
+        '<p class="hulp-vraag">' + schrijf(v.vraag) + '</p>' +
+        '<div class="hulp-opties">' +
+          v.opties.map(function (o, i) {
+            return '<button type="button" class="hulp-optie" data-keuze="' + i + '">' +
+              '<b>' + schrijf(o.label) + '</b><span class="pijl">&rarr;</span>' +
+              '<small>' + schrijf(o.bij) + '</small></button>';
+          }).join('') +
+        '</div>' +
+        (n > 0 ? '<p style="margin:16px 0 0"><button type="button" class="hulp-terug" data-terug>Vorige vraag</button></p>' : '');
+
+      [].forEach.call(lijf.querySelectorAll('[data-keuze]'), function (k) {
+        k.addEventListener('click', function () {
+          antwoorden[n] = v.opties[Number(k.getAttribute('data-keuze'))];
+          antwoorden.length = n + 1;
+          if (n + 1 < H.vragen.length) toonVraag(n + 1); else toonUitkomst();
+        });
+      });
+      var terug = lijf.querySelector('[data-terug]');
+      if (terug) terug.addEventListener('click', function () { toonVraag(n - 1); });
+      var eerste = lijf.querySelector('.hulp-optie');
+      if (eerste) eerste.focus();
+    }
+
+    function toonUitkomst() {
+      stappenBij(H.vragen.length);
+      var gewild = {};
+      antwoorden.forEach(function (a) { (a.tags || []).forEach(function (t) { gewild[t] = (gewild[t] || 0) + 1; }); });
+      var sleutels = Object.keys(gewild);
+
+      var treffers = H.projecten.map(function (p) {
+        var score = (p.tags || []).reduce(function (n, t) { return n + (gewild[t] || 0); }, 0);
+        return { p: p, score: score };
+      }).filter(function (x) { return sleutels.length === 0 || x.score > 0; })
+        .sort(function (a, b) { return b.score - a.score; })
+        .slice(0, 3);
+
+      var regels = antwoorden.map(function (a, i) { return H.vragen[i].vraag + ' ' + a.label; });
+
+      lijf.innerHTML =
+        '<div class="hulp-uit">' +
+          '<div><p class="hulp-vraag" style="margin-bottom:8px">' + schrijf(H.slot.kop) + '</p>' +
+            '<div class="hulp-antwoorden">' + antwoorden.map(function (a) {
+              return '<span>' + schrijf(a.label) + '</span>';
+            }).join('') + '</div></div>' +
+          '<div class="hulp-treffers">' +
+            treffers.map(function (t) {
+              return '<button type="button" class="hulp-treffer" data-project="' + schrijf(t.p.id) + '">' +
+                (t.p.tegel ? '<img src="img/' + schrijf(t.p.tegel) + '" width="64" height="40" alt="" loading="lazy">' : '<span></span>') +
+                '<span><b>' + schrijf(t.p.naam) + '</b><small>' + schrijf(t.p.eenRegel) + '</small></span></button>';
+            }).join('') +
+          '</div>' +
+          '<p style="color:var(--tekst-2);font-size:.92rem;margin:0">' + schrijf(H.slot.bij) + '</p>' +
+          '<div class="hulp-knoppen">' +
+            '<a class="knop knop-vol" id="hulp-mail" href="#">' + schrijf(H.slot.knop) + '</a>' +
+            '<button type="button" class="knop knop-klein" data-opnieuw>Opnieuw beginnen</button>' +
+          '</div>' +
+        '</div>';
+
+      var adres = 'mailto:' + H.email +
+        '?subject=' + encodeURIComponent('Via de keuzehulp op je site') +
+        '&body=' + encodeURIComponent('Hoi Samih,\n\n' + regels.join('\n') + '\n\nKunnen we hier eens over praten?\n\n');
+      lijf.querySelector('#hulp-mail').setAttribute('href', adres);
+
+      [].forEach.call(lijf.querySelectorAll('[data-project]'), function (k) {
+        k.addEventListener('click', function () {
+          var id = k.getAttribute('data-project');
+          hulp.close();
+          var kaart = kaarten.filter(function (c) { return c.getAttribute('data-id') === id; })[0];
+          if (kaart) {
+            kaart.scrollIntoView({ block: 'center', behavior: mindBeweging() ? 'auto' : 'smooth' });
+            open(id, kaart.querySelector('.kaart-knop'));
+          }
+        });
+      });
+      lijf.querySelector('[data-opnieuw]').addEventListener('click', function () {
+        antwoorden = [];
+        toonVraag(0);
+      });
+    }
+
+    [].forEach.call(document.querySelectorAll('[data-hulp-open]'), function (k) {
+      k.addEventListener('click', function () {
+        antwoorden = [];
+        toonVraag(0);
+        hulp.showModal();
+      });
+    });
+    [].forEach.call(document.querySelectorAll('[data-hulp-sluit]'), function (k) {
+      k.addEventListener('click', function () { hulp.close(); });
+    });
+    // klikken naast het venster sluit het ook
+    hulp.addEventListener('click', function (e) {
+      if (e.target === hulp) hulp.close();
     });
   }
 

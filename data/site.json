@@ -198,5 +198,169 @@
         ]
       }
     ]
+  },
+  "woordenboek": {
+    "React": "De bouwstenen waarmee de schermen gemaakt worden. Zorgt dat een pagina meteen reageert in plaats van telkens opnieuw te laden.",
+    "Next.js": "Een uitbreiding op React die pagina's alvast klaarzet op de server. Daardoor is de eerste seconde snel en kan Google de tekst lezen.",
+    "TypeScript": "Dezelfde taal als javascript, maar met controle vooraf. Veel fouten komen aan het licht tijdens het bouwen in plaats van bij een klant.",
+    "Tailwind": "Een manier om opmaak te schrijven die overal hetzelfde blijft. Scheelt duizenden regels en voorkomt dat één aanpassing iets anders sloopt.",
+    "three.js": "Waarmee je 3D in een browser tekent, zonder dat iemand iets hoeft te installeren.",
+    "React Three Fiber": "Dezelfde 3D, maar opgeschreven in dezelfde stijl als de rest van de schermen.",
+    "Motion": "Zorgt dat dingen soepel bewegen in plaats van ineens te verspringen.",
+    "Framer Motion": "Zorgt dat dingen soepel bewegen in plaats van ineens te verspringen.",
+    "Vite": "Het gereedschap dat alles samenvoegt tot een site. Snel bij het bouwen, klein bij het uitleveren.",
+    "zustand": "Houdt bij wat de bezoeker heeft aangeklikt, zodat elk scherm hetzelfde weet.",
+    "SVG": "Tekeningen die uit lijnen bestaan in plaats van uit pixels. Altijd scherp, ook op een groot scherm, en vaak duizend keer kleiner dan een foto.",
+    "SVG-kaart": "Een kaart die uit de coördinaten wordt getekend. Geen kaartendienst van derden, dus geen abonnement en geen gegevens die weglekken.",
+    "SVG-grafiek": "Een grafiek die uit lijnen bestaat. Scherp op elk scherm en licht om te laden.",
+    "Node": "De motor die je code op de server draait. Dezelfde taal aan de voor- en achterkant, dus minder overstappen.",
+    "Express": "Het raamwerk dat binnenkomende verzoeken naar de juiste plek stuurt.",
+    "Flask": "Hetzelfde idee als Express, maar in Python.",
+    "Python": "Een taal die sterk is in rekenen en in alles met beeld of gegevens.",
+    "Python / Flask": "Python voor het rekenwerk, Flask om het als website te kunnen aanbieden.",
+    "PostgreSQL": "De database. Waar alles in bewaard wordt, en die geen antwoord geeft op vragen die niemand mag stellen.",
+    "MySQL": "Ook een database, iets ouder en heel breed ondersteund.",
+    "Prisma": "Vertaalt tussen de code en de database, zodat je geen databasetaal door je code hoeft te vlechten.",
+    "SQLAlchemy": "Hetzelfde als Prisma, maar voor Python.",
+    "Supabase": "De database, de inlog en de bestandsopslag bij elkaar, zonder dat er een server beheerd hoeft te worden.",
+    "Supabase Storage": "Waar geüploade bestanden veilig staan, met per bestand een regel over wie erbij mag.",
+    "Sessies": "Onthoudt wie je bent tussen twee klikken, zonder dat je steeds opnieuw hoeft in te loggen.",
+    "Sessies per bezoeker": "Iedereen krijgt zijn eigen kopie van de gegevens, zodat bezoekers elkaar niet in de weg zitten.",
+    "Rechten per rol": "Wie wat mag zien wordt op de server bepaald. Het scherm verbergt dingen netjes, maar dat is geen slot.",
+    "Server-side rekenen": "Het rekenwerk gebeurt op de server, niet in de browser. Anders kan iemand zijn eigen totaal aanpassen voordat hij afrekent.",
+    "Server-sent events": "De server houdt één verbinding open en duwt er nieuws doorheen. Scheelt verkeer en het voelt direct.",
+    "Google Gemini": "Het model dat meekijkt met foto's en tekst. Bijvoorbeeld om kozijnen op een gevelfoto te herkennen.",
+    "Anthropic SDK": "De koppeling met Claude, om tekst te laten lezen, samenvatten of controleren.",
+    "Google Maps": "Kaarten, adressen en reistijden.",
+    "MapLibre": "Kaarten zonder abonnement, op open kaartgegevens.",
+    "Afstandsberekening": "Rekent uit hoe ver twee punten uit elkaar liggen en hoe lang je daarover doet.",
+    "Railway": "Waar de site draait. Elke wijziging die ik push staat binnen een paar minuten online.",
+    "Docker": "Verpakt een applicatie met alles erin, zodat hij overal hetzelfde draait.",
+    "GitLab CI": "Controleert elke wijziging automatisch voordat hij live kan.",
+    "Caching": "Bewaart wat niet elke keer opnieuw hoeft. Scheelt wachttijd en serverkosten.",
+    "Lazy loading": "Laadt beelden pas als je ze bijna in beeld hebt. De eerste seconde blijft licht.",
+    "Fallbacks": "Een plan B voor als iets niet lukt. De site blijft werken in plaats van leeg te blijven.",
+    "SEO-prerender": "Zet pagina's alvast klaar als tekst, zodat Google ze kan lezen en niet alleen een leeg scherm ziet.",
+    "sharp": "Verkleint en verscherpt foto's automatisch. Een zware foto wordt vaak vier keer kleiner zonder zichtbaar verschil.",
+    "Cloudinary": "Bewaart beelden en levert ze in het formaat dat bij het scherm past.",
+    "één service i.p.v. vijf": "Alles in één draaiend geheel in plaats van vijf losse onderdelen. Minder dat stuk kan, en goedkoper.",
+    "PDFKit": "Maakt pdf's op de server, bijvoorbeeld een offerte of een rapport.",
+    "jsPDF": "Maakt een pdf in de browser zelf.",
+    "pdf-lib": "Past bestaande pdf's aan, bijvoorbeeld om er gegevens in te vullen.",
+    "Slepen en neerzetten": "Dingen verplaatsen met de muis. Op een telefoon werkt aantikken net zo goed.",
+    "Capacitor": "Maakt van dezelfde website een app die je uit de store haalt.",
+    "ESP32": "Een klein chipje in de kast dat meet en meldt. Zo wordt hardware onderdeel van de software."
+  },
+  "keuzehulp": {
+    "kop": "Wat past bij jou?",
+    "intro": "Drie vragen, dan laat ik zien wat er voor jou tussen zit. Niets verplicht, je mailadres hoef ik niet.",
+    "vragen": [
+      {
+        "id": "wat",
+        "vraag": "Wat zoek je?",
+        "opties": [
+          {
+            "id": "website",
+            "label": "Een website",
+            "bij": "Een nieuwe site, of de huidige vervangen",
+            "tags": [
+              "website"
+            ]
+          },
+          {
+            "id": "software",
+            "label": "Software die werk uit handen neemt",
+            "bij": "Een dashboard, een portaal, een koppeling",
+            "tags": [
+              "software"
+            ]
+          },
+          {
+            "id": "verkopen",
+            "label": "Online kunnen verkopen",
+            "bij": "Bestellingen, betalingen, voorraad",
+            "tags": [
+              "website",
+              "software"
+            ]
+          },
+          {
+            "id": "weetniet",
+            "label": "Dat weet ik nog niet",
+            "bij": "Er gaat iets stroef en ik zoek de oplossing",
+            "tags": []
+          }
+        ]
+      },
+      {
+        "id": "wie",
+        "vraag": "Wie gaat het gebruiken?",
+        "opties": [
+          {
+            "id": "klanten",
+            "label": "Mijn klanten",
+            "bij": "Zij bestellen, vragen aan of kijken mee",
+            "tags": [
+              "website"
+            ]
+          },
+          {
+            "id": "personeel",
+            "label": "Mijn personeel",
+            "bij": "Binnen het bedrijf, om werk te regelen",
+            "tags": [
+              "software"
+            ]
+          },
+          {
+            "id": "allebei",
+            "label": "Allebei",
+            "bij": "Een voorkant voor klanten, een achterkant voor kantoor",
+            "tags": [
+              "website",
+              "software"
+            ]
+          }
+        ]
+      },
+      {
+        "id": "nu",
+        "vraag": "Wat heb je nu?",
+        "opties": [
+          {
+            "id": "niets",
+            "label": "Nog niets",
+            "bij": "We beginnen bij nul",
+            "tags": []
+          },
+          {
+            "id": "oud",
+            "label": "Iets dat verouderd is",
+            "bij": "Het werkt, maar het kan niet meer mee",
+            "tags": []
+          },
+          {
+            "id": "handmatig",
+            "label": "Veel handwerk",
+            "bij": "Excel, mailtjes, overtypen",
+            "tags": [
+              "ai",
+              "software"
+            ]
+          },
+          {
+            "id": "goed",
+            "label": "Iets dat prima werkt",
+            "bij": "Maar het moet meer kunnen",
+            "tags": []
+          }
+        ]
+      }
+    ],
+    "slot": {
+      "kop": "Dit lijkt me het interessantst voor jou",
+      "bij": "Klik op een project om te zien hoe het werkt, of stuur me meteen een bericht — je antwoorden staan er dan alvast in.",
+      "knop": "Stuur me dit"
+    }
   }
 }

@@ -654,8 +654,259 @@ h1 { font-size: clamp(1.9rem, 4.4vw, 2.9rem); max-width: 22ch; }
 @media (max-width: 620px) {
   .blokken { grid-template-columns: minmax(0, 1fr); }
 }
+
+/* ============================================================
+   Vloeiend — de nieuwere browserfuncties
+   ------------------------------------------------------------
+   Alles hier is opgebouwd zodat het wegvalt als een browser het
+   niet kent. Vandaar de @supports om alles wat iets onzichtbaar
+   maakt: zonder die vangnetten zou een oudere browser een lege
+   pagina tonen, en dat is precies de fout die je pas ontdekt als
+   een klant belt.
+   ============================================================ */
+
+/* ---------- 1. tekst die netjes afbreekt ---------- */
+h1, h2, h3, .kaart-naam, .blok h3 { text-wrap: balance; }
+p, .kaart-regel, .paneel-lead, li { text-wrap: pretty; }
+
+/* ---------- 2. de overgang van tegel naar venster ----------
+   Met de View Transition API groeit de tegel die je aanklikt uit
+   tot het scherm in het venster. De browser maakt daar zelf een
+   beweging van; wij wijzen alleen aan welke twee elementen bij
+   elkaar horen. Kan de browser het niet, dan opent het venster
+   gewoon zoals eerst. */
+@media (prefers-reduced-motion: no-preference) {
+  ::view-transition-old(beeld), ::view-transition-new(beeld) {
+    animation-duration: .42s;
+    animation-timing-function: cubic-bezier(.2, .7, .25, 1);
+  }
+  ::view-transition-group(beeld) { animation-duration: .42s; }
+  ::view-transition-old(root), ::view-transition-new(root) { animation-duration: .28s; }
+}
+@media (prefers-reduced-motion: reduce) {
+  ::view-transition-group(*), ::view-transition-old(*), ::view-transition-new(*) { animation: none !important; }
+}
+
+/* ---------- 3. onthullen tijdens het scrollen ----------
+   Geen javascript en geen waarnemer die meeloopt: de browser
+   koppelt de animatie aan de scrollpositie. Daardoor blijft het
+   soepel, ook op een oude telefoon. */
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    .kaart, .laag, .kunde, .blok, .stroom-los, .contact, .schermen > * {
+      animation: onthullen linear both;
+      animation-timeline: view();
+      animation-range: entry 2% cover 26%;
+    }
+    @keyframes onthullen {
+      from { opacity: 0; transform: translateY(22px); }
+      to { opacity: 1; transform: none; }
+    }
+
+    /* de staafjes groeien uit de basislijn zodra ze in beeld komen */
+    .staaf {
+      transform-origin: left center;
+      animation: groeien linear both;
+      animation-timeline: view();
+      animation-range: entry 10% cover 34%;
+    }
+    @keyframes groeien { from { transform: scaleX(0); } to { transform: scaleX(1); } }
+
+    /* de balk bovenin wordt compacter zodra je begint te scrollen */
+    .balk-boven {
+      animation: aanklampen linear both;
+      animation-timeline: scroll(root block);
+      animation-range: 0 140px;
+    }
+    @keyframes aanklampen {
+      to {
+        box-shadow: 0 10px 34px rgba(0, 0, 0, .45);
+        border-bottom-color: var(--rand-op);
+      }
+    }
+  }
+}
+
+/* een leesbalk bovenin: hoe ver ben je op de pagina */
+@supports (animation-timeline: scroll()) {
+  .leesbalk {
+    position: fixed; inset: 0 0 auto 0; height: 2px; z-index: 90;
+    transform-origin: left center; transform: scaleX(0);
+    background: linear-gradient(90deg, var(--accent), var(--live));
+    animation: lezen linear both;
+    animation-timeline: scroll(root block);
+  }
+  @keyframes lezen { to { transform: scaleX(1); } }
+}
+@supports not (animation-timeline: scroll()) { .leesbalk { display: none; } }
+
+/* ---------- 4. uitleg bij een vakterm ----------
+   Een native popover: de browser regelt het openen, het sluiten
+   met Escape, het klikken ernaast en de plek in de toetsvolgorde.
+   Dat is minder code én het werkt beter dan wat je zelf bouwt. */
+.term {
+  font: inherit; cursor: help; padding: 0; border: 0; background: none;
+  color: inherit; text-align: left;
+  border-bottom: 1px dashed var(--rand-op);
+  transition: border-color .15s ease, color .15s ease;
+}
+.term:hover, .term:focus-visible { color: var(--accent); border-bottom-color: var(--accent); }
+.term::after {
+  content: "?"; font-size: .62em; vertical-align: super; margin-left: 2px;
+  color: var(--tekst-3); font-weight: 600;
+}
+.term:hover::after, .term:focus-visible::after { color: var(--accent); }
+
+[popover].uitleg {
+  max-width: min(330px, calc(100vw - 32px));
+  margin: 0; padding: 14px 16px;
+  border: 1px solid var(--rand-op); border-radius: 12px;
+  background: var(--vlak-2); color: var(--tekst-2);
+  font-size: .89rem; line-height: 1.55;
+  box-shadow: 0 18px 50px rgba(0, 0, 0, .55);
+  inset: auto; position: fixed;
+  left: 50%; bottom: 24px; translate: -50% 0;
+}
+[popover].uitleg b { display: block; color: var(--tekst); font-size: .95rem; margin-bottom: 4px; }
+[popover].uitleg::backdrop { background: rgba(6, 9, 16, .35); }
+
+@media (prefers-reduced-motion: no-preference) {
+  [popover].uitleg {
+    transition: opacity .2s ease, translate .2s cubic-bezier(.2, .7, .3, 1), overlay .2s allow-discrete, display .2s allow-discrete;
+    opacity: 0; translate: -50% 12px;
+  }
+  [popover].uitleg:popover-open { opacity: 1; translate: -50% 0; }
+  @starting-style { [popover].uitleg:popover-open { opacity: 0; translate: -50% 12px; } }
+}
+
+/* op een breed scherm mag hij bij de term zelf gaan staan */
+/* Een popover die met popovertarget geopend wordt, krijgt zijn knop
+   automatisch als anker. Met position-area zeggen we alleen "erboven, over
+   de volle breedte" en laat de browser hem zelf binnen het scherm houden —
+   met bottom/left uitrekenen loopt hij over de rand bij een term die links
+   in beeld staat. Past hij er boven niet, dan gaat hij eronder. */
+@supports (position-area: block-start) {
+  @media (min-width: 720px) {
+    [popover].uitleg {
+      position-area: block-start span-all;
+      position-try-fallbacks: block-end span-all;
+      justify-self: anchor-center;
+      inset: auto; left: auto; bottom: auto;
+      margin-block: 10px; margin-inline: 12px;
+      translate: none;
+    }
+    @media (prefers-reduced-motion: no-preference) {
+      [popover].uitleg { translate: 0 6px; }
+      [popover].uitleg:popover-open { translate: 0 0; }
+      @starting-style { [popover].uitleg:popover-open { translate: 0 6px; } }
+    }
+  }
+}
+
+/* ---------- 5. de keuzehulp ----------
+   Een echte <dialog>: de browser zet de rest van de pagina op
+   inert, vangt Escape af en houdt de toetsvolgorde binnen het
+   venster. Allemaal dingen die je met een losse div zelf fout doet. */
+dialog.hulp {
+  width: min(560px, calc(100vw - 28px));
+  max-height: min(86vh, 760px);
+  padding: 0; border: 1px solid var(--rand-op); border-radius: 20px;
+  background: var(--vlak); color: var(--tekst);
+  box-shadow: 0 40px 110px rgba(0, 0, 0, .7);
+  overflow: hidden;
+}
+dialog.hulp::backdrop { background: rgba(6, 9, 16, .72); backdrop-filter: blur(5px); }
+
+@media (prefers-reduced-motion: no-preference) {
+  dialog.hulp {
+    transition: opacity .26s ease, translate .26s cubic-bezier(.2, .7, .3, 1), overlay .26s allow-discrete, display .26s allow-discrete;
+    opacity: 0; translate: 0 16px;
+  }
+  dialog.hulp[open] { opacity: 1; translate: 0 0; }
+  @starting-style { dialog.hulp[open] { opacity: 0; translate: 0 16px; } }
+  dialog.hulp::backdrop {
+    transition: opacity .26s ease, overlay .26s allow-discrete, display .26s allow-discrete;
+    opacity: 0;
+  }
+  dialog.hulp[open]::backdrop { opacity: 1; }
+  @starting-style { dialog.hulp[open]::backdrop { opacity: 0; } }
+}
+
+.hulp-kop { padding: 24px 26px 0; }
+.hulp-kop h2 { font-family: var(--display); font-weight: 700; font-size: 1.5rem; letter-spacing: -.03em; margin: 0; }
+.hulp-kop p { color: var(--tekst-2); margin: 8px 0 0; font-size: .95rem; }
+.hulp-stappen { display: flex; gap: 6px; padding: 18px 26px 0; }
+.hulp-stappen i { flex: 1; height: 3px; border-radius: 999px; background: var(--rand); transition: background .3s ease; }
+.hulp-stappen i.aan { background: var(--accent); }
+.hulp-lijf { padding: 20px 26px 26px; overflow-y: auto; }
+.hulp-vraag { font-family: var(--display); font-weight: 700; font-size: 1.16rem; margin: 0 0 14px; letter-spacing: -.02em; }
+.hulp-opties { display: grid; gap: 9px; }
+.hulp-optie {
+  display: grid; grid-template-columns: 1fr auto; gap: 4px 12px; align-items: center;
+  width: 100%; text-align: left; cursor: pointer; font: inherit;
+  padding: 14px 16px; border-radius: 13px;
+  border: 1px solid var(--rand); background: var(--vlak-2); color: var(--tekst);
+  transition: border-color .15s ease, background .15s ease, transform .15s ease;
+}
+.hulp-optie:hover { border-color: var(--accent); background: var(--accent-zacht); transform: translateX(3px); }
+.hulp-optie b { grid-column: 1; grid-row: 1; font-weight: 600; font-size: .98rem; }
+.hulp-optie small { grid-column: 1; grid-row: 2; color: var(--tekst-3); font-size: .84rem; }
+/* zonder een expliciete kolom belandt de pijl vóór het label */
+.hulp-optie .pijl { grid-column: 2; grid-row: 1 / span 2; color: var(--tekst-3); font-size: 1.1rem; }
+.hulp-optie:hover .pijl { color: var(--accent); }
+
+.hulp-uit { display: grid; gap: 14px; }
+.hulp-antwoorden { display: flex; flex-wrap: wrap; gap: 6px; }
+.hulp-antwoorden span {
+  font-family: var(--mono); font-size: .74rem; color: var(--tekst-2);
+  border: 1px solid var(--rand); border-radius: 999px; padding: 4px 11px;
+}
+.hulp-treffers { display: grid; gap: 8px; }
+.hulp-treffer {
+  display: grid; grid-template-columns: 64px 1fr; gap: 12px; align-items: center;
+  padding: 10px; border: 1px solid var(--rand); border-radius: 12px;
+  background: var(--vlak-2); cursor: pointer; text-align: left; font: inherit; color: inherit;
+  transition: border-color .15s ease;
+}
+.hulp-treffer:hover { border-color: var(--accent); }
+.hulp-treffer img { width: 64px; height: 40px; object-fit: cover; object-position: top center; border-radius: 7px; display: block; }
+.hulp-treffer b { font-weight: 600; font-size: .95rem; display: block; }
+.hulp-treffer small { color: var(--tekst-3); font-size: .83rem; }
+.hulp-knoppen { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 4px; }
+.hulp-terug {
+  background: none; border: 0; color: var(--tekst-3); cursor: pointer;
+  font: inherit; font-size: .88rem; text-decoration: underline; padding: 0;
+}
+.hulp-terug:hover { color: var(--tekst); }
+.hulp-sluit {
+  position: absolute; right: 16px; top: 16px; z-index: 3;
+  width: 34px; height: 34px; border-radius: 50%; cursor: pointer;
+  background: var(--vlak-2); border: 1px solid var(--rand); color: var(--tekst-2);
+  font-size: 1.1rem; line-height: 1; display: grid; place-items: center;
+}
+.hulp-sluit:hover { color: var(--tekst); border-color: var(--rand-op); }
+
+/* ---------- 6. kleine dingen die het geheel rustiger maken ---------- */
+:where(a, button, input, [tabindex]):focus-visible {
+  outline: 2px solid var(--accent); outline-offset: 2px; border-radius: 4px;
+}
+@supports (scrollbar-color: auto) {
+  html { scrollbar-color: var(--rand-op) transparent; scrollbar-width: thin; }
+}
+/* de zoekbalk groeit mee met wat je typt */
+@supports (field-sizing: content) {
+  .zoek input { field-sizing: content; min-width: 14ch; max-width: 30ch; }
+}
+
+/* ---------- 7. de knoppen onder de kop ---------- */
+.kop-knoppen {
+  display: flex; flex-wrap: wrap; gap: 10px; align-items: center;
+  margin: clamp(22px, 3vw, 32px) 0 0;
+}
+.kop-knoppen .knop { cursor: pointer; }
 </style>
 <a class="overslaan" href="#werk">Direct naar het werk</a>
+<div class="leesbalk" aria-hidden="true"></div>
 
 <header class="balk-boven">
   <div class="binnen">
@@ -759,6 +1010,10 @@ h1 { font-size: clamp(1.9rem, 4.4vw, 2.9rem); max-width: 22ch; }
         <li><b>11</b> draaien nu live</li>
         <li><b>2</b> op een eigen domein</li>
       </ul>
+      <p class="kop-knoppen">
+        <button type="button" class="knop knop-vol" data-hulp-open>Wat past bij jou?</button>
+        <a class="knop knop-klein" href="#werk">Of blader zelf door het werk</a>
+      </p>
     </div>
   </section>
 
@@ -989,19 +1244,19 @@ h1 { font-size: clamp(1.9rem, 4.4vw, 2.9rem); max-width: 22ch; }
           <p class="laag-label">Front-end</p>
           <h3>Wat de klant ziet</h3>
           <p>Schermen die net zo goed werken op een telefoon in de bouwkeet als op een monitor op kantoor. Foto's worden automatisch omgezet naar het kleinste formaat dat nog scherp is, en animaties draaien zonder de pagina te vertragen.</p>
-          <ul class="techniek"><li>React 19</li><li>Next.js 16</li><li>Tailwind 4</li><li>three.js</li><li>Motion</li></ul>
+          <ul class="techniek"><li><button type="button" class="term" popovertarget="uitleg-react">React 19</button></li><li><button type="button" class="term" popovertarget="uitleg-next-js">Next.js 16</button></li><li><button type="button" class="term" popovertarget="uitleg-tailwind">Tailwind 4</button></li><li><button type="button" class="term" popovertarget="uitleg-three-js">three.js</button></li><li><button type="button" class="term" popovertarget="uitleg-motion">Motion</button></li></ul>
         </article>
         <article class="laag">
           <p class="laag-label">Back-end</p>
           <h3>Wat eronder draait</h3>
           <p>De database, de inlog, de rechten per medewerker, het versturen van mail, het maken van pdf's en het veilig opslaan van documenten. Wachtwoorden gehasht, aanvraag-eindpunten afgeschermd, en een database die standaard niets vrijgeeft.</p>
-          <ul class="techniek"><li>Node 22</li><li>Express</li><li>PostgreSQL</li><li>MySQL</li><li>Supabase</li><li>Python / Flask</li></ul>
+          <ul class="techniek"><li><button type="button" class="term" popovertarget="uitleg-node">Node 22</button></li><li><button type="button" class="term" popovertarget="uitleg-express">Express</button></li><li><button type="button" class="term" popovertarget="uitleg-postgresql">PostgreSQL</button></li><li><button type="button" class="term" popovertarget="uitleg-mysql">MySQL</button></li><li><button type="button" class="term" popovertarget="uitleg-supabase">Supabase</button></li><li><button type="button" class="term" popovertarget="uitleg-python-flask">Python / Flask</button></li></ul>
         </article>
         <article class="laag">
           <p class="laag-label">Geoptimaliseerd</p>
           <h3>Snel, vindbaar en betaalbaar</h3>
           <p>Pagina's worden vooraf klaargezet zodat Google ze leest en bezoekers niet wachten. Beelden laden pas als je er bijna bent. En valt een betaalde kaart- of AI-dienst uit, dan schakelt de site door naar een gratis alternatief in plaats van stuk te gaan.</p>
-          <ul class="techniek"><li>SEO-prerender</li><li>Caching</li><li>Lazy loading</li><li>Fallbacks</li><li>één service i.p.v. vijf</li></ul>
+          <ul class="techniek"><li><button type="button" class="term" popovertarget="uitleg-seo-prerender">SEO-prerender</button></li><li><button type="button" class="term" popovertarget="uitleg-caching">Caching</button></li><li><button type="button" class="term" popovertarget="uitleg-lazy-loading">Lazy loading</button></li><li><button type="button" class="term" popovertarget="uitleg-fallbacks">Fallbacks</button></li><li><button type="button" class="term" popovertarget="uitleg-n-service-i-p-v-vijf">één service i.p.v. vijf</button></li></ul>
         </article></div>
 
       <div class="bouw">
@@ -1038,52 +1293,52 @@ h1 { font-size: clamp(1.9rem, 4.4vw, 2.9rem); max-width: 22ch; }
           <figcaption>Techniek die in meer dan &eacute;&eacute;n project terugkomt</figcaption>
           <ul class="staven">
             <li>
-              <span class="staaf-naam">Railway</span>
+              <span class="staaf-naam"><button type="button" class="term" popovertarget="uitleg-railway">Railway</button></span>
               <span class="staaf-spoor"><span class="staaf" style="width:100.0%" title="Railway: 9 projecten"></span></span>
               <span class="staaf-waarde">9</span>
             </li>
             <li>
-              <span class="staaf-naam">React</span>
+              <span class="staaf-naam"><button type="button" class="term" popovertarget="uitleg-react">React</button></span>
               <span class="staaf-spoor"><span class="staaf" style="width:100.0%" title="React: 9 projecten"></span></span>
               <span class="staaf-waarde">9</span>
             </li>
             <li>
-              <span class="staaf-naam">Node</span>
+              <span class="staaf-naam"><button type="button" class="term" popovertarget="uitleg-node">Node</button></span>
               <span class="staaf-spoor"><span class="staaf" style="width:66.7%" title="Node: 6 projecten"></span></span>
               <span class="staaf-waarde">6</span>
             </li>
             <li>
-              <span class="staaf-naam">Express</span>
+              <span class="staaf-naam"><button type="button" class="term" popovertarget="uitleg-express">Express</button></span>
               <span class="staaf-spoor"><span class="staaf" style="width:55.6%" title="Express: 5 projecten"></span></span>
               <span class="staaf-waarde">5</span>
             </li>
             <li>
-              <span class="staaf-naam">Google Gemini</span>
+              <span class="staaf-naam"><button type="button" class="term" popovertarget="uitleg-google-gemini">Google Gemini</button></span>
               <span class="staaf-spoor"><span class="staaf" style="width:33.3%" title="Google Gemini: 3 projecten"></span></span>
               <span class="staaf-waarde">3</span>
             </li>
             <li>
-              <span class="staaf-naam">PostgreSQL</span>
+              <span class="staaf-naam"><button type="button" class="term" popovertarget="uitleg-postgresql">PostgreSQL</button></span>
               <span class="staaf-spoor"><span class="staaf" style="width:33.3%" title="PostgreSQL: 3 projecten"></span></span>
               <span class="staaf-waarde">3</span>
             </li>
             <li>
-              <span class="staaf-naam">three.js</span>
+              <span class="staaf-naam"><button type="button" class="term" popovertarget="uitleg-three-js">three.js</button></span>
               <span class="staaf-spoor"><span class="staaf" style="width:33.3%" title="three.js: 3 projecten"></span></span>
               <span class="staaf-waarde">3</span>
             </li>
             <li>
-              <span class="staaf-naam">Vite</span>
+              <span class="staaf-naam"><button type="button" class="term" popovertarget="uitleg-vite">Vite</button></span>
               <span class="staaf-spoor"><span class="staaf" style="width:33.3%" title="Vite: 3 projecten"></span></span>
               <span class="staaf-waarde">3</span>
             </li>
             <li>
-              <span class="staaf-naam">Flask</span>
+              <span class="staaf-naam"><button type="button" class="term" popovertarget="uitleg-flask">Flask</button></span>
               <span class="staaf-spoor"><span class="staaf" style="width:22.2%" title="Flask: 2 projecten"></span></span>
               <span class="staaf-waarde">2</span>
             </li>
             <li>
-              <span class="staaf-naam">Motion</span>
+              <span class="staaf-naam"><button type="button" class="term" popovertarget="uitleg-motion">Motion</button></span>
               <span class="staaf-spoor"><span class="staaf" style="width:22.2%" title="Motion: 2 projecten"></span></span>
               <span class="staaf-waarde">2</span>
             </li>
@@ -1251,7 +1506,7 @@ h1 { font-size: clamp(1.9rem, 4.4vw, 2.9rem); max-width: 22ch; }
           </div>
           <div class="vak">
             <h4>Techniek</h4>
-            <ul class="techniek"><li>React 19</li><li>Express</li><li>PostgreSQL</li><li>Supabase Storage</li><li>pdf-lib</li><li>Google Gemini</li></ul>
+            <ul class="techniek"><li><button type="button" class="term" popovertarget="uitleg-react">React 19</button></li><li><button type="button" class="term" popovertarget="uitleg-express">Express</button></li><li><button type="button" class="term" popovertarget="uitleg-postgresql">PostgreSQL</button></li><li><button type="button" class="term" popovertarget="uitleg-supabase-storage">Supabase Storage</button></li><li><button type="button" class="term" popovertarget="uitleg-pdf-lib">pdf-lib</button></li><li><button type="button" class="term" popovertarget="uitleg-google-gemini">Google Gemini</button></li></ul>
             
             <p class="dicht">Besloten klantomgeving — rondleiding op aanvraag.</p>
           </div>
@@ -1295,7 +1550,7 @@ h1 { font-size: clamp(1.9rem, 4.4vw, 2.9rem); max-width: 22ch; }
           </div>
           <div class="vak">
             <h4>Techniek</h4>
-            <ul class="techniek"><li>React</li><li>Vite</li><li>Tailwind 4</li><li>Express</li><li>Anthropic SDK</li><li>Google Gemini</li><li>Motion</li><li>Railway</li></ul>
+            <ul class="techniek"><li><button type="button" class="term" popovertarget="uitleg-react">React</button></li><li><button type="button" class="term" popovertarget="uitleg-vite">Vite</button></li><li><button type="button" class="term" popovertarget="uitleg-tailwind">Tailwind 4</button></li><li><button type="button" class="term" popovertarget="uitleg-express">Express</button></li><li><button type="button" class="term" popovertarget="uitleg-anthropic-sdk">Anthropic SDK</button></li><li><button type="button" class="term" popovertarget="uitleg-google-gemini">Google Gemini</button></li><li><button type="button" class="term" popovertarget="uitleg-motion">Motion</button></li><li><button type="button" class="term" popovertarget="uitleg-railway">Railway</button></li></ul>
             <a class="knop knop-vol" href="https://ralox-production.up.railway.app" target="_blank" rel="noopener">Open de webshop</a>
             
           </div>
@@ -1355,7 +1610,7 @@ h1 { font-size: clamp(1.9rem, 4.4vw, 2.9rem); max-width: 22ch; }
           </div>
           <div class="vak">
             <h4>Techniek</h4>
-            <ul class="techniek"><li>React 19</li><li>Vite</li><li>Tailwind 4</li><li>Motion</li><li>Express</li><li>sharp</li></ul>
+            <ul class="techniek"><li><button type="button" class="term" popovertarget="uitleg-react">React 19</button></li><li><button type="button" class="term" popovertarget="uitleg-vite">Vite</button></li><li><button type="button" class="term" popovertarget="uitleg-tailwind">Tailwind 4</button></li><li><button type="button" class="term" popovertarget="uitleg-motion">Motion</button></li><li><button type="button" class="term" popovertarget="uitleg-express">Express</button></li><li><button type="button" class="term" popovertarget="uitleg-sharp">sharp</button></li></ul>
             <a class="knop knop-vol" href="https://www.funstudios.nl" target="_blank" rel="noopener">Open de site</a>
             
           </div>
@@ -1415,7 +1670,7 @@ h1 { font-size: clamp(1.9rem, 4.4vw, 2.9rem); max-width: 22ch; }
           </div>
           <div class="vak">
             <h4>Techniek</h4>
-            <ul class="techniek"><li>React 19</li><li>Node 22</li><li>Supabase</li><li>Google Gemini</li><li>Google Maps</li><li>Railway</li></ul>
+            <ul class="techniek"><li><button type="button" class="term" popovertarget="uitleg-react">React 19</button></li><li><button type="button" class="term" popovertarget="uitleg-node">Node 22</button></li><li><button type="button" class="term" popovertarget="uitleg-supabase">Supabase</button></li><li><button type="button" class="term" popovertarget="uitleg-google-gemini">Google Gemini</button></li><li><button type="button" class="term" popovertarget="uitleg-google-maps">Google Maps</button></li><li><button type="button" class="term" popovertarget="uitleg-railway">Railway</button></li></ul>
             <a class="knop knop-vol" href="https://kozijnfabriekdirect.nl" target="_blank" rel="noopener">Open de site</a>
             
           </div>
@@ -1477,7 +1732,7 @@ h1 { font-size: clamp(1.9rem, 4.4vw, 2.9rem); max-width: 22ch; }
           </div>
           <div class="vak">
             <h4>Techniek</h4>
-            <ul class="techniek"><li>React</li><li>Express 5</li><li>Prisma</li><li>PostgreSQL</li><li>Cloudinary</li><li>Capacitor</li></ul>
+            <ul class="techniek"><li><button type="button" class="term" popovertarget="uitleg-react">React</button></li><li><button type="button" class="term" popovertarget="uitleg-express">Express 5</button></li><li><button type="button" class="term" popovertarget="uitleg-prisma">Prisma</button></li><li><button type="button" class="term" popovertarget="uitleg-postgresql">PostgreSQL</button></li><li><button type="button" class="term" popovertarget="uitleg-cloudinary">Cloudinary</button></li><li><button type="button" class="term" popovertarget="uitleg-capacitor">Capacitor</button></li></ul>
             <a class="knop knop-vol" href="https://web-production-d363a.up.railway.app" target="_blank" rel="noopener">Open het platform</a>
             
           </div>
@@ -1519,7 +1774,7 @@ h1 { font-size: clamp(1.9rem, 4.4vw, 2.9rem); max-width: 22ch; }
           </div>
           <div class="vak">
             <h4>Techniek</h4>
-            <ul class="techniek"><li>Node</li><li>Railway</li></ul>
+            <ul class="techniek"><li><button type="button" class="term" popovertarget="uitleg-node">Node</button></li><li><button type="button" class="term" popovertarget="uitleg-railway">Railway</button></li></ul>
             <a class="knop knop-vol" href="https://glacio-site-production.up.railway.app" target="_blank" rel="noopener">Open de site</a>
             <p class="dicht">Verzonnen bedrijf — de site is echt, de klant niet.</p>
           </div>
@@ -1578,7 +1833,7 @@ h1 { font-size: clamp(1.9rem, 4.4vw, 2.9rem); max-width: 22ch; }
           </div>
           <div class="vak">
             <h4>Techniek</h4>
-            <ul class="techniek"><li>React 19</li><li>Express</li><li>MySQL</li><li>PDFKit</li><li>three.js</li><li>Railway</li></ul>
+            <ul class="techniek"><li><button type="button" class="term" popovertarget="uitleg-react">React 19</button></li><li><button type="button" class="term" popovertarget="uitleg-express">Express</button></li><li><button type="button" class="term" popovertarget="uitleg-mysql">MySQL</button></li><li><button type="button" class="term" popovertarget="uitleg-pdfkit">PDFKit</button></li><li><button type="button" class="term" popovertarget="uitleg-three-js">three.js</button></li><li><button type="button" class="term" popovertarget="uitleg-railway">Railway</button></li></ul>
             <a class="knop knop-vol" href="https://remhofficial-production.up.railway.app" target="_blank" rel="noopener">Open de site</a>
             
           </div>
@@ -1638,7 +1893,7 @@ h1 { font-size: clamp(1.9rem, 4.4vw, 2.9rem); max-width: 22ch; }
           </div>
           <div class="vak">
             <h4>Techniek</h4>
-            <ul class="techniek"><li>Node 22</li><li>Server-side rekenen</li><li>Sessies per bezoeker</li><li>SVG</li><li>Railway</li></ul>
+            <ul class="techniek"><li><button type="button" class="term" popovertarget="uitleg-node">Node 22</button></li><li><button type="button" class="term" popovertarget="uitleg-server-side-rekenen">Server-side rekenen</button></li><li><button type="button" class="term" popovertarget="uitleg-sessies-per-bezoeker">Sessies per bezoeker</button></li><li><button type="button" class="term" popovertarget="uitleg-svg">SVG</button></li><li><button type="button" class="term" popovertarget="uitleg-railway">Railway</button></li></ul>
             <a class="knop knop-vol" href="https://demos-production-4ca7.up.railway.app/koffie/" target="_blank" rel="noopener">Probeer de demo</a>
             <p class="dicht">Verzonnen bedrijf — de site is echt, de klant niet.</p>
           </div>
@@ -1700,7 +1955,7 @@ h1 { font-size: clamp(1.9rem, 4.4vw, 2.9rem); max-width: 22ch; }
           </div>
           <div class="vak">
             <h4>Techniek</h4>
-            <ul class="techniek"><li>Node 22</li><li>Sessies</li><li>Rechten per rol</li><li>Railway</li></ul>
+            <ul class="techniek"><li><button type="button" class="term" popovertarget="uitleg-node">Node 22</button></li><li><button type="button" class="term" popovertarget="uitleg-sessies">Sessies</button></li><li><button type="button" class="term" popovertarget="uitleg-rechten-per-rol">Rechten per rol</button></li><li><button type="button" class="term" popovertarget="uitleg-railway">Railway</button></li></ul>
             <a class="knop knop-vol" href="https://demos-production-4ca7.up.railway.app/portaal/" target="_blank" rel="noopener">Probeer de demo</a>
             <p class="dicht">Verzonnen bedrijf — de site is echt, de klant niet.</p>
           </div>
@@ -1761,7 +2016,7 @@ h1 { font-size: clamp(1.9rem, 4.4vw, 2.9rem); max-width: 22ch; }
           </div>
           <div class="vak">
             <h4>Techniek</h4>
-            <ul class="techniek"><li>Node 22</li><li>SVG-kaart</li><li>Afstandsberekening</li><li>Slepen en neerzetten</li><li>Railway</li></ul>
+            <ul class="techniek"><li><button type="button" class="term" popovertarget="uitleg-node">Node 22</button></li><li><button type="button" class="term" popovertarget="uitleg-svg-kaart">SVG-kaart</button></li><li><button type="button" class="term" popovertarget="uitleg-afstandsberekening">Afstandsberekening</button></li><li><button type="button" class="term" popovertarget="uitleg-slepen-en-neerzetten">Slepen en neerzetten</button></li><li><button type="button" class="term" popovertarget="uitleg-railway">Railway</button></li></ul>
             <a class="knop knop-vol" href="https://demos-production-4ca7.up.railway.app/planning/" target="_blank" rel="noopener">Probeer de demo</a>
             <p class="dicht">Verzonnen bedrijf — de site is echt, de klant niet.</p>
           </div>
@@ -1821,7 +2076,7 @@ h1 { font-size: clamp(1.9rem, 4.4vw, 2.9rem); max-width: 22ch; }
           </div>
           <div class="vak">
             <h4>Techniek</h4>
-            <ul class="techniek"><li>Node 22</li><li>Server-sent events</li><li>SVG-grafiek</li><li>Railway</li></ul>
+            <ul class="techniek"><li><button type="button" class="term" popovertarget="uitleg-node">Node 22</button></li><li><button type="button" class="term" popovertarget="uitleg-server-sent-events">Server-sent events</button></li><li><button type="button" class="term" popovertarget="uitleg-svg-grafiek">SVG-grafiek</button></li><li><button type="button" class="term" popovertarget="uitleg-railway">Railway</button></li></ul>
             <a class="knop knop-vol" href="https://demos-production-4ca7.up.railway.app/vloot/" target="_blank" rel="noopener">Probeer de demo</a>
             <p class="dicht">Verzonnen bedrijf — de site is echt, de klant niet.</p>
           </div>
@@ -1881,7 +2136,7 @@ h1 { font-size: clamp(1.9rem, 4.4vw, 2.9rem); max-width: 22ch; }
           </div>
           <div class="vak">
             <h4>Techniek</h4>
-            <ul class="techniek"><li>Next.js 16</li><li>React 19</li><li>MapLibre</li><li>three.js</li><li>Supabase</li><li>zustand</li></ul>
+            <ul class="techniek"><li><button type="button" class="term" popovertarget="uitleg-next-js">Next.js 16</button></li><li><button type="button" class="term" popovertarget="uitleg-react">React 19</button></li><li><button type="button" class="term" popovertarget="uitleg-maplibre">MapLibre</button></li><li><button type="button" class="term" popovertarget="uitleg-three-js">three.js</button></li><li><button type="button" class="term" popovertarget="uitleg-supabase">Supabase</button></li><li><button type="button" class="term" popovertarget="uitleg-zustand">zustand</button></li></ul>
             
             <p class="dicht">Draait lokaal — live demo op afspraak.</p>
           </div>
@@ -1941,7 +2196,7 @@ h1 { font-size: clamp(1.9rem, 4.4vw, 2.9rem); max-width: 22ch; }
           </div>
           <div class="vak">
             <h4>Techniek</h4>
-            <ul class="techniek"><li>React 19</li><li>three.js</li><li>React Three Fiber</li><li>Framer Motion</li><li>jsPDF</li></ul>
+            <ul class="techniek"><li><button type="button" class="term" popovertarget="uitleg-react">React 19</button></li><li><button type="button" class="term" popovertarget="uitleg-three-js">three.js</button></li><li><button type="button" class="term" popovertarget="uitleg-react-three-fiber">React Three Fiber</button></li><li><button type="button" class="term" popovertarget="uitleg-framer-motion">Framer Motion</button></li><li><button type="button" class="term" popovertarget="uitleg-jspdf">jsPDF</button></li></ul>
             
             <p class="dicht">Werkend prototype — draait lokaal.</p>
           </div>
@@ -1983,7 +2238,7 @@ h1 { font-size: clamp(1.9rem, 4.4vw, 2.9rem); max-width: 22ch; }
           </div>
           <div class="vak">
             <h4>Techniek</h4>
-            <ul class="techniek"><li>Python</li><li>Flask</li><li>MySQL</li><li>Docker</li><li>ESP32</li><li>GitLab CI</li></ul>
+            <ul class="techniek"><li><button type="button" class="term" popovertarget="uitleg-python">Python</button></li><li><button type="button" class="term" popovertarget="uitleg-flask">Flask</button></li><li><button type="button" class="term" popovertarget="uitleg-mysql">MySQL</button></li><li><button type="button" class="term" popovertarget="uitleg-docker">Docker</button></li><li><button type="button" class="term" popovertarget="uitleg-esp32">ESP32</button></li><li><button type="button" class="term" popovertarget="uitleg-gitlab-ci">GitLab CI</button></li></ul>
             
             <p class="dicht">Teamproject HvA — code staat op de GitLab van de hogeschool.</p>
           </div>
@@ -2018,7 +2273,7 @@ h1 { font-size: clamp(1.9rem, 4.4vw, 2.9rem); max-width: 22ch; }
           </div>
           <div class="vak">
             <h4>Techniek</h4>
-            <ul class="techniek"><li>React</li><li>Vite</li><li>TypeScript</li><li>Flask</li><li>SQLAlchemy</li><li>PostgreSQL</li><li>Railway</li></ul>
+            <ul class="techniek"><li><button type="button" class="term" popovertarget="uitleg-react">React</button></li><li><button type="button" class="term" popovertarget="uitleg-vite">Vite</button></li><li><button type="button" class="term" popovertarget="uitleg-typescript">TypeScript</button></li><li><button type="button" class="term" popovertarget="uitleg-flask">Flask</button></li><li><button type="button" class="term" popovertarget="uitleg-sqlalchemy">SQLAlchemy</button></li><li><button type="button" class="term" popovertarget="uitleg-postgresql">PostgreSQL</button></li><li><button type="button" class="term" popovertarget="uitleg-railway">Railway</button></li></ul>
             
             <p class="dicht">Niet meer online — vervangen door Eemland Boekt.</p>
           </div>
@@ -2036,6 +2291,70 @@ h1 { font-size: clamp(1.9rem, 4.4vw, 2.9rem); max-width: 22ch; }
       </article></div>
   </div>
 </div>
+
+
+<dialog class="hulp" id="hulp" aria-labelledby="hulp-titel">
+  <button type="button" class="hulp-sluit" data-hulp-sluit aria-label="Sluiten">&times;</button>
+  <div class="hulp-kop">
+    <h2 id="hulp-titel">Wat past bij jou?</h2>
+    <p>Drie vragen, dan laat ik zien wat er voor jou tussen zit. Niets verplicht, je mailadres hoef ik niet.</p>
+  </div>
+  <div class="hulp-stappen" id="hulp-stappen"><i></i><i></i><i></i><i></i></div>
+  <div class="hulp-lijf" id="hulp-lijf"></div>
+</dialog>
+
+<script type="application/json" id="hulp-data">{"vragen":[{"id":"wat","vraag":"Wat zoek je?","opties":[{"id":"website","label":"Een website","bij":"Een nieuwe site, of de huidige vervangen","tags":["website"]},{"id":"software","label":"Software die werk uit handen neemt","bij":"Een dashboard, een portaal, een koppeling","tags":["software"]},{"id":"verkopen","label":"Online kunnen verkopen","bij":"Bestellingen, betalingen, voorraad","tags":["website","software"]},{"id":"weetniet","label":"Dat weet ik nog niet","bij":"Er gaat iets stroef en ik zoek de oplossing","tags":[]}]},{"id":"wie","vraag":"Wie gaat het gebruiken?","opties":[{"id":"klanten","label":"Mijn klanten","bij":"Zij bestellen, vragen aan of kijken mee","tags":["website"]},{"id":"personeel","label":"Mijn personeel","bij":"Binnen het bedrijf, om werk te regelen","tags":["software"]},{"id":"allebei","label":"Allebei","bij":"Een voorkant voor klanten, een achterkant voor kantoor","tags":["website","software"]}]},{"id":"nu","vraag":"Wat heb je nu?","opties":[{"id":"niets","label":"Nog niets","bij":"We beginnen bij nul","tags":[]},{"id":"oud","label":"Iets dat verouderd is","bij":"Het werkt, maar het kan niet meer mee","tags":[]},{"id":"handmatig","label":"Veel handwerk","bij":"Excel, mailtjes, overtypen","tags":["ai","software"]},{"id":"goed","label":"Iets dat prima werkt","bij":"Maar het moet meer kunnen","tags":[]}]}],"slot":{"kop":"Dit lijkt me het interessantst voor jou","bij":"Klik op een project om te zien hoe het werkt, of stuur me meteen een bericht — je antwoorden staan er dan alvast in.","knop":"Stuur me dit"},"email":"info@eemland-digital.nl","projecten":[{"id":"eemland","naam":"Eemland Boekt","eenRegel":"Offertes, facturen, urenbriefjes scannen en btw-aangifte in één systeem.","tags":["software","ai"],"tegel":"t-eemland.webp"},{"id":"ralox","naam":"RALOX Sports","eenRegel":"Webshop voor padelballen, plus een balautomaat die clubs 24/7 laat verkopen.","tags":["website","software","ai"],"tegel":"t-ralox.webp"},{"id":"funstudios","naam":"Fun Studios","eenRegel":"Eventsite met boekingsflow: photo booths, low fog en indoor vuurwerk.","tags":["website"],"tegel":"t-funstudios.webp"},{"id":"kozijnfabriek","naam":"Kozijnfabriek Direct","eenRegel":"Gevelfoto erin, offerte eruit — plus een dashboard voor het personeel.","tags":["software","website","ai"],"tegel":"t-kozijnfabriek.webp"},{"id":"courtswap","naam":"CourtSwap","eenRegel":"Marktplaatsplatform met chat, kaart en accounts — ook als app.","tags":["software","mobiel"],"tegel":"t-courtswap.webp"},{"id":"glacio","naam":"Glacio Klimaattechniek","eenRegel":"Eigen concept: hoe een installatiebedrijf zijn site zou kunnen inrichten.","tags":["website"],"tegel":"t-glacio.webp"},{"id":"remh","naam":"REMH Bouw & Verbouw","eenRegel":"Aannemerssite waar de klant zijn eigen dakkapel samenstelt.","tags":["website","3d"],"tegel":"t-remh.webp"},{"id":"kaapnoord","naam":"Kaap Noord","eenRegel":"Een webshop waar je echt doorheen kunt lopen, tot en met de betaling.","tags":["website","software"],"tegel":"t-kaapnoord.webp"},{"id":"vandijk","naam":"Van Dijk Installatie","eenRegel":"Een klantportaal waarin je zelf kunt proberen of je bij andermans dossier komt.","tags":["software"],"tegel":"t-vandijk.webp"},{"id":"wilgenhof","naam":"Hovenier Wilgenhof","eenRegel":"Klussen over ploegen verdelen, met een kaart en een reistijd die meerekent.","tags":["software","mobiel"],"tegel":"t-wilgenhof.webp"},{"id":"kempen","naam":"Kempen Transport","eenRegel":"Een dashboard dat uit zichzelf bijwerkt, zonder de pagina te verversen.","tags":["software"],"tegel":"t-kempen.webp"},{"id":"kijkvergunning","naam":"KijkVergunning","eenRegel":"Adres invullen en zien of je uitbouw vergunningvrij mag — op kaart en in 3D.","tags":["software","3d","ai"],"tegel":"t-kijkvergunning.webp"},{"id":"lumiere","naam":"Lumière Dakkapellen","eenRegel":"Je dakkapel in 3D op je eigen dak, met pdf-offerte eruit.","tags":["website","3d"],"tegel":"t-lumiere.webp"},{"id":"kiesradar","naam":"Kiesradar","eenRegel":"Fysieke opstelling met sensoren die met een webapp en database praten.","tags":["software","mobiel"],"tegel":null},{"id":"eemlandwerkt","naam":"EemlandWerkt","eenRegel":"Waar Eemland Boekt begon: bedrijfssite met klantportaal, op een Python-backend.","tags":["software","website"],"tegel":null}]}</script>
+
+<div popover id="uitleg-afstandsberekening" class="uitleg"><b>Afstandsberekening</b>Rekent uit hoe ver twee punten uit elkaar liggen en hoe lang je daarover doet.</div>
+<div popover id="uitleg-anthropic-sdk" class="uitleg"><b>Anthropic SDK</b>De koppeling met Claude, om tekst te laten lezen, samenvatten of controleren.</div>
+<div popover id="uitleg-caching" class="uitleg"><b>Caching</b>Bewaart wat niet elke keer opnieuw hoeft. Scheelt wachttijd en serverkosten.</div>
+<div popover id="uitleg-capacitor" class="uitleg"><b>Capacitor</b>Maakt van dezelfde website een app die je uit de store haalt.</div>
+<div popover id="uitleg-cloudinary" class="uitleg"><b>Cloudinary</b>Bewaart beelden en levert ze in het formaat dat bij het scherm past.</div>
+<div popover id="uitleg-docker" class="uitleg"><b>Docker</b>Verpakt een applicatie met alles erin, zodat hij overal hetzelfde draait.</div>
+<div popover id="uitleg-esp32" class="uitleg"><b>ESP32</b>Een klein chipje in de kast dat meet en meldt. Zo wordt hardware onderdeel van de software.</div>
+<div popover id="uitleg-express" class="uitleg"><b>Express</b>Het raamwerk dat binnenkomende verzoeken naar de juiste plek stuurt.</div>
+<div popover id="uitleg-fallbacks" class="uitleg"><b>Fallbacks</b>Een plan B voor als iets niet lukt. De site blijft werken in plaats van leeg te blijven.</div>
+<div popover id="uitleg-flask" class="uitleg"><b>Flask</b>Hetzelfde idee als Express, maar in Python.</div>
+<div popover id="uitleg-framer-motion" class="uitleg"><b>Framer Motion</b>Zorgt dat dingen soepel bewegen in plaats van ineens te verspringen.</div>
+<div popover id="uitleg-gitlab-ci" class="uitleg"><b>GitLab CI</b>Controleert elke wijziging automatisch voordat hij live kan.</div>
+<div popover id="uitleg-google-gemini" class="uitleg"><b>Google Gemini</b>Het model dat meekijkt met foto's en tekst. Bijvoorbeeld om kozijnen op een gevelfoto te herkennen.</div>
+<div popover id="uitleg-google-maps" class="uitleg"><b>Google Maps</b>Kaarten, adressen en reistijden.</div>
+<div popover id="uitleg-lazy-loading" class="uitleg"><b>Lazy loading</b>Laadt beelden pas als je ze bijna in beeld hebt. De eerste seconde blijft licht.</div>
+<div popover id="uitleg-maplibre" class="uitleg"><b>MapLibre</b>Kaarten zonder abonnement, op open kaartgegevens.</div>
+<div popover id="uitleg-motion" class="uitleg"><b>Motion</b>Zorgt dat dingen soepel bewegen in plaats van ineens te verspringen.</div>
+<div popover id="uitleg-mysql" class="uitleg"><b>MySQL</b>Ook een database, iets ouder en heel breed ondersteund.</div>
+<div popover id="uitleg-next-js" class="uitleg"><b>Next.js</b>Een uitbreiding op React die pagina's alvast klaarzet op de server. Daardoor is de eerste seconde snel en kan Google de tekst lezen.</div>
+<div popover id="uitleg-node" class="uitleg"><b>Node</b>De motor die je code op de server draait. Dezelfde taal aan de voor- en achterkant, dus minder overstappen.</div>
+<div popover id="uitleg-pdfkit" class="uitleg"><b>PDFKit</b>Maakt pdf's op de server, bijvoorbeeld een offerte of een rapport.</div>
+<div popover id="uitleg-postgresql" class="uitleg"><b>PostgreSQL</b>De database. Waar alles in bewaard wordt, en die geen antwoord geeft op vragen die niemand mag stellen.</div>
+<div popover id="uitleg-prisma" class="uitleg"><b>Prisma</b>Vertaalt tussen de code en de database, zodat je geen databasetaal door je code hoeft te vlechten.</div>
+<div popover id="uitleg-python" class="uitleg"><b>Python</b>Een taal die sterk is in rekenen en in alles met beeld of gegevens.</div>
+<div popover id="uitleg-python-flask" class="uitleg"><b>Python / Flask</b>Python voor het rekenwerk, Flask om het als website te kunnen aanbieden.</div>
+<div popover id="uitleg-railway" class="uitleg"><b>Railway</b>Waar de site draait. Elke wijziging die ik push staat binnen een paar minuten online.</div>
+<div popover id="uitleg-react" class="uitleg"><b>React</b>De bouwstenen waarmee de schermen gemaakt worden. Zorgt dat een pagina meteen reageert in plaats van telkens opnieuw te laden.</div>
+<div popover id="uitleg-react-three-fiber" class="uitleg"><b>React Three Fiber</b>Dezelfde 3D, maar opgeschreven in dezelfde stijl als de rest van de schermen.</div>
+<div popover id="uitleg-rechten-per-rol" class="uitleg"><b>Rechten per rol</b>Wie wat mag zien wordt op de server bepaald. Het scherm verbergt dingen netjes, maar dat is geen slot.</div>
+<div popover id="uitleg-seo-prerender" class="uitleg"><b>SEO-prerender</b>Zet pagina's alvast klaar als tekst, zodat Google ze kan lezen en niet alleen een leeg scherm ziet.</div>
+<div popover id="uitleg-sqlalchemy" class="uitleg"><b>SQLAlchemy</b>Hetzelfde als Prisma, maar voor Python.</div>
+<div popover id="uitleg-svg" class="uitleg"><b>SVG</b>Tekeningen die uit lijnen bestaan in plaats van uit pixels. Altijd scherp, ook op een groot scherm, en vaak duizend keer kleiner dan een foto.</div>
+<div popover id="uitleg-svg-grafiek" class="uitleg"><b>SVG-grafiek</b>Een grafiek die uit lijnen bestaat. Scherp op elk scherm en licht om te laden.</div>
+<div popover id="uitleg-svg-kaart" class="uitleg"><b>SVG-kaart</b>Een kaart die uit de coördinaten wordt getekend. Geen kaartendienst van derden, dus geen abonnement en geen gegevens die weglekken.</div>
+<div popover id="uitleg-server-sent-events" class="uitleg"><b>Server-sent events</b>De server houdt één verbinding open en duwt er nieuws doorheen. Scheelt verkeer en het voelt direct.</div>
+<div popover id="uitleg-server-side-rekenen" class="uitleg"><b>Server-side rekenen</b>Het rekenwerk gebeurt op de server, niet in de browser. Anders kan iemand zijn eigen totaal aanpassen voordat hij afrekent.</div>
+<div popover id="uitleg-sessies" class="uitleg"><b>Sessies</b>Onthoudt wie je bent tussen twee klikken, zonder dat je steeds opnieuw hoeft in te loggen.</div>
+<div popover id="uitleg-sessies-per-bezoeker" class="uitleg"><b>Sessies per bezoeker</b>Iedereen krijgt zijn eigen kopie van de gegevens, zodat bezoekers elkaar niet in de weg zitten.</div>
+<div popover id="uitleg-slepen-en-neerzetten" class="uitleg"><b>Slepen en neerzetten</b>Dingen verplaatsen met de muis. Op een telefoon werkt aantikken net zo goed.</div>
+<div popover id="uitleg-supabase" class="uitleg"><b>Supabase</b>De database, de inlog en de bestandsopslag bij elkaar, zonder dat er een server beheerd hoeft te worden.</div>
+<div popover id="uitleg-supabase-storage" class="uitleg"><b>Supabase Storage</b>Waar geüploade bestanden veilig staan, met per bestand een regel over wie erbij mag.</div>
+<div popover id="uitleg-tailwind" class="uitleg"><b>Tailwind</b>Een manier om opmaak te schrijven die overal hetzelfde blijft. Scheelt duizenden regels en voorkomt dat één aanpassing iets anders sloopt.</div>
+<div popover id="uitleg-typescript" class="uitleg"><b>TypeScript</b>Dezelfde taal als javascript, maar met controle vooraf. Veel fouten komen aan het licht tijdens het bouwen in plaats van bij een klant.</div>
+<div popover id="uitleg-vite" class="uitleg"><b>Vite</b>Het gereedschap dat alles samenvoegt tot een site. Snel bij het bouwen, klein bij het uitleveren.</div>
+<div popover id="uitleg-jspdf" class="uitleg"><b>jsPDF</b>Maakt een pdf in de browser zelf.</div>
+<div popover id="uitleg-pdf-lib" class="uitleg"><b>pdf-lib</b>Past bestaande pdf's aan, bijvoorbeeld om er gegevens in te vullen.</div>
+<div popover id="uitleg-sharp" class="uitleg"><b>sharp</b>Verkleint en verscherpt foto's automatisch. Een zware foto wordt vaak vier keer kleiner zonder zichtbaar verschil.</div>
+<div popover id="uitleg-three-js" class="uitleg"><b>three.js</b>Waarmee je 3D in een browser tekent, zonder dat iemand iets hoeft te installeren.</div>
+<div popover id="uitleg-zustand" class="uitleg"><b>zustand</b>Houdt bij wat de bezoeker heeft aangeklikt, zodat elk scherm hetzelfde weet.</div>
+<div popover id="uitleg-n-service-i-p-v-vijf" class="uitleg"><b>één service i.p.v. vijf</b>Alles in één draaiend geheel in plaats van vijf losse onderdelen. Minder dat stuk kan, en goedkoper.</div>
 
 <script>(function () {
   var kaarten = [].slice.call(document.querySelectorAll('.kaart'));
@@ -2091,7 +2410,51 @@ h1 { font-size: clamp(1.9rem, 4.4vw, 2.9rem); max-width: 22ch; }
   }
 
   /* ---------- venster met de projectuitleg ---------- */
+  var mindBeweging = function () {
+    return window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  };
+
+  // De tegel die je aanklikt groeit uit tot het scherm in het venster. De
+  // browser regelt de beweging zelf; wij geven de twee beelden dezelfde naam
+  // zodat hij weet dat het hetzelfde ding is. Let op: die naam mag op één
+  // moment maar bij één element horen, dus we halen hem bij de tegel weg op
+  // het moment dat het venster hem overneemt.
+  function metOvergang(bron, doel, doen) {
+    if (!document.startViewTransition || mindBeweging()) { doen(); return; }
+    var wis = function () {
+      if (bron) bron.style.viewTransitionName = '';
+      if (doel()) doel().style.viewTransitionName = '';
+    };
+    if (bron) bron.style.viewTransitionName = 'beeld';
+    try {
+      var overgang = document.startViewTransition(function () {
+        if (bron) bron.style.viewTransitionName = '';
+        doen();
+        var d = doel();
+        if (d) d.style.viewTransitionName = 'beeld';
+      });
+      overgang.finished.then(wis, wis);
+    } catch (e) {
+      wis();
+      doen();
+    }
+  }
+
   function open(id, knop) {
+    var paneel = document.getElementById('paneel-' + id);
+    if (!paneel || !overlay) return;
+    if (overlay.hidden) {
+      metOvergang(
+        knop && knop.querySelector('img'),
+        function () { return paneel.querySelector('[data-rol="groot"]') || paneel.querySelector('img'); },
+        function () { openNu(id, knop); }
+      );
+      return;
+    }
+    openNu(id, knop);
+  }
+
+  function openNu(id, knop) {
     var paneel = document.getElementById('paneel-' + id);
     if (!paneel || !overlay) return;
     [].forEach.call(overlay.querySelectorAll('.paneel'), function (p) { p.hidden = true; });
@@ -2108,6 +2471,18 @@ h1 { font-size: clamp(1.9rem, 4.4vw, 2.9rem); max-width: 22ch; }
   }
 
   function sluit() {
+    if (!overlay || overlay.hidden) return;
+    // dezelfde beweging, maar dan terug: het scherm krimpt naar zijn tegel
+    var paneel = document.getElementById('paneel-' + open.huidig);
+    var tegel = laatsteKnop;
+    metOvergang(
+      paneel && (paneel.querySelector('[data-rol="groot"]') || paneel.querySelector('img')),
+      function () { return tegel && tegel.querySelector('img'); },
+      sluitNu
+    );
+  }
+
+  function sluitNu() {
     if (!overlay || overlay.hidden) return;
     overlay.hidden = true;
     open.huidig = null;
@@ -2254,6 +2629,135 @@ h1 { font-size: clamp(1.9rem, 4.4vw, 2.9rem); max-width: 22ch; }
       } else {
         selecteer();
       }
+    });
+  }
+
+  /* ---------- keuzehulp ----------
+     Drie vragen, en dan laten zien wat er bij iemand past. Het staat in een
+     echte <dialog>, zodat de browser Escape afvangt, de rest van de pagina
+     op inert zet en de toetsvolgorde binnen het venster houdt. Dat zijn
+     precies de dingen die je met een losse div zelf fout doet. */
+  var hulp = document.getElementById('hulp');
+  var hulpBron = document.getElementById('hulp-data');
+  var hulpKan = hulp && hulpBron && typeof hulp.showModal === 'function';
+
+  // kan de browser er niets mee, dan halen we de knop weg: een knop die niets
+  // doet is erger dan een knop die er niet is
+  if (!hulpKan) {
+    [].forEach.call(document.querySelectorAll('[data-hulp-open]'), function (k) { k.hidden = true; });
+  }
+
+  if (hulpKan) {
+    var H = JSON.parse(hulpBron.textContent);
+    var lijf = document.getElementById('hulp-lijf');
+    var balkjes = document.getElementById('hulp-stappen');
+    var antwoorden = [];
+
+    var schrijf = function (t) { var d = document.createElement('div'); d.textContent = t == null ? '' : String(t); return d.innerHTML; };
+
+    function stappenBij(n) {
+      [].forEach.call(balkjes.children, function (i, x) {
+        i.className = x <= n ? 'aan' : '';
+      });
+    }
+
+    function toonVraag(n) {
+      var v = H.vragen[n];
+      stappenBij(n);
+      lijf.innerHTML =
+        '<p class="hulp-vraag">' + schrijf(v.vraag) + '</p>' +
+        '<div class="hulp-opties">' +
+          v.opties.map(function (o, i) {
+            return '<button type="button" class="hulp-optie" data-keuze="' + i + '">' +
+              '<b>' + schrijf(o.label) + '</b><span class="pijl">&rarr;</span>' +
+              '<small>' + schrijf(o.bij) + '</small></button>';
+          }).join('') +
+        '</div>' +
+        (n > 0 ? '<p style="margin:16px 0 0"><button type="button" class="hulp-terug" data-terug>Vorige vraag</button></p>' : '');
+
+      [].forEach.call(lijf.querySelectorAll('[data-keuze]'), function (k) {
+        k.addEventListener('click', function () {
+          antwoorden[n] = v.opties[Number(k.getAttribute('data-keuze'))];
+          antwoorden.length = n + 1;
+          if (n + 1 < H.vragen.length) toonVraag(n + 1); else toonUitkomst();
+        });
+      });
+      var terug = lijf.querySelector('[data-terug]');
+      if (terug) terug.addEventListener('click', function () { toonVraag(n - 1); });
+      var eerste = lijf.querySelector('.hulp-optie');
+      if (eerste) eerste.focus();
+    }
+
+    function toonUitkomst() {
+      stappenBij(H.vragen.length);
+      var gewild = {};
+      antwoorden.forEach(function (a) { (a.tags || []).forEach(function (t) { gewild[t] = (gewild[t] || 0) + 1; }); });
+      var sleutels = Object.keys(gewild);
+
+      var treffers = H.projecten.map(function (p) {
+        var score = (p.tags || []).reduce(function (n, t) { return n + (gewild[t] || 0); }, 0);
+        return { p: p, score: score };
+      }).filter(function (x) { return sleutels.length === 0 || x.score > 0; })
+        .sort(function (a, b) { return b.score - a.score; })
+        .slice(0, 3);
+
+      var regels = antwoorden.map(function (a, i) { return H.vragen[i].vraag + ' ' + a.label; });
+
+      lijf.innerHTML =
+        '<div class="hulp-uit">' +
+          '<div><p class="hulp-vraag" style="margin-bottom:8px">' + schrijf(H.slot.kop) + '</p>' +
+            '<div class="hulp-antwoorden">' + antwoorden.map(function (a) {
+              return '<span>' + schrijf(a.label) + '</span>';
+            }).join('') + '</div></div>' +
+          '<div class="hulp-treffers">' +
+            treffers.map(function (t) {
+              return '<button type="button" class="hulp-treffer" data-project="' + schrijf(t.p.id) + '">' +
+                (t.p.tegel ? '<img src="img/' + schrijf(t.p.tegel) + '" width="64" height="40" alt="" loading="lazy">' : '<span></span>') +
+                '<span><b>' + schrijf(t.p.naam) + '</b><small>' + schrijf(t.p.eenRegel) + '</small></span></button>';
+            }).join('') +
+          '</div>' +
+          '<p style="color:var(--tekst-2);font-size:.92rem;margin:0">' + schrijf(H.slot.bij) + '</p>' +
+          '<div class="hulp-knoppen">' +
+            '<a class="knop knop-vol" id="hulp-mail" href="#">' + schrijf(H.slot.knop) + '</a>' +
+            '<button type="button" class="knop knop-klein" data-opnieuw>Opnieuw beginnen</button>' +
+          '</div>' +
+        '</div>';
+
+      var adres = 'mailto:' + H.email +
+        '?subject=' + encodeURIComponent('Via de keuzehulp op je site') +
+        '&body=' + encodeURIComponent('Hoi Samih,\n\n' + regels.join('\n') + '\n\nKunnen we hier eens over praten?\n\n');
+      lijf.querySelector('#hulp-mail').setAttribute('href', adres);
+
+      [].forEach.call(lijf.querySelectorAll('[data-project]'), function (k) {
+        k.addEventListener('click', function () {
+          var id = k.getAttribute('data-project');
+          hulp.close();
+          var kaart = kaarten.filter(function (c) { return c.getAttribute('data-id') === id; })[0];
+          if (kaart) {
+            kaart.scrollIntoView({ block: 'center', behavior: mindBeweging() ? 'auto' : 'smooth' });
+            open(id, kaart.querySelector('.kaart-knop'));
+          }
+        });
+      });
+      lijf.querySelector('[data-opnieuw]').addEventListener('click', function () {
+        antwoorden = [];
+        toonVraag(0);
+      });
+    }
+
+    [].forEach.call(document.querySelectorAll('[data-hulp-open]'), function (k) {
+      k.addEventListener('click', function () {
+        antwoorden = [];
+        toonVraag(0);
+        hulp.showModal();
+      });
+    });
+    [].forEach.call(document.querySelectorAll('[data-hulp-sluit]'), function (k) {
+      k.addEventListener('click', function () { hulp.close(); });
+    });
+    // klikken naast het venster sluit het ook
+    hulp.addEventListener('click', function (e) {
+      if (e.target === hulp) hulp.close();
     });
   }
 

@@ -283,6 +283,19 @@ if (!domein) {
   // Search Console mag op twee manieren: een meta-tag in de kop, of een
   // TXT-record bij de registrar. Het tweede dekt het hele domein en laat in
   // de pagina niets achter, dus dan staat hier alleen een aantekening.
+  // Een popovertarget die nergens naar wijst geeft geen foutmelding: er
+  // gebeurt gewoon niets als je klikt. Dat ontdek je pas als iemand het je
+  // vertelt, dus controleren we het per pagina.
+  let weesKnopjes = 0;
+  for (const [bestand] of paginas) {
+    const h = readFileSync(join(WORTEL, bestand), 'utf8');
+    const knoppen = new Set([...h.matchAll(/popovertarget="([^"]+)"/g)].map((m) => m[1]));
+    const vensters = new Set([...h.matchAll(/<div popover id="([^"]+)"/g)].map((m) => m[1]));
+    const wees = [...knoppen].filter((id) => !vensters.has(id));
+    if (wees.length) { fout(`${bestand}: ${wees.length} uitlegknopje(s) zonder uitleg — klikken doet niets`); weesKnopjes += wees.length; }
+  }
+  if (!weesKnopjes) ok('elk uitlegknopje heeft zijn uitleg op dezelfde pagina');
+
   if (site.searchConsole) ok(`Search Console: ${site.searchConsole}`);
   else if (site.googleVerificatie) ok('Search Console-code staat in de kop van elke pagina');
   else let_op('nog geen Search Console — zonder die koppeling weet je niet of Google je ziet');
