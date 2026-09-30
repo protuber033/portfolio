@@ -360,8 +360,18 @@ body.vast { overflow: hidden; }
 .showcase:hover .sleep { animation-play-state: paused; }
 .sleep img {
   width: 260px; height: auto; flex: none;
-  border: 1px solid var(--rand); border-radius: 9px;
+  border-radius: 10px;
   background: #0C1120;
+  /* Een lichte schermafbeelding op een donkere pagina heeft een rand nodig,
+     anders leest hij als een wit gat in plaats van als een scherm. De gloed
+     eromheen zet hem los van de achtergrond zonder een harde lijn te
+     trekken. */
+  box-shadow: 0 0 0 1px var(--rand-op), 0 10px 26px rgba(0, 0, 0, .45);
+  transition: transform .25s ease, box-shadow .25s ease;
+}
+.sleep img:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 0 0 1px var(--accent), 0 14px 34px rgba(0, 0, 0, .55);
 }
 @keyframes schuif {
   from { transform: translateX(0); }

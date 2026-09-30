@@ -40,7 +40,7 @@
         "titel": "inlogportaal",
         "bijschrift": "Bewust onscherp: dit is een besloten omgeving van een klant.",
         "alt": "Onscherp gemaakt inlogscherm van de besloten klantomgeving; alleen de indeling is te zien.",
-        "showcase": false
+        "licht": 55
       }
     ],
     "stappen": [
@@ -97,19 +97,22 @@
         "bestand": "ralox-1.webp",
         "titel": "homepage",
         "bijschrift": "Maximale controle over je padelballen en clubomzet.",
-        "alt": "Homepage van RALOX Sports met een padelbal in beeld en de kop Maximale controle over je padelballen en clubomzet."
+        "alt": "Homepage van RALOX Sports met een padelbal in beeld en de kop Maximale controle over je padelballen en clubomzet.",
+        "licht": 13
       },
       {
         "bestand": "ralox-2.webp",
         "titel": "producten",
         "bijschrift": "Ballen met prijs en bestelknop, direct te kopen.",
-        "alt": "Twee productkaarten met padelballen, prijzen en een bestelknop."
+        "alt": "Twee productkaarten met padelballen, prijzen en een bestelknop.",
+        "licht": 8
       },
       {
         "bestand": "ralox-3.webp",
         "titel": "vragen",
         "bijschrift": "Wat kost het plaatsen van een automaat? Staat er gewoon.",
-        "alt": "Sectie Veelgestelde vragen met uitklapbare antwoorden over de balautomaat."
+        "alt": "Sectie Veelgestelde vragen met uitklapbare antwoorden over de balautomaat.",
+        "licht": 19
       }
     ],
     "stappen": [
@@ -159,19 +162,22 @@
         "bestand": "funstudios-1.webp",
         "titel": "homepage",
         "bijschrift": "Opent met echte foto's van eerdere events.",
-        "alt": "Donkere homepage met de kop Wij maken jouw event onvergetelijk en zwevende polaroidfoto's."
+        "alt": "Donkere homepage met de kop Wij maken jouw event onvergetelijk en zwevende polaroidfoto's.",
+        "licht": 25
       },
       {
         "bestand": "funstudios-2.webp",
         "titel": "projecten",
         "bijschrift": "Uitgelichte projecten.",
-        "alt": "Sectie Dit hebben we laatst gedaan met een raster van eventfoto's."
+        "alt": "Sectie Dit hebben we laatst gedaan met een raster van eventfoto's.",
+        "licht": 16
       },
       {
-        "bestand": "funstudios-4.webp",
-        "titel": "cijfers",
-        "bijschrift": "Cijfers die de klant overtuigen.",
-        "alt": "Sectie Cijfers die overtuigen met 50 plus events, 10K volgers en een 4,9 beoordeling."
+        "bestand": "funstudios-3.webp",
+        "titel": "sectie 3",
+        "bijschrift": "Verder op de pagina.",
+        "alt": "Schermafbeelding van Fun Studios.",
+        "licht": 18
       }
     ],
     "bereikbaar": true,
@@ -225,19 +231,22 @@
         "bestand": "kozijnfabriek-1.webp",
         "titel": "homepage",
         "bijschrift": "De klant begint met zijn adres.",
-        "alt": "Homepage met de tekst Scan uw woning in 30 seconden en een formulier voor het adres."
-      },
-      {
-        "bestand": "kozijnfabriek-3.webp",
-        "titel": "reviews",
-        "bijschrift": "Reviews van echte klanten — namen bewust onleesbaar.",
-        "alt": "Sectie Wat onze klanten zeggen met drie reviews; de namen eronder zijn onleesbaar gemaakt."
+        "alt": "Homepage met de tekst Scan uw woning in 30 seconden en een formulier voor het adres.",
+        "licht": 94
       },
       {
         "bestand": "kozijnfabriek-2.webp",
         "titel": "vraag & antwoord",
         "bijschrift": "Veelgestelde vragen op de pagina zelf.",
-        "alt": "Uitklapbare vragen over de AI-scan, offertes en subsidie."
+        "alt": "Uitklapbare vragen over de AI-scan, offertes en subsidie.",
+        "licht": 93
+      },
+      {
+        "bestand": "kozijnfabriek-3.webp",
+        "titel": "reviews",
+        "bijschrift": "Reviews van echte klanten — namen bewust onleesbaar.",
+        "alt": "Sectie Wat onze klanten zeggen met drie reviews; de namen eronder zijn onleesbaar gemaakt.",
+        "licht": 94
       }
     ],
     "bereikbaar": true,
@@ -292,7 +301,9 @@
         "bestand": "courtswap-1.webp",
         "titel": "zoeken en filteren",
         "bijschrift": "Filteren op sport, merk, prijs, staat en afstand.",
-        "alt": "Overzichtspagina met filters voor sport, merk, prijs en staat naast het advertentieraster."
+        "alt": "Overzichtspagina met filters voor sport, merk, prijs en staat naast het advertentieraster.",
+        "licht": 97,
+        "showcase": false
       }
     ],
     "bereikbaar": true,
@@ -339,19 +350,22 @@
         "bestand": "glacio-1.webp",
         "titel": "homepage",
         "bijschrift": "Vaste prijs vooraf, direct zichtbaar.",
-        "alt": "Donkere homepage met de kop Koeling die net zo strak oogt als hij presteert."
+        "alt": "Donkere homepage met de kop Koeling die net zo strak oogt als hij presteert.",
+        "licht": 13
       },
       {
         "bestand": "glacio-2.webp",
         "titel": "keuzehulp",
         "bijschrift": "Drie vragen, dan een passend model.",
-        "alt": "Keuzehulp met vragen over de te koelen ruimte naast een lijst favoriete modellen."
+        "alt": "Keuzehulp met vragen over de te koelen ruimte naast een lijst favoriete modellen.",
+        "licht": 12
       },
       {
         "bestand": "glacio-3.webp",
         "titel": "tarieven",
         "bijschrift": "Geen verrassingen achteraf.",
-        "alt": "Sectie Montage zit in de prijs met tarieven voor jaarlijks onderhoud en een aansluitpakket."
+        "alt": "Sectie Montage zit in de prijs met tarieven voor jaarlijks onderhoud en een aansluitpakket.",
+        "licht": 13
       }
     ],
     "bereikbaar": true,
@@ -403,19 +417,22 @@
         "bestand": "remh-1.webp",
         "titel": "homepage",
         "bijschrift": "Direct door naar diensten of een intake.",
-        "alt": "Homepage met een foto van een woning in aanbouw en de kop REMH Bouw en Verbouw."
+        "alt": "Homepage met een foto van een woning in aanbouw en de kop REMH Bouw en Verbouw.",
+        "licht": 26
       },
       {
         "bestand": "remh-2.webp",
         "titel": "diensten",
         "bijschrift": "Elke dienst met richtprijs en configurator.",
-        "alt": "Raster met zes diensten: aanbouw, dakkapel, stucwerk, kozijnen, loodgieter en duurzame installaties, elk met richtprijs."
+        "alt": "Raster met zes diensten: aanbouw, dakkapel, stucwerk, kozijnen, loodgieter en duurzame installaties, elk met richtprijs.",
+        "licht": 76
       },
       {
         "bestand": "remh-3.webp",
         "titel": "beloftes",
         "bijschrift": "Waarom de klant hier zou boeken.",
-        "alt": "Drie blokken: Direct een prijs, Online plannen en Garantie en kwaliteit."
+        "alt": "Drie blokken: Direct een prijs, Online plannen en Garantie en kwaliteit.",
+        "licht": 80
       }
     ],
     "bereikbaar": true,
@@ -477,19 +494,22 @@
         "bestand": "kaapnoord-1.webp",
         "titel": "de winkel",
         "bijschrift": "Warm en op papier — bewust het tegenovergestelde van een dashboard.",
-        "alt": "Homepage van koffiebranderij Kaap Noord met een getekende kop koffie en de kop Koffie die nog naar de brander ruikt."
+        "alt": "Homepage van koffiebranderij Kaap Noord met een getekende kop koffie en de kop Koffie die nog naar de brander ruikt.",
+        "licht": 81
       },
       {
         "bestand": "kaapnoord-2.webp",
         "titel": "de koffiekaart",
         "bijschrift": "Elke koffie een eigen getekende zak, geen stockfoto.",
-        "alt": "Raster met koffiesoorten, elk met een getekende zak in een eigen kleur, prijs en voorraad."
+        "alt": "Raster met koffiesoorten, elk met een getekende zak in een eigen kleur, prijs en voorraad.",
+        "licht": 84
       },
       {
         "bestand": "kaapnoord-3.webp",
         "titel": "per soort",
         "bijschrift": "Herkomst, hoogte, proces en brandingsgraad in één blik.",
-        "alt": "Productpaneel met herkomst, hoogte, proces, een brandingsmeter en keuzeknoppen voor de maling."
+        "alt": "Productpaneel met herkomst, hoogte, proces, een brandingsmeter en keuzeknoppen voor de maling.",
+        "licht": 86
       }
     ]
   },
@@ -539,19 +559,8 @@
         "bestand": "vandijk-1.webp",
         "titel": "inloggen",
         "bijschrift": "Drie accounts klaar: twee klanten en een monteur.",
-        "alt": "Inlogscherm van het klantportaal met drie voorgevulde proefaccounts eronder."
-      },
-      {
-        "bestand": "vandijk-2.webp",
-        "titel": "je eigen dossier",
-        "bijschrift": "De server vertelt erbij wat hij heeft opgezocht — en wat niet.",
-        "alt": "Dossieroverzicht met openstaand bedrag, offertes en facturen, en een balk waarin de server meldt welke gegevens zijn ingeladen."
-      },
-      {
-        "bestand": "vandijk-3.webp",
-        "titel": "de weigering",
-        "bijschrift": "Vraag een dossier op dat niet van je is en je ziet waarom het niet mag.",
-        "alt": "Het blok Probeer het zelf met een keuzelijst van dossiers en een antwoord van de server met code 403 Verboden."
+        "alt": "Inlogscherm van het klantportaal met drie voorgevulde proefaccounts eronder.",
+        "licht": 52
       }
     ]
   },
@@ -602,19 +611,15 @@
         "bestand": "wilgenhof-1.webp",
         "titel": "de dag verdelen",
         "bijschrift": "Sleep een klus naar een ploeg; de reistijd rekent meteen mee.",
-        "alt": "Planningsscherm met een kolom openstaande klussen links en vier ploegen met ochtend- en middagvakken ernaast."
+        "alt": "Planningsscherm met een kolom openstaande klussen links en vier ploegen met ochtend- en middagvakken ernaast.",
+        "licht": 89
       },
       {
         "bestand": "wilgenhof-2.webp",
         "titel": "past het nog?",
         "bijschrift": "Werk plus rijden tegen de lengte van het dagdeel.",
-        "alt": "Dagdeelvak met een capaciteitsbalk en de tekst drie uur vijftig werk plus achttien minuten rijden, tweeentwintig minuten over."
-      },
-      {
-        "bestand": "wilgenhof-3.webp",
-        "titel": "de rit op de kaart",
-        "bijschrift": "Zelf getekend uit de coördinaten — geen kaartendienst van derden.",
-        "alt": "Schematische kaart van de regio Amersfoort met genummerde klussen en per ploeg een gekleurde route vanaf de loods."
+        "alt": "Dagdeelvak met een capaciteitsbalk en de tekst drie uur vijftig werk plus achttien minuten rijden, tweeentwintig minuten over.",
+        "licht": 90
       }
     ]
   },
@@ -663,19 +668,15 @@
         "bestand": "kempen-1.webp",
         "titel": "het dashboard",
         "bijschrift": "De cijfers lopen terwijl je kijkt; de pagina vraagt zelf niets op.",
-        "alt": "Donker dashboard met het aantal geleverde ritten als groot getal en daaronder tegels voor stiptheid en wagens onderweg."
+        "alt": "Donker dashboard met het aantal geleverde ritten als groot getal en daaronder tegels voor stiptheid en wagens onderweg.",
+        "licht": 9
       },
       {
         "bestand": "kempen-2.webp",
         "titel": "wat er binnenkomt",
         "bijschrift": "Elke regel verschijnt op het moment dat het gebeurt.",
-        "alt": "Lijst met meldingen van geloste ritten en statuswisselingen, elk met een tijdstip."
-      },
-      {
-        "bestand": "kempen-3.webp",
-        "titel": "de vloot",
-        "bijschrift": "Acht wagens, met de toestand waarin ze nu zijn.",
-        "alt": "Lijst met vrachtwagens, chauffeurs en hun toestand: onderweg, laden, pauze of werkplaats."
+        "alt": "Lijst met meldingen van geloste ritten en statuswisselingen, elk met een tijdstip.",
+        "licht": 8
       }
     ]
   },
@@ -720,19 +721,22 @@
         "bestand": "kijkvergunning-2.webp",
         "titel": "de uitkomst",
         "bijschrift": "4 meter diep, 5 breed, betrouwbaarheid 8,8.",
-        "alt": "Resultaatscherm met luchtfoto, perceelgrens en de melding dat uitbouwen waarschijnlijk mag, maximaal 4 meter diep."
+        "alt": "Resultaatscherm met luchtfoto, perceelgrens en de melding dat uitbouwen waarschijnlijk mag, maximaal 4 meter diep.",
+        "licht": 80
       },
       {
         "bestand": "kijkvergunning-1.webp",
         "titel": "startpagina",
         "bijschrift": "Eén vraag, één invoerveld.",
-        "alt": "Startpagina met de vraag Wat mag ik bouwen op mijn adres en een zoekveld."
+        "alt": "Startpagina met de vraag Wat mag ik bouwen op mijn adres en een zoekveld.",
+        "licht": 94
       },
       {
         "bestand": "kijkvergunning-3.webp",
         "titel": "uitleg",
         "bijschrift": "Hoe de cijfers tot stand komen.",
-        "alt": "Uitlegpagina Hoe werkt KijkVergunning met genummerde stappen."
+        "alt": "Uitlegpagina Hoe werkt KijkVergunning met genummerde stappen.",
+        "licht": 94
       }
     ],
     "stappen": [
@@ -780,7 +784,8 @@
         "bestand": "lumiere-1.webp",
         "titel": "de configurator",
         "bijschrift": "Het 3D-model reageert direct op wat je invult.",
-        "alt": "3D-weergave van een dak met dakkapel en schoorsteen, met een paneel Waar gaan we bouwen met velden voor postcode en breedte."
+        "alt": "3D-weergave van een dak met dakkapel en schoorsteen, met een paneel Waar gaan we bouwen met velden voor postcode en breedte.",
+        "licht": 20
       }
     ],
     "stappen": [
@@ -875,19 +880,16 @@
         "bestand": "eemlandwerkt-1.webp",
         "titel": "de homepage",
         "bijschrift": "Rustig en zakelijk, met de cijfers meteen in beeld.",
-        "alt": "Homepage van Eemlandwerkt met de kop Kennis met resultaat en daaronder sinds 1998, 30 plus overheidsinstanties en 500 plus projecten."
+        "alt": "Homepage van Eemlandwerkt met de kop Kennis met resultaat en daaronder sinds 1998, 30 plus overheidsinstanties en 500 plus projecten.",
+        "licht": 85
       },
       {
         "bestand": "eemlandwerkt-2.webp",
         "titel": "de vakgebieden",
         "bijschrift": "Vier disciplines, elk met een eigen ingang.",
-        "alt": "Vier blokken naast elkaar: Legal Team, Zorgprofessionals, Verzuimregie en Technical Engineering, elk met een korte omschrijving."
-      },
-      {
-        "bestand": "eemlandwerkt-3.webp",
-        "titel": "vacatures",
-        "bijschrift": "Te filteren op vakgebied, regio en uren.",
-        "alt": "Lijst met openstaande functies, elk met vakgebied, plaats en aantal uren per week."
+        "alt": "Vier blokken naast elkaar: Legal Team, Zorgprofessionals, Verzuimregie en Technical Engineering, elk met een korte omschrijving.",
+        "licht": 97,
+        "showcase": false
       }
     ],
     "stappen": [

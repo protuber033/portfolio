@@ -106,27 +106,82 @@ const stuur = (methode, params, sessie) => new Promise((res, rej) => {
   ws.send(JSON.stringify({ id, method: methode, params: params || {}, sessionId: sessie }));
 });
 
-async function schiet(url, scroll, naar) {
+/* Keuring van een opname.
+   Vaste scrollposities schoten bij korte pagina's in de leegte onder de
+   inhoud: drie keer wit, twee keer identiek. Daarom meten we nu eerst hoe
+   lang de pagina echt is, en keuren we elke opname voordat hij blijft staan. */
+const ZICHT = 900;
+
+async function keur(png) {
+  const { data } = await sharp(png).resize(16, 16, { fit: 'fill' })
+    .removeAlpha().raw().toBuffer({ resolveWithObject: true });
+  let wit = 0, helder = 0;
+  const vinger = [];
+  for (let i = 0; i < data.length; i += 3) {
+    const max = Math.max(data[i], data[i + 1], data[i + 2]);
+    const min = Math.min(data[i], data[i + 1], data[i + 2]);
+    if (max > 235 && max - min < 14) wit++;
+    helder += (data[i] + data[i + 1] + data[i + 2]) / 3;
+    vinger.push(Math.round((data[i] + data[i + 1] + data[i + 2]) / 3 / 16));
+  }
+  const n = data.length / 3;
+  // de helderheid gaat mee naar projects.json: daarmee zet de bouw de band
+  // om en om licht en donker in plaats van drie lichte schermen op een rij
+  return { witDeel: (wit / n) * 100, licht: Math.round(helder / n / 2.55), vinger };
+}
+
+// Alleen bijna-identieke opnamen weren. Te streng en je houdt van een
+// eenpagina-site maar één beeld over, terwijl de secties eronder wel
+// degelijk verschillen; te soepel en je krijgt drie keer hetzelfde.
+const lijktOp = (a, b) => a.reduce((s, v, i) => s + Math.abs(v - b[i]), 0) < 60;
+
+// Opent de pagina één keer en maakt daar alle opnamen in, op posities die bij
+// de werkelijke lengte passen. Scheelt ook twee keer opnieuw laden.
+async function schietAlles(url, maak) {
   const { targetId } = await stuur('Target.createTarget', { url: 'about:blank' });
   const { sessionId } = await stuur('Target.attachToTarget', { targetId, flatten: true });
+  const gelukt = [];
   try {
     await stuur('Page.enable', {}, sessionId);
     await stuur('Emulation.setDeviceMetricsOverride',
-      { width: 1440, height: 900, deviceScaleFactor: 2, mobile: false }, sessionId);
+      { width: 1440, height: ZICHT, deviceScaleFactor: 2, mobile: false }, sessionId);
     await stuur('Page.navigate', { url }, sessionId);
     await wacht(9000);
     try { await stuur('Runtime.evaluate', { expression: OPSCHONEN, returnByValue: true }, sessionId); } catch { /* geeft niet */ }
-    if (scroll) {
-      await stuur('Runtime.evaluate', { expression: `window.scrollTo(0,${scroll})` }, sessionId);
-      await wacht(1600);
+
+    const meting = await stuur('Runtime.evaluate',
+      { expression: 'document.documentElement.scrollHeight', returnByValue: true }, sessionId);
+    const hoogte = Number(meting?.result?.value) || ZICHT;
+    const max = Math.max(0, hoogte - ZICHT);
+
+    // korte pagina? dan is één scherm werkelijk alles wat er is
+    const posities = max < 300 ? [0]
+      : max < 1500 ? [0, max]
+        : [0, Math.round(max * 0.40), Math.round(max * 0.75)];
+
+    const gezien = [];
+    for (const [i, pos] of posities.entries()) {
+      // een lege plek? dan een stukje hoger proberen, daar staat meestal wel iets
+      for (const poging of [pos, Math.max(0, pos - 450)]) {
+        await stuur('Runtime.evaluate', { expression: `window.scrollTo(0,${poging})` }, sessionId);
+        await wacht(poging === 0 ? 800 : 1500);
+        const opname = await stuur('Page.captureScreenshot',
+          { format: 'png', captureBeyondViewport: false }, sessionId);
+        const png = Buffer.from(opname.data, 'base64');
+        const { witDeel, licht, vinger } = await keur(png);
+
+        if (witDeel > 88) { if (poging !== pos) console.log(`  positie ${pos}px: leeg, overgeslagen`); continue; }
+        if (gezien.some((v) => lijktOp(v, vinger))) { if (poging !== pos) console.log(`  positie ${pos}px: zelfde als een eerdere, overgeslagen`); continue; }
+
+        gezien.push(vinger);
+        gelukt.push(await maak(png, i, gelukt.length, licht));
+        break;
+      }
     }
-    await wacht(800);
-    const opname = await stuur('Page.captureScreenshot', { format: 'png', captureBeyondViewport: false }, sessionId);
-    writeFileSync(naar, Buffer.from(opname.data, 'base64'));
-    return true;
+    return gelukt;
   } catch (e) {
     console.log('  mislukt:', e.message);
-    return false;
+    return gelukt;
   } finally {
     await stuur('Target.closeTarget', { targetId });
   }
@@ -141,31 +196,34 @@ for (const p of projecten) {
   if (compleet && !alles) continue;
 
   console.log(`${p.naam} — schermen maken van ${p.url}`);
-  const posities = [0, 1500, 3000];
-  const beelden = [];
-  for (let i = 0; i < posities.length; i++) {
-    const ruw = join(RUW, `${p.id}-${i + 1}.png`);
-    const gelukt = await schiet(p.url, posities[i], ruw);
-    if (!gelukt) continue;
-    const bestand = `${p.id}-${i + 1}.webp`;
+  const beelden = await schietAlles(p.url, async (png, _pos, nr, licht) => {
+    const ruw = join(RUW, `${p.id}-${nr + 1}.png`);
+    writeFileSync(ruw, png);
+    const bestand = `${p.id}-${nr + 1}.webp`;
     await sharp(ruw).resize({ width: 1400, withoutEnlargement: true })
       .webp({ quality: 72 }).toFile(join(IMG, bestand));
-    // klein formaat voor de showcase bovenaan de pagina
+    // klein formaat voor de band bovenaan de pagina
     await sharp(ruw).resize({ width: 440 })
       .webp({ quality: 64 }).toFile(join(IMG, 'm-' + bestand));
-    beelden.push({
-      bestand,
-      titel: i === 0 ? 'homepage' : `sectie ${i + 1}`,
-      bijschrift: i === 0 ? 'De pagina zoals een bezoeker hem ziet.' : 'Verder op de pagina.',
-      alt: `Schermafbeelding van ${p.naam}.`
-    });
-    if (i === 0) {
+    if (nr === 0) {
       const tegel = `t-${p.id}.webp`;
       await sharp(ruw).resize({ width: 760 }).webp({ quality: 66 }).toFile(join(IMG, tegel));
       p.tegel = tegel;
     }
     gemaakt++;
-  }
+    // Een zelfgeschreven bijschrift is meer waard dan "sectie 2". Staat er al
+    // een tekst bij dit bestand, dan houden we die — anders ben je ze elke
+    // keer kwijt als je opnieuw schiet.
+    const oud = (p.beelden || []).find((b) => b.bestand === bestand);
+    return {
+      bestand,
+      licht,
+      titel: oud?.titel || (nr === 0 ? 'homepage' : `sectie ${nr + 1}`),
+      bijschrift: oud?.bijschrift || (nr === 0 ? 'De pagina zoals een bezoeker hem ziet.' : 'Verder op de pagina.'),
+      alt: oud?.alt || `Schermafbeelding van ${p.naam}.`
+    };
+  });
+  console.log(`  ${beelden.length} bruikbare opname(n)`);
   if (beelden.length && (!p.beelden || !p.beelden.length || alles)) p.beelden = beelden;
 }
 

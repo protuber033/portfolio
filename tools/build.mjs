@@ -29,9 +29,34 @@ const aantalLive = projecten.filter((p) => p.status === 'live').length;
 const domeinen = projecten.filter((p) => p.url && !/railway\.app/.test(p.url)).length;
 
 // de showcase pakt automatisch alle schermen van alle projecten mee
-const showcase = projecten.flatMap((p) => (p.beelden || [])
+/* De band bovenaan. Op volgorde van project zette hij drie schermen van
+   dezelfde site naast elkaar: bij een lichte site werd dat één wit blok,
+   bij een donkere één zwart gat. Daarom om en om licht en donker, en nooit
+   twee keer hetzelfde project achter elkaar.
+   De helderheid per beeld komt uit tools/beeldmeting.mjs. */
+const alleBeelden = projecten.flatMap((p) => (p.beelden || [])
   .filter((b) => b.showcase !== false)
-  .map((b) => ({ bestand: b.bestand, naam: p.naam, id: p.id })));
+  .map((b) => ({ bestand: b.bestand, naam: p.naam, id: p.id, licht: b.licht ?? 50 })));
+
+function meng(lijst) {
+  const donker = lijst.filter((b) => b.licht < 55).sort((a, b) => a.licht - b.licht);
+  const licht = lijst.filter((b) => b.licht >= 55).sort((a, b) => b.licht - a.licht);
+  const uit = [];
+  let pakDonker = true;
+
+  while (donker.length || licht.length) {
+    const eerste = pakDonker && donker.length ? donker : licht.length ? licht : donker;
+    // zelfde project als het vorige? pak dan de volgende uit diezelfde stapel
+    const vorige = uit[uit.length - 1];
+    let i = 0;
+    if (vorige) while (i < eerste.length - 1 && eerste[i].id === vorige.id) i++;
+    uit.push(eerste.splice(i, 1)[0]);
+    pakDonker = !pakDonker;
+  }
+  return uit;
+}
+
+const showcase = meng(alleBeelden);
 const helft = Math.ceil(showcase.length / 2);
 const banen = [showcase.slice(0, helft), showcase.slice(helft)];
 

@@ -384,8 +384,18 @@ body.vast { overflow: hidden; }
 .showcase:hover .sleep { animation-play-state: paused; }
 .sleep img {
   width: 260px; height: auto; flex: none;
-  border: 1px solid var(--rand); border-radius: 9px;
+  border-radius: 10px;
   background: #0C1120;
+  /* Een lichte schermafbeelding op een donkere pagina heeft een rand nodig,
+     anders leest hij als een wit gat in plaats van als een scherm. De gloed
+     eromheen zet hem los van de achtergrond zonder een harde lijn te
+     trekken. */
+  box-shadow: 0 0 0 1px var(--rand-op), 0 10px 26px rgba(0, 0, 0, .45);
+  transition: transform .25s ease, box-shadow .25s ease;
+}
+.sleep img:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 0 0 1px var(--accent), 0 14px 34px rgba(0, 0, 0, .55);
 }
 @keyframes schuif {
   from { transform: translateX(0); }
@@ -1109,80 +1119,68 @@ p, .kaart-regel, .paneel-lead, li { text-wrap: pretty; }
     <div class="showcase" aria-hidden="true">
       <div class="baan baan-1">
         <div class="sleep">
-          <img src="img/m-ralox-1.webp" width="440" height="275" loading="eager" alt="">
           <img src="img/m-ralox-2.webp" width="440" height="275" loading="eager" alt="">
-          <img src="img/m-ralox-3.webp" width="440" height="275" loading="eager" alt="">
-          <img src="img/m-funstudios-1.webp" width="440" height="275" loading="eager" alt="">
-          <img src="img/m-funstudios-2.webp" width="440" height="275" loading="eager" alt="">
-          <img src="img/m-funstudios-4.webp" width="440" height="275" loading="eager" alt="">
           <img src="img/m-kozijnfabriek-1.webp" width="440" height="275" loading="eager" alt="">
+          <img src="img/m-kempen-2.webp" width="440" height="275" loading="eager" alt="">
           <img src="img/m-kozijnfabriek-3.webp" width="440" height="275" loading="eager" alt="">
-          <img src="img/m-kozijnfabriek-2.webp" width="440" height="275" loading="eager" alt="">
-          <img src="img/m-courtswap-1.webp" width="440" height="275" loading="eager" alt="">
-          <img src="img/m-glacio-1.webp" width="440" height="275" loading="eager" alt="">
+          <img src="img/m-kempen-1.webp" width="440" height="275" loading="eager" alt="">
+          <img src="img/m-kijkvergunning-1.webp" width="440" height="275" loading="eager" alt="">
           <img src="img/m-glacio-2.webp" width="440" height="275" loading="eager" alt="">
-          <img src="img/m-glacio-3.webp" width="440" height="275" loading="eager" alt="">
-          <img src="img/m-remh-1.webp" width="440" height="275" loading="eager" alt="">
-          <img src="img/m-remh-2.webp" width="440" height="275" loading="eager" alt="">
-          <img src="img/m-remh-3.webp" width="440" height="275" loading="eager" alt="">
-          <img src="img/m-kaapnoord-1.webp" width="440" height="275" loading="eager" alt="">
-          <img src="img/m-kaapnoord-2.webp" width="440" height="275" loading="eager" alt="">
+          <img src="img/m-kijkvergunning-3.webp" width="440" height="275" loading="eager" alt="">
           <img src="img/m-ralox-1.webp" width="440" height="275" loading="eager" alt="">
-          <img src="img/m-ralox-2.webp" width="440" height="275" loading="eager" alt="">
-          <img src="img/m-ralox-3.webp" width="440" height="275" loading="eager" alt="">
-          <img src="img/m-funstudios-1.webp" width="440" height="275" loading="eager" alt="">
-          <img src="img/m-funstudios-2.webp" width="440" height="275" loading="eager" alt="">
-          <img src="img/m-funstudios-4.webp" width="440" height="275" loading="eager" alt="">
-          <img src="img/m-kozijnfabriek-1.webp" width="440" height="275" loading="eager" alt="">
-          <img src="img/m-kozijnfabriek-3.webp" width="440" height="275" loading="eager" alt="">
           <img src="img/m-kozijnfabriek-2.webp" width="440" height="275" loading="eager" alt="">
-          <img src="img/m-courtswap-1.webp" width="440" height="275" loading="eager" alt="">
           <img src="img/m-glacio-1.webp" width="440" height="275" loading="eager" alt="">
-          <img src="img/m-glacio-2.webp" width="440" height="275" loading="eager" alt="">
+          <img src="img/m-wilgenhof-2.webp" width="440" height="275" loading="eager" alt="">
           <img src="img/m-glacio-3.webp" width="440" height="275" loading="eager" alt="">
-          <img src="img/m-remh-1.webp" width="440" height="275" loading="eager" alt="">
-          <img src="img/m-remh-2.webp" width="440" height="275" loading="eager" alt="">
-          <img src="img/m-remh-3.webp" width="440" height="275" loading="eager" alt="">
-          <img src="img/m-kaapnoord-1.webp" width="440" height="275" loading="eager" alt="">
-          <img src="img/m-kaapnoord-2.webp" width="440" height="275" loading="eager" alt="">
+          <img src="img/m-wilgenhof-1.webp" width="440" height="275" loading="eager" alt="">
+          <img src="img/m-funstudios-2.webp" width="440" height="275" loading="eager" alt="">
+          <img src="img/m-ralox-2.webp" width="440" height="275" loading="eager" alt="">
+          <img src="img/m-kozijnfabriek-1.webp" width="440" height="275" loading="eager" alt="">
+          <img src="img/m-kempen-2.webp" width="440" height="275" loading="eager" alt="">
+          <img src="img/m-kozijnfabriek-3.webp" width="440" height="275" loading="eager" alt="">
+          <img src="img/m-kempen-1.webp" width="440" height="275" loading="eager" alt="">
+          <img src="img/m-kijkvergunning-1.webp" width="440" height="275" loading="eager" alt="">
+          <img src="img/m-glacio-2.webp" width="440" height="275" loading="eager" alt="">
+          <img src="img/m-kijkvergunning-3.webp" width="440" height="275" loading="eager" alt="">
+          <img src="img/m-ralox-1.webp" width="440" height="275" loading="eager" alt="">
+          <img src="img/m-kozijnfabriek-2.webp" width="440" height="275" loading="eager" alt="">
+          <img src="img/m-glacio-1.webp" width="440" height="275" loading="eager" alt="">
+          <img src="img/m-wilgenhof-2.webp" width="440" height="275" loading="eager" alt="">
+          <img src="img/m-glacio-3.webp" width="440" height="275" loading="eager" alt="">
+          <img src="img/m-wilgenhof-1.webp" width="440" height="275" loading="eager" alt="">
+          <img src="img/m-funstudios-2.webp" width="440" height="275" loading="eager" alt="">
         </div>
       </div>
       <div class="baan baan-2">
         <div class="sleep">
           <img src="img/m-kaapnoord-3.webp" width="440" height="275" loading="lazy" alt="">
-          <img src="img/m-vandijk-1.webp" width="440" height="275" loading="lazy" alt="">
-          <img src="img/m-vandijk-2.webp" width="440" height="275" loading="lazy" alt="">
-          <img src="img/m-vandijk-3.webp" width="440" height="275" loading="lazy" alt="">
-          <img src="img/m-wilgenhof-1.webp" width="440" height="275" loading="lazy" alt="">
-          <img src="img/m-wilgenhof-2.webp" width="440" height="275" loading="lazy" alt="">
-          <img src="img/m-wilgenhof-3.webp" width="440" height="275" loading="lazy" alt="">
-          <img src="img/m-kempen-1.webp" width="440" height="275" loading="lazy" alt="">
-          <img src="img/m-kempen-2.webp" width="440" height="275" loading="lazy" alt="">
-          <img src="img/m-kempen-3.webp" width="440" height="275" loading="lazy" alt="">
-          <img src="img/m-kijkvergunning-2.webp" width="440" height="275" loading="lazy" alt="">
-          <img src="img/m-kijkvergunning-1.webp" width="440" height="275" loading="lazy" alt="">
-          <img src="img/m-kijkvergunning-3.webp" width="440" height="275" loading="lazy" alt="">
-          <img src="img/m-lumiere-1.webp" width="440" height="275" loading="lazy" alt="">
+          <img src="img/m-funstudios-3.webp" width="440" height="275" loading="lazy" alt="">
           <img src="img/m-eemlandwerkt-1.webp" width="440" height="275" loading="lazy" alt="">
-          <img src="img/m-eemlandwerkt-2.webp" width="440" height="275" loading="lazy" alt="">
-          <img src="img/m-eemlandwerkt-3.webp" width="440" height="275" loading="lazy" alt="">
+          <img src="img/m-ralox-3.webp" width="440" height="275" loading="lazy" alt="">
+          <img src="img/m-kaapnoord-2.webp" width="440" height="275" loading="lazy" alt="">
+          <img src="img/m-lumiere-1.webp" width="440" height="275" loading="lazy" alt="">
+          <img src="img/m-kaapnoord-1.webp" width="440" height="275" loading="lazy" alt="">
+          <img src="img/m-funstudios-1.webp" width="440" height="275" loading="lazy" alt="">
+          <img src="img/m-remh-3.webp" width="440" height="275" loading="lazy" alt="">
+          <img src="img/m-vandijk-1.webp" width="440" height="275" loading="lazy" alt="">
+          <img src="img/m-kijkvergunning-2.webp" width="440" height="275" loading="lazy" alt="">
+          <img src="img/m-remh-1.webp" width="440" height="275" loading="lazy" alt="">
+          <img src="img/m-eemland-1.webp" width="440" height="275" loading="lazy" alt="">
+          <img src="img/m-remh-2.webp" width="440" height="275" loading="lazy" alt="">
           <img src="img/m-kaapnoord-3.webp" width="440" height="275" loading="lazy" alt="">
-          <img src="img/m-vandijk-1.webp" width="440" height="275" loading="lazy" alt="">
-          <img src="img/m-vandijk-2.webp" width="440" height="275" loading="lazy" alt="">
-          <img src="img/m-vandijk-3.webp" width="440" height="275" loading="lazy" alt="">
-          <img src="img/m-wilgenhof-1.webp" width="440" height="275" loading="lazy" alt="">
-          <img src="img/m-wilgenhof-2.webp" width="440" height="275" loading="lazy" alt="">
-          <img src="img/m-wilgenhof-3.webp" width="440" height="275" loading="lazy" alt="">
-          <img src="img/m-kempen-1.webp" width="440" height="275" loading="lazy" alt="">
-          <img src="img/m-kempen-2.webp" width="440" height="275" loading="lazy" alt="">
-          <img src="img/m-kempen-3.webp" width="440" height="275" loading="lazy" alt="">
-          <img src="img/m-kijkvergunning-2.webp" width="440" height="275" loading="lazy" alt="">
-          <img src="img/m-kijkvergunning-1.webp" width="440" height="275" loading="lazy" alt="">
-          <img src="img/m-kijkvergunning-3.webp" width="440" height="275" loading="lazy" alt="">
-          <img src="img/m-lumiere-1.webp" width="440" height="275" loading="lazy" alt="">
+          <img src="img/m-funstudios-3.webp" width="440" height="275" loading="lazy" alt="">
           <img src="img/m-eemlandwerkt-1.webp" width="440" height="275" loading="lazy" alt="">
-          <img src="img/m-eemlandwerkt-2.webp" width="440" height="275" loading="lazy" alt="">
-          <img src="img/m-eemlandwerkt-3.webp" width="440" height="275" loading="lazy" alt="">
+          <img src="img/m-ralox-3.webp" width="440" height="275" loading="lazy" alt="">
+          <img src="img/m-kaapnoord-2.webp" width="440" height="275" loading="lazy" alt="">
+          <img src="img/m-lumiere-1.webp" width="440" height="275" loading="lazy" alt="">
+          <img src="img/m-kaapnoord-1.webp" width="440" height="275" loading="lazy" alt="">
+          <img src="img/m-funstudios-1.webp" width="440" height="275" loading="lazy" alt="">
+          <img src="img/m-remh-3.webp" width="440" height="275" loading="lazy" alt="">
+          <img src="img/m-vandijk-1.webp" width="440" height="275" loading="lazy" alt="">
+          <img src="img/m-kijkvergunning-2.webp" width="440" height="275" loading="lazy" alt="">
+          <img src="img/m-remh-1.webp" width="440" height="275" loading="lazy" alt="">
+          <img src="img/m-eemland-1.webp" width="440" height="275" loading="lazy" alt="">
+          <img src="img/m-remh-2.webp" width="440" height="275" loading="lazy" alt="">
         </div>
       </div>
     </div>
@@ -1660,7 +1658,7 @@ p, .kaart-regel, .paneel-lead, li { text-wrap: pretty; }
 <footer class="voet">
   <div class="binnen">
     <p>Alle schermen op deze pagina zijn echte screenshots van de draaiende projecten. Klantgegevens zijn onleesbaar gemaakt. Samih Tichtti · Eemland Digital · HBO-ICT, Hogeschool van Amsterdam.</p>
-    <p class="bijgewerkt">Bijgewerkt 30 september 2026 · 15 projecten</p>
+    <p class="bijgewerkt">Bijgewerkt 1 oktober 2026 · 15 projecten</p>
   </div>
 </footer>
 
@@ -1820,9 +1818,9 @@ p, .kaart-regel, .paneel-lead, li { text-wrap: pretty; }
               <img src="img/m-funstudios-2.webp" width="440" height="275" loading="lazy" alt="projecten">
             </button>
             <button type="button" class="duimknop" role="tab" aria-selected="false"
-              data-bestand="funstudios-4.webp" data-titel="cijfers"
-              data-bijschrift="Cijfers die de klant overtuigen." data-alt="Sectie Cijfers die overtuigen met 50 plus events, 10K volgers en een 4,9 beoordeling.">
-              <img src="img/m-funstudios-4.webp" width="440" height="275" loading="lazy" alt="cijfers">
+              data-bestand="funstudios-3.webp" data-titel="sectie 3"
+              data-bijschrift="Verder op de pagina." data-alt="Schermafbeelding van Fun Studios.">
+              <img src="img/m-funstudios-3.webp" width="440" height="275" loading="lazy" alt="sectie 3">
             </button>
           </div>
           <figure class="groot">
@@ -1877,14 +1875,14 @@ p, .kaart-regel, .paneel-lead, li { text-wrap: pretty; }
               <img src="img/m-kozijnfabriek-1.webp" width="440" height="275" loading="lazy" alt="homepage">
             </button>
             <button type="button" class="duimknop" role="tab" aria-selected="false"
-              data-bestand="kozijnfabriek-3.webp" data-titel="reviews"
-              data-bijschrift="Reviews van echte klanten — namen bewust onleesbaar." data-alt="Sectie Wat onze klanten zeggen met drie reviews; de namen eronder zijn onleesbaar gemaakt.">
-              <img src="img/m-kozijnfabriek-3.webp" width="440" height="275" loading="lazy" alt="reviews">
-            </button>
-            <button type="button" class="duimknop" role="tab" aria-selected="false"
               data-bestand="kozijnfabriek-2.webp" data-titel="vraag &amp; antwoord"
               data-bijschrift="Veelgestelde vragen op de pagina zelf." data-alt="Uitklapbare vragen over de AI-scan, offertes en subsidie.">
               <img src="img/m-kozijnfabriek-2.webp" width="440" height="275" loading="lazy" alt="vraag &amp; antwoord">
+            </button>
+            <button type="button" class="duimknop" role="tab" aria-selected="false"
+              data-bestand="kozijnfabriek-3.webp" data-titel="reviews"
+              data-bijschrift="Reviews van echte klanten — namen bewust onleesbaar." data-alt="Sectie Wat onze klanten zeggen met drie reviews; de namen eronder zijn onleesbaar gemaakt.">
+              <img src="img/m-kozijnfabriek-3.webp" width="440" height="275" loading="lazy" alt="reviews">
             </button>
           </div>
           <figure class="groot">
@@ -2154,23 +2152,6 @@ p, .kaart-regel, .paneel-lead, li { text-wrap: pretty; }
         </div>
         
         <div class="galerij" data-galerij data-basis="">
-          <div class="duimen" role="tablist" aria-label="Schermen van Van Dijk Installatie">
-            <button type="button" class="duimknop" role="tab" aria-selected="true"
-              data-bestand="vandijk-1.webp" data-titel="inloggen"
-              data-bijschrift="Drie accounts klaar: twee klanten en een monteur." data-alt="Inlogscherm van het klantportaal met drie voorgevulde proefaccounts eronder.">
-              <img src="img/m-vandijk-1.webp" width="440" height="275" loading="lazy" alt="inloggen">
-            </button>
-            <button type="button" class="duimknop" role="tab" aria-selected="false"
-              data-bestand="vandijk-2.webp" data-titel="je eigen dossier"
-              data-bijschrift="De server vertelt erbij wat hij heeft opgezocht — en wat niet." data-alt="Dossieroverzicht met openstaand bedrag, offertes en facturen, en een balk waarin de server meldt welke gegevens zijn ingeladen.">
-              <img src="img/m-vandijk-2.webp" width="440" height="275" loading="lazy" alt="je eigen dossier">
-            </button>
-            <button type="button" class="duimknop" role="tab" aria-selected="false"
-              data-bestand="vandijk-3.webp" data-titel="de weigering"
-              data-bijschrift="Vraag een dossier op dat niet van je is en je ziet waarom het niet mag." data-alt="Het blok Probeer het zelf met een keuzelijst van dossiers en een antwoord van de server met code 403 Verboden.">
-              <img src="img/m-vandijk-3.webp" width="440" height="275" loading="lazy" alt="de weigering">
-            </button>
-          </div>
           <figure class="groot">
             <span class="balk"><i></i><i></i><i></i><b data-rol="titel">inloggen</b></span>
             <img data-rol="groot" src="img/vandijk-1.webp" width="1400" height="875" loading="lazy" alt="Inlogscherm van het klantportaal met drie voorgevulde proefaccounts eronder.">
@@ -2224,11 +2205,6 @@ p, .kaart-regel, .paneel-lead, li { text-wrap: pretty; }
               data-bestand="wilgenhof-2.webp" data-titel="past het nog?"
               data-bijschrift="Werk plus rijden tegen de lengte van het dagdeel." data-alt="Dagdeelvak met een capaciteitsbalk en de tekst drie uur vijftig werk plus achttien minuten rijden, tweeentwintig minuten over.">
               <img src="img/m-wilgenhof-2.webp" width="440" height="275" loading="lazy" alt="past het nog?">
-            </button>
-            <button type="button" class="duimknop" role="tab" aria-selected="false"
-              data-bestand="wilgenhof-3.webp" data-titel="de rit op de kaart"
-              data-bijschrift="Zelf getekend uit de coördinaten — geen kaartendienst van derden." data-alt="Schematische kaart van de regio Amersfoort met genummerde klussen en per ploeg een gekleurde route vanaf de loods.">
-              <img src="img/m-wilgenhof-3.webp" width="440" height="275" loading="lazy" alt="de rit op de kaart">
             </button>
           </div>
           <figure class="groot">
@@ -2284,11 +2260,6 @@ p, .kaart-regel, .paneel-lead, li { text-wrap: pretty; }
               data-bestand="kempen-2.webp" data-titel="wat er binnenkomt"
               data-bijschrift="Elke regel verschijnt op het moment dat het gebeurt." data-alt="Lijst met meldingen van geloste ritten en statuswisselingen, elk met een tijdstip.">
               <img src="img/m-kempen-2.webp" width="440" height="275" loading="lazy" alt="wat er binnenkomt">
-            </button>
-            <button type="button" class="duimknop" role="tab" aria-selected="false"
-              data-bestand="kempen-3.webp" data-titel="de vloot"
-              data-bijschrift="Acht wagens, met de toestand waarin ze nu zijn." data-alt="Lijst met vrachtwagens, chauffeurs en hun toestand: onderweg, laden, pauze of werkplaats.">
-              <img src="img/m-kempen-3.webp" width="440" height="275" loading="lazy" alt="de vloot">
             </button>
           </div>
           <figure class="groot">
@@ -2481,11 +2452,6 @@ p, .kaart-regel, .paneel-lead, li { text-wrap: pretty; }
               data-bestand="eemlandwerkt-2.webp" data-titel="de vakgebieden"
               data-bijschrift="Vier disciplines, elk met een eigen ingang." data-alt="Vier blokken naast elkaar: Legal Team, Zorgprofessionals, Verzuimregie en Technical Engineering, elk met een korte omschrijving.">
               <img src="img/m-eemlandwerkt-2.webp" width="440" height="275" loading="lazy" alt="de vakgebieden">
-            </button>
-            <button type="button" class="duimknop" role="tab" aria-selected="false"
-              data-bestand="eemlandwerkt-3.webp" data-titel="vacatures"
-              data-bijschrift="Te filteren op vakgebied, regio en uren." data-alt="Lijst met openstaande functies, elk met vakgebied, plaats en aantal uren per week.">
-              <img src="img/m-eemlandwerkt-3.webp" width="440" height="275" loading="lazy" alt="vacatures">
             </button>
           </div>
           <figure class="groot">
