@@ -1,1 +1,18 @@
-{ "klaar": false }
+{
+  "bedrijf": { "naam": "Kempen Transport", "onder": "Distributie Midden-Nederland", "standplaats": "Amersfoort" },
+  "wagens": [
+    { "id": "w1", "kenteken": "18-BKT-4", "chauffeur": "Ahmed Yilmaz", "soort": "Bakwagen 12t", "regio": "Utrecht west", "status": "onderweg", "ritten": 6, "volgende": "Woerden" },
+    { "id": "w2", "kenteken": "42-JND-9", "chauffeur": "Petra de Graaf", "soort": "Trekker-oplegger", "regio": "Gelderland", "status": "onderweg", "ritten": 4, "volgende": "Ede" },
+    { "id": "w3", "kenteken": "77-RXV-1", "chauffeur": "Marco Kempen", "soort": "Bakwagen 7,5t", "regio": "Eemland", "status": "laden", "ritten": 9, "volgende": "Bunschoten" },
+    { "id": "w4", "kenteken": "05-TGP-6", "chauffeur": "Sanne Vos", "soort": "Bestelbus", "regio": "Amersfoort stad", "status": "onderweg", "ritten": 14, "volgende": "Hoogland" },
+    { "id": "w5", "kenteken": "63-HLM-2", "chauffeur": "Joost Bakker", "soort": "Bakwagen 12t", "regio": "Flevoland", "status": "pauze", "ritten": 5, "volgende": "Almere" },
+    { "id": "w6", "kenteken": "29-WPD-8", "chauffeur": "Lisa Mulder", "soort": "Bestelbus", "regio": "Soest en Baarn", "status": "onderweg", "ritten": 11, "volgende": "Baarn" },
+    { "id": "w7", "kenteken": "91-CQF-3", "chauffeur": "Dennis Brouwer", "soort": "Trekker-oplegger", "regio": "Noord-Holland", "status": "werkplaats", "ritten": 0, "volgende": null },
+    { "id": "w8", "kenteken": "14-ZKR-7", "chauffeur": "Youssef Amrani", "soort": "Bakwagen 7,5t", "regio": "Veluwe", "status": "onderweg", "ritten": 7, "volgende": "Barneveld" }
+  ],
+  "plaatsen": ["Woerden", "Ede", "Bunschoten", "Hoogland", "Almere", "Baarn", "Barneveld", "Nijkerk", "Leusden", "Soest", "Veenendaal", "Harderwijk", "Zeist", "Bilthoven"],
+  "geschiedenis": [],
+  "gebeurtenissen": [],
+  "teller": { "ritten": 128, "opTijd": 120, "teLaat": 8, "kilometers": 3412, "vertragingMinuten": 96 },
+  "gestart": null
+}

@@ -1,1 +1,42 @@
-{ "klaar": false }
+{
+  "bedrijf": {
+    "naam": "Hovenier Wilgenhof",
+    "onder": "Aanleg en onderhoud",
+    "standplaats": "Soest",
+    "basis": { "lat": 52.174, "lon": 5.293, "naam": "Loods Soest" }
+  },
+  "kader": { "latMin": 52.095, "latMax": 52.275, "lonMin": 5.235, "lonMax": 5.53 },
+  "plaatsen": [
+    { "naam": "Amersfoort", "lat": 52.155, "lon": 5.387, "groot": true },
+    { "naam": "Soest", "lat": 52.174, "lon": 5.293, "groot": true },
+    { "naam": "Baarn", "lat": 52.211, "lon": 5.288, "groot": false },
+    { "naam": "Bunschoten", "lat": 52.245, "lon": 5.378, "groot": false },
+    { "naam": "Hoogland", "lat": 52.187, "lon": 5.372, "groot": false },
+    { "naam": "Leusden", "lat": 52.130, "lon": 5.432, "groot": false },
+    { "naam": "Nijkerk", "lat": 52.222, "lon": 5.487, "groot": false }
+  ],
+  "ploegen": [
+    { "id": "p1", "naam": "Ploeg Noord", "bezetting": "Dennis en Youssef", "kleur": "#2F6B54", "bus": "VW Crafter 1" },
+    { "id": "p2", "naam": "Ploeg Zuid", "bezetting": "Marco en Ilse", "kleur": "#B4552A", "bus": "VW Crafter 2" },
+    { "id": "p3", "naam": "Ploeg Onderhoud", "bezetting": "Wilco", "kleur": "#3B4A7A", "bus": "Caddy" },
+    { "id": "p4", "naam": "Ploeg Aanleg", "bezetting": "Kees, Sam en Tom", "kleur": "#8A2C3B", "bus": "Ducato met kipper" }
+  ],
+  "dagdelen": [
+    { "id": "ochtend", "naam": "Ochtend", "van": "07:30", "tot": "12:00", "minuten": 270 },
+    { "id": "middag", "naam": "Middag", "van": "12:30", "tot": "16:30", "minuten": 240 }
+  ],
+  "klussen": [
+    { "id": "kl1", "klant": "Fam. Veldkamp", "adres": "Molenweg 12, Soest", "werk": "Hagen knippen en afvoeren", "minuten": 120, "soort": "onderhoud", "spoed": false, "lat": 52.169, "lon": 5.302, "ploegId": "p1", "dagdeel": "ochtend", "volgorde": 1 },
+    { "id": "kl2", "klant": "VvE Parkzicht", "adres": "Parklaan 3, Baarn", "werk": "Gazon maaien en kanten steken", "minuten": 90, "soort": "onderhoud", "spoed": false, "lat": 52.208, "lon": 5.281, "ploegId": "p1", "dagdeel": "ochtend", "volgorde": 2 },
+    { "id": "kl3", "klant": "Bakker Hoogland", "adres": "Kerkplein 8, Hoogland", "werk": "Terras herstraten, 40 m²", "minuten": 240, "soort": "aanleg", "spoed": false, "lat": 52.189, "lon": 5.369, "ploegId": "p4", "dagdeel": "ochtend", "volgorde": 1 },
+    { "id": "kl4", "klant": "Fam. Otten", "adres": "Bosrand 41, Leusden", "werk": "Omgevallen berk ruimen", "minuten": 150, "soort": "spoed", "spoed": true, "lat": 52.127, "lon": 5.438, "ploegId": null, "dagdeel": null, "volgorde": 0 },
+    { "id": "kl5", "klant": "Basisschool De Wilg", "adres": "Schoolstraat 2, Amersfoort", "werk": "Speelveld doorzaaien", "minuten": 120, "soort": "onderhoud", "spoed": false, "lat": 52.158, "lon": 5.392, "ploegId": null, "dagdeel": null, "volgorde": 0 },
+    { "id": "kl6", "klant": "Fam. De Ruiter", "adres": "Eemweg 77, Bunschoten", "werk": "Beplantingsplan uitvoeren", "minuten": 210, "soort": "aanleg", "spoed": false, "lat": 52.241, "lon": 5.372, "ploegId": null, "dagdeel": null, "volgorde": 0 },
+    { "id": "kl7", "klant": "Kantoorpark Eemhaven", "adres": "Havenweg 9, Amersfoort", "werk": "Onkruid borstelen parkeerterrein", "minuten": 90, "soort": "onderhoud", "spoed": false, "lat": 52.163, "lon": 5.402, "ploegId": "p3", "dagdeel": "middag", "volgorde": 1 },
+    { "id": "kl8", "klant": "Fam. Brouwer", "adres": "Zandlaan 5, Nijkerk", "werk": "Schutting rechtzetten", "minuten": 120, "soort": "onderhoud", "spoed": false, "lat": 52.219, "lon": 5.481, "ploegId": null, "dagdeel": null, "volgorde": 0 },
+    { "id": "kl9", "klant": "Gemeente Soest", "adres": "Dalweg, Soest", "werk": "Boomspiegels bijwerken", "minuten": 180, "soort": "onderhoud", "spoed": false, "lat": 52.178, "lon": 5.288, "ploegId": "p2", "dagdeel": "ochtend", "volgorde": 1 },
+    { "id": "kl10", "klant": "Fam. Nagel", "adres": "Vijverlaan 22, Leusden", "werk": "Vijver schoonmaken", "minuten": 150, "soort": "onderhoud", "spoed": false, "lat": 52.134, "lon": 5.425, "ploegId": null, "dagdeel": null, "volgorde": 0 },
+    { "id": "kl11", "klant": "Fam. Smits", "adres": "Torenstraat 14, Baarn", "werk": "Haag planten, 18 meter", "minuten": 180, "soort": "aanleg", "spoed": false, "lat": 52.214, "lon": 5.293, "ploegId": null, "dagdeel": null, "volgorde": 0 },
+    { "id": "kl12", "klant": "Sportpark Bosrand", "adres": "Sportlaan 1, Amersfoort", "werk": "Velden bemesten", "minuten": 120, "soort": "onderhoud", "spoed": false, "lat": 52.149, "lon": 5.378, "ploegId": null, "dagdeel": null, "volgorde": 0 }
+  ]
+}

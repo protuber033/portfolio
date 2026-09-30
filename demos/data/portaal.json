@@ -1,1 +1,40 @@
-{ "klaar": false }
+{
+  "bedrijf": {
+    "naam": "Van Dijk Installatie",
+    "onder": "Verwarming · sanitair · warmtepompen",
+    "plaats": "Soest",
+    "telefoon": "033 - 555 01 20",
+    "email": "service@vandijkinstallatie.example"
+  },
+  "gebruikers": [
+    { "id": "u1", "naam": "Marieke Bos", "email": "marieke@voorbeeld.nl", "wachtwoord": "welkom", "rol": "klant", "klantId": "k1" },
+    { "id": "u2", "naam": "Hotel De Eemhof", "email": "beheer@eemhof.voorbeeld.nl", "wachtwoord": "welkom", "rol": "klant", "klantId": "k2" },
+    { "id": "u3", "naam": "Ruben van Dijk", "email": "ruben@vandijkinstallatie.example", "wachtwoord": "monteur", "rol": "medewerker", "klantId": null }
+  ],
+  "klanten": [
+    { "id": "k1", "naam": "Marieke Bos", "soort": "Particulier", "adres": "Kerkstraat 18, Soest", "sinds": "2021-03-04", "installatie": "Remeha Tzerra CW5", "contract": "Onderhoudsabonnement Basis" },
+    { "id": "k2", "naam": "Hotel De Eemhof", "soort": "Zakelijk", "adres": "Eemweg 4, Baarn", "sinds": "2019-09-16", "installatie": "3× Nefit Trendline HRC + 2× warmtepomp", "contract": "Onderhoudscontract Zakelijk 24/7" },
+    { "id": "k3", "naam": "Bakkerij Verhoef", "soort": "Zakelijk", "adres": "Torenstraat 91, Amersfoort", "sinds": "2023-01-11", "installatie": "Vaillant ecoTEC plus", "contract": "Geen contract" }
+  ],
+  "documenten": [
+    { "id": "d1", "klantId": "k1", "soort": "factuur", "titel": "Onderhoudsbeurt oktober", "datum": "2026-09-18", "bedrag": 12150, "status": "open", "vervalt": "2026-10-16" },
+    { "id": "d2", "klantId": "k1", "soort": "rapport", "titel": "Onderhoudsrapport Remeha Tzerra", "datum": "2026-09-18", "bedrag": null, "status": "klaar" },
+    { "id": "d3", "klantId": "k1", "soort": "factuur", "titel": "Onderhoudsbeurt 2025", "datum": "2025-10-02", "bedrag": 11800, "status": "betaald" },
+    { "id": "d4", "klantId": "k1", "soort": "offerte", "titel": "Vervangen radiatorkranen woonkamer", "datum": "2026-09-22", "bedrag": 48500, "status": "wacht op akkoord", "geldigTot": "2026-10-22" },
+    { "id": "d5", "klantId": "k2", "soort": "factuur", "titel": "Kwartaalonderhoud Q3", "datum": "2026-09-30", "bedrag": 289400, "status": "open", "vervalt": "2026-10-14" },
+    { "id": "d6", "klantId": "k2", "soort": "rapport", "titel": "Keuring warmtepompen noordvleugel", "datum": "2026-09-12", "bedrag": null, "status": "klaar" },
+    { "id": "d7", "klantId": "k2", "soort": "rapport", "titel": "Storingsanalyse ketel 2", "datum": "2026-08-29", "bedrag": null, "status": "klaar" },
+    { "id": "d8", "klantId": "k2", "soort": "offerte", "titel": "Vervangen expansievat ketel 3", "datum": "2026-09-25", "bedrag": 132000, "status": "wacht op akkoord", "geldigTot": "2026-10-25" },
+    { "id": "d9", "klantId": "k2", "soort": "factuur", "titel": "Spoedstoring 14 augustus", "datum": "2026-08-15", "bedrag": 47250, "status": "betaald" },
+    { "id": "d10", "klantId": "k3", "soort": "offerte", "titel": "Onderhoudscontract Zakelijk", "datum": "2026-09-08", "bedrag": 96000, "status": "afgewezen" },
+    { "id": "d11", "klantId": "k3", "soort": "factuur", "titel": "Reparatie warmwatervoorziening", "datum": "2026-07-19", "bedrag": 63400, "status": "betaald" }
+  ],
+  "afspraken": [
+    { "id": "a1", "klantId": "k1", "datum": "2026-10-14", "dagdeel": "ochtend", "omschrijving": "Jaarlijkse onderhoudsbeurt", "monteur": "Ruben" },
+    { "id": "a2", "klantId": "k2", "datum": "2026-10-02", "dagdeel": "hele dag", "omschrijving": "Kwartaalonderhoud noordvleugel", "monteur": "Ruben en Sanne" },
+    { "id": "a3", "klantId": "k2", "datum": "2026-12-18", "dagdeel": "middag", "omschrijving": "Keuring warmtepompen zuidvleugel", "monteur": "Sanne" }
+  ],
+  "meldingen": [],
+  "ingelogdAls": null,
+  "pogingen": 0
+}

@@ -1,0 +1,98 @@
+/* Hovenier Wilgenhof — buitenwerk, dus groen en licht, met een kaart die
+   zelf getekend wordt uit de coördinaten. Geen kaartendienst van derden:
+   dit is een schema, geen navigatie, en dat zegt het scherm er ook bij. */
+:root {
+  --blad: #F2F5EF; --wit: #fff; --veld: #E4EBDF;
+  --lijn: #D6DFD0; --lijn-2: #BECBB6;
+  --tekst: #1D261A; --tekst-2: #5A6754; --tekst-3: #8A9683;
+  --groen: #2F6B54; --groen-zacht: #E2EFE9;
+  --oranje: #9A5A10; --oranje-zacht: #FAEEDC;
+  --rood: #A8231F; --rood-zacht: #FBE9E7;
+  --sans: "Outfit", ui-sans-serif, system-ui, "Segoe UI", Helvetica, Arial, sans-serif;
+}
+* { box-sizing: border-box; }
+[hidden] { display: none !important; }
+body { margin: 0; background: var(--blad); color: var(--tekst); font-family: var(--sans); line-height: 1.5; -webkit-font-smoothing: antialiased; }
+h1, h2, h3 { margin: 0; letter-spacing: -.02em; line-height: 1.18; }
+button, input, select { font: inherit; }
+.laden { padding: 60px; color: var(--tekst-3); }
+
+.balk { background: var(--wit); border-bottom: 1px solid var(--lijn); padding: 14px clamp(14px, 3vw, 26px); display: flex; align-items: center; gap: 18px; flex-wrap: wrap; }
+.merk { font-weight: 700; font-size: 1.1rem; }
+.merk span { display: block; font-size: .74rem; font-weight: 400; color: var(--tekst-3); }
+.balk-cijfers { display: flex; gap: 20px; margin-left: auto; flex-wrap: wrap; }
+.cijfer b { display: block; font-size: 1.25rem; font-weight: 700; line-height: 1.1; }
+.cijfer span { font-size: .75rem; color: var(--tekst-3); }
+.cijfer.let b { color: var(--rood); }
+.balk-knoppen { display: flex; gap: 8px; }
+
+.knop { cursor: pointer; font-weight: 600; font-size: .88rem; padding: 9px 15px; border-radius: 9px; border: 1px solid var(--lijn-2); background: var(--wit); color: var(--tekst); }
+.knop:hover:not(:disabled) { border-color: var(--groen); color: var(--groen); }
+.knop-vol { background: var(--groen); border-color: var(--groen); color: #fff; }
+.knop-vol:hover:not(:disabled) { background: #245741; border-color: #245741; color: #fff; }
+.knop:disabled { opacity: .5; cursor: not-allowed; }
+
+.romp { display: grid; grid-template-columns: 300px 1fr 1fr; gap: 14px; padding: 14px clamp(14px, 3vw, 26px) 20px; align-items: start; }
+@media (max-width: 1100px) { .romp { grid-template-columns: 280px 1fr; } .kaartvak { grid-column: 1 / -1; } }
+@media (max-width: 760px) { .romp { grid-template-columns: 1fr; } }
+
+.kolom { background: var(--wit); border: 1px solid var(--lijn); border-radius: 14px; overflow: hidden; }
+.kolom-kop { padding: 13px 15px; border-bottom: 1px solid var(--lijn); display: flex; justify-content: space-between; align-items: center; gap: 10px; }
+.kolom-kop h2 { font-size: .98rem; }
+.kolom-kop small { color: var(--tekst-3); font-size: .8rem; }
+.kolom-in { padding: 12px; display: grid; gap: 8px; max-height: 74vh; overflow-y: auto; }
+
+/* klusbriefje */
+.klus {
+  border: 1px solid var(--lijn); border-left: 3px solid var(--tekst-3); border-radius: 10px;
+  background: var(--wit); padding: 11px 12px; cursor: grab; text-align: left; width: 100%;
+  display: grid; gap: 3px;
+}
+.klus:hover { border-color: var(--lijn-2); box-shadow: 0 3px 10px rgba(29, 38, 26, .07); }
+.klus.spoed { border-left-color: var(--rood); background: var(--rood-zacht); }
+.klus.aanleg { border-left-color: var(--oranje); }
+.klus.onderhoud { border-left-color: var(--groen); }
+.klus.gekozen { outline: 2px solid var(--groen); outline-offset: 1px; }
+.klus.sleept { opacity: .4; }
+.klus b { font-size: .9rem; font-weight: 600; }
+.klus small { color: var(--tekst-3); font-size: .79rem; }
+.klus .werk { font-size: .84rem; color: var(--tekst-2); }
+.klus-onder { display: flex; align-items: center; gap: 8px; margin-top: 3px; flex-wrap: wrap; }
+.duur { font-size: .74rem; background: var(--veld); color: var(--tekst-2); padding: 2px 8px; border-radius: 999px; }
+.nr { width: 19px; height: 19px; border-radius: 50%; display: grid; place-items: center; font-size: .7rem; font-weight: 700; color: #fff; flex: none; }
+.pijl { border: 0; background: transparent; cursor: pointer; color: var(--tekst-3); padding: 0 3px; font-size: .8rem; line-height: 1; }
+.pijl:hover { color: var(--groen); }
+
+/* ploegen */
+.ploegen { display: grid; gap: 10px; }
+.ploeg { background: var(--wit); border: 1px solid var(--lijn); border-radius: 14px; overflow: hidden; }
+.ploeg-kop { padding: 11px 14px; display: flex; align-items: center; gap: 9px; border-bottom: 1px solid var(--lijn); }
+.ploeg-stip { width: 11px; height: 11px; border-radius: 3px; flex: none; }
+.ploeg-kop b { font-size: .93rem; }
+.ploeg-kop small { color: var(--tekst-3); font-size: .78rem; display: block; }
+.dagdelen { display: grid; grid-template-columns: 1fr 1fr; }
+.dagdeel { padding: 10px; border-right: 1px solid var(--lijn); min-height: 108px; display: grid; gap: 7px; align-content: start; }
+.dagdeel:last-child { border-right: 0; }
+.dagdeel.over { background: var(--groen-zacht); outline: 2px dashed var(--groen); outline-offset: -4px; }
+.dagdeel-kop { display: flex; justify-content: space-between; align-items: baseline; gap: 6px; font-size: .76rem; color: var(--tekst-3); }
+.dagdeel-kop b { font-size: .8rem; color: var(--tekst-2); font-weight: 600; }
+.balkje { height: 5px; border-radius: 999px; background: var(--veld); overflow: hidden; }
+.balkje i { display: block; height: 100%; background: var(--groen); border-radius: 999px; }
+.balkje.vol i { background: var(--rood); }
+.ruimte { font-size: .73rem; color: var(--tekst-3); }
+.ruimte.tekort { color: var(--rood); font-weight: 600; }
+.leegvak { color: var(--tekst-3); font-size: .79rem; text-align: center; padding: 12px 4px; border: 1px dashed var(--lijn-2); border-radius: 8px; }
+
+/* kaart */
+.kaartvak { position: sticky; top: 14px; }
+.kaart-svg { width: 100%; height: auto; display: block; border-radius: 0 0 14px 14px; }
+.kaart-voet { padding: 10px 14px; border-top: 1px solid var(--lijn); font-size: .77rem; color: var(--tekst-3); }
+.legenda { display: flex; flex-wrap: wrap; gap: 10px; padding: 10px 14px 0; }
+.legenda span { display: inline-flex; align-items: center; gap: 6px; font-size: .78rem; color: var(--tekst-2); }
+.legenda i { width: 10px; height: 10px; border-radius: 3px; }
+
+.melding { margin: 0 clamp(14px, 3vw, 26px); padding: 11px 14px; border-radius: 10px; font-size: .88rem; }
+.melding.goed { background: var(--groen-zacht); color: #1A4A38; border: 1px solid #BFDCCF; }
+.melding.let { background: var(--oranje-zacht); color: #7A470B; border: 1px solid #EBD5AE; }
+
+.hint { padding: 0 clamp(14px, 3vw, 26px); color: var(--tekst-3); font-size: .84rem; margin: 0 0 4px; }
