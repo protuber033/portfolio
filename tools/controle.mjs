@@ -84,7 +84,7 @@ if (!mis) ok(`${aanwezig.size} bestanden in img/, alles waarnaar verwezen wordt 
    Waarom: een kapotte regex in server.js liet Railway crashen.
 ---------------------------------------------------------------- */
 kop('Syntax');
-const teControleren = ['server.js', 'tools/build.mjs', 'tools/scan.mjs', 'tools/shots.mjs', 'tools/controle.mjs', 'tools/gedrag.js'];
+const teControleren = ['server.js', 'tools/build.mjs', 'tools/scan.mjs', 'tools/shots.mjs', 'tools/controle.mjs', 'tools/gedrag.js', 'tools/werkpagina.js'];
 for (const bestand of teControleren) {
   const pad = join(WORTEL, bestand);
   if (!existsSync(pad)) { let_op(`${bestand} bestaat niet`); continue; }
@@ -141,9 +141,15 @@ await new Promise((klaar) => {
   setTimeout(async () => {
     const basis = `http://127.0.0.1:${POORT}`;
     const eerste = projecten.find((p) => p.tegel)?.tegel;
+    const eersteId = projecten[0]?.id;
     const proeven = [
       ['de pagina zelf', '/', 200],
       ['een afbeelding', eerste ? `/img/${eerste}` : '/img/', eerste ? 200 : 404],
+      ['robots.txt', '/robots.txt', 200],
+      ['sitemap.xml', '/sitemap.xml', 200],
+      ['projectpagina met streep', eersteId ? `/werk/${eersteId}/` : '/werk/', eersteId ? 200 : 404],
+      ['projectpagina zonder streep', eersteId ? `/werk/${eersteId}` : '/werk', eersteId ? 200 : 404],
+      ['onbekend project geeft 404', '/werk/bestaat-niet/', 404],
       ['onbekend pad geeft 404', '/bestaat-niet', 404],
       ['gegevens niet bereikbaar', '/data/projects.json', 404]
     ];
@@ -161,7 +167,94 @@ await new Promise((klaar) => {
 });
 
 /* ---------------------------------------------------------------
-   6. Shellscripts: draaien die straks op Linux?
+   6. Vindbaarheid: kan Google hier iets mee?
+   Waarom: dit is stil kapot te maken. Een vergeten canonical, een
+   relatieve og:image of een sitemap die een verwijderd project nog
+   noemt zie je niet aan de pagina, en je merkt het pas als je niet
+   gevonden wordt. Dus controleren we het per pagina.
+---------------------------------------------------------------- */
+kop('Vindbaar voor Google');
+const domein = String(site.domein || '').replace(/\/+$/, '');
+if (!domein) {
+  fout('site.json heeft geen "domein" — dan kan geen canonical kloppen');
+} else {
+  const paginas = [
+    ['index.html', `${domein}/`],
+    ...projecten.map((p) => [join('werk', p.id, 'index.html'), `${domein}/werk/${p.id}/`])
+  ];
+  let seoMis = 0;
+  const seoFout = (t) => { fout(t); seoMis++; };
+
+  for (const [bestand, verwacht] of paginas) {
+    const pad = join(WORTEL, bestand);
+    if (!existsSync(pad)) { seoFout(`${bestand} bestaat niet — heb je gebouwd?`); continue; }
+    const h = readFileSync(pad, 'utf8');
+    const pak = (re) => (h.match(re) || [])[1];
+
+    const canoniek = pak(/<link rel="canonical" href="([^"]+)"/);
+    if (canoniek !== verwacht) seoFout(`${bestand}: canonical is "${canoniek}", verwacht "${verwacht}"`);
+
+    const titel = pak(/<title>([^<]*)<\/title>/);
+    if (!titel) seoFout(`${bestand}: geen <title>`);
+    else if (titel.length > 65) let_op(`${bestand}: titel is ${titel.length} tekens, Google knipt rond 60 af`);
+
+    const omschrijving = pak(/<meta name="description" content="([^"]*)"/);
+    if (!omschrijving) seoFout(`${bestand}: geen omschrijving`);
+    else if (omschrijving.length < 50) let_op(`${bestand}: omschrijving is maar ${omschrijving.length} tekens`);
+
+    const beeld = pak(/<meta property="og:image" content="([^"]*)"/);
+    if (!beeld) seoFout(`${bestand}: geen og:image`);
+    else if (!/^https?:\/\//.test(beeld)) seoFout(`${bestand}: og:image "${beeld}" is relatief, dan werkt het voorbeeld in WhatsApp niet`);
+
+    const koppen = (h.match(/<h1[\s>]/g) || []).length;
+    if (koppen !== 1) seoFout(`${bestand}: ${koppen} keer een h1, er moet er precies één zijn`);
+
+    const ld = pak(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/);
+    if (!ld) seoFout(`${bestand}: geen JSON-LD`);
+    else {
+      try { JSON.parse(ld); } catch (e) { seoFout(`${bestand}: JSON-LD is geen geldige JSON (${e.message})`); }
+    }
+  }
+  if (!seoMis) ok(`${paginas.length} pagina's: canonical, titel, omschrijving, og:image, één h1 en geldige JSON-LD`);
+
+  // de sitemap moet precies de pagina's noemen die er zijn
+  const sitemapPad = join(WORTEL, 'sitemap.xml');
+  if (!existsSync(sitemapPad)) fout('sitemap.xml ontbreekt');
+  else {
+    const inSitemap = [...readFileSync(sitemapPad, 'utf8').matchAll(/<loc>([^<]+)<\/loc>/g)].map((m) => m[1]);
+    const moeten = paginas.map(([, u]) => u);
+    const teveel = inSitemap.filter((u) => !moeten.includes(u));
+    const tekort = moeten.filter((u) => !inSitemap.includes(u));
+    if (teveel.length) fout(`sitemap noemt adressen die niet bestaan: ${teveel.join(', ')}`);
+    if (tekort.length) fout(`sitemap mist: ${tekort.join(', ')}`);
+    if (!teveel.length && !tekort.length) ok(`sitemap noemt precies de ${moeten.length} pagina's die er zijn`);
+  }
+
+  const robotsPad = join(WORTEL, 'robots.txt');
+  if (!existsSync(robotsPad)) fout('robots.txt ontbreekt');
+  else if (!readFileSync(robotsPad, 'utf8').includes(`${domein}/sitemap.xml`))
+    fout('robots.txt verwijst niet naar de sitemap, dan moet Google hem zelf raden');
+  else ok('robots.txt wijst naar de sitemap');
+
+  // een verweesde map onder werk/ zou een adres in de lucht houden dat
+  // niemand meer bedoelt, maar dat Google al kent
+  const werkMap = join(WORTEL, 'werk');
+  if (existsSync(werkMap)) {
+    const levend = new Set(projecten.map((p) => p.id));
+    const wees = readdirSync(werkMap).filter((d) => !levend.has(d));
+    if (wees.length) fout(`werk/ heeft mappen van projecten die niet meer bestaan: ${wees.join(', ')}`);
+    else ok('geen verweesde projectpagina\'s');
+  }
+
+  if (!site.googleVerificatie) {
+    let_op('site.json heeft nog geen "googleVerificatie" — zonder Search Console weet je niet of Google je ziet');
+  } else {
+    ok('Search Console-code staat in site.json');
+  }
+}
+
+/* ---------------------------------------------------------------
+   7. Shellscripts: draaien die straks op Linux?
    Waarom: Windows zet CRLF erin en dan weigert bash ze.
 ---------------------------------------------------------------- */
 kop('Shellscripts');
@@ -183,7 +276,7 @@ if (existsSync(vpsMap)) {
 }
 
 /* ---------------------------------------------------------------
-   7. Optioneel: antwoorden je live adressen nog?
+   8. Optioneel: antwoorden je live adressen nog?
 ---------------------------------------------------------------- */
 if (metNet) {
   kop('Live adressen');

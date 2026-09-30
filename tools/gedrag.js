@@ -90,7 +90,15 @@
   kaarten.forEach(function (k) {
     var knop = k.querySelector('.kaart-knop');
     if (!knop) return;
-    knop.addEventListener('click', function () { open(k.getAttribute('data-id'), knop); });
+    // De tegel is een echte link naar de eigen pagina van het project, zodat
+    // een zoekmachine er komt en de link te delen valt. Met javascript aan
+    // openen we liever het venster — behalve bij ctrl/cmd/middelste klik,
+    // want dan wil iemand hem juist in een nieuw tabblad.
+    knop.addEventListener('click', function (e) {
+      if (e.metaKey || e.ctrlKey || e.shiftKey || e.altKey || e.button !== 0) return;
+      e.preventDefault();
+      open(k.getAttribute('data-id'), knop);
+    });
   });
 
   var sluitknop = document.getElementById('sluit');
@@ -117,7 +125,11 @@
   /* ---------- link naar één project kopieren ---------- */
   [].forEach.call(document.querySelectorAll('[data-deel]'), function (knop) {
     knop.addEventListener('click', function () {
-      var adres = location.origin + location.pathname + '#' + knop.getAttribute('data-deel');
+      // liever het echte adres van de projectpagina dan een #-link: die
+      // laat wel een voorbeeld zien in WhatsApp en LinkedIn
+      var id = knop.getAttribute('data-deel');
+      var tegel = document.querySelector('.kaart[data-id="' + id + '"] .kaart-knop');
+      var adres = tegel && tegel.href ? tegel.href : location.origin + location.pathname + '#' + id;
       var klaar = function (tekst) {
         knop.textContent = tekst;
         setTimeout(function () { knop.textContent = 'Kopieer link naar dit project'; }, 2200);

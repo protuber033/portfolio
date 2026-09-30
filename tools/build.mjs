@@ -1,6 +1,6 @@
 // Bouwt site/index.html uit data/site.json en data/projects.json.
 // Een nieuw project toevoegen = een blok in projects.json erbij; hier hoeft niets te wijzigen.
-import { readFileSync, writeFileSync, existsSync } from 'node:fs';
+import { readFileSync, writeFileSync, existsSync, mkdirSync, readdirSync, rmSync } from 'node:fs';
 import { join, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
@@ -66,15 +66,15 @@ function statusStip(status) {
   return `<span class="stip ${esc(status)}" aria-hidden="true"></span>`;
 }
 
-function kaart(p) {
+function kaart(p, pre = '') {
   const beeld = p.tegel
-    ? `<img src="img/${esc(p.tegel)}" width="760" height="475" loading="lazy" alt="${esc(p.naam)}">`
+    ? `<img src="${pre}img/${esc(p.tegel)}" width="760" height="475" loading="lazy" alt="Scherm van ${esc(p.naam)}">`
     : `<span class="geenbeeld">${esc(p.tegelTekst || '').split('\n').map(esc).join('<br>')}</span>`;
   const chips = (p.techniek || []).slice(0, 3)
     .map((t) => `<span>${esc(t)}</span>`).join('');
   return `
         <li class="kaart" data-id="${esc(p.id)}" data-tags="${esc((p.tags || []).join(' '))}" data-zoek="${esc((p.naam + ' ' + p.eenRegel + ' ' + (p.techniek || []).join(' ')).toLowerCase())}">
-          <button type="button" class="kaart-knop" aria-haspopup="dialog">
+          <a class="kaart-knop" href="${pre}werk/${esc(p.id)}/" aria-haspopup="dialog">
             <span class="duim">${beeld}</span>
             <span class="kaart-tekst">
               <span class="kaart-status">${statusStip(p.status)}${esc(p.statusLabel)}</span>
@@ -82,7 +82,7 @@ function kaart(p) {
               <span class="kaart-regel">${esc(p.eenRegel)}</span>
               <span class="kaart-chips">${chips}</span>
             </span>
-          </button>
+          </a>
         </li>`;
 }
 
@@ -99,11 +99,11 @@ function groep(g) {
           <p>${esc(g.uitleg)}</p>
           ${gecheckt}
         </div>
-        <ul class="raster">${leden.map(kaart).join('')}</ul>
+        <ul class="raster">${leden.map((p) => kaart(p)).join('')}</ul>
       </section>`;
 }
 
-function galerij(p) {
+function galerij(p, pre = '') {
   const beelden = p.beelden || [];
   if (!beelden.length) return '';
   const eerste = beelden[0];
@@ -112,14 +112,14 @@ function galerij(p) {
 ${beelden.map((b, i) => `            <button type="button" class="duimknop" role="tab" aria-selected="${i === 0}"
               data-bestand="${esc(b.bestand)}" data-titel="${esc(b.titel)}"
               data-bijschrift="${esc(b.bijschrift)}" data-alt="${esc(b.alt)}">
-              <img src="img/m-${esc(b.bestand)}" width="440" height="275" loading="lazy" alt="${esc(b.titel)}">
+              <img src="${pre}img/m-${esc(b.bestand)}" width="440" height="275" loading="lazy" alt="${esc(b.titel)}">
             </button>`).join('\n')}
           </div>` : '';
   return `
-        <div class="galerij" data-galerij>${duimen}
+        <div class="galerij" data-galerij data-basis="${pre}">${duimen}
           <figure class="groot">
             <span class="balk"><i></i><i></i><i></i><b data-rol="titel">${esc(eerste.titel)}</b></span>
-            <img data-rol="groot" src="img/${esc(eerste.bestand)}" width="1400" height="875" loading="lazy" alt="${esc(eerste.alt)}">
+            <img data-rol="groot" src="${pre}img/${esc(eerste.bestand)}" width="1400" height="875" loading="lazy" alt="${esc(eerste.alt)}">
             <figcaption data-rol="bijschrift">${esc(eerste.bijschrift)}</figcaption>
           </figure>
         </div>`;
@@ -137,19 +137,24 @@ ${stappen.map((st, i) => `            <li><span class="nr">${i + 1}</span><span 
         </div>`;
 }
 
-function paneel(p) {
+// los: true levert hetzelfde paneel als losse pagina — zichtbaar, met een h1,
+// en zonder de deelknop, want daar is dan de adresbalk voor.
+function paneel(p, { pre = '', los = false } = {}) {
   const knop = p.url
     ? `<a class="knop knop-vol" href="${esc(p.url)}" target="_blank" rel="noopener">${esc(p.urlLabel)}</a>`
     : '';
   const dicht = p.besloten ? `<p class="dicht">${esc(p.besloten)}</p>` : '';
-  const schermen = galerij(p);
+  const schermen = galerij(p, pre);
+  const titelTag = los ? 'h1' : 'h2';
+  const deel = los
+    ? ''
+    : `\n          <button type="button" class="deel" data-deel="${esc(p.id)}">Kopieer link naar dit project</button>`;
   return `
-      <article class="paneel" id="paneel-${esc(p.id)}" data-id="${esc(p.id)}" hidden>
+      <article class="paneel" id="paneel-${esc(p.id)}" data-id="${esc(p.id)}"${los ? '' : ' hidden'}>
         <header class="paneel-kop">
           <p class="paneel-meta">${statusStip(p.status)}${esc(p.statusLabel)} <span class="punt">·</span> ${esc(p.periode)}</p>
-          <h2>${esc(p.naam)}</h2>
-          <p class="paneel-lead">${esc(p.voorWie)}</p>
-          <button type="button" class="deel" data-deel="${esc(p.id)}">Kopieer link naar dit project</button>
+          <${titelTag}>${esc(p.naam)}</${titelTag}>
+          <p class="paneel-lead">${esc(p.voorWie)}</p>${deel}
         </header>
         <div class="paneel-cols">
           <div class="vak voorbeeld">
@@ -223,12 +228,134 @@ const css = [
   readFileSync(join(WORTEL, 'tools/traject.css'), 'utf8')
 ].join('\n');
 const js = readFileSync(join(WORTEL, 'tools/gedrag.js'), 'utf8');
+const werkCss = readFileSync(join(WORTEL, 'tools/werkpagina.css'), 'utf8');
+const werkJs = readFileSync(join(WORTEL, 'tools/werkpagina.js'), 'utf8');
 
-const kopstuk = `<title>${esc(site.titel)}</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
+/* ---------- vindbaar worden ----------
+   Een zoekmachine ziet alleen wat er letterlijk in de HTML staat, en hij
+   rangschikt per adres. Eén pagina met elf verstopte vensters is voor hem
+   dus één resultaat; elf echte adressen zijn elf kansen. Daarom krijgt elk
+   project hier ook een eigen pagina, met een eigen titel, een eigen
+   omschrijving, een canonical (dit is het echte adres, reken de rest niet
+   dubbel) en gegevens in JSON-LD, zodat Google weet dat er een persoon en
+   een bedrijf achter zitten en niet alleen een hoop plaatjes. */
+const DOMEIN = String(site.domein || '').replace(/\/+$/, '');
+const abs = (pad) => DOMEIN + '/' + String(pad || '').replace(/^\/+/, '');
+
+// Google knipt een omschrijving rond de 155 tekens af; dan liever zelf,
+// op een woordgrens, dan midden in een woord.
+function kort(tekst, max = 155) {
+  const s = String(tekst ?? '').replace(/\s+/g, ' ').trim();
+  if (s.length <= max) return s;
+  const knip = s.lastIndexOf(' ', max - 1);
+  return s.slice(0, knip > 40 ? knip : max - 1) + '…';
+}
+
+const ldJson = (data) =>
+  `<script type="application/ld+json">${JSON.stringify(data).replace(/</g, '\\u003c')}</script>`;
+
+function hoofd({ titel, omschrijving, pad, beeld, ld }) {
+  const adres = abs(pad);
+  const plaatje = abs(beeld || 'img/kozijnfabriek-1.webp');
+  const verificatie = site.googleVerificatie
+    ? `\n<meta name="google-site-verification" content="${esc(site.googleVerificatie)}">`
+    : '';
+  return `<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>${esc(titel)}</title>
+<meta name="description" content="${esc(omschrijving)}">
+<link rel="canonical" href="${esc(adres)}">
+<meta name="robots" content="index, follow, max-image-preview:large">
+<meta name="author" content="${esc(site.naam)}">
+<meta name="theme-color" content="#0A0D16">
+<link rel="icon" href="/img/icoon.svg" type="image/svg+xml">${verificatie}
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="${esc(site.bedrijf)}">
+<meta property="og:locale" content="nl_NL">
+<meta property="og:url" content="${esc(adres)}">
+<meta property="og:title" content="${esc(titel)}">
+<meta property="og:description" content="${esc(omschrijving)}">
+<meta property="og:image" content="${esc(plaatje)}">
+<meta property="og:image:alt" content="Scherm uit een van de projecten van ${esc(site.naam)}">
+<meta name="twitter:card" content="summary_large_image">`;
+}
+
+const alleTechniek = [...new Set(projecten.flatMap((p) => (p.techniek || []).map(zonderVersie)))].sort();
+
+const persoon = {
+  '@type': 'Person',
+  '@id': abs('#samih'),
+  name: site.naam,
+  givenName: 'Samih',
+  familyName: 'Tichtti',
+  jobTitle: 'Webdeveloper — front-end en back-end',
+  description: site.onderkop,
+  url: abs(''),
+  email: `mailto:${site.email}`,
+  sameAs: [site.github],
+  knowsLanguage: ['nl', 'en'],
+  knowsAbout: alleTechniek,
+  alumniOf: { '@type': 'CollegeOrUniversity', name: 'Hogeschool van Amsterdam' },
+  worksFor: { '@id': abs('#bedrijf') },
+  address: { '@type': 'PostalAddress', addressLocality: site.plaats, addressCountry: 'NL' }
+};
+
+const bedrijf = {
+  '@type': 'ProfessionalService',
+  '@id': abs('#bedrijf'),
+  name: site.bedrijf,
+  alternateName: site.naam,
+  description: site.onderkop,
+  url: abs(''),
+  email: `mailto:${site.email}`,
+  image: abs('img/kozijnfabriek-1.webp'),
+  founder: { '@id': abs('#samih') },
+  employee: { '@id': abs('#samih') },
+  priceRange: 'Op aanvraag',
+  address: { '@type': 'PostalAddress', addressLocality: site.plaats, addressCountry: 'NL' },
+  areaServed: (site.regio || []).map((r) => ({ '@type': 'Place', name: r })),
+  knowsAbout: alleTechniek,
+  hasOfferCatalog: {
+    '@type': 'OfferCatalog',
+    name: 'Waar ik je mee kan helpen',
+    itemListElement: (site.kunnen || []).map((k) => ({
+      '@type': 'Offer',
+      itemOffered: { '@type': 'Service', name: k.label, alternateName: k.kop, description: k.tekst }
+    }))
+  }
+};
+
+// Per project: een CreativeWork, zodat Google het project als eigen werk
+// leest en niet als losse tekst op een pagina.
+function projectLd(p) {
+  const werk = {
+    '@type': 'CreativeWork',
+    '@id': abs(`werk/${p.id}/#project`),
+    name: p.naam,
+    headline: p.naam,
+    description: p.voorWie,
+    abstract: p.eenRegel,
+    url: abs(`werk/${p.id}/`),
+    inLanguage: 'nl-NL',
+    author: { '@id': abs('#samih') },
+    creator: { '@id': abs('#samih') },
+    dateCreated: p.eersteDag,
+    dateModified: p.laatsteDag,
+    keywords: (p.tags || []).concat((p.techniek || []).map(zonderVersie)).join(', '),
+    genre: p.statusLabel
+  };
+  if (p.beelden && p.beelden.length) werk.image = p.beelden.map((b) => abs(`img/${b.bestand}`));
+  if (p.url) werk.sameAs = [p.url];
+  return werk;
+}
+
+const middelen = `<link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&family=Manrope:wght@400;500;600;700&family=Sora:wght@600;700&display=swap">
 <style>${css}</style>`;
+
+// het artifact heeft geen eigen <head>, dus daar blijft de titel erbij horen
+const kopstuk = `<title>${esc(site.titel)}</title>\n${middelen}`;
 
 const binnenkant = `<a class="overslaan" href="#werk">Direct naar het werk</a>
 
@@ -392,27 +519,58 @@ ${site.traject.stappen.map((st, i) => `          <li><span class="nr">${i + 1}</
 <div class="overlay" id="overlay" hidden>
   <div class="venster" role="dialog" aria-modal="true" aria-labelledby="venster-titel" tabindex="-1">
     <button type="button" class="sluit" id="sluit" aria-label="Sluiten">&times;</button>
-    <div id="venster-inhoud">${projecten.map(paneel).join('')}</div>
+    <div id="venster-inhoud">${projecten.map((p) => paneel(p)).join('')}</div>
   </div>
 </div>
 `;
 
 const script = `<script>${js}</script>`;
 
+const omschrijvingHome = kort(`${site.naam} bouwt websites en bedrijfssoftware voor Nederlandse bedrijven: ` +
+  `front-end en back-end, allebei geoptimaliseerd. ${aantal} projecten, ${aantalLive} live.`);
+
+const homeLd = {
+  '@context': 'https://schema.org',
+  '@graph': [
+    {
+      '@type': 'WebSite',
+      '@id': abs('#site'),
+      url: abs(''),
+      name: site.bedrijf,
+      alternateName: site.naam,
+      inLanguage: 'nl-NL',
+      publisher: { '@id': abs('#bedrijf') }
+    },
+    persoon,
+    bedrijf,
+    {
+      '@type': 'CollectionPage',
+      '@id': abs('#werk'),
+      url: abs(''),
+      name: 'Het werk',
+      isPartOf: { '@id': abs('#site') },
+      about: { '@id': abs('#samih') },
+      mainEntity: {
+        '@type': 'ItemList',
+        name: 'Projecten',
+        numberOfItems: aantal,
+        itemListElement: projecten.map((p, i) => ({
+          '@type': 'ListItem',
+          position: i + 1,
+          name: p.naam,
+          url: abs(`werk/${p.id}/`)
+        }))
+      }
+    }
+  ]
+};
+
 const pagina = `<!doctype html>
 <html lang="nl">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta name="description" content="${esc(site.naam)} bouwt websites en bedrijfssoftware voor Nederlandse bedrijven: front-end en back-end, allebei geoptimaliseerd. ${aantal} projecten, ${aantalLive} live.">
-<meta name="robots" content="index, follow">
-<meta name="theme-color" content="#0A0D16">
-<meta property="og:type" content="website">
-<meta property="og:title" content="${esc(site.titel)}">
-<meta property="og:description" content="${esc(site.onderkop)}">
-<meta property="og:image" content="img/kozijnfabriek-1.webp">
-<meta name="twitter:card" content="summary_large_image">
-${kopstuk}
+${hoofd({ titel: site.titel, omschrijving: omschrijvingHome, pad: '' })}
+${middelen}
+${ldJson(homeLd)}
 </head>
 <body>
 ${binnenkant}
@@ -424,9 +582,136 @@ ${script}
 // dezelfde pagina zonder eigen <html>-omhulsel, voor publicatie als artifact
 const artifact = `${kopstuk}\n${binnenkant}\n${script}\n`;
 
+/* ---------- een echte pagina per project ----------
+   Dezelfde inhoud als in het venster, maar op een eigen adres. Bezoekers
+   met javascript zien nog steeds het venster (de tegel is een link, het
+   script vangt de klik op); zoekmachines en mensen die de link delen
+   komen op deze pagina uit. */
+function werkPagina(p) {
+  const anderen = projecten.filter((q) => q.id !== p.id);
+  const titel = `${p.naam} — project van ${site.naam}`;
+  const omschrijving = kort(`${p.eenRegel} ${p.voorWie}`);
+  const beeld = p.beelden && p.beelden.length
+    ? `img/${p.beelden[0].bestand}`
+    : (p.tegel ? `img/${p.tegel}` : null);
+  const ld = {
+    '@context': 'https://schema.org',
+    '@graph': [
+      projectLd(p),
+      persoon,
+      bedrijf,
+      {
+        '@type': 'BreadcrumbList',
+        itemListElement: [
+          { '@type': 'ListItem', position: 1, name: 'Het werk', item: abs('') },
+          { '@type': 'ListItem', position: 2, name: p.naam, item: abs(`werk/${p.id}/`) }
+        ]
+      }
+    ]
+  };
+  return `<!doctype html>
+<html lang="nl">
+<head>
+${hoofd({ titel, omschrijving, pad: `werk/${p.id}/`, beeld })}
+${middelen}
+<style>${werkCss}</style>
+${ldJson(ld)}
+</head>
+<body>
+<a class="overslaan" href="#project">Direct naar dit project</a>
+
+<header class="balk-boven">
+  <div class="binnen">
+    <a class="merk" href="/"><span class="merk-stip"></span>${esc(site.naam)}</a>
+    <nav class="menu">
+      <a href="/#werk">Werk</a>
+      <a href="/#lagen">Aanpak</a>
+      <a href="/#traject">Samenwerken</a>
+      <a href="/#contact">Contact</a>
+    </nav>
+    <a class="knop knop-klein" href="/#contact">Neem contact op</a>
+  </div>
+</header>
+
+<main class="los-wikkel" id="project">
+  <div class="binnen">
+    <nav class="kruimels" aria-label="Kruimelpad">
+      <a href="/">${esc(site.naam)}</a> <span aria-hidden="true">/</span>
+      <a href="/#werk">Het werk</a> <span aria-hidden="true">/</span>
+      <span aria-current="page">${esc(p.naam)}</span>
+    </nav>
+    <div class="los-doos">${paneel(p, { pre: '/', los: true })}</div>
+    <div class="verder">
+      <h2>Ander werk van mij</h2>
+      <ul>
+${anderen.map((q) => `        <li><a href="/werk/${esc(q.id)}/">${esc(q.naam)}</a></li>`).join('\n')}
+      </ul>
+    </div>
+  </div>
+</main>
+
+<footer class="voet">
+  <div class="binnen">
+    <p>Alle schermen hierboven zijn echte screenshots van het draaiende project. Klantgegevens zijn onleesbaar gemaakt. ${esc(site.naam)} · ${esc(site.bedrijf)} · ${esc(site.email)}.</p>
+    <p class="bijgewerkt"><a href="/#werk">Terug naar alle ${aantal} projecten</a></p>
+  </div>
+</footer>
+<script>${werkJs}</script>
+</body>
+</html>
+`;
+}
+
+/* ---------- wegwijzers voor de zoekmachine ----------
+   Google vindt een nieuw domein niet uit zichzelf: er linkt nog niets naar.
+   Een sitemap is de lijst die je hem zelf aanreikt, en de regel in robots.txt
+   vertelt waar die lijst staat. */
+const vandaag = new Date().toISOString().slice(0, 10);
+const sitemap = `<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url>
+    <loc>${abs('')}</loc>
+    <lastmod>${vandaag}</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>1.0</priority>
+  </url>
+${projecten.map((p) => `  <url>
+    <loc>${abs(`werk/${p.id}/`)}</loc>
+    <lastmod>${p.laatsteDag || vandaag}</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>`).join('\n')}
+</urlset>
+`;
+
+const robots = `User-agent: *
+Allow: /
+
+Sitemap: ${abs('sitemap.xml')}
+`;
+
 writeFileSync(join(WORTEL, 'index.html'), pagina);
 writeFileSync(join(WORTEL, 'artifact.html'), artifact);
+writeFileSync(join(WORTEL, 'sitemap.xml'), sitemap);
+writeFileSync(join(WORTEL, 'robots.txt'), robots);
+const werkMap = join(WORTEL, 'werk');
+mkdirSync(werkMap, { recursive: true });
+for (const p of projecten) {
+  const map = join(werkMap, p.id);
+  mkdirSync(map, { recursive: true });
+  writeFileSync(join(map, 'index.html'), werkPagina(p));
+}
+// een project dat uit de lijst gaat, moet ook van het web af: anders blijft
+// er een adres bestaan dat Google al kent en dat niemand meer bedoelt
+const levend = new Set(projecten.map((p) => p.id));
+for (const naam of readdirSync(werkMap)) {
+  if (!levend.has(naam)) {
+    rmSync(join(werkMap, naam), { recursive: true, force: true });
+    console.log(`werk/${naam}/ verwijderd, dat project staat niet meer in de lijst`);
+  }
+}
 console.log(`index.html gebouwd — ${aantal} projecten, ${aantalLive} live`);
+console.log(`${projecten.length} projectpagina's onder werk/, plus sitemap.xml en robots.txt`);
 if (wachtkamer.length) {
   console.log(`${wachtkamer.length} in de wachtkamer (nog niet gepubliceerd): ` +
     wachtkamer.map((p) => p.naam).join(', '));

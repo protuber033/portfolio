@@ -1,4 +1,28 @@
-/* Rustige, donkere werkbalk-achtige UI. Structuur boven effect:
+<!doctype html>
+<html lang="nl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Eemland Boekt — project van Samih Tichtti</title>
+<meta name="description" content="Offertes, facturen, urenbriefjes scannen en btw-aangifte in één systeem. De complete administratie van een bouwbedrijf, van offerte tot btw-aangifte, in…">
+<link rel="canonical" href="https://eemland-digital.nl/werk/eemland/">
+<meta name="robots" content="index, follow, max-image-preview:large">
+<meta name="author" content="Samih Tichtti">
+<meta name="theme-color" content="#0A0D16">
+<link rel="icon" href="/img/icoon.svg" type="image/svg+xml">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Eemland Digital">
+<meta property="og:locale" content="nl_NL">
+<meta property="og:url" content="https://eemland-digital.nl/werk/eemland/">
+<meta property="og:title" content="Eemland Boekt — project van Samih Tichtti">
+<meta property="og:description" content="Offertes, facturen, urenbriefjes scannen en btw-aangifte in één systeem. De complete administratie van een bouwbedrijf, van offerte tot btw-aangifte, in…">
+<meta property="og:image" content="https://eemland-digital.nl/img/eemland-1.webp">
+<meta property="og:image:alt" content="Scherm uit een van de projecten van Samih Tichtti">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&family=Manrope:wght@400;500;600;700&family=Sora:wght@600;700&display=swap">
+<style>/* Rustige, donkere werkbalk-achtige UI. Structuur boven effect:
    vaste balk bovenin, groepen met koppen, één rasterbreedte die meegroeit. */
 :root {
   --grond: #0A0D16;
@@ -485,3 +509,324 @@ h1 { font-size: clamp(1.9rem, 4.4vw, 2.9rem); max-width: 22ch; }
 
 .stip.archief { background: var(--tekst-3); }
 .balkje.archief { background: rgba(154, 166, 198, .3); }
+
+/* ============ diagram: hoe een project in elkaar zit ============ */
+.bouw {
+  margin-top: clamp(22px, 3vw, 34px);
+  background: var(--vlak); border: 1px solid var(--rand); border-radius: 16px;
+  padding: clamp(20px, 3vw, 32px);
+  display: flex; flex-direction: column; align-items: center; gap: 0;
+}
+.bouw-kop {
+  font-family: var(--mono); font-size: .7rem; letter-spacing: .14em; text-transform: uppercase;
+  color: var(--tekst-3); margin: 0 0 18px; align-self: flex-start;
+}
+.doos {
+  width: 100%; max-width: 620px;
+  background: var(--grond); border: 1px solid var(--rand-op); border-radius: 12px;
+  padding: 14px 18px; text-align: center;
+}
+.doos b { display: block; font-family: var(--display); font-weight: 700; font-size: 1rem; letter-spacing: -.02em; }
+.doos span { display: block; margin-top: 4px; color: var(--tekst-2); font-size: .88rem; }
+.doos.rand-accent { border-color: var(--accent); color: var(--accent); font-weight: 600; max-width: 340px; }
+.pijl {
+  margin: 0; padding-block: 10px; color: var(--tekst-3);
+  font-size: 1.1rem; line-height: 1; display: flex; align-items: center; gap: 9px;
+}
+.pijl em { font-style: normal; font-family: var(--mono); font-size: .7rem; letter-spacing: .06em; }
+.vier {
+  display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 10px;
+  width: 100%; max-width: 760px;
+}
+.doos.klein { padding: 13px 12px; max-width: none; }
+.doos.klein b { font-size: .88rem; }
+.doos.klein span { font-size: .76rem; margin-top: 3px; }
+.bouw-bij {
+  margin: 20px 0 0; font-size: .86rem; color: var(--tekst-3);
+  max-width: 62ch; text-align: center;
+}
+
+/* ============ staafgrafieken ============ */
+.grafieken { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; margin-top: 24px; }
+.grafiek {
+  margin: 0; background: var(--vlak); border: 1px solid var(--rand); border-radius: 16px;
+  padding: clamp(18px, 2.6vw, 26px);
+}
+.grafiek figcaption {
+  font-family: var(--display); font-weight: 700; font-size: 1.02rem; letter-spacing: -.02em;
+  margin-bottom: 16px;
+}
+.staven { list-style: none; margin: 0; padding: 0; display: grid; gap: 8px; }
+.staven li {
+  display: grid; grid-template-columns: 8.5rem minmax(0, 1fr) 2rem; align-items: center; gap: 10px;
+}
+.staaf-naam { font-size: .86rem; color: var(--tekst-2); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.staaf-spoor { display: block; height: 12px; background: rgba(255, 255, 255, .04); border-radius: 3px; }
+.staaf {
+  display: block; height: 100%; min-width: 4px;
+  background: #5B8CFF;
+  border-radius: 2px 4px 4px 2px;
+}
+.staaf-waarde {
+  font-family: var(--mono); font-size: .82rem; color: var(--tekst);
+  font-variant-numeric: tabular-nums; text-align: right;
+}
+.grafiek-bij { margin: 16px 0 0; font-size: .78rem; color: var(--tekst-3); }
+
+/* ============ stroomdiagram in het projectvenster ============ */
+.stroom { margin-top: 24px; padding-top: 22px; border-top: 1px solid var(--rand); }
+.stroom h4 {
+  font-family: var(--mono); font-size: .68rem; letter-spacing: .14em; text-transform: uppercase;
+  color: var(--tekst-3); margin: 0 0 14px; font-weight: 500;
+}
+.stappen {
+  list-style: none; margin: 0; padding: 0;
+  display: flex; flex-wrap: wrap; align-items: stretch; gap: 8px;
+}
+.stappen li {
+  position: relative;
+  display: flex; align-items: center; gap: 9px;
+  background: var(--grond); border: 1px solid var(--rand);
+  border-radius: 9px; padding: 9px 14px 9px 10px;
+  font-size: .86rem; color: var(--tekst-2);
+}
+.stappen li + li::before {
+  content: "";
+  position: absolute; left: -8px; top: 50%; width: 8px; height: 1px;
+  background: var(--rand-op);
+}
+.stappen .nr {
+  display: grid; place-items: center; flex: none;
+  width: 20px; height: 20px; border-radius: 50%;
+  background: var(--accent-zacht); color: var(--accent);
+  font-family: var(--mono); font-size: .68rem;
+}
+.stappen li:last-child {
+  border-color: var(--accent); color: var(--tekst);
+}
+
+@media (max-width: 960px) {
+  .grafieken { grid-template-columns: minmax(0, 1fr); }
+  .vier { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+@media (max-width: 620px) {
+  .staven li { grid-template-columns: 7rem minmax(0, 1fr) 1.8rem; gap: 8px; }
+  .staaf-naam { font-size: .78rem; }
+  .vier { grid-template-columns: minmax(0, 1fr); }
+  .stappen li { width: 100%; }
+  .stappen li + li::before { left: 50%; top: -8px; width: 1px; height: 8px; }
+}
+
+/* ============ wat je krijgt als klant ============ */
+.stroom-los {
+  margin-top: 26px;
+  padding: clamp(18px, 2.6vw, 26px);
+  border: 1px solid var(--rand);
+  border-radius: 16px;
+  background: var(--vlak);
+}
+.stroom-los h4 { margin-top: 0; }
+
+.blokken {
+  display: grid; grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 16px; margin-top: 18px;
+}
+.blok {
+  background: var(--vlak); border: 1px solid var(--rand); border-radius: 16px;
+  padding: clamp(20px, 2.6vw, 28px);
+  display: flex; flex-direction: column; gap: 10px;
+  position: relative; overflow: hidden;
+}
+.blok::before {
+  content: ""; position: absolute; inset: 0 0 auto 0; height: 2px;
+  background: var(--accent); opacity: .6;
+}
+.blok-label {
+  font-family: var(--mono); font-size: .7rem; letter-spacing: .14em; text-transform: uppercase;
+  color: var(--accent); margin: 0;
+}
+.blok h3 {
+  font-family: var(--display); font-weight: 700; font-size: 1.16rem;
+  letter-spacing: -.02em; margin: 0; text-wrap: balance;
+}
+.punten { list-style: none; margin: 4px 0 0; padding: 0; display: grid; gap: 9px; }
+.punten li {
+  position: relative; padding-left: 26px;
+  color: var(--tekst-2); font-size: .94rem;
+}
+.punten li::before {
+  content: ""; position: absolute; left: 2px; top: .34em;
+  width: 16px; height: 16px; border-radius: 50%;
+  background: var(--accent-zacht);
+}
+.punten li::after {
+  content: ""; position: absolute; left: 6px; top: .6em;
+  width: 7px; height: 3px;
+  border-left: 1.5px solid var(--accent);
+  border-bottom: 1.5px solid var(--accent);
+  transform: rotate(-45deg);
+}
+
+@media (max-width: 960px) {
+  .blokken { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+@media (max-width: 620px) {
+  .blokken { grid-template-columns: minmax(0, 1fr); }
+}
+</style>
+<style>/* ============ losse projectpagina ============
+   Elk project heeft ook een eigen adres, zodat Google er een echte pagina
+   van kan maken in plaats van één pagina met elf verstopte vensters.
+   De inhoud is hetzelfde paneel als in het venster, dus de opmaak hier
+   hoeft alleen te doen wat .venster daar deed: een doos eromheen. */
+.los-wikkel { padding-block: clamp(24px, 4vw, 48px) clamp(40px, 6vw, 80px); }
+.los-doos {
+  width: min(1080px, 100%); margin: 0 auto;
+  background: var(--vlak); border: 1px solid var(--rand-op); border-radius: 18px;
+  padding: clamp(22px, 3.4vw, 40px);
+}
+.los-doos .paneel-kop { padding-right: 0; }
+.los-doos .paneel { display: block; }
+
+.kruimels {
+  display: flex; flex-wrap: wrap; align-items: center; gap: 8px;
+  margin: 0 0 18px; font-family: var(--mono); font-size: .72rem;
+  letter-spacing: .1em; text-transform: uppercase; color: var(--tekst-3);
+}
+.kruimels a { color: var(--tekst-2); text-decoration: none; }
+.kruimels a:hover { color: var(--accent); }
+.kruimels span[aria-current] { color: var(--tekst); }
+
+/* verder en terug, onderaan de pagina — ook voor de zoekmachine een
+   manier om van project naar project te lopen zonder de homepage */
+.verder { margin-top: 26px; }
+.verder h2 {
+  font-family: var(--display); font-weight: 700; font-size: 1.1rem;
+  letter-spacing: -.02em; margin: 0 0 12px;
+}
+.verder ul { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 8px; }
+.verder a {
+  display: inline-block; padding: 8px 14px; border-radius: 999px;
+  border: 1px solid var(--rand); background: var(--vlak);
+  color: var(--tekst-2); text-decoration: none; font-size: .9rem;
+}
+.verder a:hover { border-color: var(--rand-op); color: var(--tekst); }
+</style>
+<script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"CreativeWork","@id":"https://eemland-digital.nl/werk/eemland/#project","name":"Eemland Boekt","headline":"Eemland Boekt","description":"De complete administratie van een bouwbedrijf, van offerte tot btw-aangifte, in één systeem dat elke dag gebruikt wordt.","abstract":"Offertes, facturen, urenbriefjes scannen en btw-aangifte in één systeem.","url":"https://eemland-digital.nl/werk/eemland/","inLanguage":"nl-NL","author":{"@id":"https://eemland-digital.nl/#samih"},"creator":{"@id":"https://eemland-digital.nl/#samih"},"dateCreated":"2026-01-21","dateModified":"2026-09-22","keywords":"software, ai, React, Express, PostgreSQL, Supabase Storage, pdf-lib, Google Gemini","genre":"Draait in bedrijf","image":["https://eemland-digital.nl/img/eemland-1.webp"]},{"@type":"Person","@id":"https://eemland-digital.nl/#samih","name":"Samih Tichtti","givenName":"Samih","familyName":"Tichtti","jobTitle":"Webdeveloper — front-end en back-end","description":"Websites en bedrijfssoftware voor Nederlandse bedrijven. Geen mooie plaatjes die niets doen — dingen die elke dag gebruikt worden.","url":"https://eemland-digital.nl/","email":"mailto:info@eemland-digital.nl","sameAs":["https://github.com/protuber033"],"knowsLanguage":["nl","en"],"knowsAbout":["Anthropic SDK","Capacitor","Cloudinary","Docker","ESP32","Express","Flask","Framer Motion","GitLab CI","Google Gemini","Google Maps","MapLibre","Motion","MySQL","Next.js","Node","PDFKit","PostgreSQL","Prisma","Python","Railway","React","React Three Fiber","SQLAlchemy","Supabase","Supabase Storage","Tailwind","TypeScript","Vite","jsPDF","pdf-lib","sharp","three.js","zustand"],"alumniOf":{"@type":"CollegeOrUniversity","name":"Hogeschool van Amsterdam"},"worksFor":{"@id":"https://eemland-digital.nl/#bedrijf"},"address":{"@type":"PostalAddress","addressLocality":"Amersfoort","addressCountry":"NL"}},{"@type":"ProfessionalService","@id":"https://eemland-digital.nl/#bedrijf","name":"Eemland Digital","alternateName":"Samih Tichtti","description":"Websites en bedrijfssoftware voor Nederlandse bedrijven. Geen mooie plaatjes die niets doen — dingen die elke dag gebruikt worden.","url":"https://eemland-digital.nl/","email":"mailto:info@eemland-digital.nl","image":"https://eemland-digital.nl/img/kozijnfabriek-1.webp","founder":{"@id":"https://eemland-digital.nl/#samih"},"employee":{"@id":"https://eemland-digital.nl/#samih"},"priceRange":"Op aanvraag","address":{"@type":"PostalAddress","addressLocality":"Amersfoort","addressCountry":"NL"},"areaServed":[{"@type":"Place","name":"Amersfoort"},{"@type":"Place","name":"Utrecht"},{"@type":"Place","name":"Amsterdam"},{"@type":"Place","name":"Nederland"}],"knowsAbout":["Anthropic SDK","Capacitor","Cloudinary","Docker","ESP32","Express","Flask","Framer Motion","GitLab CI","Google Gemini","Google Maps","MapLibre","Motion","MySQL","Next.js","Node","PDFKit","PostgreSQL","Prisma","Python","Railway","React","React Three Fiber","SQLAlchemy","Supabase","Supabase Storage","Tailwind","TypeScript","Vite","jsPDF","pdf-lib","sharp","three.js","zustand"],"hasOfferCatalog":{"@type":"OfferCatalog","name":"Waar ik je mee kan helpen","itemListElement":[{"@type":"Offer","itemOffered":{"@type":"Service","name":"Beeldherkenning","alternateName":"Een foto erin, gegevens eruit","description":"Een gevelfoto waar de kozijnen uit herkend worden. Een papieren urenbriefje dat gescand én nagerekend wordt. Werk dat anders met de hand overgetypt moet worden."}},{"@type":"Offer","itemOffered":{"@type":"Service","name":"Administratie","alternateName":"De hele papierwinkel in één systeem","description":"Aanvraag, offerte, order, factuur, btw en jaarcijfers achter elkaar, zonder dat iemand hetzelfde nummer drie keer overtypt. Pdf's automatisch opgemaakt."}},{"@type":"Offer","itemOffered":{"@type":"Service","name":"3D in de browser","alternateName":"Producten die de klant zelf kan draaien","description":"Een dakkapel die echt in het dakvlak staat. Een perceel in 3D met de bouwzone eroverheen. Alles in de browser, zonder plug-in."}},{"@type":"Offer","itemOffered":{"@type":"Service","name":"Kaart en adresdata","alternateName":"Nederlandse adres- en perceeldata","description":"Adres opzoeken via PDOK, perceelgrenzen en bouwjaren erbij, Street View voor de gevel, zoeken op afstand. Met een gratis alternatief als een betaalde kaartdienst uitvalt."}},{"@type":"Offer","itemOffered":{"@type":"Service","name":"Beheer en rollen","alternateName":"Dashboards waar personeel mee werkt","description":"Inloggen, rechten per rol, de zakelijke mailbox erin, planning en leveranciersorders. Met gehashte wachtwoorden en een database die standaard niets vrijgeeft."}},{"@type":"Offer","itemOffered":{"@type":"Service","name":"Live zetten","alternateName":"Van laptop naar eigen domein","description":"Hosting, domein, ssl, database met back-ups en zakelijke mail. En waar het nodig is verder dan de browser: dezelfde code als app voor iOS en Android, of sensoren die hun metingen naar een webserver sturen."}}]}},{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Het werk","item":"https://eemland-digital.nl/"},{"@type":"ListItem","position":2,"name":"Eemland Boekt","item":"https://eemland-digital.nl/werk/eemland/"}]}]}</script>
+</head>
+<body>
+<a class="overslaan" href="#project">Direct naar dit project</a>
+
+<header class="balk-boven">
+  <div class="binnen">
+    <a class="merk" href="/"><span class="merk-stip"></span>Samih Tichtti</a>
+    <nav class="menu">
+      <a href="/#werk">Werk</a>
+      <a href="/#lagen">Aanpak</a>
+      <a href="/#traject">Samenwerken</a>
+      <a href="/#contact">Contact</a>
+    </nav>
+    <a class="knop knop-klein" href="/#contact">Neem contact op</a>
+  </div>
+</header>
+
+<main class="los-wikkel" id="project">
+  <div class="binnen">
+    <nav class="kruimels" aria-label="Kruimelpad">
+      <a href="/">Samih Tichtti</a> <span aria-hidden="true">/</span>
+      <a href="/#werk">Het werk</a> <span aria-hidden="true">/</span>
+      <span aria-current="page">Eemland Boekt</span>
+    </nav>
+    <div class="los-doos">
+      <article class="paneel" id="paneel-eemland" data-id="eemland">
+        <header class="paneel-kop">
+          <p class="paneel-meta"><span class="stip live" aria-hidden="true"></span>Draait in bedrijf <span class="punt">·</span> januari – september 2026</p>
+          <h1>Eemland Boekt</h1>
+          <p class="paneel-lead">De complete administratie van een bouwbedrijf, van offerte tot btw-aangifte, in één systeem dat elke dag gebruikt wordt.</p>
+        </header>
+        <div class="paneel-cols">
+          <div class="vak voorbeeld">
+            <h4>Zo gaat het in de praktijk</h4>
+            <p>De stapel papieren urenbriefjes gaat door de scanner. Het systeem leest ze uit, telt na of de totalen op het briefje zelf wel kloppen, en zet de uren op het juiste project. Aan het eind van het kwartaal rolt de btw-aangifte er kant-en-klaar uit.</p>
+          </div>
+          <div class="vak">
+            <h4>Wat het doet</h4>
+            <ul class="doet"><li>Offertes en facturen maken, versturen en als pdf bewaren.</li><li>Urenbriefjes scannen <strong>én narekenen</strong>, zodat fouten opvallen.</li><li>Kwartaalcijfers, btw-overzicht en meerjarenrapport zonder handwerk.</li><li>Projecten, klanten, personeel en vacatures bij elkaar.</li><li>Documenten in beveiligde opslag, downloads via afgeschermde links.</li></ul>
+          </div>
+          <div class="vak">
+            <h4>Techniek</h4>
+            <ul class="techniek"><li>React 19</li><li>Express</li><li>PostgreSQL</li><li>Supabase Storage</li><li>pdf-lib</li><li>Google Gemini</li></ul>
+            
+            <p class="dicht">Besloten klantomgeving — rondleiding op aanvraag.</p>
+          </div>
+        </div>
+        
+        <div class="stroom">
+          <h4>Zo loopt het van begin tot eind</h4>
+          <ol class="stappen">
+            <li><span class="nr">1</span><span class="wat">Urenbriefje door de scanner</span></li>
+            <li><span class="nr">2</span><span class="wat">Systeem leest en telt na</span></li>
+            <li><span class="nr">3</span><span class="wat">Uren op het juiste project</span></li>
+            <li><span class="nr">4</span><span class="wat">Factuur eruit</span></li>
+            <li><span class="nr">5</span><span class="wat">Kwartaalcijfers</span></li>
+            <li><span class="nr">6</span><span class="wat">Btw-aangifte</span></li>
+          </ol>
+        </div>
+        
+        <div class="galerij" data-galerij data-basis="/">
+          <figure class="groot">
+            <span class="balk"><i></i><i></i><i></i><b data-rol="titel">inlogportaal</b></span>
+            <img data-rol="groot" src="/img/eemland-1.webp" width="1400" height="875" loading="lazy" alt="Onscherp gemaakt inlogscherm van de besloten klantomgeving; alleen de indeling is te zien.">
+            <figcaption data-rol="bijschrift">Bewust onscherp: dit is een besloten omgeving van een klant.</figcaption>
+          </figure>
+        </div>
+      </article></div>
+    <div class="verder">
+      <h2>Ander werk van mij</h2>
+      <ul>
+        <li><a href="/werk/ralox/">RALOX Sports</a></li>
+        <li><a href="/werk/funstudios/">Fun Studios</a></li>
+        <li><a href="/werk/kozijnfabriek/">Kozijnfabriek Direct</a></li>
+        <li><a href="/werk/courtswap/">CourtSwap</a></li>
+        <li><a href="/werk/glacio/">Glacio Klimaattechniek</a></li>
+        <li><a href="/werk/remh/">REMH Bouw &amp; Verbouw</a></li>
+        <li><a href="/werk/kijkvergunning/">KijkVergunning</a></li>
+        <li><a href="/werk/lumiere/">Lumière Dakkapellen</a></li>
+        <li><a href="/werk/kiesradar/">Kiesradar</a></li>
+        <li><a href="/werk/eemlandwerkt/">EemlandWerkt</a></li>
+      </ul>
+    </div>
+  </div>
+</main>
+
+<footer class="voet">
+  <div class="binnen">
+    <p>Alle schermen hierboven zijn echte screenshots van het draaiende project. Klantgegevens zijn onleesbaar gemaakt. Samih Tichtti · Eemland Digital · info@eemland-digital.nl.</p>
+    <p class="bijgewerkt"><a href="/#werk">Terug naar alle 11 projecten</a></p>
+  </div>
+</footer>
+<script>// Alleen wat een losse projectpagina nodig heeft: de duimpjes onder de
+// grote schermafbeelding. Het grote script van de homepage kan hier niet
+// draaien, want dat verwacht het venster, de filters en het zoekveld.
+(function () {
+  [].forEach.call(document.querySelectorAll('[data-galerij]'), function (galerij) {
+    var duimen = [].slice.call(galerij.querySelectorAll('.duimknop'));
+    var groot = galerij.querySelector('[data-rol="groot"]');
+    var titel = galerij.querySelector('[data-rol="titel"]');
+    var bij = galerij.querySelector('[data-rol="bijschrift"]');
+    if (!groot) return;
+    duimen.forEach(function (d) {
+      d.addEventListener('click', function () {
+        duimen.forEach(function (o) { o.setAttribute('aria-selected', 'false'); });
+        d.setAttribute('aria-selected', 'true');
+        groot.src = 'img/' + d.getAttribute('data-bestand');
+        groot.alt = d.getAttribute('data-alt') || '';
+        if (titel) titel.textContent = d.getAttribute('data-titel') || '';
+        if (bij) bij.textContent = d.getAttribute('data-bijschrift') || '';
+      });
+    });
+  });
+}());
+</script>
+</body>
+</html>

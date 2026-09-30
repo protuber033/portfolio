@@ -1,12 +1,21 @@
 {
   "naam": "Samih Tichtti",
   "rol": "Websites en bedrijfssoftware",
-  "titel": "Samih bouwt",
+  "titel": "Samih Tichtti — websites en bedrijfssoftware | Amersfoort",
   "kop": "Ik bouw de voorkant én de achterkant.",
   "onderkop": "Websites en bedrijfssoftware voor Nederlandse bedrijven. Geen mooie plaatjes die niets doen — dingen die elke dag gebruikt worden.",
   "email": "info@eemland-digital.nl",
   "github": "https://github.com/protuber033",
   "opleiding": "HBO-ICT, Hogeschool van Amsterdam",
+  "domein": "https://eemland-digital.nl",
+  "plaats": "Amersfoort",
+  "regio": [
+    "Amersfoort",
+    "Utrecht",
+    "Amsterdam",
+    "Nederland"
+  ],
+  "googleVerificatie": "",
   "lagen": [
     {
       "label": "Front-end",

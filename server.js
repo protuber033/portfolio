@@ -26,8 +26,10 @@ function opschonen(pad) {
 }
 
 function magDit(rel) {
-  if (rel === 'index.html' || rel === 'robots.txt') return true;
-  return rel.startsWith('img' + sep) || rel.startsWith('img/');
+  if (rel === 'index.html' || rel === 'robots.txt' || rel === 'sitemap.xml') return true;
+  if (rel.startsWith('img' + sep) || rel.startsWith('img/')) return true;
+  // werk/<project>/index.html: elk project heeft ook een eigen adres
+  return rel.startsWith('werk' + sep) || rel.startsWith('werk/');
 }
 
 async function pagina() {
@@ -35,9 +37,20 @@ async function pagina() {
 }
 
 createServer(async (req, res) => {
+  // www en zonder www zijn voor een zoekmachine twee adressen met dezelfde
+  // inhoud. We sturen www door, dan is er één versie die meetelt.
+  const host = String(req.headers.host || '');
+  if (host.toLowerCase().startsWith('www.')) {
+    res.writeHead(301, { location: 'https://' + host.slice(4) + req.url }).end();
+    return;
+  }
+
   const url = new URL(req.url, 'http://localhost');
   let rel = opschonen(decodeURIComponent(url.pathname));
   if (rel === '') rel = 'index.html';
+  // een map vraagt om zijn index.html — /werk/glacio/ net als /werk/glacio
+  else if (rel.endsWith('/') || rel.endsWith(sep)) rel += 'index.html';
+  else if (!extname(rel)) rel = join(rel, 'index.html');
 
   if (!magDit(rel)) {
     res.writeHead(404, { 'content-type': TYPES['.html'] }).end(await pagina());

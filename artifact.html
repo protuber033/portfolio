@@ -1,4 +1,4 @@
-<title>Samih bouwt</title>
+<title>Samih Tichtti — websites en bedrijfssoftware | Amersfoort</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&family=Manrope:wght@400;500;600;700&family=Sora:wght@600;700&display=swap">
@@ -179,6 +179,7 @@ h1 {
   display: flex; flex-direction: column; width: 100%; height: 100%; text-align: left;
   background: var(--vlak); border: 1px solid var(--rand); border-radius: 14px;
   overflow: hidden; cursor: pointer; padding: 0; color: inherit; font: inherit;
+  text-decoration: none;
   transition: border-color .15s ease, transform .15s ease, background .15s ease;
 }
 .kaart-knop:hover { border-color: var(--rand-op); transform: translateY(-3px); background: var(--vlak-2); }
@@ -298,7 +299,7 @@ h1 {
   color: var(--tekst-3); margin: 0;
 }
 .paneel-meta .punt { opacity: .5; }
-.paneel h2 { font-family: var(--display); font-weight: 700; font-size: clamp(1.5rem, 3.4vw, 2.1rem); letter-spacing: -.03em; margin: 10px 0 0; }
+.paneel h1, .paneel h2 { font-family: var(--display); font-weight: 700; font-size: clamp(1.5rem, 3.4vw, 2.1rem); letter-spacing: -.03em; margin: 10px 0 0; }
 .paneel-lead { margin: 8px 0 0; color: var(--tekst-2); max-width: 64ch; }
 .paneel-cols { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 18px; margin-top: 24px; align-items: start; }
 .vak h4 {
@@ -761,81 +762,81 @@ h1 { font-size: clamp(1.9rem, 4.4vw, 2.9rem); max-width: 22ch; }
         </div>
         <ul class="raster">
         <li class="kaart" data-id="eemland" data-tags="software ai" data-zoek="eemland boekt offertes, facturen, urenbriefjes scannen en btw-aangifte in één systeem. react 19 express postgresql supabase storage pdf-lib google gemini">
-          <button type="button" class="kaart-knop" aria-haspopup="dialog">
-            <span class="duim"><img src="img/t-eemland.webp" width="760" height="475" loading="lazy" alt="Eemland Boekt"></span>
+          <a class="kaart-knop" href="werk/eemland/" aria-haspopup="dialog">
+            <span class="duim"><img src="img/t-eemland.webp" width="760" height="475" loading="lazy" alt="Scherm van Eemland Boekt"></span>
             <span class="kaart-tekst">
               <span class="kaart-status"><span class="stip live" aria-hidden="true"></span>Draait in bedrijf</span>
               <span class="kaart-naam">Eemland Boekt</span>
               <span class="kaart-regel">Offertes, facturen, urenbriefjes scannen en btw-aangifte in één systeem.</span>
               <span class="kaart-chips"><span>React 19</span><span>Express</span><span>PostgreSQL</span></span>
             </span>
-          </button>
+          </a>
         </li>
         <li class="kaart" data-id="ralox" data-tags="website software ai" data-zoek="ralox sports webshop voor padelballen, plus een balautomaat die clubs 24/7 laat verkopen. react vite tailwind 4 express anthropic sdk google gemini motion railway">
-          <button type="button" class="kaart-knop" aria-haspopup="dialog">
-            <span class="duim"><img src="img/t-ralox.webp" width="760" height="475" loading="lazy" alt="RALOX Sports"></span>
+          <a class="kaart-knop" href="werk/ralox/" aria-haspopup="dialog">
+            <span class="duim"><img src="img/t-ralox.webp" width="760" height="475" loading="lazy" alt="Scherm van RALOX Sports"></span>
             <span class="kaart-tekst">
               <span class="kaart-status"><span class="stip live" aria-hidden="true"></span>Live online</span>
               <span class="kaart-naam">RALOX Sports</span>
               <span class="kaart-regel">Webshop voor padelballen, plus een balautomaat die clubs 24/7 laat verkopen.</span>
               <span class="kaart-chips"><span>React</span><span>Vite</span><span>Tailwind 4</span></span>
             </span>
-          </button>
+          </a>
         </li>
         <li class="kaart" data-id="funstudios" data-tags="website" data-zoek="fun studios eventsite met boekingsflow: photo booths, low fog en indoor vuurwerk. react 19 vite tailwind 4 motion express sharp">
-          <button type="button" class="kaart-knop" aria-haspopup="dialog">
-            <span class="duim"><img src="img/t-funstudios.webp" width="760" height="475" loading="lazy" alt="Fun Studios"></span>
+          <a class="kaart-knop" href="werk/funstudios/" aria-haspopup="dialog">
+            <span class="duim"><img src="img/t-funstudios.webp" width="760" height="475" loading="lazy" alt="Scherm van Fun Studios"></span>
             <span class="kaart-tekst">
               <span class="kaart-status"><span class="stip live" aria-hidden="true"></span>Live online</span>
               <span class="kaart-naam">Fun Studios</span>
               <span class="kaart-regel">Eventsite met boekingsflow: photo booths, low fog en indoor vuurwerk.</span>
               <span class="kaart-chips"><span>React 19</span><span>Vite</span><span>Tailwind 4</span></span>
             </span>
-          </button>
+          </a>
         </li>
         <li class="kaart" data-id="kozijnfabriek" data-tags="software website ai" data-zoek="kozijnfabriek direct gevelfoto erin, offerte eruit — plus een dashboard voor het personeel. react 19 node 22 supabase google gemini google maps railway">
-          <button type="button" class="kaart-knop" aria-haspopup="dialog">
-            <span class="duim"><img src="img/t-kozijnfabriek.webp" width="760" height="475" loading="lazy" alt="Kozijnfabriek Direct"></span>
+          <a class="kaart-knop" href="werk/kozijnfabriek/" aria-haspopup="dialog">
+            <span class="duim"><img src="img/t-kozijnfabriek.webp" width="760" height="475" loading="lazy" alt="Scherm van Kozijnfabriek Direct"></span>
             <span class="kaart-tekst">
               <span class="kaart-status"><span class="stip live" aria-hidden="true"></span>Live online</span>
               <span class="kaart-naam">Kozijnfabriek Direct</span>
               <span class="kaart-regel">Gevelfoto erin, offerte eruit — plus een dashboard voor het personeel.</span>
               <span class="kaart-chips"><span>React 19</span><span>Node 22</span><span>Supabase</span></span>
             </span>
-          </button>
+          </a>
         </li>
         <li class="kaart" data-id="courtswap" data-tags="software mobiel" data-zoek="courtswap marktplaatsplatform met chat, kaart en accounts — ook als app. react express 5 prisma postgresql cloudinary capacitor">
-          <button type="button" class="kaart-knop" aria-haspopup="dialog">
-            <span class="duim"><img src="img/t-courtswap.webp" width="760" height="475" loading="lazy" alt="CourtSwap"></span>
+          <a class="kaart-knop" href="werk/courtswap/" aria-haspopup="dialog">
+            <span class="duim"><img src="img/t-courtswap.webp" width="760" height="475" loading="lazy" alt="Scherm van CourtSwap"></span>
             <span class="kaart-tekst">
               <span class="kaart-status"><span class="stip live" aria-hidden="true"></span>Live online</span>
               <span class="kaart-naam">CourtSwap</span>
               <span class="kaart-regel">Marktplaatsplatform met chat, kaart en accounts — ook als app.</span>
               <span class="kaart-chips"><span>React</span><span>Express 5</span><span>Prisma</span></span>
             </span>
-          </button>
+          </a>
         </li>
         <li class="kaart" data-id="glacio" data-tags="website" data-zoek="glacio klimaattechniek eigen concept: hoe een installatiebedrijf zijn site zou kunnen inrichten. node railway">
-          <button type="button" class="kaart-knop" aria-haspopup="dialog">
-            <span class="duim"><img src="img/t-glacio.webp" width="760" height="475" loading="lazy" alt="Glacio Klimaattechniek"></span>
+          <a class="kaart-knop" href="werk/glacio/" aria-haspopup="dialog">
+            <span class="duim"><img src="img/t-glacio.webp" width="760" height="475" loading="lazy" alt="Scherm van Glacio Klimaattechniek"></span>
             <span class="kaart-tekst">
               <span class="kaart-status"><span class="stip live" aria-hidden="true"></span>Live · eigen concept</span>
               <span class="kaart-naam">Glacio Klimaattechniek</span>
               <span class="kaart-regel">Eigen concept: hoe een installatiebedrijf zijn site zou kunnen inrichten.</span>
               <span class="kaart-chips"><span>Node</span><span>Railway</span></span>
             </span>
-          </button>
+          </a>
         </li>
         <li class="kaart" data-id="remh" data-tags="website 3d" data-zoek="remh bouw &amp; verbouw aannemerssite waar de klant zijn eigen dakkapel samenstelt. react 19 express mysql pdfkit three.js railway">
-          <button type="button" class="kaart-knop" aria-haspopup="dialog">
-            <span class="duim"><img src="img/t-remh.webp" width="760" height="475" loading="lazy" alt="REMH Bouw &amp; Verbouw"></span>
+          <a class="kaart-knop" href="werk/remh/" aria-haspopup="dialog">
+            <span class="duim"><img src="img/t-remh.webp" width="760" height="475" loading="lazy" alt="Scherm van REMH Bouw &amp; Verbouw"></span>
             <span class="kaart-tekst">
               <span class="kaart-status"><span class="stip live" aria-hidden="true"></span>Live online</span>
               <span class="kaart-naam">REMH Bouw &amp; Verbouw</span>
               <span class="kaart-regel">Aannemerssite waar de klant zijn eigen dakkapel samenstelt.</span>
               <span class="kaart-chips"><span>React 19</span><span>Express</span><span>MySQL</span></span>
             </span>
-          </button>
+          </a>
         </li></ul>
       </section>
       <section class="groep" data-groep="prototype">
@@ -846,26 +847,26 @@ h1 { font-size: clamp(1.9rem, 4.4vw, 2.9rem); max-width: 22ch; }
         </div>
         <ul class="raster">
         <li class="kaart" data-id="kijkvergunning" data-tags="software 3d ai" data-zoek="kijkvergunning adres invullen en zien of je uitbouw vergunningvrij mag — op kaart en in 3d. next.js 16 react 19 maplibre three.js supabase zustand">
-          <button type="button" class="kaart-knop" aria-haspopup="dialog">
-            <span class="duim"><img src="img/t-kijkvergunning.webp" width="760" height="475" loading="lazy" alt="KijkVergunning"></span>
+          <a class="kaart-knop" href="werk/kijkvergunning/" aria-haspopup="dialog">
+            <span class="duim"><img src="img/t-kijkvergunning.webp" width="760" height="475" loading="lazy" alt="Scherm van KijkVergunning"></span>
             <span class="kaart-tekst">
               <span class="kaart-status"><span class="stip prototype" aria-hidden="true"></span>Prototype</span>
               <span class="kaart-naam">KijkVergunning</span>
               <span class="kaart-regel">Adres invullen en zien of je uitbouw vergunningvrij mag — op kaart en in 3D.</span>
               <span class="kaart-chips"><span>Next.js 16</span><span>React 19</span><span>MapLibre</span></span>
             </span>
-          </button>
+          </a>
         </li>
         <li class="kaart" data-id="lumiere" data-tags="website 3d" data-zoek="lumière dakkapellen je dakkapel in 3d op je eigen dak, met pdf-offerte eruit. react 19 three.js react three fiber framer motion jspdf">
-          <button type="button" class="kaart-knop" aria-haspopup="dialog">
-            <span class="duim"><img src="img/t-lumiere.webp" width="760" height="475" loading="lazy" alt="Lumière Dakkapellen"></span>
+          <a class="kaart-knop" href="werk/lumiere/" aria-haspopup="dialog">
+            <span class="duim"><img src="img/t-lumiere.webp" width="760" height="475" loading="lazy" alt="Scherm van Lumière Dakkapellen"></span>
             <span class="kaart-tekst">
               <span class="kaart-status"><span class="stip prototype" aria-hidden="true"></span>Prototype</span>
               <span class="kaart-naam">Lumière Dakkapellen</span>
               <span class="kaart-regel">Je dakkapel in 3D op je eigen dak, met pdf-offerte eruit.</span>
               <span class="kaart-chips"><span>React 19</span><span>three.js</span><span>React Three Fiber</span></span>
             </span>
-          </button>
+          </a>
         </li></ul>
       </section>
       <section class="groep" data-groep="studie">
@@ -876,7 +877,7 @@ h1 { font-size: clamp(1.9rem, 4.4vw, 2.9rem); max-width: 22ch; }
         </div>
         <ul class="raster">
         <li class="kaart" data-id="kiesradar" data-tags="software mobiel" data-zoek="kiesradar fysieke opstelling met sensoren die met een webapp en database praten. python flask mysql docker esp32 gitlab ci">
-          <button type="button" class="kaart-knop" aria-haspopup="dialog">
+          <a class="kaart-knop" href="werk/kiesradar/" aria-haspopup="dialog">
             <span class="duim"><span class="geenbeeld">HARDWARE · GEEN WEBSITE<br>ESP32 → FLASK → MYSQL</span></span>
             <span class="kaart-tekst">
               <span class="kaart-status"><span class="stip studie" aria-hidden="true"></span>Studieproject</span>
@@ -884,7 +885,7 @@ h1 { font-size: clamp(1.9rem, 4.4vw, 2.9rem); max-width: 22ch; }
               <span class="kaart-regel">Fysieke opstelling met sensoren die met een webapp en database praten.</span>
               <span class="kaart-chips"><span>Python</span><span>Flask</span><span>MySQL</span></span>
             </span>
-          </button>
+          </a>
         </li></ul>
       </section>
       <section class="groep" data-groep="archief">
@@ -895,7 +896,7 @@ h1 { font-size: clamp(1.9rem, 4.4vw, 2.9rem); max-width: 22ch; }
         </div>
         <ul class="raster">
         <li class="kaart" data-id="eemlandwerkt" data-tags="software website" data-zoek="eemlandwerkt waar eemland boekt begon: bedrijfssite met klantportaal, op een python-backend. react vite typescript flask sqlalchemy postgresql railway">
-          <button type="button" class="kaart-knop" aria-haspopup="dialog">
+          <a class="kaart-knop" href="werk/eemlandwerkt/" aria-haspopup="dialog">
             <span class="duim"><span class="geenbeeld">EERSTE VERSIE · DEC 2025<br>FLASK + REACT</span></span>
             <span class="kaart-tekst">
               <span class="kaart-status"><span class="stip archief" aria-hidden="true"></span>Eerste versie</span>
@@ -903,7 +904,7 @@ h1 { font-size: clamp(1.9rem, 4.4vw, 2.9rem); max-width: 22ch; }
               <span class="kaart-regel">Waar Eemland Boekt begon: bedrijfssite met klantportaal, op een Python-backend.</span>
               <span class="kaart-chips"><span>React</span><span>Vite</span><span>TypeScript</span></span>
             </span>
-          </button>
+          </a>
         </li></ul>
       </section></div>
       <p class="niets" id="niets" hidden>Geen project gevonden. Probeer een andere zoekterm of zet het filter op Alles.</p>
@@ -1154,7 +1155,7 @@ h1 { font-size: clamp(1.9rem, 4.4vw, 2.9rem); max-width: 22ch; }
 <footer class="voet">
   <div class="binnen">
     <p>Alle schermen op deze pagina zijn echte screenshots van de draaiende projecten. Klantgegevens zijn onleesbaar gemaakt. Samih Tichtti · Eemland Digital · HBO-ICT, Hogeschool van Amsterdam.</p>
-    <p class="bijgewerkt">Bijgewerkt 29 september 2026 · 11 projecten</p>
+    <p class="bijgewerkt">Bijgewerkt 30 september 2026 · 11 projecten</p>
   </div>
 </footer>
 
@@ -1198,7 +1199,7 @@ h1 { font-size: clamp(1.9rem, 4.4vw, 2.9rem); max-width: 22ch; }
           </ol>
         </div>
         
-        <div class="galerij" data-galerij>
+        <div class="galerij" data-galerij data-basis="">
           <figure class="groot">
             <span class="balk"><i></i><i></i><i></i><b data-rol="titel">inlogportaal</b></span>
             <img data-rol="groot" src="img/eemland-1.webp" width="1400" height="875" loading="lazy" alt="Onscherp gemaakt inlogscherm van de besloten klantomgeving; alleen de indeling is te zien.">
@@ -1241,7 +1242,7 @@ h1 { font-size: clamp(1.9rem, 4.4vw, 2.9rem); max-width: 22ch; }
           </ol>
         </div>
         
-        <div class="galerij" data-galerij>
+        <div class="galerij" data-galerij data-basis="">
           <div class="duimen" role="tablist" aria-label="Schermen van RALOX Sports">
             <button type="button" class="duimknop" role="tab" aria-selected="true"
               data-bestand="ralox-1.webp" data-titel="homepage"
@@ -1301,7 +1302,7 @@ h1 { font-size: clamp(1.9rem, 4.4vw, 2.9rem); max-width: 22ch; }
           </ol>
         </div>
         
-        <div class="galerij" data-galerij>
+        <div class="galerij" data-galerij data-basis="">
           <div class="duimen" role="tablist" aria-label="Schermen van Fun Studios">
             <button type="button" class="duimknop" role="tab" aria-selected="true"
               data-bestand="funstudios-1.webp" data-titel="homepage"
@@ -1363,7 +1364,7 @@ h1 { font-size: clamp(1.9rem, 4.4vw, 2.9rem); max-width: 22ch; }
           </ol>
         </div>
         
-        <div class="galerij" data-galerij>
+        <div class="galerij" data-galerij data-basis="">
           <div class="duimen" role="tablist" aria-label="Schermen van Kozijnfabriek Direct">
             <button type="button" class="duimknop" role="tab" aria-selected="true"
               data-bestand="kozijnfabriek-1.webp" data-titel="homepage"
@@ -1422,7 +1423,7 @@ h1 { font-size: clamp(1.9rem, 4.4vw, 2.9rem); max-width: 22ch; }
           </ol>
         </div>
         
-        <div class="galerij" data-galerij>
+        <div class="galerij" data-galerij data-basis="">
           <figure class="groot">
             <span class="balk"><i></i><i></i><i></i><b data-rol="titel">zoeken en filteren</b></span>
             <img data-rol="groot" src="img/courtswap-1.webp" width="1400" height="875" loading="lazy" alt="Overzichtspagina met filters voor sport, merk, prijs en staat naast het advertentieraster.">
@@ -1464,7 +1465,7 @@ h1 { font-size: clamp(1.9rem, 4.4vw, 2.9rem); max-width: 22ch; }
           </ol>
         </div>
         
-        <div class="galerij" data-galerij>
+        <div class="galerij" data-galerij data-basis="">
           <div class="duimen" role="tablist" aria-label="Schermen van Glacio Klimaattechniek">
             <button type="button" class="duimknop" role="tab" aria-selected="true"
               data-bestand="glacio-1.webp" data-titel="homepage"
@@ -1524,7 +1525,7 @@ h1 { font-size: clamp(1.9rem, 4.4vw, 2.9rem); max-width: 22ch; }
           </ol>
         </div>
         
-        <div class="galerij" data-galerij>
+        <div class="galerij" data-galerij data-basis="">
           <div class="duimen" role="tablist" aria-label="Schermen van REMH Bouw &amp; Verbouw">
             <button type="button" class="duimknop" role="tab" aria-selected="true"
               data-bestand="remh-1.webp" data-titel="homepage"
@@ -1584,7 +1585,7 @@ h1 { font-size: clamp(1.9rem, 4.4vw, 2.9rem); max-width: 22ch; }
           </ol>
         </div>
         
-        <div class="galerij" data-galerij>
+        <div class="galerij" data-galerij data-basis="">
           <div class="duimen" role="tablist" aria-label="Schermen van KijkVergunning">
             <button type="button" class="duimknop" role="tab" aria-selected="true"
               data-bestand="kijkvergunning-2.webp" data-titel="de uitkomst"
@@ -1643,7 +1644,7 @@ h1 { font-size: clamp(1.9rem, 4.4vw, 2.9rem); max-width: 22ch; }
           </ol>
         </div>
         
-        <div class="galerij" data-galerij>
+        <div class="galerij" data-galerij data-basis="">
           <figure class="groot">
             <span class="balk"><i></i><i></i><i></i><b data-rol="titel">de configurator</b></span>
             <img data-rol="groot" src="img/lumiere-1.webp" width="1400" height="875" loading="lazy" alt="3D-weergave van een dak met dakkapel en schoorsteen, met een paneel Waar gaan we bouwen met velden voor postcode en breedte.">
@@ -1815,7 +1816,15 @@ h1 { font-size: clamp(1.9rem, 4.4vw, 2.9rem); max-width: 22ch; }
   kaarten.forEach(function (k) {
     var knop = k.querySelector('.kaart-knop');
     if (!knop) return;
-    knop.addEventListener('click', function () { open(k.getAttribute('data-id'), knop); });
+    // De tegel is een echte link naar de eigen pagina van het project, zodat
+    // een zoekmachine er komt en de link te delen valt. Met javascript aan
+    // openen we liever het venster — behalve bij ctrl/cmd/middelste klik,
+    // want dan wil iemand hem juist in een nieuw tabblad.
+    knop.addEventListener('click', function (e) {
+      if (e.metaKey || e.ctrlKey || e.shiftKey || e.altKey || e.button !== 0) return;
+      e.preventDefault();
+      open(k.getAttribute('data-id'), knop);
+    });
   });
 
   var sluitknop = document.getElementById('sluit');
@@ -1842,7 +1851,11 @@ h1 { font-size: clamp(1.9rem, 4.4vw, 2.9rem); max-width: 22ch; }
   /* ---------- link naar één project kopieren ---------- */
   [].forEach.call(document.querySelectorAll('[data-deel]'), function (knop) {
     knop.addEventListener('click', function () {
-      var adres = location.origin + location.pathname + '#' + knop.getAttribute('data-deel');
+      // liever het echte adres van de projectpagina dan een #-link: die
+      // laat wel een voorbeeld zien in WhatsApp en LinkedIn
+      var id = knop.getAttribute('data-deel');
+      var tegel = document.querySelector('.kaart[data-id="' + id + '"] .kaart-knop');
+      var adres = tegel && tegel.href ? tegel.href : location.origin + location.pathname + '#' + id;
       var klaar = function (tekst) {
         knop.textContent = tekst;
         setTimeout(function () { knop.textContent = 'Kopieer link naar dit project'; }, 2200);

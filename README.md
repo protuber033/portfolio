@@ -1,7 +1,7 @@
 # Portfolio van Samih Tichtti
 
-De site draait op https://site-production-a63e.up.railway.app en wordt gebouwd uit
-twee databestanden. Je past nooit HTML aan — alleen de data.
+De site draait op **https://eemland-digital.nl** en wordt gebouwd uit twee
+databestanden. Je past nooit HTML aan — alleen de data.
 
 ## Een nieuw project toevoegen
 
@@ -145,3 +145,35 @@ Unregister-ScheduledTask -TaskName 'Portfolio bijwerken'   # helemaal weg
 
 Een ander tijdstip? Pas het aan in de Taakplanner (Windows-toets, "Taakplanner"),
 of maak de taak opnieuw aan met een andere `-At`.
+
+## Vindbaar zijn op Google
+
+De bouw regelt dit zelf, je hoeft er niets met de hand voor te doen:
+
+- **Elk project krijgt een eigen adres**, `werk/<id>/`. Een zoekmachine rangschikt
+  per adres, dus elf projecten in één venster zijn één resultaat en elf pagina's
+  zijn elf kansen. De tegel op de homepage is een echte link daarnaartoe; met
+  javascript aan opent hij nog steeds het venster.
+- **`sitemap.xml` en `robots.txt`** worden meegeschreven. De sitemap noemt precies
+  de pagina's die er zijn — een verwijderd project verdwijnt er automatisch uit, en
+  zijn map onder `werk/` wordt opgeruimd.
+- **Per pagina**: eigen titel, eigen omschrijving, canonical, absolute `og:image`
+  (anders toont WhatsApp geen voorbeeld) en JSON-LD met wie je bent, wat je bedrijf
+  is en welk project het betreft.
+- **`www` wordt doorgestuurd** naar het adres zonder www, zodat er één versie meetelt.
+
+`npm run check` weigert een push als een van die dingen niet klopt.
+
+### Eenmalig: Google Search Console
+
+Google vindt een nieuw domein niet uit zichzelf — er linkt nog niets naar. Meld het
+daarom zelf aan op https://search.google.com/search-console:
+
+1. Kies **Domein** en vul `eemland-digital.nl` in.
+2. Google geeft een TXT-record. Zet dat bij TransIP op `@`, zonder aanhalingstekens.
+3. Controleer of het publiek zichtbaar is voordat je op verifiëren klikt.
+4. Dien daarna onder **Sitemaps** het adres `sitemap.xml` in.
+
+Wil je liever niet via DNS: zet de code uit de meta-tag-methode in
+`data/site.json` bij `googleVerificatie` en bouw opnieuw. De tag komt dan in de
+kop van elke pagina.
