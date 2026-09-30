@@ -177,3 +177,34 @@ daarom zelf aan op https://search.google.com/search-console:
 Wil je liever niet via DNS: zet de code uit de meta-tag-methode in
 `data/site.json` bij `googleVerificatie` en bouw opnieuw. De tag komt dan in de
 kop van elke pagina.
+
+## De contactpagina met sitescan
+
+`/contact/` is geen formulier maar een gereedschap: een bezoeker plakt het adres
+van zijn eigen website en krijgt hem doorgemeten. Pas daarna komt de vraag om
+contact, en dan is het een logische volgende stap in plaats van een drempel.
+De mailknop onderaan vult de gevonden punten alvast in.
+
+| Bestand | Rol |
+| --- | --- |
+| `tools/sitescan.mjs` | de meting zelf, plus de bewaking op adressen |
+| `tools/contactpagina.mjs` | de pagina |
+| `tools/contact.css` / `tools/contact.js` | opmaak en gedrag |
+| `server.js` | het adres `/api/scan` |
+
+De server stuurt de uitkomsten **één voor één** terug (ndjson), zodat elke
+controle op het scherm verschijnt op het moment dat hij echt klaar is. Er wordt
+niets nagespeeld.
+
+### Waar dit soort scanners fout gaat
+
+Een server die op verzoek van een vreemde een adres ophaalt, kan misbruikt
+worden om binnen het eigen netwerk rond te kijken — vul `169.254.169.254` in en
+een slecht beveiligde server geeft vrolijk de sleutels van de hostingpartij
+terug. Daarom wordt elke naam eerst omgezet naar een ip, wordt dat ip getoetst
+op privébereiken, en gebeurt dat **opnieuw na elke doorverwijzing**. Verder:
+alleen http en https, hoogstens drie doorverwijzingen, maximaal 3 MB lezen, en
+twaalf scans per bezoeker per tien minuten.
+
+`npm run check` toetst die weigeringen elke keer opnieuw — dat is het soort
+ding dat je per ongeluk sloopt bij een refactor en pas maanden later merkt.

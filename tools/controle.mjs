@@ -84,7 +84,8 @@ if (!mis) ok(`${aanwezig.size} bestanden in img/, alles waarnaar verwezen wordt 
    Waarom: een kapotte regex in server.js liet Railway crashen.
 ---------------------------------------------------------------- */
 kop('Syntax');
-const teControleren = ['server.js', 'tools/build.mjs', 'tools/scan.mjs', 'tools/shots.mjs', 'tools/controle.mjs', 'tools/gedrag.js', 'tools/werkpagina.js'];
+const teControleren = ['server.js', 'tools/build.mjs', 'tools/scan.mjs', 'tools/shots.mjs', 'tools/controle.mjs', 'tools/gedrag.js', 'tools/werkpagina.js',
+  'tools/sitescan.mjs', 'tools/contactpagina.mjs', 'tools/contact.js'];
 for (const bestand of teControleren) {
   const pad = join(WORTEL, bestand);
   if (!existsSync(pad)) { let_op(`${bestand} bestaat niet`); continue; }
@@ -162,6 +163,38 @@ await new Promise((klaar) => {
         fout(`${wat}: geen antwoord (${e.message})`);
       }
     }
+
+    // De sitescan haalt op verzoek een vreemd adres op. Zonder bewaking is dat
+    // een manier om de server binnen zijn eigen netwerk te laten rondkijken,
+    // dus dat wordt hier elke keer opnieuw getoetst.
+    const weigeringen = [
+      ['scan vraagt om een adres', '', 'Vul een webadres in'],
+      ['scan weigert een adres in het netwerk', '192.168.1.1', 'netwerk'],
+      ['scan weigert localhost', 'localhost', 'netwerk'],
+      ['scan weigert het metadata-adres van de host', '169.254.169.254', 'netwerk'],
+      ['scan weigert een ander soort adres', 'file:///etc/passwd', 'http of https']
+    ];
+    for (const [wat, adres, moet] of weigeringen) {
+      try {
+        const a = await fetch(`${basis}/api/scan?url=${encodeURIComponent(adres)}`, { signal: AbortSignal.timeout(10000) });
+        const tekst = await a.text();
+        if (tekst.includes(moet)) ok(wat);
+        else fout(`${wat}: kreeg "${tekst.slice(0, 100).replace(/\n/g, ' ')}"`);
+      } catch (e) {
+        fout(`${wat}: geen antwoord (${e.message})`);
+      }
+    }
+
+    // tekst hoort ingepakt over de lijn te gaan
+    try {
+      const a = await fetch(basis + '/', { headers: { 'accept-encoding': 'gzip' }, signal: AbortSignal.timeout(8000) });
+      const vorm = a.headers.get('content-encoding');
+      if (vorm) ok(`pagina wordt ingepakt verstuurd (${vorm})`);
+      else fout('pagina gaat onverpakt over de lijn, dat is zonde van de bandbreedte');
+    } catch (e) {
+      fout(`inpakken: geen antwoord (${e.message})`);
+    }
+
     stoppen();
   }, 1800);
 });
@@ -180,6 +213,7 @@ if (!domein) {
 } else {
   const paginas = [
     ['index.html', `${domein}/`],
+    [join('contact', 'index.html'), `${domein}/contact/`],
     ...projecten.map((p) => [join('werk', p.id, 'index.html'), `${domein}/werk/${p.id}/`])
   ];
   let seoMis = 0;

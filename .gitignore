@@ -2,3 +2,17 @@ node_modules/
 .ruw/
 .DS_Store
 update-log.txt
+
+# losse bestanden uit oude werksessies die bij een verhuizing zijn meegekomen;
+# ze horen niet in de repo, verwijderen mag maar hoeft niet
+/raw/
+/check/
+/review/
+/shots/
+/assets/
+/site/
+shots*.json
+files.json
+page.html
+portfolio.html
+assets$1.png

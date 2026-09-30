@@ -1,6 +1,7 @@
 // Bouwt site/index.html uit data/site.json en data/projects.json.
 // Een nieuw project toevoegen = een blok in projects.json erbij; hier hoeft niets te wijzigen.
 import { readFileSync, writeFileSync, existsSync, mkdirSync, readdirSync, rmSync } from 'node:fs';
+import { contactPagina } from './contactpagina.mjs';
 import { join, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
@@ -230,6 +231,8 @@ const css = [
 const js = readFileSync(join(WORTEL, 'tools/gedrag.js'), 'utf8');
 const werkCss = readFileSync(join(WORTEL, 'tools/werkpagina.css'), 'utf8');
 const werkJs = readFileSync(join(WORTEL, 'tools/werkpagina.js'), 'utf8');
+const contactCss = readFileSync(join(WORTEL, 'tools/contact.css'), 'utf8');
+const contactJs = readFileSync(join(WORTEL, 'tools/contact.js'), 'utf8');
 
 /* ---------- vindbaar worden ----------
    Een zoekmachine ziet alleen wat er letterlijk in de HTML staat, en hij
@@ -366,9 +369,9 @@ const binnenkant = `<a class="overslaan" href="#werk">Direct naar het werk</a>
       <a href="#werk">Werk</a>
       <a href="#lagen">Aanpak</a>
       <a href="#traject">Samenwerken</a>
-      <a href="#contact">Contact</a>
+      <a href="${abs('contact/')}">Contact</a>
     </nav>
-    <a class="knop knop-klein" href="#contact">Neem contact op</a>
+    <a class="knop knop-klein" href="${abs('contact/')}">Neem contact op</a>
   </div>
 </header>
 
@@ -497,7 +500,8 @@ ${site.traject.stappen.map((st, i) => `          <li><span class="nr">${i + 1}</
       <div class="contact">
         <div>
           <h2>Zullen we kijken wat er mogelijk is?</h2>
-          <p>Vertel me wat er nu handmatig gaat of blijft liggen. Ik kijk mee, denk mee en zeg eerlijk wat het wordt — ook als dat &ldquo;dit heb je niet nodig&rdquo; is.</p>
+          <p>Heb je al een website? Plak hem in de scan, dan meet ik hem nu voor je door — snelheid, gewicht, mobiel en wat Google ervan ziet. Je weet binnen een paar seconden of het zin heeft om verder te praten.</p>
+          <p><a class="knop knop-vol" href="${abs('contact/')}">Meet mijn site door</a></p>
         </div>
         <div class="contact-doos">
           <span class="adres" id="adres">${esc(site.email)}</span>
@@ -627,9 +631,9 @@ ${ldJson(ld)}
       <a href="/#werk">Werk</a>
       <a href="/#lagen">Aanpak</a>
       <a href="/#traject">Samenwerken</a>
-      <a href="/#contact">Contact</a>
+      <a href="/contact/">Contact</a>
     </nav>
-    <a class="knop knop-klein" href="/#contact">Neem contact op</a>
+    <a class="knop knop-klein" href="/contact/">Neem contact op</a>
   </div>
 </header>
 
@@ -675,6 +679,12 @@ const sitemap = `<?xml version="1.0" encoding="UTF-8"?>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
   </url>
+  <url>
+    <loc>${abs('contact/')}</loc>
+    <lastmod>${vandaag}</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
 ${projecten.map((p) => `  <url>
     <loc>${abs(`werk/${p.id}/`)}</loc>
     <lastmod>${p.laatsteDag || vandaag}</lastmod>
@@ -694,6 +704,12 @@ writeFileSync(join(WORTEL, 'index.html'), pagina);
 writeFileSync(join(WORTEL, 'artifact.html'), artifact);
 writeFileSync(join(WORTEL, 'sitemap.xml'), sitemap);
 writeFileSync(join(WORTEL, 'robots.txt'), robots);
+const contactMap = join(WORTEL, 'contact');
+mkdirSync(contactMap, { recursive: true });
+writeFileSync(join(contactMap, 'index.html'), contactPagina({
+  site, esc, vet, hoofd, middelen, ldJson, abs, persoon, bedrijf, contactCss, contactJs, aantal
+}));
+
 const werkMap = join(WORTEL, 'werk');
 mkdirSync(werkMap, { recursive: true });
 for (const p of projecten) {

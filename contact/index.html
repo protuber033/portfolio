@@ -3,9 +3,9 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>EemlandWerkt — project van Samih Tichtti</title>
-<meta name="description" content="Waar Eemland Boekt begon: bedrijfssite met klantportaal, op een Python-backend. De eerste versie voor hetzelfde bouwbedrijf: een bedrijfssite met…">
-<link rel="canonical" href="https://eemland-digital.nl/werk/eemlandwerkt/">
+<title>Contact — Samih Tichtti, Eemland Digital</title>
+<meta name="description" content="Plak je website en ik meet hem live door: snelheid, gewicht, mobiel en wat Google ervan ziet. Daarna weet je meteen of het zin heeft om te bellen.">
+<link rel="canonical" href="https://eemland-digital.nl/contact/">
 <meta name="robots" content="index, follow, max-image-preview:large">
 <meta name="author" content="Samih Tichtti">
 <meta name="theme-color" content="#0A0D16">
@@ -13,9 +13,9 @@
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Eemland Digital">
 <meta property="og:locale" content="nl_NL">
-<meta property="og:url" content="https://eemland-digital.nl/werk/eemlandwerkt/">
-<meta property="og:title" content="EemlandWerkt — project van Samih Tichtti">
-<meta property="og:description" content="Waar Eemland Boekt begon: bedrijfssite met klantportaal, op een Python-backend. De eerste versie voor hetzelfde bouwbedrijf: een bedrijfssite met…">
+<meta property="og:url" content="https://eemland-digital.nl/contact/">
+<meta property="og:title" content="Contact — Samih Tichtti, Eemland Digital">
+<meta property="og:description" content="Plak je website en ik meet hem live door: snelheid, gewicht, mobiel en wat Google ervan ziet. Daarna weet je meteen of het zin heeft om te bellen.">
 <meta property="og:image" content="https://eemland-digital.nl/img/kozijnfabriek-1.webp">
 <meta property="og:image:alt" content="Scherm uit een van de projecten van Samih Tichtti">
 <meta name="twitter:card" content="summary_large_image">
@@ -675,48 +675,227 @@ h1 { font-size: clamp(1.9rem, 4.4vw, 2.9rem); max-width: 22ch; }
   .blokken { grid-template-columns: minmax(0, 1fr); }
 }
 </style>
-<style>/* ============ losse projectpagina ============
-   Elk project heeft ook een eigen adres, zodat Google er een echte pagina
-   van kan maken in plaats van één pagina met elf verstopte vensters.
-   De inhoud is hetzelfde paneel als in het venster, dus de opmaak hier
-   hoeft alleen te doen wat .venster daar deed: een doos eromheen. */
-.los-wikkel { padding-block: clamp(24px, 4vw, 48px) clamp(40px, 6vw, 80px); }
-.los-doos {
-  width: min(1080px, 100%); margin: 0 auto;
-  background: var(--vlak); border: 1px solid var(--rand-op); border-radius: 18px;
-  padding: clamp(22px, 3.4vw, 40px);
-}
-.los-doos .paneel-kop { padding-right: 0; }
-.los-doos .paneel { display: block; }
+<style>/* ============ contactpagina met sitescan ============
+   De pagina is zelf het verkooppraatje: iemand plakt zijn adres, ziet zijn
+   eigen site doorgemeten worden, en heeft dan pas een reden om te mailen.
+   Status draagt nooit alleen kleur — er staat altijd een teken en een woord
+   naast, anders is het onleesbaar voor wie kleur niet goed ziet. */
 
-.kruimels {
-  display: flex; flex-wrap: wrap; align-items: center; gap: 8px;
-  margin: 0 0 18px; font-family: var(--mono); font-size: .72rem;
-  letter-spacing: .1em; text-transform: uppercase; color: var(--tekst-3);
+.scan-kop { padding-block: clamp(30px, 5vw, 64px) clamp(18px, 2.5vw, 30px); }
+.scan-kop .binnen { max-width: 860px; }
+.scan-kop h1 {
+  font-family: var(--display); font-weight: 700;
+  font-size: clamp(1.9rem, 5vw, 3.2rem); line-height: 1.06; letter-spacing: -.035em;
+  margin: 0; text-wrap: balance;
 }
-.kruimels a { color: var(--tekst-2); text-decoration: none; }
-.kruimels a:hover { color: var(--accent); }
-.kruimels span[aria-current] { color: var(--tekst); }
+.scan-lead { margin: 16px 0 0; font-size: clamp(1rem, 1.6vw, 1.14rem); color: var(--tekst-2); max-width: 60ch; }
 
-/* verder en terug, onderaan de pagina — ook voor de zoekmachine een
-   manier om van project naar project te lopen zonder de homepage */
-.verder { margin-top: 26px; }
-.verder h2 {
-  font-family: var(--display); font-weight: 700; font-size: 1.1rem;
-  letter-spacing: -.02em; margin: 0 0 12px;
+/* ---- het veld ---- */
+.scan-doos {
+  margin-top: clamp(22px, 3vw, 34px);
+  border: 1px solid var(--rand-op); border-radius: 18px;
+  background: var(--vlak); padding: clamp(16px, 2.4vw, 24px);
+  position: relative; overflow: hidden;
 }
-.verder ul { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 8px; }
-.verder a {
-  display: inline-block; padding: 8px 14px; border-radius: 999px;
-  border: 1px solid var(--rand); background: var(--vlak);
-  color: var(--tekst-2); text-decoration: none; font-size: .9rem;
+.scan-doos::before {
+  content: ""; position: absolute; inset: 0 0 auto 0; height: 2px;
+  background: linear-gradient(90deg, transparent, var(--accent), transparent);
+  opacity: .7;
 }
-.verder a:hover { border-color: var(--rand-op); color: var(--tekst); }
+.scan-balk {
+  display: flex; align-items: center; gap: 8px; margin-bottom: 14px;
+  font-family: var(--mono); font-size: .7rem; letter-spacing: .12em;
+  text-transform: uppercase; color: var(--tekst-3);
+}
+.scan-balk i {
+  width: 9px; height: 9px; border-radius: 50%; background: var(--rand-op);
+  display: block; flex: none;
+}
+.scan-balk i:nth-child(2) { background: #2A3450; }
+.scan-balk i:nth-child(3) { background: #384463; }
+.scan-balk span { margin-left: 6px; }
+
+.scan-veld { display: flex; gap: 10px; flex-wrap: wrap; }
+.scan-veld label { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
+.scan-invoer {
+  flex: 1 1 260px; min-width: 0;
+  background: var(--grond); border: 1px solid var(--rand); border-radius: 12px;
+  padding: 16px 18px; color: var(--tekst);
+  font-family: var(--mono); font-size: clamp(.95rem, 2.2vw, 1.1rem);
+  transition: border-color .15s ease, box-shadow .15s ease;
+}
+.scan-invoer::placeholder { color: var(--tekst-3); }
+.scan-invoer:focus {
+  outline: none; border-color: var(--accent);
+  box-shadow: 0 0 0 3px var(--accent-zacht);
+}
+.scan-knop {
+  flex: 0 0 auto; border: 0; border-radius: 12px; cursor: pointer;
+  background: var(--accent); color: #07101F;
+  font-family: var(--body); font-weight: 700; font-size: 1rem;
+  padding: 16px 26px;
+  transition: filter .15s ease, transform .15s ease;
+}
+.scan-knop:hover:not(:disabled) { filter: brightness(1.1); transform: translateY(-1px); }
+.scan-knop:disabled { opacity: .55; cursor: progress; }
+.scan-onder { margin: 12px 0 0; font-size: .84rem; color: var(--tekst-3); }
+.scan-onder b { color: var(--tekst-2); font-weight: 600; }
+
+/* ---- de scanlijn tijdens het meten ---- */
+.scan-doos.bezig::after {
+  content: ""; position: absolute; left: 0; right: 0; height: 120px; top: -120px;
+  background: linear-gradient(180deg, transparent, rgba(91, 140, 255, .1), transparent);
+  animation: scanlijn 1.5s linear infinite; pointer-events: none;
+}
+@keyframes scanlijn { to { top: 100%; } }
+@media (prefers-reduced-motion: reduce) { .scan-doos.bezig::after { animation: none; display: none; } }
+
+/* ---- uitkomst ---- */
+.scan-uit { padding-block: 0 clamp(30px, 5vw, 60px); }
+.scan-uit .binnen { max-width: 860px; }
+
+.scan-fout {
+  margin-top: 18px; padding: 16px 18px; border-radius: 14px;
+  border: 1px solid rgba(255, 107, 107, .35); background: rgba(255, 107, 107, .08);
+  color: var(--tekst); font-size: .96rem;
+}
+
+/* hoofdgetal: gewone letter, geen displayletter — een cijfer in een sierletter
+   leest als versiering in plaats van als meting */
+.scan-hoofd {
+  display: flex; align-items: center; gap: clamp(16px, 3vw, 28px);
+  margin-top: clamp(20px, 3vw, 30px); padding: clamp(18px, 2.6vw, 26px);
+  border: 1px solid var(--rand); border-radius: 18px; background: var(--vlak);
+  flex-wrap: wrap;
+}
+.ring { position: relative; flex: none; width: 124px; height: 124px; }
+.ring svg { width: 100%; height: 100%; transform: rotate(-90deg); }
+.ring .spoor { fill: none; stroke: var(--rand); stroke-width: 9; }
+.ring .vul {
+  fill: none; stroke-width: 9; stroke-linecap: round;
+  stroke-dasharray: 326.7; stroke-dashoffset: 326.7;
+  transition: stroke-dashoffset 1s cubic-bezier(.2, .7, .3, 1);
+}
+.ring b {
+  position: absolute; inset: 0; display: flex; align-items: center; justify-content: center;
+  font-family: var(--body); font-weight: 700; font-size: 2.6rem; letter-spacing: -.04em;
+  color: var(--tekst);
+}
+.scan-samen { flex: 1 1 260px; min-width: 0; }
+.scan-samen h2 {
+  font-family: var(--display); font-weight: 700; font-size: clamp(1.2rem, 2.6vw, 1.6rem);
+  letter-spacing: -.025em; margin: 0; text-wrap: balance;
+}
+.scan-samen p { margin: 8px 0 0; color: var(--tekst-2); font-size: .97rem; }
+.scan-samen .adres {
+  display: inline-block; margin-top: 10px; font-family: var(--mono); font-size: .8rem;
+  color: var(--tekst-3); word-break: break-all;
+}
+
+/* ---- de rijen ---- */
+.scan-rijen { list-style: none; margin: 18px 0 0; padding: 0; display: grid; gap: 10px; }
+.scan-rij {
+  border: 1px solid var(--rand); border-radius: 14px; background: var(--vlak);
+  padding: 16px 18px;
+  display: grid; grid-template-columns: 26px 1fr auto; gap: 4px 14px;
+  align-items: start;
+}
+@media (prefers-reduced-motion: no-preference) {
+  .scan-rij { animation: rijop .38s cubic-bezier(.2, .7, .3, 1) both; }
+}
+@keyframes rijop { from { opacity: 0; transform: translateY(10px); } }
+
+.scan-teken {
+  grid-row: 1 / span 3; width: 26px; height: 26px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center; flex: none;
+  background: var(--vlak-2);
+}
+.scan-teken svg { width: 14px; height: 14px; }
+.scan-rij h3 {
+  grid-column: 2; margin: 0; font-family: var(--body); font-weight: 600;
+  font-size: 1.02rem; color: var(--tekst); align-self: center;
+}
+.scan-waarde {
+  grid-column: 3; grid-row: 1; justify-self: end; align-self: center;
+  display: flex; align-items: center; gap: 8px;
+  font-family: var(--mono); font-size: .84rem; color: var(--tekst-2); text-align: right;
+}
+.scan-woord {
+  font-family: var(--body); font-weight: 600; font-size: .74rem;
+  letter-spacing: .04em; padding: 3px 9px; border-radius: 999px;
+  border: 1px solid currentColor; white-space: nowrap;
+}
+.scan-uitleg { grid-column: 2 / -1; margin: 6px 0 0; color: var(--tekst-2); font-size: .92rem; }
+.scan-advies {
+  grid-column: 2 / -1; margin: 10px 0 0; padding: 10px 12px;
+  border-left: 2px solid var(--accent); border-radius: 0 8px 8px 0;
+  background: var(--accent-zacht); color: var(--tekst); font-size: .92rem;
+}
+
+/* meter: de vulling draagt de ernst, het spoor is een lichtere stap van
+   hetzelfde — zo lees je de stand over de hele balk */
+.meter { grid-column: 2 / -1; margin-top: 10px; height: 7px; border-radius: 999px; background: var(--rand); overflow: hidden; }
+.meter i { display: block; height: 100%; border-radius: 999px; width: 0; transition: width .8s cubic-bezier(.2, .7, .3, 1); }
+
+.goed  { color: var(--live); }
+.beter { color: var(--prototype); }
+.probleem { color: var(--slecht); }
+.scan-teken.goed { background: rgba(47, 232, 176, .12); }
+.scan-teken.beter { background: rgba(255, 179, 92, .12); }
+.scan-teken.probleem { background: rgba(255, 107, 107, .12); }
+.meter i.goed { background: var(--live); }
+.meter i.beter { background: var(--prototype); }
+.meter i.probleem { background: var(--slecht); }
+.ring .vul.goed { stroke: var(--live); }
+.ring .vul.beter { stroke: var(--prototype); }
+.ring .vul.probleem { stroke: var(--slecht); }
+
+/* ---- wat daarna ---- */
+.scan-vervolg { padding-block: 0 clamp(40px, 6vw, 80px); }
+.scan-vervolg .binnen { max-width: 860px; }
+.vervolg-doos {
+  border: 1px solid var(--accent); border-radius: 18px;
+  background: linear-gradient(160deg, var(--accent-zacht), transparent 60%), var(--vlak);
+  padding: clamp(20px, 3vw, 32px);
+}
+.vervolg-doos h2 {
+  font-family: var(--display); font-weight: 700; font-size: clamp(1.3rem, 2.8vw, 1.8rem);
+  letter-spacing: -.025em; margin: 0; text-wrap: balance;
+}
+.vervolg-doos p { color: var(--tekst-2); margin: 10px 0 0; max-width: 58ch; }
+.vervolg-knoppen { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 20px; }
+
+/* ---- gewoon contact, ook zonder scan ---- */
+.contact-altijd { padding-block: 0 clamp(50px, 7vw, 90px); }
+.contact-altijd .binnen { max-width: 860px; }
+.altijd-doos {
+  border: 1px solid var(--rand); border-radius: 18px; background: var(--vlak);
+  padding: clamp(20px, 3vw, 30px);
+  display: flex; gap: 20px; align-items: center; justify-content: space-between; flex-wrap: wrap;
+}
+.altijd-doos h2 {
+  font-family: var(--display); font-weight: 700; font-size: 1.3rem;
+  letter-spacing: -.02em; margin: 0 0 6px;
+}
+.altijd-doos p { margin: 0; color: var(--tekst-2); font-size: .96rem; max-width: 46ch; }
+.altijd-adres { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+.altijd-adres .adres {
+  font-family: var(--mono); font-size: 1rem; color: var(--tekst);
+  background: var(--grond); border: 1px solid var(--rand);
+  padding: 12px 16px; border-radius: 12px;
+}
+
+@media (max-width: 620px) {
+  .scan-rij { grid-template-columns: 26px 1fr; }
+  .scan-waarde { grid-column: 2; grid-row: auto; justify-self: start; margin-top: 6px; }
+  .ring { width: 96px; height: 96px; }
+  .ring b { font-size: 2rem; }
+}
 </style>
-<script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"CreativeWork","@id":"https://eemland-digital.nl/werk/eemlandwerkt/#project","name":"EemlandWerkt","headline":"EemlandWerkt","description":"De eerste versie voor hetzelfde bouwbedrijf: een bedrijfssite met diensten, vacatures en een klantportaal, met Flask en PostgreSQL erachter. Een jaar later opnieuw opgebouwd in Node — dat werd Eemland Boekt.","abstract":"Waar Eemland Boekt begon: bedrijfssite met klantportaal, op een Python-backend.","url":"https://eemland-digital.nl/werk/eemlandwerkt/","inLanguage":"nl-NL","author":{"@id":"https://eemland-digital.nl/#samih"},"creator":{"@id":"https://eemland-digital.nl/#samih"},"dateCreated":"2025-12-17","dateModified":"2026-01-25","keywords":"software, website, React, Vite, TypeScript, Flask, SQLAlchemy, PostgreSQL, Railway","genre":"Eerste versie"},{"@type":"Person","@id":"https://eemland-digital.nl/#samih","name":"Samih Tichtti","givenName":"Samih","familyName":"Tichtti","jobTitle":"Webdeveloper — front-end en back-end","description":"Websites en bedrijfssoftware voor Nederlandse bedrijven. Geen mooie plaatjes die niets doen — dingen die elke dag gebruikt worden.","url":"https://eemland-digital.nl/","email":"mailto:info@eemland-digital.nl","sameAs":["https://github.com/protuber033"],"knowsLanguage":["nl","en"],"knowsAbout":["Anthropic SDK","Capacitor","Cloudinary","Docker","ESP32","Express","Flask","Framer Motion","GitLab CI","Google Gemini","Google Maps","MapLibre","Motion","MySQL","Next.js","Node","PDFKit","PostgreSQL","Prisma","Python","Railway","React","React Three Fiber","SQLAlchemy","Supabase","Supabase Storage","Tailwind","TypeScript","Vite","jsPDF","pdf-lib","sharp","three.js","zustand"],"alumniOf":{"@type":"CollegeOrUniversity","name":"Hogeschool van Amsterdam"},"worksFor":{"@id":"https://eemland-digital.nl/#bedrijf"},"address":{"@type":"PostalAddress","addressLocality":"Amersfoort","addressCountry":"NL"}},{"@type":"ProfessionalService","@id":"https://eemland-digital.nl/#bedrijf","name":"Eemland Digital","alternateName":"Samih Tichtti","description":"Websites en bedrijfssoftware voor Nederlandse bedrijven. Geen mooie plaatjes die niets doen — dingen die elke dag gebruikt worden.","url":"https://eemland-digital.nl/","email":"mailto:info@eemland-digital.nl","image":"https://eemland-digital.nl/img/kozijnfabriek-1.webp","founder":{"@id":"https://eemland-digital.nl/#samih"},"employee":{"@id":"https://eemland-digital.nl/#samih"},"priceRange":"Op aanvraag","address":{"@type":"PostalAddress","addressLocality":"Amersfoort","addressCountry":"NL"},"areaServed":[{"@type":"Place","name":"Amersfoort"},{"@type":"Place","name":"Utrecht"},{"@type":"Place","name":"Amsterdam"},{"@type":"Place","name":"Nederland"}],"knowsAbout":["Anthropic SDK","Capacitor","Cloudinary","Docker","ESP32","Express","Flask","Framer Motion","GitLab CI","Google Gemini","Google Maps","MapLibre","Motion","MySQL","Next.js","Node","PDFKit","PostgreSQL","Prisma","Python","Railway","React","React Three Fiber","SQLAlchemy","Supabase","Supabase Storage","Tailwind","TypeScript","Vite","jsPDF","pdf-lib","sharp","three.js","zustand"],"hasOfferCatalog":{"@type":"OfferCatalog","name":"Waar ik je mee kan helpen","itemListElement":[{"@type":"Offer","itemOffered":{"@type":"Service","name":"Beeldherkenning","alternateName":"Een foto erin, gegevens eruit","description":"Een gevelfoto waar de kozijnen uit herkend worden. Een papieren urenbriefje dat gescand én nagerekend wordt. Werk dat anders met de hand overgetypt moet worden."}},{"@type":"Offer","itemOffered":{"@type":"Service","name":"Administratie","alternateName":"De hele papierwinkel in één systeem","description":"Aanvraag, offerte, order, factuur, btw en jaarcijfers achter elkaar, zonder dat iemand hetzelfde nummer drie keer overtypt. Pdf's automatisch opgemaakt."}},{"@type":"Offer","itemOffered":{"@type":"Service","name":"3D in de browser","alternateName":"Producten die de klant zelf kan draaien","description":"Een dakkapel die echt in het dakvlak staat. Een perceel in 3D met de bouwzone eroverheen. Alles in de browser, zonder plug-in."}},{"@type":"Offer","itemOffered":{"@type":"Service","name":"Kaart en adresdata","alternateName":"Nederlandse adres- en perceeldata","description":"Adres opzoeken via PDOK, perceelgrenzen en bouwjaren erbij, Street View voor de gevel, zoeken op afstand. Met een gratis alternatief als een betaalde kaartdienst uitvalt."}},{"@type":"Offer","itemOffered":{"@type":"Service","name":"Beheer en rollen","alternateName":"Dashboards waar personeel mee werkt","description":"Inloggen, rechten per rol, de zakelijke mailbox erin, planning en leveranciersorders. Met gehashte wachtwoorden en een database die standaard niets vrijgeeft."}},{"@type":"Offer","itemOffered":{"@type":"Service","name":"Live zetten","alternateName":"Van laptop naar eigen domein","description":"Hosting, domein, ssl, database met back-ups en zakelijke mail. En waar het nodig is verder dan de browser: dezelfde code als app voor iOS en Android, of sensoren die hun metingen naar een webserver sturen."}}]}},{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Het werk","item":"https://eemland-digital.nl/"},{"@type":"ListItem","position":2,"name":"EemlandWerkt","item":"https://eemland-digital.nl/werk/eemlandwerkt/"}]}]}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"ContactPage","@id":"https://eemland-digital.nl/contact/#pagina","url":"https://eemland-digital.nl/contact/","name":"Contact","inLanguage":"nl-NL","description":"Plak het adres van je huidige website. Mijn server haalt hem op en meet hem door: hoe snel hij binnenkomt, wat hij weegt, of hij op een telefoon werkt en wat Google ervan ziet. Een paar seconden, en je krijgt er meteen bij wat ik eraan zou doen.","mainEntity":{"@id":"https://eemland-digital.nl/#bedrijf"},"about":{"@id":"https://eemland-digital.nl/#samih"}},{"@type":"Person","@id":"https://eemland-digital.nl/#samih","name":"Samih Tichtti","givenName":"Samih","familyName":"Tichtti","jobTitle":"Webdeveloper — front-end en back-end","description":"Websites en bedrijfssoftware voor Nederlandse bedrijven. Geen mooie plaatjes die niets doen — dingen die elke dag gebruikt worden.","url":"https://eemland-digital.nl/","email":"mailto:info@eemland-digital.nl","sameAs":["https://github.com/protuber033"],"knowsLanguage":["nl","en"],"knowsAbout":["Anthropic SDK","Capacitor","Cloudinary","Docker","ESP32","Express","Flask","Framer Motion","GitLab CI","Google Gemini","Google Maps","MapLibre","Motion","MySQL","Next.js","Node","PDFKit","PostgreSQL","Prisma","Python","Railway","React","React Three Fiber","SQLAlchemy","Supabase","Supabase Storage","Tailwind","TypeScript","Vite","jsPDF","pdf-lib","sharp","three.js","zustand"],"alumniOf":{"@type":"CollegeOrUniversity","name":"Hogeschool van Amsterdam"},"worksFor":{"@id":"https://eemland-digital.nl/#bedrijf"},"address":{"@type":"PostalAddress","addressLocality":"Amersfoort","addressCountry":"NL"}},{"@type":"ProfessionalService","@id":"https://eemland-digital.nl/#bedrijf","name":"Eemland Digital","alternateName":"Samih Tichtti","description":"Websites en bedrijfssoftware voor Nederlandse bedrijven. Geen mooie plaatjes die niets doen — dingen die elke dag gebruikt worden.","url":"https://eemland-digital.nl/","email":"mailto:info@eemland-digital.nl","image":"https://eemland-digital.nl/img/kozijnfabriek-1.webp","founder":{"@id":"https://eemland-digital.nl/#samih"},"employee":{"@id":"https://eemland-digital.nl/#samih"},"priceRange":"Op aanvraag","address":{"@type":"PostalAddress","addressLocality":"Amersfoort","addressCountry":"NL"},"areaServed":[{"@type":"Place","name":"Amersfoort"},{"@type":"Place","name":"Utrecht"},{"@type":"Place","name":"Amsterdam"},{"@type":"Place","name":"Nederland"}],"knowsAbout":["Anthropic SDK","Capacitor","Cloudinary","Docker","ESP32","Express","Flask","Framer Motion","GitLab CI","Google Gemini","Google Maps","MapLibre","Motion","MySQL","Next.js","Node","PDFKit","PostgreSQL","Prisma","Python","Railway","React","React Three Fiber","SQLAlchemy","Supabase","Supabase Storage","Tailwind","TypeScript","Vite","jsPDF","pdf-lib","sharp","three.js","zustand"],"hasOfferCatalog":{"@type":"OfferCatalog","name":"Waar ik je mee kan helpen","itemListElement":[{"@type":"Offer","itemOffered":{"@type":"Service","name":"Beeldherkenning","alternateName":"Een foto erin, gegevens eruit","description":"Een gevelfoto waar de kozijnen uit herkend worden. Een papieren urenbriefje dat gescand én nagerekend wordt. Werk dat anders met de hand overgetypt moet worden."}},{"@type":"Offer","itemOffered":{"@type":"Service","name":"Administratie","alternateName":"De hele papierwinkel in één systeem","description":"Aanvraag, offerte, order, factuur, btw en jaarcijfers achter elkaar, zonder dat iemand hetzelfde nummer drie keer overtypt. Pdf's automatisch opgemaakt."}},{"@type":"Offer","itemOffered":{"@type":"Service","name":"3D in de browser","alternateName":"Producten die de klant zelf kan draaien","description":"Een dakkapel die echt in het dakvlak staat. Een perceel in 3D met de bouwzone eroverheen. Alles in de browser, zonder plug-in."}},{"@type":"Offer","itemOffered":{"@type":"Service","name":"Kaart en adresdata","alternateName":"Nederlandse adres- en perceeldata","description":"Adres opzoeken via PDOK, perceelgrenzen en bouwjaren erbij, Street View voor de gevel, zoeken op afstand. Met een gratis alternatief als een betaalde kaartdienst uitvalt."}},{"@type":"Offer","itemOffered":{"@type":"Service","name":"Beheer en rollen","alternateName":"Dashboards waar personeel mee werkt","description":"Inloggen, rechten per rol, de zakelijke mailbox erin, planning en leveranciersorders. Met gehashte wachtwoorden en een database die standaard niets vrijgeeft."}},{"@type":"Offer","itemOffered":{"@type":"Service","name":"Live zetten","alternateName":"Van laptop naar eigen domein","description":"Hosting, domein, ssl, database met back-ups en zakelijke mail. En waar het nodig is verder dan de browser: dezelfde code als app voor iOS en Android, of sensoren die hun metingen naar een webserver sturen."}}]}},{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Het werk","item":"https://eemland-digital.nl/"},{"@type":"ListItem","position":2,"name":"Contact","item":"https://eemland-digital.nl/contact/"}]}]}</script>
 </head>
 <body>
-<a class="overslaan" href="#project">Direct naar dit project</a>
+<a class="overslaan" href="#scanform">Direct naar het veld</a>
 
 <header class="balk-boven">
   <div class="binnen">
@@ -725,98 +904,292 @@ h1 { font-size: clamp(1.9rem, 4.4vw, 2.9rem); max-width: 22ch; }
       <a href="/#werk">Werk</a>
       <a href="/#lagen">Aanpak</a>
       <a href="/#traject">Samenwerken</a>
-      <a href="/contact/">Contact</a>
+      <a href="/contact/" aria-current="page">Contact</a>
     </nav>
-    <a class="knop knop-klein" href="/contact/">Neem contact op</a>
+    <a class="knop knop-klein" href="mailto:info@eemland-digital.nl">Mail me</a>
   </div>
 </header>
 
-<main class="los-wikkel" id="project">
-  <div class="binnen">
-    <nav class="kruimels" aria-label="Kruimelpad">
-      <a href="/">Samih Tichtti</a> <span aria-hidden="true">/</span>
-      <a href="/#werk">Het werk</a> <span aria-hidden="true">/</span>
-      <span aria-current="page">EemlandWerkt</span>
-    </nav>
-    <div class="los-doos">
-      <article class="paneel" id="paneel-eemlandwerkt" data-id="eemlandwerkt">
-        <header class="paneel-kop">
-          <p class="paneel-meta"><span class="stip archief" aria-hidden="true"></span>Eerste versie <span class="punt">·</span> december 2025 – januari 2026</p>
-          <h1>EemlandWerkt</h1>
-          <p class="paneel-lead">De eerste versie voor hetzelfde bouwbedrijf: een bedrijfssite met diensten, vacatures en een klantportaal, met Flask en PostgreSQL erachter. Een jaar later opnieuw opgebouwd in Node — dat werd Eemland Boekt.</p>
-        </header>
-        <div class="paneel-cols">
-          <div class="vak voorbeeld">
-            <h4>Zo gaat het in de praktijk</h4>
-            <p>Een klant logde in op het portaal en zag zijn eigen dossier; op kantoor stond hetzelfde in een dashboard. De rekenhulp op de site gaf alvast een prijsindicatie voordat iemand de telefoon pakte.</p>
-          </div>
-          <div class="vak">
-            <h4>Wat het doet</h4>
-            <ul class="doet"><li>Bedrijfssite met diensten, detailpagina's en vacatures.</li><li>Rekenhulp die vooraf een prijsindicatie geeft.</li><li>Inloggen en aanmelden, met een klantportaal én een dashboard voor kantoor.</li><li>Python-backend met Flask en SQLAlchemy op PostgreSQL, uitgerold op Railway.</li><li><strong>Opgevolgd door Eemland Boekt</strong>, dat opnieuw is opgebouwd op Node.</li></ul>
-          </div>
-          <div class="vak">
-            <h4>Techniek</h4>
-            <ul class="techniek"><li>React</li><li>Vite</li><li>TypeScript</li><li>Flask</li><li>SQLAlchemy</li><li>PostgreSQL</li><li>Railway</li></ul>
-            
-            <p class="dicht">Niet meer online — vervangen door Eemland Boekt.</p>
-          </div>
-        </div>
-        
-        <div class="stroom">
-          <h4>Zo loopt het van begin tot eind</h4>
-          <ol class="stappen">
-            <li><span class="nr">1</span><span class="wat">Klant logt in op het portaal</span></li>
-            <li><span class="nr">2</span><span class="wat">Ziet zijn eigen dossier</span></li>
-            <li><span class="nr">3</span><span class="wat">Kantoor ziet hetzelfde dashboard</span></li>
-          </ol>
-        </div>
-        
-      </article></div>
-    <div class="verder">
-      <h2>Ander werk van mij</h2>
-      <ul>
-        <li><a href="/werk/eemland/">Eemland Boekt</a></li>
-        <li><a href="/werk/ralox/">RALOX Sports</a></li>
-        <li><a href="/werk/funstudios/">Fun Studios</a></li>
-        <li><a href="/werk/kozijnfabriek/">Kozijnfabriek Direct</a></li>
-        <li><a href="/werk/courtswap/">CourtSwap</a></li>
-        <li><a href="/werk/glacio/">Glacio Klimaattechniek</a></li>
-        <li><a href="/werk/remh/">REMH Bouw &amp; Verbouw</a></li>
-        <li><a href="/werk/kijkvergunning/">KijkVergunning</a></li>
-        <li><a href="/werk/lumiere/">Lumière Dakkapellen</a></li>
-        <li><a href="/werk/kiesradar/">Kiesradar</a></li>
-      </ul>
+<main>
+
+  <section class="scan-kop">
+    <div class="binnen">
+      <h1>Laat me eerst naar je site kijken.</h1>
+      <p class="scan-lead">Plak het adres van je huidige website. Mijn server haalt hem op en meet hem door: hoe snel hij binnenkomt, wat hij weegt, of hij op een telefoon werkt en wat Google ervan ziet. Een paar seconden, en je krijgt er meteen bij wat ik eraan zou doen.</p>
+
+      <div class="scan-doos" id="scandoos">
+        <p class="scan-balk"><i></i><i></i><i></i><span>sitescan</span></p>
+        <form class="scan-veld" id="scanform" novalidate>
+          <label for="scanurl">Het adres van je website</label>
+          <input class="scan-invoer" id="scanurl" name="url" type="text" inputmode="url"
+            autocomplete="url" spellcheck="false" placeholder="jouwbedrijf.nl" maxlength="300">
+          <button class="scan-knop" id="scanknop" type="submit">Kijk ernaar</button>
+        </form>
+        <p class="scan-onder">Ik haal alleen de openbare voorkant op, precies zoals Google dat doet. <strong>Ik bewaar niets</strong> en er komt geen formulier achteraan — wat je met de uitkomst doet is aan jou.</p>
+      </div>
     </div>
-  </div>
+  </section>
+
+  <section class="scan-uit" id="scanuit" hidden>
+    <div class="binnen">
+      <p class="scan-fout" id="scanfout" role="alert" hidden></p>
+
+      <div class="scan-hoofd" id="scanhoofd" hidden>
+        <div class="ring">
+          <svg viewBox="0 0 124 124" aria-hidden="true">
+            <circle class="spoor" cx="62" cy="62" r="52"></circle>
+            <circle class="vul" id="ringvul" cx="62" cy="62" r="52"></circle>
+          </svg>
+          <b id="ringgetal">0</b>
+        </div>
+        <div class="scan-samen">
+          <h2 id="samenkop">Bezig met kijken…</h2>
+          <p id="samentekst">De controles verschijnen hieronder zodra ze klaar zijn.</p>
+          <span class="adres" id="samenadres"></span>
+        </div>
+      </div>
+
+      <ul class="scan-rijen" id="scanrijen" aria-live="polite" aria-busy="false"></ul>
+    </div>
+  </section>
+
+  <section class="scan-vervolg" id="scanvervolg" hidden>
+    <div class="binnen">
+      <div class="vervolg-doos">
+        <h2>En nu?</h2>
+        <p id="vervolgtekst"></p>
+        <div class="vervolg-knoppen">
+          <a class="knop knop-vol" id="vervolgmail" data-adres="info@eemland-digital.nl" href="mailto:info@eemland-digital.nl">Stuur me deze uitkomst</a>
+          <a class="knop knop-klein" href="/#werk">Bekijk eerst mijn werk (11 projecten)</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="contact-altijd">
+    <div class="binnen">
+      <div class="altijd-doos">
+        <div>
+          <h2>Liever gewoon even mailen?</h2>
+          <p>Ook prima. Vertel wat er nu handmatig gaat of blijft liggen, dan denk ik mee en zeg ik eerlijk wat het wordt — ook als dat &quot;dit heb je niet nodig&quot; is.</p>
+        </div>
+        <div class="altijd-adres">
+          <span class="adres" id="adres">info@eemland-digital.nl</span>
+          <button type="button" class="knop knop-vol" id="kopieer">Kopieer adres</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
 </main>
 
 <footer class="voet">
   <div class="binnen">
-    <p>Alle schermen hierboven zijn echte screenshots van het draaiende project. Klantgegevens zijn onleesbaar gemaakt. Samih Tichtti · Eemland Digital · info@eemland-digital.nl.</p>
+    <p>De scan kijkt alleen naar de openbare voorkant van een site, net als een zoekmachine. Samih Tichtti · Eemland Digital · info@eemland-digital.nl.</p>
     <p class="bijgewerkt"><a href="/#werk">Terug naar alle 11 projecten</a></p>
   </div>
 </footer>
-<script>// Alleen wat een losse projectpagina nodig heeft: de duimpjes onder de
-// grote schermafbeelding. Het grote script van de homepage kan hier niet
-// draaien, want dat verwacht het venster, de filters en het zoekveld.
+<script>// De sitescan op de contactpagina. De server stuurt de uitkomsten één voor
+// één terug terwijl hij ze afrondt; hier worden ze gelezen zodra ze binnen
+// zijn. Er wordt dus niets nagespeeld — wat je ziet verschijnen is het moment
+// waarop die controle echt klaar was.
 (function () {
-  [].forEach.call(document.querySelectorAll('[data-galerij]'), function (galerij) {
-    var duimen = [].slice.call(galerij.querySelectorAll('.duimknop'));
-    var groot = galerij.querySelector('[data-rol="groot"]');
-    var titel = galerij.querySelector('[data-rol="titel"]');
-    var bij = galerij.querySelector('[data-rol="bijschrift"]');
-    if (!groot) return;
-    duimen.forEach(function (d) {
-      d.addEventListener('click', function () {
-        duimen.forEach(function (o) { o.setAttribute('aria-selected', 'false'); });
-        d.setAttribute('aria-selected', 'true');
-        groot.src = 'img/' + d.getAttribute('data-bestand');
-        groot.alt = d.getAttribute('data-alt') || '';
-        if (titel) titel.textContent = d.getAttribute('data-titel') || '';
-        if (bij) bij.textContent = d.getAttribute('data-bijschrift') || '';
+  var form = document.getElementById('scanform');
+  if (!form) return;
+
+  var veld = document.getElementById('scanurl');
+  var knop = document.getElementById('scanknop');
+  var doos = document.getElementById('scandoos');
+  var uit = document.getElementById('scanuit');
+  var rijen = document.getElementById('scanrijen');
+  var foutvak = document.getElementById('scanfout');
+  var hoofd = document.getElementById('scanhoofd');
+  var ringvul = document.getElementById('ringvul');
+  var ringgetal = document.getElementById('ringgetal');
+  var samenKop = document.getElementById('samenkop');
+  var samenTekst = document.getElementById('samentekst');
+  var samenAdres = document.getElementById('samenadres');
+  var vervolg = document.getElementById('scanvervolg');
+  var vervolgTekst = document.getElementById('vervolgtekst');
+  var vervolgMail = document.getElementById('vervolgmail');
+
+  var OMTREK = 326.7;
+  var tekens = {
+    goed: '<svg viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M3 8.5l3.2 3.2L13 5" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>',
+    beter: '<svg viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M8 3.2v6" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/><circle cx="8" cy="12.6" r="1.25" fill="currentColor"/></svg>',
+    probleem: '<svg viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M4 4l8 8M12 4l-8 8" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg>'
+  };
+  var woorden = { goed: 'goed', beter: 'kan beter', probleem: 'probleem' };
+
+  function maakRij(r) {
+    var li = document.createElement('li');
+    li.className = 'scan-rij';
+    var stuk = '';
+    stuk += '<span class="scan-teken ' + r.status + '">' + tekens[r.status] + '</span>';
+    stuk += '<h3>' + veilig(r.naam) + '</h3>';
+    stuk += '<span class="scan-waarde">' + veilig(r.waarde) +
+      '<span class="scan-woord ' + r.status + '">' + woorden[r.status] + '</span></span>';
+    if (r.uitleg) stuk += '<p class="scan-uitleg">' + veilig(r.uitleg) + '</p>';
+    if (typeof r.meter === 'number') stuk += '<span class="meter"><i class="' + r.status + '"></i></span>';
+    if (r.advies) stuk += '<p class="scan-advies">' + veilig(r.advies) + '</p>';
+    li.innerHTML = stuk;
+    rijen.appendChild(li);
+    if (typeof r.meter === 'number') {
+      var balk = li.querySelector('.meter i');
+      requestAnimationFrame(function () { balk.style.width = Math.min(100, r.meter) + '%'; });
+    }
+    return li;
+  }
+
+  function veilig(t) {
+    var d = document.createElement('div');
+    d.textContent = t == null ? '' : String(t);
+    return d.innerHTML;
+  }
+
+  function telOp(naar) {
+    // Eerst de uitkomst neerzetten, pas daarna het optellen. In een tabblad
+    // dat op de achtergrond staat tekent de browser niet en loopt
+    // requestAnimationFrame niet; zonder deze regel blijft de score dan op
+    // nul hangen en zie je nooit je cijfer.
+    ringgetal.textContent = naar;
+    if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+    var begin = performance.now();
+    var duur = 800;
+    function stap(nu) {
+      var deel = Math.min(1, (nu - begin) / duur);
+      ringgetal.textContent = Math.round(naar * (1 - Math.pow(1 - deel, 3)));
+      if (deel < 1) requestAnimationFrame(stap);
+    }
+    requestAnimationFrame(stap);
+  }
+
+  function oordeelVan(score) {
+    return score >= 85 ? 'goed' : score >= 60 ? 'beter' : 'probleem';
+  }
+
+  function afronden(k, gevonden) {
+    var soort = oordeelVan(k.score);
+    ringvul.setAttribute('class', 'vul ' + soort);
+    ringvul.style.strokeDashoffset = String(OMTREK - (OMTREK * k.score) / 100);
+    telOp(k.score);
+
+    var open = k.aantalProbleem + k.aantalBeter;
+    samenKop.textContent = k.aantalProbleem
+      ? 'Er zitten ' + k.aantalProbleem + ' echte knelpunten in'
+      : open
+        ? 'De basis staat, er is nog wat te winnen'
+        : 'Dit is netjes voor elkaar';
+    samenTekst.textContent = k.aantalGoed + ' van de ' + k.totaal + ' punten staan goed' +
+      (open ? ', ' + open + ' ' + (open === 1 ? 'punt kan beter' : 'punten kunnen beter') + '.' : '.') +
+      ' Dit is een snelle blik van buitenaf, geen volledig onderzoek.';
+    samenAdres.textContent = k.adres;
+
+    var werk = gevonden.filter(function (r) { return r.status !== 'goed'; });
+    vervolgTekst.textContent = werk.length
+      ? (werk.length === 1
+          ? 'Er is hierboven één punt waar ik iets aan zou doen. Als je wilt loop ik dat met je door'
+          : 'Ik zie hierboven ' + werk.length + ' punten waar ik iets aan zou doen. Als je wilt loop ik ze met je door') +
+        ' en zeg ik eerlijk wat het kost — ook als het antwoord is dat het zo wel goed genoeg is.'
+      : 'Je site staat er goed voor. Als je toch iets wilt laten bouwen dat er nu nog niet is — een dashboard, een koppeling, iets dat werk uit handen neemt — dan kijk ik graag mee.';
+
+    var onderwerp = 'Sitescan van ' + k.adres + ' (score ' + k.score + ')';
+    var tekst = 'Hoi Samih,\n\nIk heb mijn site laten scannen op eemland-digital.nl:\n' +
+      k.adres + ' — score ' + k.score + '/100\n\n';
+    if (werk.length) {
+      tekst += 'Deze punten kwamen eruit:\n';
+      werk.forEach(function (r) {
+        tekst += '- ' + r.naam + ': ' + r.waarde + ' (' + woorden[r.status] + ')\n';
       });
-    });
+      tekst += '\n';
+    }
+    tekst += 'Kunnen we hier eens over bellen?\n\n';
+    vervolgMail.href = 'mailto:' + vervolgMail.getAttribute('data-adres') +
+      '?subject=' + encodeURIComponent(onderwerp) + '&body=' + encodeURIComponent(tekst);
+    vervolg.hidden = false;
+  }
+
+  function toonFout(bericht) {
+    foutvak.textContent = bericht;
+    foutvak.hidden = false;
+    uit.hidden = false;
+  }
+
+  form.addEventListener('submit', function (e) {
+    e.preventDefault();
+    var adres = veld.value.trim();
+    if (!adres) { veld.focus(); return; }
+
+    rijen.innerHTML = '';
+    foutvak.hidden = true;
+    hoofd.hidden = true;
+    vervolg.hidden = true;
+    uit.hidden = false;
+    doos.classList.add('bezig');
+    knop.disabled = true;
+    knop.textContent = 'Bezig met kijken…';
+    ringvul.style.strokeDashoffset = String(OMTREK);
+    ringgetal.textContent = '0';
+
+    var gevonden = [];
+
+    fetch('/api/scan?url=' + encodeURIComponent(adres), { headers: { accept: 'application/x-ndjson' } })
+      .then(function (a) {
+        if (!a.body) throw new Error('geen stroom');
+        var lezer = a.body.getReader();
+        var decoder = new TextDecoder();
+        var rest = '';
+
+        function verwerk(regel) {
+          if (!regel.trim()) return;
+          var g;
+          try { g = JSON.parse(regel); } catch (err) { return; }
+          if (g.soort === 'fout') { toonFout(g.bericht); return; }
+          if (g.soort === 'start') { hoofd.hidden = false; samenAdres.textContent = g.adres; return; }
+          if (g.soort === 'uitkomst') { gevonden.push(g); maakRij(g); return; }
+          if (g.soort === 'klaar') { afronden(g, gevonden); }
+        }
+
+        function lees() {
+          return lezer.read().then(function (res) {
+            if (res.done) { verwerk(rest); return; }
+            rest += decoder.decode(res.value, { stream: true });
+            var delen = rest.split('\n');
+            rest = delen.pop();
+            delen.forEach(verwerk);
+            return lees();
+          });
+        }
+        return lees();
+      })
+      .catch(function () {
+        toonFout('Ik kreeg geen verbinding met de scanner. Probeer het zo nog eens, of mail me gewoon.');
+      })
+      .then(function () {
+        doos.classList.remove('bezig');
+        knop.disabled = false;
+        knop.textContent = 'Kijk ernaar';
+      });
   });
+
+  /* adres kopieren, net als op de homepage */
+  var kop = document.getElementById('kopieer');
+  var adresvak = document.getElementById('adres');
+  if (kop && adresvak) {
+    kop.addEventListener('click', function () {
+      var tekst = adresvak.textContent;
+      var terug = function (w) {
+        kop.textContent = w;
+        setTimeout(function () { kop.textContent = 'Kopieer adres'; }, 2000);
+      };
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(tekst).then(function () { terug('Gekopieerd'); }, function () { terug(tekst); });
+      } else {
+        terug(tekst);
+      }
+    });
+  }
 }());
 </script>
 </body>

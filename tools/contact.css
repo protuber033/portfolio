@@ -1,0 +1,216 @@
+/* ============ contactpagina met sitescan ============
+   De pagina is zelf het verkooppraatje: iemand plakt zijn adres, ziet zijn
+   eigen site doorgemeten worden, en heeft dan pas een reden om te mailen.
+   Status draagt nooit alleen kleur — er staat altijd een teken en een woord
+   naast, anders is het onleesbaar voor wie kleur niet goed ziet. */
+
+.scan-kop { padding-block: clamp(30px, 5vw, 64px) clamp(18px, 2.5vw, 30px); }
+.scan-kop .binnen { max-width: 860px; }
+.scan-kop h1 {
+  font-family: var(--display); font-weight: 700;
+  font-size: clamp(1.9rem, 5vw, 3.2rem); line-height: 1.06; letter-spacing: -.035em;
+  margin: 0; text-wrap: balance;
+}
+.scan-lead { margin: 16px 0 0; font-size: clamp(1rem, 1.6vw, 1.14rem); color: var(--tekst-2); max-width: 60ch; }
+
+/* ---- het veld ---- */
+.scan-doos {
+  margin-top: clamp(22px, 3vw, 34px);
+  border: 1px solid var(--rand-op); border-radius: 18px;
+  background: var(--vlak); padding: clamp(16px, 2.4vw, 24px);
+  position: relative; overflow: hidden;
+}
+.scan-doos::before {
+  content: ""; position: absolute; inset: 0 0 auto 0; height: 2px;
+  background: linear-gradient(90deg, transparent, var(--accent), transparent);
+  opacity: .7;
+}
+.scan-balk {
+  display: flex; align-items: center; gap: 8px; margin-bottom: 14px;
+  font-family: var(--mono); font-size: .7rem; letter-spacing: .12em;
+  text-transform: uppercase; color: var(--tekst-3);
+}
+.scan-balk i {
+  width: 9px; height: 9px; border-radius: 50%; background: var(--rand-op);
+  display: block; flex: none;
+}
+.scan-balk i:nth-child(2) { background: #2A3450; }
+.scan-balk i:nth-child(3) { background: #384463; }
+.scan-balk span { margin-left: 6px; }
+
+.scan-veld { display: flex; gap: 10px; flex-wrap: wrap; }
+.scan-veld label { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
+.scan-invoer {
+  flex: 1 1 260px; min-width: 0;
+  background: var(--grond); border: 1px solid var(--rand); border-radius: 12px;
+  padding: 16px 18px; color: var(--tekst);
+  font-family: var(--mono); font-size: clamp(.95rem, 2.2vw, 1.1rem);
+  transition: border-color .15s ease, box-shadow .15s ease;
+}
+.scan-invoer::placeholder { color: var(--tekst-3); }
+.scan-invoer:focus {
+  outline: none; border-color: var(--accent);
+  box-shadow: 0 0 0 3px var(--accent-zacht);
+}
+.scan-knop {
+  flex: 0 0 auto; border: 0; border-radius: 12px; cursor: pointer;
+  background: var(--accent); color: #07101F;
+  font-family: var(--body); font-weight: 700; font-size: 1rem;
+  padding: 16px 26px;
+  transition: filter .15s ease, transform .15s ease;
+}
+.scan-knop:hover:not(:disabled) { filter: brightness(1.1); transform: translateY(-1px); }
+.scan-knop:disabled { opacity: .55; cursor: progress; }
+.scan-onder { margin: 12px 0 0; font-size: .84rem; color: var(--tekst-3); }
+.scan-onder b { color: var(--tekst-2); font-weight: 600; }
+
+/* ---- de scanlijn tijdens het meten ---- */
+.scan-doos.bezig::after {
+  content: ""; position: absolute; left: 0; right: 0; height: 120px; top: -120px;
+  background: linear-gradient(180deg, transparent, rgba(91, 140, 255, .1), transparent);
+  animation: scanlijn 1.5s linear infinite; pointer-events: none;
+}
+@keyframes scanlijn { to { top: 100%; } }
+@media (prefers-reduced-motion: reduce) { .scan-doos.bezig::after { animation: none; display: none; } }
+
+/* ---- uitkomst ---- */
+.scan-uit { padding-block: 0 clamp(30px, 5vw, 60px); }
+.scan-uit .binnen { max-width: 860px; }
+
+.scan-fout {
+  margin-top: 18px; padding: 16px 18px; border-radius: 14px;
+  border: 1px solid rgba(255, 107, 107, .35); background: rgba(255, 107, 107, .08);
+  color: var(--tekst); font-size: .96rem;
+}
+
+/* hoofdgetal: gewone letter, geen displayletter — een cijfer in een sierletter
+   leest als versiering in plaats van als meting */
+.scan-hoofd {
+  display: flex; align-items: center; gap: clamp(16px, 3vw, 28px);
+  margin-top: clamp(20px, 3vw, 30px); padding: clamp(18px, 2.6vw, 26px);
+  border: 1px solid var(--rand); border-radius: 18px; background: var(--vlak);
+  flex-wrap: wrap;
+}
+.ring { position: relative; flex: none; width: 124px; height: 124px; }
+.ring svg { width: 100%; height: 100%; transform: rotate(-90deg); }
+.ring .spoor { fill: none; stroke: var(--rand); stroke-width: 9; }
+.ring .vul {
+  fill: none; stroke-width: 9; stroke-linecap: round;
+  stroke-dasharray: 326.7; stroke-dashoffset: 326.7;
+  transition: stroke-dashoffset 1s cubic-bezier(.2, .7, .3, 1);
+}
+.ring b {
+  position: absolute; inset: 0; display: flex; align-items: center; justify-content: center;
+  font-family: var(--body); font-weight: 700; font-size: 2.6rem; letter-spacing: -.04em;
+  color: var(--tekst);
+}
+.scan-samen { flex: 1 1 260px; min-width: 0; }
+.scan-samen h2 {
+  font-family: var(--display); font-weight: 700; font-size: clamp(1.2rem, 2.6vw, 1.6rem);
+  letter-spacing: -.025em; margin: 0; text-wrap: balance;
+}
+.scan-samen p { margin: 8px 0 0; color: var(--tekst-2); font-size: .97rem; }
+.scan-samen .adres {
+  display: inline-block; margin-top: 10px; font-family: var(--mono); font-size: .8rem;
+  color: var(--tekst-3); word-break: break-all;
+}
+
+/* ---- de rijen ---- */
+.scan-rijen { list-style: none; margin: 18px 0 0; padding: 0; display: grid; gap: 10px; }
+.scan-rij {
+  border: 1px solid var(--rand); border-radius: 14px; background: var(--vlak);
+  padding: 16px 18px;
+  display: grid; grid-template-columns: 26px 1fr auto; gap: 4px 14px;
+  align-items: start;
+}
+@media (prefers-reduced-motion: no-preference) {
+  .scan-rij { animation: rijop .38s cubic-bezier(.2, .7, .3, 1) both; }
+}
+@keyframes rijop { from { opacity: 0; transform: translateY(10px); } }
+
+.scan-teken {
+  grid-row: 1 / span 3; width: 26px; height: 26px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center; flex: none;
+  background: var(--vlak-2);
+}
+.scan-teken svg { width: 14px; height: 14px; }
+.scan-rij h3 {
+  grid-column: 2; margin: 0; font-family: var(--body); font-weight: 600;
+  font-size: 1.02rem; color: var(--tekst); align-self: center;
+}
+.scan-waarde {
+  grid-column: 3; grid-row: 1; justify-self: end; align-self: center;
+  display: flex; align-items: center; gap: 8px;
+  font-family: var(--mono); font-size: .84rem; color: var(--tekst-2); text-align: right;
+}
+.scan-woord {
+  font-family: var(--body); font-weight: 600; font-size: .74rem;
+  letter-spacing: .04em; padding: 3px 9px; border-radius: 999px;
+  border: 1px solid currentColor; white-space: nowrap;
+}
+.scan-uitleg { grid-column: 2 / -1; margin: 6px 0 0; color: var(--tekst-2); font-size: .92rem; }
+.scan-advies {
+  grid-column: 2 / -1; margin: 10px 0 0; padding: 10px 12px;
+  border-left: 2px solid var(--accent); border-radius: 0 8px 8px 0;
+  background: var(--accent-zacht); color: var(--tekst); font-size: .92rem;
+}
+
+/* meter: de vulling draagt de ernst, het spoor is een lichtere stap van
+   hetzelfde — zo lees je de stand over de hele balk */
+.meter { grid-column: 2 / -1; margin-top: 10px; height: 7px; border-radius: 999px; background: var(--rand); overflow: hidden; }
+.meter i { display: block; height: 100%; border-radius: 999px; width: 0; transition: width .8s cubic-bezier(.2, .7, .3, 1); }
+
+.goed  { color: var(--live); }
+.beter { color: var(--prototype); }
+.probleem { color: var(--slecht); }
+.scan-teken.goed { background: rgba(47, 232, 176, .12); }
+.scan-teken.beter { background: rgba(255, 179, 92, .12); }
+.scan-teken.probleem { background: rgba(255, 107, 107, .12); }
+.meter i.goed { background: var(--live); }
+.meter i.beter { background: var(--prototype); }
+.meter i.probleem { background: var(--slecht); }
+.ring .vul.goed { stroke: var(--live); }
+.ring .vul.beter { stroke: var(--prototype); }
+.ring .vul.probleem { stroke: var(--slecht); }
+
+/* ---- wat daarna ---- */
+.scan-vervolg { padding-block: 0 clamp(40px, 6vw, 80px); }
+.scan-vervolg .binnen { max-width: 860px; }
+.vervolg-doos {
+  border: 1px solid var(--accent); border-radius: 18px;
+  background: linear-gradient(160deg, var(--accent-zacht), transparent 60%), var(--vlak);
+  padding: clamp(20px, 3vw, 32px);
+}
+.vervolg-doos h2 {
+  font-family: var(--display); font-weight: 700; font-size: clamp(1.3rem, 2.8vw, 1.8rem);
+  letter-spacing: -.025em; margin: 0; text-wrap: balance;
+}
+.vervolg-doos p { color: var(--tekst-2); margin: 10px 0 0; max-width: 58ch; }
+.vervolg-knoppen { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 20px; }
+
+/* ---- gewoon contact, ook zonder scan ---- */
+.contact-altijd { padding-block: 0 clamp(50px, 7vw, 90px); }
+.contact-altijd .binnen { max-width: 860px; }
+.altijd-doos {
+  border: 1px solid var(--rand); border-radius: 18px; background: var(--vlak);
+  padding: clamp(20px, 3vw, 30px);
+  display: flex; gap: 20px; align-items: center; justify-content: space-between; flex-wrap: wrap;
+}
+.altijd-doos h2 {
+  font-family: var(--display); font-weight: 700; font-size: 1.3rem;
+  letter-spacing: -.02em; margin: 0 0 6px;
+}
+.altijd-doos p { margin: 0; color: var(--tekst-2); font-size: .96rem; max-width: 46ch; }
+.altijd-adres { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+.altijd-adres .adres {
+  font-family: var(--mono); font-size: 1rem; color: var(--tekst);
+  background: var(--grond); border: 1px solid var(--rand);
+  padding: 12px 16px; border-radius: 12px;
+}
+
+@media (max-width: 620px) {
+  .scan-rij { grid-template-columns: 26px 1fr; }
+  .scan-waarde { grid-column: 2; grid-row: auto; justify-self: start; margin-top: 6px; }
+  .ring { width: 96px; height: 96px; }
+  .ring b { font-size: 2rem; }
+}

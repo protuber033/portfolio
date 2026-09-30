@@ -4,6 +4,8 @@ import { createServer } from 'node:http';
 import { readFile } from 'node:fs/promises';
 import { extname, join, normalize, sep } from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { scanStroom } from './tools/sitescan.mjs';
+import { gzipSync, brotliCompressSync, constants as zlibConstants } from 'node:zlib';
 
 const ROOT = fileURLToPath(new URL('.', import.meta.url));
 const PORT = process.env.PORT || 3000;
@@ -19,6 +21,67 @@ const TYPES = {
   '.xml': 'application/xml; charset=utf-8'
 };
 
+/* De sitescan achter de contactpagina. Hij haalt op verzoek een vreemde site
+   op, dus hij is begrensd: een bezoeker mag er een handvol per tien minuten,
+   anders is het een gratis meetdienst voor iemand anders. De toetsing van het
+   adres zelf zit in tools/sitescan.mjs. */
+const scanGeheugen = new Map();
+const SCAN_MAX = 12;
+const SCAN_VENSTER = 10 * 60 * 1000;
+
+function magScannen(ip) {
+  const nu = Date.now();
+  const eerder = (scanGeheugen.get(ip) || []).filter((t) => nu - t < SCAN_VENSTER);
+  if (eerder.length >= SCAN_MAX) return false;
+  eerder.push(nu);
+  if (scanGeheugen.size > 5000) scanGeheugen.clear();
+  scanGeheugen.set(ip, eerder);
+  return true;
+}
+
+function bezoekerIP(req) {
+  const doorgegeven = String(req.headers['x-forwarded-for'] || '').split(',')[0].trim();
+  return doorgegeven || req.socket.remoteAddress || 'onbekend';
+}
+
+async function scanAfhandelen(req, res, url) {
+  const adres = (url.searchParams.get('url') || '').trim();
+  const regel = (o) => res.write(JSON.stringify(o) + '\n');
+
+  if (!adres || adres.length > 300) {
+    res.writeHead(400, { 'content-type': 'application/x-ndjson; charset=utf-8' });
+    regel({ soort: 'fout', bericht: 'Vul een webadres in, bijvoorbeeld jouwbedrijf.nl' });
+    res.end();
+    return;
+  }
+  if (!magScannen(bezoekerIP(req))) {
+    res.writeHead(429, { 'content-type': 'application/x-ndjson; charset=utf-8' });
+    regel({ soort: 'fout', bericht: 'Je hebt er net een paar achter elkaar gedaan. Over tien minuten mag het weer.' });
+    res.end();
+    return;
+  }
+
+  res.writeHead(200, {
+    'content-type': 'application/x-ndjson; charset=utf-8',
+    'cache-control': 'no-store',
+    'x-content-type-options': 'nosniff',
+    'x-accel-buffering': 'no'
+  });
+
+  let weg = false;
+  req.on('close', () => { weg = true; });
+
+  try {
+    for await (const gebeurtenis of scanStroom(adres)) {
+      if (weg) return;
+      regel(gebeurtenis);
+    }
+  } catch {
+    if (!weg) regel({ soort: 'fout', bericht: 'Er ging iets mis tijdens het kijken. Probeer het zo nog eens.' });
+  }
+  if (!weg) res.end();
+}
+
 function opschonen(pad) {
   let uit = normalize(pad);
   while (uit.startsWith('/') || uit.startsWith(sep)) uit = uit.slice(1);
@@ -29,11 +92,32 @@ function magDit(rel) {
   if (rel === 'index.html' || rel === 'robots.txt' || rel === 'sitemap.xml') return true;
   if (rel.startsWith('img' + sep) || rel.startsWith('img/')) return true;
   // werk/<project>/index.html: elk project heeft ook een eigen adres
-  return rel.startsWith('werk' + sep) || rel.startsWith('werk/');
+  if (rel.startsWith('werk' + sep) || rel.startsWith('werk/')) return true;
+  return rel.startsWith('contact' + sep) || rel.startsWith('contact/');
 }
 
 async function pagina() {
   return readFile(join(ROOT, 'index.html'));
+}
+
+/* Tekst ingepakt versturen. Html, css en javascript worden drie tot vijf keer
+   kleiner; beelden zijn al gecomprimeerd en worden daarom overgeslagen. De
+   uitkomst wordt onthouden, want de bestanden veranderen niet terwijl de
+   server draait. */
+const INPAKBAAR = new Set(['.html', '.txt', '.xml', '.svg', '.json', '.css', '.js']);
+const pakket = new Map();
+
+function inpakken(rel, ext, inhoud, accepteert) {
+  if (!INPAKBAAR.has(ext) || inhoud.length < 1024) return null;
+  const vorm = /\bbr\b/.test(accepteert) ? 'br' : /\bgzip\b/.test(accepteert) ? 'gzip' : null;
+  if (!vorm) return null;
+  const sleutel = vorm + ':' + rel;
+  if (!pakket.has(sleutel)) {
+    pakket.set(sleutel, vorm === 'br'
+      ? brotliCompressSync(inhoud, { params: { [zlibConstants.BROTLI_PARAM_QUALITY]: 5 } })
+      : gzipSync(inhoud, { level: 6 }));
+  }
+  return { vorm, inhoud: pakket.get(sleutel) };
 }
 
 createServer(async (req, res) => {
@@ -46,6 +130,12 @@ createServer(async (req, res) => {
   }
 
   const url = new URL(req.url, 'http://localhost');
+
+  if (url.pathname === '/api/scan') {
+    await scanAfhandelen(req, res, url);
+    return;
+  }
+
   let rel = opschonen(decodeURIComponent(url.pathname));
   if (rel === '') rel = 'index.html';
   // een map vraagt om zijn index.html — /werk/glacio/ net als /werk/glacio
@@ -66,12 +156,18 @@ createServer(async (req, res) => {
   try {
     const inhoud = await readFile(pad);
     const ext = extname(pad).toLowerCase();
-    res.writeHead(200, {
+    const ingepakt = inpakken(rel, ext, inhoud, String(req.headers['accept-encoding'] || ''));
+    const koppen = {
       'content-type': TYPES[ext] || 'application/octet-stream',
       'cache-control': ext === '.html' ? 'no-cache' : 'public, max-age=31536000, immutable',
       'x-content-type-options': 'nosniff',
       'referrer-policy': 'strict-origin-when-cross-origin'
-    }).end(inhoud);
+    };
+    if (ingepakt) {
+      koppen['content-encoding'] = ingepakt.vorm;
+      koppen.vary = 'accept-encoding';
+    }
+    res.writeHead(200, koppen).end(ingepakt ? ingepakt.inhoud : inhoud);
   } catch {
     try {
       res.writeHead(404, { 'content-type': TYPES['.html'] }).end(await pagina());
