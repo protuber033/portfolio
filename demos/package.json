@@ -1,0 +1,12 @@
+{
+  "name": "eemland-demos",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Vier werkende voorbeeldsites van Eemland Digital",
+  "scripts": {
+    "start": "node server.js",
+    "check": "node tools/controle.mjs"
+  },
+  "engines": { "node": ">=22" }
+}

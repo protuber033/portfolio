@@ -1,0 +1,125 @@
+{
+  "winkel": {
+    "naam": "Kaap Noord",
+    "onder": "Koffiebranderij",
+    "plaats": "Amersfoort",
+    "sinds": 2019,
+    "verhaal": "We branden elke dinsdag en donderdag in een oude machinefabriek aan het spoor. Kleine batches, altijd binnen drie dagen na het branden verstuurd."
+  },
+  "bezorging": [
+    { "id": "post", "naam": "PostNL, 1 tot 2 werkdagen", "prijs": 495, "gratisVanaf": 3500 },
+    { "id": "fiets", "naam": "Met de bakfiets binnen Amersfoort", "prijs": 0, "gratisVanaf": 0, "toelichting": "Op dinsdag en vrijdag tussen 16 en 20 uur." },
+    { "id": "afhalen", "naam": "Afhalen bij de branderij", "prijs": 0, "gratisVanaf": 0, "toelichting": "Kleine Koppel 42, op werkdagen tot 17 uur." }
+  ],
+  "kortingen": [
+    { "code": "EERSTEZAK", "soort": "procent", "waarde": 10, "toelichting": "10% op je eerste bestelling" },
+    { "code": "BAKFIETS", "soort": "bedrag", "waarde": 250, "toelichting": "€ 2,50 korting" }
+  ],
+  "malingen": [
+    { "id": "bonen", "naam": "Hele bonen" },
+    { "id": "filter", "naam": "Gemalen voor filter" },
+    { "id": "espresso", "naam": "Gemalen voor espresso" },
+    { "id": "french", "naam": "Gemalen voor French press" }
+  ],
+  "producten": [
+    {
+      "id": "havik",
+      "naam": "Havik",
+      "type": "Espresso",
+      "herkomst": "Brazilië · Minas Gerais",
+      "hoogte": "1100 m",
+      "proces": "Natural",
+      "smaak": ["pure chocolade", "hazelnoot", "karamel"],
+      "branding": 4,
+      "regel": "De huisespresso. Vol, zoet en vergevingsgezind — ook als je machine een slechte dag heeft.",
+      "prijs": 1150,
+      "voorraad": 34,
+      "kleur": "#7B3F1D",
+      "kleur2": "#C87F4A",
+      "populair": true
+    },
+    {
+      "id": "kleine-koppel",
+      "naam": "Kleine Koppel",
+      "type": "Filter",
+      "herkomst": "Ethiopië · Yirgacheffe",
+      "hoogte": "1950 m",
+      "proces": "Washed",
+      "smaak": ["jasmijn", "perzik", "zwarte thee"],
+      "branding": 2,
+      "regel": "Bloemig en licht. Het soort kop waarbij iemand vraagt of er echt niets in zit.",
+      "prijs": 1350,
+      "voorraad": 18,
+      "kleur": "#2F6B54",
+      "kleur2": "#7BC4A4",
+      "populair": true
+    },
+    {
+      "id": "spoorzicht",
+      "naam": "Spoorzicht",
+      "type": "Filter",
+      "herkomst": "Colombia · Huila",
+      "hoogte": "1700 m",
+      "proces": "Washed",
+      "smaak": ["rode appel", "rietsuiker", "amandel"],
+      "branding": 3,
+      "regel": "De veilige keuze die niemand saai vindt. Werkt in elke filtermethode.",
+      "prijs": 1250,
+      "voorraad": 41,
+      "kleur": "#8A2C3B",
+      "kleur2": "#D4707F",
+      "populair": false
+    },
+    {
+      "id": "nachtploeg",
+      "naam": "Nachtploeg",
+      "type": "Espresso",
+      "herkomst": "India · Karnataka",
+      "hoogte": "1200 m",
+      "proces": "Monsooned",
+      "smaak": ["zwarte peper", "cacao", "tabak"],
+      "branding": 5,
+      "regel": "Donker gebrand en zwaar. Voor wie zijn koffie met melk en zonder omwegen drinkt.",
+      "prijs": 1050,
+      "voorraad": 7,
+      "kleur": "#2B2B33",
+      "kleur2": "#6E6E7D",
+      "populair": false
+    },
+    {
+      "id": "zomerbrand",
+      "naam": "Zomerbrand",
+      "type": "Filter",
+      "herkomst": "Kenia · Nyeri",
+      "hoogte": "1800 m",
+      "proces": "Washed",
+      "smaak": ["zwarte bes", "tomaat", "rietsuiker"],
+      "branding": 2,
+      "regel": "Uitgesproken zuur en sappig. Koud gezet op een warme dag is dit de beste die we hebben.",
+      "prijs": 1450,
+      "voorraad": 0,
+      "kleur": "#B4552A",
+      "kleur2": "#EFA05F",
+      "populair": false
+    },
+    {
+      "id": "cafeinevrij",
+      "naam": "Late Dienst",
+      "type": "Cafeïnevrij",
+      "herkomst": "Peru · Cajamarca",
+      "hoogte": "1600 m",
+      "proces": "Swiss Water",
+      "smaak": ["melkchocolade", "walnoot", "sinaasappel"],
+      "branding": 3,
+      "regel": "Cafeïnevrij zonder dat je het proeft. Met water ontdaan, niet met chemie.",
+      "prijs": 1300,
+      "voorraad": 22,
+      "kleur": "#3B4A7A",
+      "kleur2": "#8496CE",
+      "populair": false
+    }
+  ],
+  "mand": [],
+  "korting": null,
+  "bestellingen": []
+}

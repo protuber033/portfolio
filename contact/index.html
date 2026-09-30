@@ -681,6 +681,11 @@ h1 { font-size: clamp(1.9rem, 4.4vw, 2.9rem); max-width: 22ch; }
    Status draagt nooit alleen kleur — er staat altijd een teken en een woord
    naast, anders is het onleesbaar voor wie kleur niet goed ziet. */
 
+/* Een eigen display-regel wint het van het hidden-attribuut, want dat is maar
+   een gewone display:none uit de browserstijl. Zonder deze regel staat het
+   scoreblok al open voordat er iets gemeten is. */
+[hidden] { display: none !important; }
+
 .scan-kop { padding-block: clamp(30px, 5vw, 64px) clamp(18px, 2.5vw, 30px); }
 .scan-kop .binnen { max-width: 860px; }
 .scan-kop h1 {
