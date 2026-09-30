@@ -8,6 +8,7 @@ import { readFileSync, existsSync, readdirSync, writeFileSync } from 'node:fs';
 import { execFileSync, spawn } from 'node:child_process';
 import { join, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { structuur, taal } from './naloop.mjs';
 
 const WORTEL = join(dirname(fileURLToPath(import.meta.url)), '..');
 const metNet = process.argv.includes('net');
@@ -302,7 +303,29 @@ if (!domein) {
 }
 
 /* ---------------------------------------------------------------
-   7. Shellscripts: draaien die straks op Linux?
+   7. Structuur en taal: de fouten die niets laten crashen
+   Waarom: een dubbele id, een dode link, een beeld zonder alt of dezelfde
+   term op twee manieren geschreven merkt niemand aan een foutmelding.
+---------------------------------------------------------------- */
+kop('Structuur van de pagina\'s');
+{
+  const s = structuur(WORTEL);
+  s.fouten.forEach(fout);
+  s.waarschuwingen.forEach(let_op);
+  if (!s.fouten.length) ok(`${s.aantal} pagina's: geen dubbele id's, dode links of beelden zonder alt`);
+}
+
+kop('Taal');
+{
+  const t = taal(WORTEL);
+  t.fouten.forEach(fout);
+  t.waarschuwingen.forEach(let_op);
+  if (!t.fouten.length && !t.waarschuwingen.length) ok(`${t.aantal} teksten nagelopen, niets gevonden`);
+  else if (!t.fouten.length) ok(`${t.aantal} teksten nagelopen, geen fouten`);
+}
+
+/* ---------------------------------------------------------------
+   8. Shellscripts: draaien die straks op Linux?
    Waarom: Windows zet CRLF erin en dan weigert bash ze.
 ---------------------------------------------------------------- */
 kop('Shellscripts');
@@ -324,7 +347,7 @@ if (existsSync(vpsMap)) {
 }
 
 /* ---------------------------------------------------------------
-   8. Optioneel: antwoorden je live adressen nog?
+   9. Optioneel: antwoorden je live adressen nog?
 ---------------------------------------------------------------- */
 if (metNet) {
   kop('Live adressen');

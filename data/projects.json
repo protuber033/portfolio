@@ -131,7 +131,7 @@
     "laatsteDag": "2026-09-22",
     "eenRegel": "Eventsite met boekingsflow: photo booths, low fog en indoor vuurwerk.",
     "voorWie": "Voor een entertainmentbedrijf: photo booths, 360 booth, low fog, indoor vuurwerk en lichtletters — met een boekingsflow die de aanvragen binnenhaalt.",
-    "voorbeeld": "Iemand plant een bruiloft, klikt op \"Plan mijn event\" en verstuurt het formulier. Hij krijgt meteen een bevestiging in zijn mail. De aanvraag staat op dat moment al in het adminpaneel — ook als het mailen hapert, raakt er niets kwijt.",
+    "voorbeeld": "Iemand plant een bruiloft, klikt op “Plan mijn event” en verstuurt het formulier. Hij krijgt meteen een bevestiging in zijn mail. De aanvraag staat op dat moment al in het adminpaneel — ook als het mailen hapert, raakt er niets kwijt.",
     "doet": [
       "Offerteformulier dat opslaat **én** mailt, met bevestiging naar de klant.",
       "Adminpaneel waar elke aanvraag binnenkomt.",
@@ -375,7 +375,7 @@
     "laatsteDag": "2026-01-21",
     "eenRegel": "Aannemerssite waar de klant zijn eigen dakkapel samenstelt.",
     "voorWie": "Website voor een aannemer, met een configurator die de klant zijn eigen dakkapel laat samenstellen.",
-    "voorbeeld": "Een huiseigenaar kiest \"Dakkapel plaatsen\", stelt zijn configuratie samen en ziet het resultaat op een dakfoto. De offerte komt als pdf binnen, en de aanvraag staat meteen in het beveiligde beheerdeel.",
+    "voorbeeld": "Een huiseigenaar kiest “Dakkapel plaatsen”, stelt zijn configuratie samen en ziet het resultaat op een dakfoto. De offerte komt als pdf binnen, en de aanvraag staat meteen in het beveiligde beheerdeel.",
     "doet": [
       "Gelaagde preview die dakfoto's en dakkapellen over elkaar legt.",
       "Offerte als pdf, automatisch opgemaakt op de server.",
@@ -440,7 +440,7 @@
     "naam": "Kaap Noord",
     "eenRegel": "Een webshop waar je echt doorheen kunt lopen, tot en met de betaling.",
     "voorWie": "Een bedachte koffiebranderij, gebouwd om te laten zien hoe online verkopen er van binnen uitziet. Niet alleen het winkeltje, maar ook wat er misgaat: voorraad die op is, een code die niet bestaat, een betaling die afbreekt.",
-    "voorbeeld": "Iemand legt twee zakken in zijn mand, kiest hoe ze gemalen moeten worden en typt een kortingscode in. Bij het afrekenen kiest hij tussen post, bakfiets of afhalen — boven de drempel vervallen de verzendkosten vanzelf. Daarna komt een nagebootste iDEAL-stap waarin je zelf mag kiezen of de betaling lukt. Kiest hij \"annuleren\", dan blijft zijn mand netjes staan en gaat er geen voorraad af.",
+    "voorbeeld": "Iemand legt twee zakken in zijn mand, kiest hoe ze gemalen moeten worden en typt een kortingscode in. Bij het afrekenen kiest hij tussen post, bakfiets of afhalen — boven de drempel vervallen de verzendkosten vanzelf. Daarna komt een nagebootste iDEAL-stap waarin je zelf mag kiezen of de betaling lukt. Kiest hij “annuleren”, dan blijft zijn mand netjes staan en gaat er geen voorraad af.",
     "doet": [
       "Winkelwagen met **maling per zak**, dus dezelfde koffie twee keer met een andere keuze.",
       "Voorraad die live meeloopt en pas afgaat bij een **geslaagde** betaling.",
@@ -505,7 +505,7 @@
     "naam": "Van Dijk Installatie",
     "eenRegel": "Een klantportaal waarin je zelf kunt proberen of je bij andermans dossier komt.",
     "voorWie": "Een bedacht installatiebedrijf. Het laat zien wat een portaal echt moet doen: niet mooie schermen, maar sluitende afspraken over wie wat mag zien. Er zitten drie accounts in — twee klanten en een medewerker.",
-    "voorbeeld": "Log in als Marieke en je ziet je eigen offertes, facturen en onderhoudsrapporten. In het blok \"probeer het zelf\" vraag je vervolgens het dossier van Hotel De Eemhof op. Dat krijg je niet, en je ziet precies waarom. Log daarna in als monteur en dezelfde vraag wordt wél beantwoord.",
+    "voorbeeld": "Log in als Marieke en je ziet je eigen offertes, facturen en onderhoudsrapporten. In het blok “probeer het zelf” vraag je vervolgens het dossier van Hotel De Eemhof op. Dat krijg je niet, en je ziet precies waarom. Log daarna in als monteur en dezelfde vraag wordt wél beantwoord.",
     "doet": [
       "Rechten worden **op de server** bepaald, niet in het scherm verstopt.",
       "Een vervalst dossiernummer in een verzoek wordt genegeerd.",
@@ -690,7 +690,7 @@
     "laatsteDag": "2026-09-21",
     "eenRegel": "Adres invullen en zien of je uitbouw vergunningvrij mag — op kaart en in 3D.",
     "voorWie": "Zie wat je mag bouwen voordat je begint: adres invullen, en je weet of die uitbouw vergunningvrij kan.",
-    "voorbeeld": "Je vult \"Voorbeeldstraat 12, Amersfoort\" in. Een minuut later weet je dat je daar waarschijnlijk vier meter diep mag uitbouwen, zie je de toegestane zone op de luchtfoto en in 3D, en kun je het rapport downloaden voor je aannemer.",
+    "voorbeeld": "Je vult “Voorbeeldstraat 12, Amersfoort” in. Een minuut later weet je dat je daar waarschijnlijk vier meter diep mag uitbouwen, zie je de toegestane zone op de luchtfoto en in 3D, en kun je het rapport downloaden voor je aannemer.",
     "doet": [
       "Adres opzoeken via PDOK, met perceel- en gebouwgegevens.",
       "Schuifregelaars met een zone die live meekleurt: **groen, oranje, rood**.",

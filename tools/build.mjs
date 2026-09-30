@@ -2,6 +2,8 @@
 // Een nieuw project toevoegen = een blok in projects.json erbij; hier hoeft niets te wijzigen.
 import { readFileSync, writeFileSync, existsSync, mkdirSync, readdirSync, rmSync } from 'node:fs';
 import { contactPagina } from './contactpagina.mjs';
+import { vindbaar } from './vindbaar.mjs';
+import { maakOnderdelen } from './onderdelen.mjs';
 import { join, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
@@ -33,15 +35,18 @@ const showcase = projecten.flatMap((p) => (p.beelden || [])
 const helft = Math.ceil(showcase.length / 2);
 const banen = [showcase.slice(0, helft), showcase.slice(helft)];
 
-/* ---------- wat er in de projecten zit, geteld ---------- */
-function tel(lijst) {
-  const m = new Map();
-  for (const x of lijst) m.set(x, (m.get(x) || 0) + 1);
-  return [...m.entries()].sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0]));
-}
-
 // "React 19" en "React" zijn hetzelfde ding; voor de grafiek tellen we ze samen
 const zonderVersie = (t) => t.replace(/\s+\d+(\.\d+)*$/, '');
+
+/* ---------- onderdelen ----------
+   De bouwstenen van de pagina staan in tools/onderdelen.mjs: een tegel, een
+   groep, een galerij, een paneel, de uitleg bij een vakterm. "deel" is het
+   hele pakket; hieronder halen we eruit wat deze bouw gebruikt.
+   Dit moet boven de tellingen staan, want die gebruiken tel() al. */
+const deel = maakOnderdelen({ site, projecten, esc, vet, gecontroleerd, zonderVersie });
+const { groep, stroom, paneel, laag, blok, kunde, staven, tel, term, uitlegVoor, uitlegVensters } = deel;
+
+/* ---------- wat er in de projecten zit, geteld ---------- */
 const techniekTelling = tel(projecten.flatMap((p) => [...new Set((p.techniek || []).map(zonderVersie))]))
   .filter(([, n]) => n > 1).slice(0, 10);
 
@@ -51,170 +56,6 @@ const soortTelling = site.filters
   .filter(([, n]) => n > 0)
   .sort((a, b) => b[1] - a[1]);
 
-function staven(rijen, eenheid) {
-  const top = Math.max(...rijen.map((r) => r[1]), 1);
-  return `<ul class="staven">
-${rijen.map(([naam, n]) => `            <li>
-              <span class="staaf-naam">${term(naam)}</span>
-              <span class="staaf-spoor"><span class="staaf" style="width:${((n / top) * 100).toFixed(1)}%" title="${esc(naam)}: ${n} ${esc(eenheid)}"></span></span>
-              <span class="staaf-waarde">${n}</span>
-            </li>`).join('\n')}
-          </ul>`;
-}
-
-/* ---------- onderdelen ---------- */
-function statusStip(status) {
-  return `<span class="stip ${esc(status)}" aria-hidden="true"></span>`;
-}
-
-function kaart(p, pre = '') {
-  const beeld = p.tegel
-    ? `<img src="${pre}img/${esc(p.tegel)}" width="760" height="475" loading="lazy" alt="Scherm van ${esc(p.naam)}">`
-    : `<span class="geenbeeld">${esc(p.tegelTekst || '').split('\n').map(esc).join('<br>')}</span>`;
-  const chips = (p.techniek || []).slice(0, 3)
-    .map((t) => `<span>${esc(t)}</span>`).join('');
-  return `
-        <li class="kaart" data-id="${esc(p.id)}" data-tags="${esc((p.tags || []).join(' '))}" data-zoek="${esc((p.naam + ' ' + p.eenRegel + ' ' + (p.voorWie || '') + ' ' + (p.techniek || []).join(' ')).toLowerCase())}">
-          <a class="kaart-knop" href="${pre}werk/${esc(p.id)}/" aria-haspopup="dialog">
-            <span class="duim">${beeld}</span>
-            <span class="kaart-tekst">
-              <span class="kaart-status">${statusStip(p.status)}${esc(p.statusLabel)}</span>
-              <span class="kaart-naam">${esc(p.naam)}</span>
-              <span class="kaart-regel">${esc(p.eenRegel)}</span>
-              <span class="kaart-chips">${chips}</span>
-            </span>
-          </a>
-        </li>`;
-}
-
-function groep(g) {
-  const leden = projecten.filter((p) => p.status === g.sleutel);
-  if (!leden.length) return '';
-  const gecheckt = g.sleutel === 'live' && gecontroleerd
-    ? `<span class="gecheckt"><span class="stip live"></span>alle ${leden.length} reageerden bij de laatste controle op ${esc(gecontroleerd)}</span>`
-    : '';
-  return `
-      <section class="groep" data-groep="${esc(g.sleutel)}">
-        <div class="groep-kop">
-          <h3>${esc(g.titel)} <span class="telling">${leden.length}</span></h3>
-          <p>${esc(g.uitleg)}</p>
-          ${gecheckt}
-        </div>
-        <ul class="raster">${leden.map((p) => kaart(p)).join('')}</ul>
-      </section>`;
-}
-
-function galerij(p, pre = '') {
-  const beelden = p.beelden || [];
-  if (!beelden.length) return '';
-  const eerste = beelden[0];
-  const duimen = beelden.length > 1 ? `
-          <div class="duimen" role="tablist" aria-label="Schermen van ${esc(p.naam)}">
-${beelden.map((b, i) => `            <button type="button" class="duimknop" role="tab" aria-selected="${i === 0}"
-              data-bestand="${esc(b.bestand)}" data-titel="${esc(b.titel)}"
-              data-bijschrift="${esc(b.bijschrift)}" data-alt="${esc(b.alt)}">
-              <img src="${pre}img/m-${esc(b.bestand)}" width="440" height="275" loading="lazy" alt="${esc(b.titel)}">
-            </button>`).join('\n')}
-          </div>` : '';
-  return `
-        <div class="galerij" data-galerij data-basis="${pre}">${duimen}
-          <figure class="groot">
-            <span class="balk"><i></i><i></i><i></i><b data-rol="titel">${esc(eerste.titel)}</b></span>
-            <img data-rol="groot" src="${pre}img/${esc(eerste.bestand)}" width="1400" height="875" loading="lazy" alt="${esc(eerste.alt)}">
-            <figcaption data-rol="bijschrift">${esc(eerste.bijschrift)}</figcaption>
-          </figure>
-        </div>`;
-}
-
-function stroom(p) {
-  const stappen = p.stappen || [];
-  if (!stappen.length) return '';
-  return `
-        <div class="stroom">
-          <h4>Zo loopt het van begin tot eind</h4>
-          <ol class="stappen">
-${stappen.map((st, i) => `            <li><span class="nr">${i + 1}</span><span class="wat">${esc(st)}</span></li>`).join('\n')}
-          </ol>
-        </div>`;
-}
-
-// los: true levert hetzelfde paneel als losse pagina — zichtbaar, met een h1,
-// en zonder de deelknop, want daar is dan de adresbalk voor.
-function paneel(p, { pre = '', los = false } = {}) {
-  const knop = p.url
-    ? `<a class="knop knop-vol" href="${esc(p.url)}" target="_blank" rel="noopener">${esc(p.urlLabel)}</a>`
-    : '';
-  const dicht = p.besloten ? `<p class="dicht">${esc(p.besloten)}</p>` : '';
-  const schermen = galerij(p, pre);
-  const titelTag = los ? 'h1' : 'h2';
-  const deel = los
-    ? ''
-    : `\n          <button type="button" class="deel" data-deel="${esc(p.id)}">Kopieer link naar dit project</button>`;
-  return `
-      <article class="paneel" id="paneel-${esc(p.id)}" data-id="${esc(p.id)}"${los ? '' : ' hidden'}>
-        <header class="paneel-kop">
-          <p class="paneel-meta">${statusStip(p.status)}${esc(p.statusLabel)} <span class="punt">·</span> ${esc(p.periode)}</p>
-          <${titelTag}>${esc(p.naam)}</${titelTag}>
-          <p class="paneel-lead">${esc(p.voorWie)}</p>${deel}
-        </header>
-        <div class="paneel-cols">
-          <div class="vak voorbeeld">
-            <h4>Zo gaat het in de praktijk</h4>
-            <p>${esc(p.voorbeeld)}</p>
-          </div>
-          <div class="vak">
-            <h4>Wat het doet</h4>
-            <ul class="doet">${(p.doet || []).map((d) => `<li>${vet(d)}</li>`).join('')}</ul>
-          </div>
-          <div class="vak">
-            <h4>Techniek</h4>
-            <ul class="techniek">${(p.techniek || []).map((t) => `<li>${term(t)}</li>`).join('')}</ul>
-            ${knop}
-            ${dicht}
-          </div>
-        </div>
-        ${stroom(p)}
-        ${schermen}
-      </article>`;
-}
-
-const laag = (l) => `
-        <article class="laag">
-          <p class="laag-label">${esc(l.label)}</p>
-          <h3>${esc(l.kop)}</h3>
-          <p>${esc(l.tekst)}</p>
-          <ul class="techniek">${l.techniek.map((t) => `<li>${term(t)}</li>`).join('')}</ul>
-        </article>`;
-
-const blok = (b) => `
-        <article class="blok">
-          <p class="blok-label">${esc(b.label)}</p>
-          <h3>${esc(b.kop)}</h3>
-          <ul class="punten">${b.punten.map((x) => `<li>${esc(x)}</li>`).join('')}</ul>
-        </article>`;
-
-const kunde = (k) => `
-        <article class="kunde">
-          <p class="kunde-label">${esc(k.label)}</p>
-          <h3>${esc(k.kop)}</h3>
-          <p>${esc(k.tekst)}</p>
-          <p class="bewijs">${esc(k.bewijs)}</p>
-        </article>`;
-
-const balkje = (p) => {
-  const links = procent(p.eersteDag);
-  const breed = Math.max(procent(p.laatsteDag) - links, 1.2);
-  return `
-          <div class="rij">
-            <span class="rij-naam">${esc(p.naam)}</span>
-            <span class="spoor"><span class="balkje ${esc(p.status)}" style="left:${links.toFixed(2)}%;width:${breed.toFixed(2)}%"></span></span>
-          </div>`;
-};
-
-
-
-
-
 const filterKnoppen = site.filters.map((f, i) => {
   const n = f.sleutel === 'alles'
     ? projecten.length
@@ -223,6 +64,8 @@ const filterKnoppen = site.filters.map((f, i) => {
   return `<button type="button" class="filter" data-filter="${esc(f.sleutel)}" aria-pressed="${i === 0}">${esc(f.label)} <i>${n}</i></button>`;
 }).join('');
 
+const js = readFileSync(join(WORTEL, 'tools/gedrag.js'), 'utf8');
+
 const css = [
   readFileSync(join(WORTEL, 'tools/stijl.css'), 'utf8'),
   readFileSync(join(WORTEL, 'tools/extra.css'), 'utf8'),
@@ -230,153 +73,16 @@ const css = [
   readFileSync(join(WORTEL, 'tools/vloeiend.css'), 'utf8')
 ].join('\n');
 
-/* ---------- vaktermen uitleggen ----------
-   Op de site staan vijftig termen waar een ondernemer niets aan heeft.
-   Elke term die in het woordenboek staat wordt een knopje dat een native
-   popover opent. Eén popover per term, hoe vaak de term ook voorkomt —
-   anders staan er honderden dezelfde uitleggen in de pagina. */
-const woordenboek = site.woordenboek || {};
-const sleutelVan = (t) => 'uitleg-' + String(t).toLowerCase()
-  .replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
-const gebruikteTermen = new Set();
-
-function term(tekst) {
-  const kaal = zonderVersie(tekst);
-  const uitleg = woordenboek[kaal];
-  if (!uitleg) return esc(tekst);
-  gebruikteTermen.add(kaal);
-  return `<button type="button" class="term" popovertarget="${sleutelVan(kaal)}">${esc(tekst)}</button>`;
-}
-
-const uitlegVoor = (termen) => [...termen].sort()
-  .filter((t) => woordenboek[t])
-  .map((t) => `<div popover id="${sleutelVan(t)}" class="uitleg"><b>${esc(t)}</b>${esc(woordenboek[t])}</div>`)
-  .join('\n');
-
-const uitlegVensters = () => uitlegVoor(gebruikteTermen);
-const js = readFileSync(join(WORTEL, 'tools/gedrag.js'), 'utf8');
 const werkCss = readFileSync(join(WORTEL, 'tools/werkpagina.css'), 'utf8');
 const werkJs = readFileSync(join(WORTEL, 'tools/werkpagina.js'), 'utf8');
 const contactCss = readFileSync(join(WORTEL, 'tools/contact.css'), 'utf8');
 const contactJs = readFileSync(join(WORTEL, 'tools/contact.js'), 'utf8');
 
 /* ---------- vindbaar worden ----------
-   Een zoekmachine ziet alleen wat er letterlijk in de HTML staat, en hij
-   rangschikt per adres. Eén pagina met elf verstopte vensters is voor hem
-   dus één resultaat; elf echte adressen zijn elf kansen. Daarom krijgt elk
-   project hier ook een eigen pagina, met een eigen titel, een eigen
-   omschrijving, een canonical (dit is het echte adres, reken de rest niet
-   dubbel) en gegevens in JSON-LD, zodat Google weet dat er een persoon en
-   een bedrijf achter zitten en niet alleen een hoop plaatjes. */
-const DOMEIN = String(site.domein || '').replace(/\/+$/, '');
-const abs = (pad) => DOMEIN + '/' + String(pad || '').replace(/^\/+/, '');
-
-// Google knipt een omschrijving rond de 155 tekens af; dan liever zelf,
-// op een woordgrens, dan midden in een woord.
-function kort(tekst, max = 155) {
-  const s = String(tekst ?? '').replace(/\s+/g, ' ').trim();
-  if (s.length <= max) return s;
-  const knip = s.lastIndexOf(' ', max - 1);
-  return s.slice(0, knip > 40 ? knip : max - 1) + '…';
-}
-
-const ldJson = (data) =>
-  `<script type="application/ld+json">${JSON.stringify(data).replace(/</g, '\\u003c')}</script>`;
-
-function hoofd({ titel, omschrijving, pad, beeld, ld }) {
-  const adres = abs(pad);
-  const plaatje = abs(beeld || 'img/kozijnfabriek-1.webp');
-  const verificatie = site.googleVerificatie
-    ? `\n<meta name="google-site-verification" content="${esc(site.googleVerificatie)}">`
-    : '';
-  return `<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>${esc(titel)}</title>
-<meta name="description" content="${esc(omschrijving)}">
-<link rel="canonical" href="${esc(adres)}">
-<meta name="robots" content="index, follow, max-image-preview:large">
-<meta name="author" content="${esc(site.naam)}">
-<meta name="theme-color" content="#0A0D16">
-<link rel="icon" href="/img/icoon.svg" type="image/svg+xml">${verificatie}
-<meta property="og:type" content="website">
-<meta property="og:site_name" content="${esc(site.bedrijf)}">
-<meta property="og:locale" content="nl_NL">
-<meta property="og:url" content="${esc(adres)}">
-<meta property="og:title" content="${esc(titel)}">
-<meta property="og:description" content="${esc(omschrijving)}">
-<meta property="og:image" content="${esc(plaatje)}">
-<meta property="og:image:alt" content="Scherm uit een van de projecten van ${esc(site.naam)}">
-<meta name="twitter:card" content="summary_large_image">`;
-}
-
-const alleTechniek = [...new Set(projecten.flatMap((p) => (p.techniek || []).map(zonderVersie)))].sort();
-
-const persoon = {
-  '@type': 'Person',
-  '@id': abs('#samih'),
-  name: site.naam,
-  givenName: 'Samih',
-  familyName: 'Tichtti',
-  jobTitle: 'Webdeveloper — front-end en back-end',
-  description: site.onderkop,
-  url: abs(''),
-  email: `mailto:${site.email}`,
-  sameAs: [site.github],
-  knowsLanguage: ['nl', 'en'],
-  knowsAbout: alleTechniek,
-  alumniOf: { '@type': 'CollegeOrUniversity', name: 'Hogeschool van Amsterdam' },
-  worksFor: { '@id': abs('#bedrijf') },
-  address: { '@type': 'PostalAddress', addressLocality: site.plaats, addressCountry: 'NL' }
-};
-
-const bedrijf = {
-  '@type': 'ProfessionalService',
-  '@id': abs('#bedrijf'),
-  name: site.bedrijf,
-  alternateName: site.naam,
-  description: site.onderkop,
-  url: abs(''),
-  email: `mailto:${site.email}`,
-  image: abs('img/kozijnfabriek-1.webp'),
-  founder: { '@id': abs('#samih') },
-  employee: { '@id': abs('#samih') },
-  priceRange: 'Op aanvraag',
-  address: { '@type': 'PostalAddress', addressLocality: site.plaats, addressCountry: 'NL' },
-  areaServed: (site.regio || []).map((r) => ({ '@type': 'Place', name: r })),
-  knowsAbout: alleTechniek,
-  hasOfferCatalog: {
-    '@type': 'OfferCatalog',
-    name: 'Waar ik je mee kan helpen',
-    itemListElement: (site.kunnen || []).map((k) => ({
-      '@type': 'Offer',
-      itemOffered: { '@type': 'Service', name: k.label, alternateName: k.kop, description: k.tekst }
-    }))
-  }
-};
-
-// Per project: een CreativeWork, zodat Google het project als eigen werk
-// leest en niet als losse tekst op een pagina.
-function projectLd(p) {
-  const werk = {
-    '@type': 'CreativeWork',
-    '@id': abs(`werk/${p.id}/#project`),
-    name: p.naam,
-    headline: p.naam,
-    description: p.voorWie,
-    abstract: p.eenRegel,
-    url: abs(`werk/${p.id}/`),
-    inLanguage: 'nl-NL',
-    author: { '@id': abs('#samih') },
-    creator: { '@id': abs('#samih') },
-    dateCreated: p.eersteDag,
-    dateModified: p.laatsteDag,
-    keywords: (p.tags || []).concat((p.techniek || []).map(zonderVersie)).join(', '),
-    genre: p.statusLabel
-  };
-  if (p.beelden && p.beelden.length) werk.image = p.beelden.map((b) => abs(`img/${b.bestand}`));
-  if (p.url) werk.sameAs = [p.url];
-  return werk;
-}
+   Titels, canonicals, JSON-LD, sitemap en robots.txt staan in tools/vindbaar.mjs.
+   Hier halen we alleen op wat we nodig hebben. */
+const { abs, kort, ldJson, hoofd, persoon, bedrijf, projectLd, wegwijzers } =
+  vindbaar({ site, projecten, esc, zonderVersie });
 
 const middelen = `<link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -766,39 +472,7 @@ ${uitlegVoor(new Set((p.techniek || []).map(zonderVersie)))}
 `;
 }
 
-/* ---------- wegwijzers voor de zoekmachine ----------
-   Google vindt een nieuw domein niet uit zichzelf: er linkt nog niets naar.
-   Een sitemap is de lijst die je hem zelf aanreikt, en de regel in robots.txt
-   vertelt waar die lijst staat. */
-const vandaag = new Date().toISOString().slice(0, 10);
-const sitemap = `<?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url>
-    <loc>${abs('')}</loc>
-    <lastmod>${vandaag}</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>1.0</priority>
-  </url>
-  <url>
-    <loc>${abs('contact/')}</loc>
-    <lastmod>${vandaag}</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.9</priority>
-  </url>
-${projecten.map((p) => `  <url>
-    <loc>${abs(`werk/${p.id}/`)}</loc>
-    <lastmod>${p.laatsteDag || vandaag}</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>`).join('\n')}
-</urlset>
-`;
-
-const robots = `User-agent: *
-Allow: /
-
-Sitemap: ${abs('sitemap.xml')}
-`;
+const { sitemap, robots } = wegwijzers();
 
 writeFileSync(join(WORTEL, 'index.html'), pagina);
 writeFileSync(join(WORTEL, 'artifact.html'), artifact);
