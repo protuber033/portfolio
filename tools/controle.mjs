@@ -280,11 +280,12 @@ if (!domein) {
     else ok('geen verweesde projectpagina\'s');
   }
 
-  if (!site.googleVerificatie) {
-    let_op('site.json heeft nog geen "googleVerificatie" — zonder Search Console weet je niet of Google je ziet');
-  } else {
-    ok('Search Console-code staat in site.json');
-  }
+  // Search Console mag op twee manieren: een meta-tag in de kop, of een
+  // TXT-record bij de registrar. Het tweede dekt het hele domein en laat in
+  // de pagina niets achter, dus dan staat hier alleen een aantekening.
+  if (site.searchConsole) ok(`Search Console: ${site.searchConsole}`);
+  else if (site.googleVerificatie) ok('Search Console-code staat in de kop van elke pagina');
+  else let_op('nog geen Search Console — zonder die koppeling weet je niet of Google je ziet');
 }
 
 /* ---------------------------------------------------------------
