@@ -12,11 +12,12 @@ import {
   magProberen, misLukt, gelukt
 } from './beheer-auth.mjs';
 
-const json = (res, waarde, status = 200) => {
+const json = (res, waarde, status = 200, extra = {}) => {
   res.writeHead(status, {
     'content-type': 'application/json; charset=utf-8',
     'cache-control': 'no-store',
-    'x-content-type-options': 'nosniff'
+    'x-content-type-options': 'nosniff',
+    ...extra
   }).end(JSON.stringify(waarde));
 };
 
@@ -36,7 +37,33 @@ const ipVan = (req) =>
   String(req.headers['x-forwarded-for'] || '').split(',')[0].trim() ||
   req.socket.remoteAddress || 'onbekend';
 
+/* De buitenste laag vangt alles af.
+   Reden: de verzoekafhandelaar in server.js is async, en een fout die daar
+   ontsnapt is in Node geen 500 maar een afgebroken proces. Eén te groot
+   verzoek, of een module die niet laadt, zou dus de hele site omleggen.
+   Hieronder mag dus van alles misgaan; de bezoeker krijgt een 500 en de
+   server blijft staan. */
 export async function beheerRoute(req, res, url) {
+  try {
+    await route(req, res, url);
+  } catch (err) {
+    console.error('beheer: ' + err.message);
+    if (res.headersSent) { res.end(); return; }
+    /* Bij een te groot verzoek stoppen we met lezen. De rest staat dan nog in
+       de leiding, dus we zeggen er met "connection: close" bij dat deze
+       verbinding klaar is. Zonder dat probeert de browser hem opnieuw te
+       gebruiken en krijgt hij een afgebroken verbinding voor zijn volgende
+       vraag — wat eruitziet alsof de site plat ligt terwijl hij gewoon draait. */
+    if (err.message === 'te groot') {
+      json(res, { fout: 'Dat verzoek is te groot.' }, 413, { connection: 'close' });
+      req.destroy();
+      return;
+    }
+    json(res, { fout: 'Er ging iets mis bij het beheer.' }, 500);
+  }
+}
+
+async function route(req, res, url) {
   const pad = url.pathname.replace(/^\/api\/beheer\/?/, '');
 
   if (!beheerKan) {

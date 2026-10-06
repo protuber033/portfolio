@@ -123,7 +123,19 @@ function inpakken(rel, ext, inhoud, accepteert) {
   return { vorm, inhoud: pakket.get(sleutel) };
 }
 
-createServer(async (req, res) => {
+/* Node stopt bij een fout die uit een async verzoekafhandelaar ontsnapt het
+   hele proces. Eén verkeerd verzoek zou de site dus platleggen. Daarom gaat
+   alles door deze mantel heen: wat er ook misgaat, de bezoeker krijgt een 500
+   en de server blijft staan. */
+createServer((req, res) => {
+  afhandelen(req, res).catch((err) => {
+    console.error('verzoek mislukt: ' + err.message);
+    if (!res.headersSent) res.writeHead(500, { 'content-type': TYPES['.txt'] });
+    res.end('Er ging iets mis.');
+  });
+}).listen(PORT, () => console.log('Portfolio draait op poort ' + PORT));
+
+async function afhandelen(req, res) {
   // www en zonder www zijn voor een zoekmachine twee adressen met dezelfde
   // inhoud. We sturen www door, dan is er één versie die meetelt.
   const host = String(req.headers.host || '');
@@ -193,4 +205,4 @@ createServer(async (req, res) => {
       res.writeHead(404, { 'content-type': TYPES['.txt'] }).end('Niet gevonden');
     }
   }
-}).listen(PORT, () => console.log('Portfolio draait op poort ' + PORT));
+}

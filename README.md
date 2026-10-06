@@ -87,6 +87,7 @@ Wat hij nakijkt, en waarom elk punt erin staat:
 | shellscripts hebben LF | met CRLF weigert bash ze op Linux |
 | `/api/beheer` vraagt eerst om inloggen | daarachter zit je mailbox |
 | de beheerpagina staat op noindex | een postvak hoort niet in Google |
+| een te groot verzoek legt de server niet om | een fout uit een async afhandelaar stopt in Node het hele proces |
 
 Na een verse clone staat de hook er niet, want die gaat niet mee in git:
 

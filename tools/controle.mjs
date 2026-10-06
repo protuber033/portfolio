@@ -241,6 +241,27 @@ await new Promise((klaar) => {
       fout(`leeg wachtwoord: geen antwoord (${e.message})`);
     }
 
+    /* Een fout die uit de async afhandelaar ontsnapt stopt in Node het hele
+       proces. Een te groot verzoek was precies zo'n fout: één curl van een
+       vreemde en de site lag eruit. Dus toetsen we het elke keer opnieuw —
+       niet of de fout netjes is, maar of de server er daarna nog staat. */
+    try {
+      const reus = await fetch(basis + '/api/beheer/inloggen', {
+        method: 'POST',
+        headers: { 'content-type': 'application/json' },
+        body: JSON.stringify({ wachtwoord: 'a'.repeat(1024 * 1024) }),
+        signal: AbortSignal.timeout(10000)
+      });
+      const daarna = await fetch(basis + '/', { signal: AbortSignal.timeout(8000) });
+      if (reus.status >= 400 && daarna.status === 200) {
+        ok(`een te groot verzoek legt de server niet om (${reus.status}, site daarna ${daarna.status})`);
+      } else {
+        fout(`te groot verzoek: kreeg ${reus.status}, site daarna ${daarna.status}`);
+      }
+    } catch (e) {
+      fout(`te groot verzoek: de server antwoordde niet meer (${e.message})`);
+    }
+
     // tekst hoort ingepakt over de lijn te gaan
     try {
       const a = await fetch(basis + '/', { headers: { 'accept-encoding': 'gzip' }, signal: AbortSignal.timeout(8000) });
