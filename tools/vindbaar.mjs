@@ -55,35 +55,22 @@ export function vindbaar({ site, projecten, esc, zonderVersie }) {
 
   const alleTechniek = [...new Set(projecten.flatMap((p) => (p.techniek || []).map(zonderVersie)))].sort();
 
-  const persoon = {
-    '@type': 'Person',
-    '@id': abs('#samih'),
-    name: site.naam,
-    givenName: 'Samih',
-    familyName: 'Tichtti',
-    jobTitle: 'Webdeveloper — front-end en back-end',
-    description: site.onderkop,
-    url: abs(''),
-    email: `mailto:${site.email}`,
-    sameAs: [site.github],
-    knowsLanguage: ['nl', 'en'],
-    knowsAbout: alleTechniek,
-    alumniOf: { '@type': 'CollegeOrUniversity', name: 'Hogeschool van Amsterdam' },
-    worksFor: { '@id': abs('#bedrijf') },
-    address: { '@type': 'PostalAddress', addressLocality: site.plaats, addressCountry: 'NL' }
-  };
-
+  /* Het bedrijf is de afzender, niet een persoon.
+     Hier stond ook een Person met naam, voornaam, achternaam en opleiding.
+     Die is eruit: de site presenteert zich als bedrijf, en een Person-blok
+     met een bedrijfsnaam erin zou onzin zijn die Google ook nog gelooft.
+     Wat de persoon kon dragen — de talen, de vakgebieden, de plaats — staat
+     nu bij het bedrijf, waar het net zo goed thuishoort. */
   const bedrijf = {
     '@type': 'ProfessionalService',
     '@id': abs('#bedrijf'),
     name: site.bedrijf,
-    alternateName: site.naam,
     description: site.onderkop,
     url: abs(''),
     email: `mailto:${site.email}`,
     image: abs('img/kozijnfabriek-1.webp'),
-    founder: { '@id': abs('#samih') },
-    employee: { '@id': abs('#samih') },
+    sameAs: [site.github],
+    knowsLanguage: ['nl', 'en'],
     priceRange: 'Op aanvraag',
     address: { '@type': 'PostalAddress', addressLocality: site.plaats, addressCountry: 'NL' },
     areaServed: (site.regio || []).map((r) => ({ '@type': 'Place', name: r })),
@@ -110,8 +97,8 @@ export function vindbaar({ site, projecten, esc, zonderVersie }) {
       abstract: p.eenRegel,
       url: abs(`werk/${p.id}/`),
       inLanguage: 'nl-NL',
-      author: { '@id': abs('#samih') },
-      creator: { '@id': abs('#samih') },
+      author: { '@id': abs('#bedrijf') },
+      creator: { '@id': abs('#bedrijf') },
       dateCreated: p.eersteDag,
       dateModified: p.laatsteDag,
       keywords: (p.tags || []).concat((p.techniek || []).map(zonderVersie)).join(', '),
@@ -157,5 +144,5 @@ Sitemap: ${abs('sitemap.xml')}
     return { sitemap, robots };
   }
 
-  return { abs, kort, ldJson, hoofd, persoon, bedrijf, projectLd, wegwijzers };
+  return { abs, kort, ldJson, hoofd, bedrijf, projectLd, wegwijzers };
 }

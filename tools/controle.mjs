@@ -27,7 +27,11 @@ const kop = (t) => console.log(`\n${t}`);
    iets klaagt.
 ---------------------------------------------------------------- */
 kop('Gegevens');
-const projecten = JSON.parse(readFileSync(join(WORTEL, 'data/projects.json'), 'utf8'));
+const alleProjecten = JSON.parse(readFileSync(join(WORTEL, 'data/projects.json'), 'utf8'));
+// Projecten in de wachtkamer komen niet op de site, dus er is ook geen
+// pagina van. Alles wat de gepubliceerde site nakijkt moet die overslaan,
+// anders zoekt de controle een bestand dat de bouw bewust niet maakt.
+const projecten = alleProjecten.filter((p) => !p.concept);
 const site = JSON.parse(readFileSync(join(WORTEL, 'data/site.json'), 'utf8'));
 
 const statussen = new Set(site.groepen.map((g) => g.sleutel));
@@ -53,12 +57,19 @@ for (const p of projecten) {
   }
   if (p.url && !/^https?:\/\//.test(p.url)) fout(`${waar}: url begint niet met http`);
   if (p.url && !p.urlLabel) fout(`${waar}: url zonder urlLabel, dan krijgt de knop geen tekst`);
-  if (p.concept) let_op(`${waar}: staat nog als concept, komt niet op de site`);
   if (!p.beelden?.length && !p.tegelTekst) {
     let_op(`${waar}: geen schermen en geen vervangende tekst, de tegel blijft leeg`);
   }
 }
 if (!fouten) ok(`${projecten.length} projecten, alle velden aanwezig`);
+
+// De wachtkamer wordt verder nergens gecontroleerd — die projecten hebben
+// hun teksten nog niet en dat is de bedoeling. Wel even melden, anders
+// vergeet je dat er iets klaarstaat.
+const wachtkamer = alleProjecten.filter((p) => p.concept);
+if (wachtkamer.length) {
+  let_op(`${wachtkamer.length} in de wachtkamer, nog niet op de site: ${wachtkamer.map((p) => p.naam).join(', ')}`);
+}
 
 /* ---------------------------------------------------------------
    2. Beelden: bestaat alles waar de pagina naar wijst?

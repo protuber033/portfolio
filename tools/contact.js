@@ -104,7 +104,7 @@
       : 'Je site staat er goed voor. Als je toch iets wilt laten bouwen dat er nu nog niet is — een dashboard, een koppeling, iets dat werk uit handen neemt — dan kijk ik graag mee.';
 
     var onderwerp = 'Sitescan van ' + k.adres + ' (score ' + k.score + ')';
-    var tekst = 'Hoi Samih,\n\nIk heb mijn site laten scannen op eemland-digital.nl:\n' +
+    var tekst = 'Goedendag,\n\nIk heb mijn site laten scannen op eemland-digital.nl:\n' +
       k.adres + ' — score ' + k.score + '/100\n\n';
     if (werk.length) {
       tekst += 'Deze punten kwamen eruit:\n';

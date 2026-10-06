@@ -21,9 +21,8 @@ export function contactPagina(ctx) {
         inLanguage: 'nl-NL',
         description: c.lead,
         mainEntity: { '@id': abs('#bedrijf') },
-        about: { '@id': abs('#samih') }
+        about: { '@id': abs('#bedrijf') }
       },
-      ctx.persoon,
       ctx.bedrijf,
       {
         '@type': 'BreadcrumbList',
@@ -39,7 +38,7 @@ export function contactPagina(ctx) {
 <html lang="nl">
 <head>
 ${hoofd({
-    titel: `Contact — ${site.naam}, ${site.bedrijf}`,
+    titel: `Contact — ${site.bedrijf}, Amersfoort`,
     omschrijving: 'Plak je website en ik meet hem live door: snelheid, gewicht, mobiel en wat Google ervan ziet. Daarna weet je meteen of het zin heeft om te bellen.',
     pad: 'contact/'
   })}
@@ -138,7 +137,7 @@ ${ldJson(ld)}
 
 <footer class="voet">
   <div class="binnen">
-    <p>De scan kijkt alleen naar de openbare voorkant van een site, net als een zoekmachine. ${esc(site.naam)} · ${esc(site.bedrijf)} · ${esc(site.email)}.</p>
+    <p>De scan kijkt alleen naar de openbare voorkant van een site, net als een zoekmachine. ${esc(site.bedrijf)} · ${esc(site.email)}.</p>
     <p class="bijgewerkt"><a href="/#werk">Terug naar alle ${aantal} projecten</a></p>
   </div>
 </footer>

@@ -380,7 +380,7 @@
 
       var adres = 'mailto:' + H.email +
         '?subject=' + encodeURIComponent('Via de keuzehulp op je site') +
-        '&body=' + encodeURIComponent('Hoi Samih,\n\n' + regels.join('\n') + '\n\nKunnen we hier eens over praten?\n\n');
+        '&body=' + encodeURIComponent('Goedendag,\n\n' + regels.join('\n') + '\n\nKunnen we hier eens over praten?\n\n');
       lijf.querySelector('#hulp-mail').setAttribute('href', adres);
 
       [].forEach.call(lijf.querySelectorAll('[data-project]'), function (k) {

@@ -106,7 +106,7 @@ const contactJs = readFileSync(join(WORTEL, 'tools/contact.js'), 'utf8');
 /* ---------- vindbaar worden ----------
    Titels, canonicals, JSON-LD, sitemap en robots.txt staan in tools/vindbaar.mjs.
    Hier halen we alleen op wat we nodig hebben. */
-const { abs, kort, ldJson, hoofd, persoon, bedrijf, projectLd, wegwijzers } =
+const { abs, kort, ldJson, hoofd, bedrijf, projectLd, wegwijzers } =
   vindbaar({ site, projecten, esc, zonderVersie });
 
 const middelen = `<link rel="preconnect" href="https://fonts.googleapis.com">
@@ -302,7 +302,7 @@ ${site.traject.stappen.map((st, i) => `          <li><span class="nr">${i + 1}</
 
 <footer class="voet">
   <div class="binnen">
-    <p>Alle schermen op deze pagina zijn echte screenshots van de draaiende projecten. Klantgegevens zijn onleesbaar gemaakt. ${esc(site.naam)} · ${esc(site.bedrijf)} · ${esc(site.opleiding)}.</p>
+    <p>Alle schermen op deze pagina zijn echte screenshots van de draaiende projecten. Klantgegevens zijn onleesbaar gemaakt. ${esc(site.bedrijf)} · Amersfoort.</p>
     <p class="bijgewerkt">Bijgewerkt ${new Date().toLocaleDateString('nl-NL', { day: 'numeric', month: 'long', year: 'numeric' })} · ${aantal} projecten</p>
   </div>
 </footer>
@@ -374,7 +374,6 @@ const homeLd = {
       inLanguage: 'nl-NL',
       publisher: { '@id': abs('#bedrijf') }
     },
-    persoon,
     bedrijf,
     {
       '@type': 'CollectionPage',
@@ -382,7 +381,7 @@ const homeLd = {
       url: abs(''),
       name: 'Het werk',
       isPartOf: { '@id': abs('#site') },
-      about: { '@id': abs('#samih') },
+      about: { '@id': abs('#bedrijf') },
       mainEntity: {
         '@type': 'ItemList',
         name: 'Projecten',
@@ -422,7 +421,7 @@ const artifact = `${kopstuk}\n${binnenkant}\n${script}\n`;
    komen op deze pagina uit. */
 function werkPagina(p) {
   const anderen = projecten.filter((q) => q.id !== p.id);
-  const titel = `${p.naam} — project van ${site.naam}`;
+  const titel = `${p.naam} — werk van ${site.bedrijf}`;
   const omschrijving = kort(`${p.eenRegel} ${p.voorWie}`);
   const beeld = p.beelden && p.beelden.length
     ? `img/${p.beelden[0].bestand}`
@@ -431,7 +430,6 @@ function werkPagina(p) {
     '@context': 'https://schema.org',
     '@graph': [
       projectLd(p),
-      persoon,
       bedrijf,
       {
         '@type': 'BreadcrumbList',
@@ -487,7 +485,7 @@ ${uitlegVoor(new Set((p.techniek || []).map(zonderVersie)))}
 
 <footer class="voet">
   <div class="binnen">
-    <p>Alle schermen hierboven zijn echte screenshots van het draaiende project. Klantgegevens zijn onleesbaar gemaakt. ${esc(site.naam)} · ${esc(site.bedrijf)} · ${esc(site.email)}.</p>
+    <p>Alle schermen hierboven zijn echte screenshots van het draaiende project. Klantgegevens zijn onleesbaar gemaakt. ${esc(site.bedrijf)} · ${esc(site.email)}.</p>
     <p class="bijgewerkt"><a href="/#werk">Terug naar alle ${aantal} projecten</a></p>
   </div>
 </footer>
@@ -506,7 +504,7 @@ writeFileSync(join(WORTEL, 'robots.txt'), robots);
 const contactMap = join(WORTEL, 'contact');
 mkdirSync(contactMap, { recursive: true });
 writeFileSync(join(contactMap, 'index.html'), contactPagina({
-  site, esc, vet, hoofd, middelen, ldJson, abs, persoon, bedrijf, contactCss, contactJs, aantal
+  site, esc, vet, hoofd, middelen, ldJson, abs, bedrijf, contactCss, contactJs, aantal
 }));
 
 const werkMap = join(WORTEL, 'werk');

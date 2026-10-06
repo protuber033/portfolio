@@ -1,5 +1,248 @@
 [
   {
+    "status": "live",
+    "statusLabel": "Live · eigen concept",
+    "periode": "september 2026",
+    "eersteDag": "2026-09-30",
+    "laatsteDag": "2026-09-30",
+    "github": "https://github.com/protuber033/portfolio",
+    "urlLabel": "Probeer de demo",
+    "id": "kaapnoord",
+    "naam": "Kaap Noord",
+    "eenRegel": "Een webshop waar je echt doorheen kunt lopen, tot en met de betaling.",
+    "voorWie": "Een bedachte koffiebranderij, gebouwd om te laten zien hoe online verkopen er van binnen uitziet. Niet alleen het winkeltje, maar ook wat er misgaat: voorraad die op is, een code die niet bestaat, een betaling die afbreekt.",
+    "voorbeeld": "Iemand legt twee zakken in zijn mand, kiest hoe ze gemalen moeten worden en typt een kortingscode in. Bij het afrekenen kiest hij tussen post, bakfiets of afhalen — boven de drempel vervallen de verzendkosten vanzelf. Daarna komt een nagebootste iDEAL-stap waarin je zelf mag kiezen of de betaling lukt. Kiest hij “annuleren”, dan blijft zijn mand netjes staan en gaat er geen voorraad af.",
+    "doet": [
+      "Winkelwagen met **maling per zak**, dus dezelfde koffie twee keer met een andere keuze.",
+      "Voorraad die live meeloopt en pas afgaat bij een **geslaagde** betaling.",
+      "Kortingscodes met echte controle — een verzonnen code wordt geweigerd.",
+      "Bezorgkosten met een drempel voor gratis verzenden.",
+      "Btw wordt eruit gerekend en apart getoond, zoals het hoort bij een Nederlandse prijs."
+    ],
+    "stappen": [
+      "Koffie kiezen",
+      "Maling en aantal",
+      "Mand en kortingscode",
+      "Bezorging kiezen",
+      "Gegevens invullen",
+      "iDEAL-stap",
+      "Bevestiging met bon"
+    ],
+    "techniek": [
+      "Node 22",
+      "Server-side rekenen",
+      "Sessies per bezoeker",
+      "SVG",
+      "Railway"
+    ],
+    "tags": [
+      "website",
+      "software"
+    ],
+    "url": "https://demos-production-4ca7.up.railway.app/koffie/",
+    "besloten": "Verzonnen bedrijf — de site is echt, de klant niet.",
+    "tegelTekst": "Kaap Noord\nwebshop",
+    "tegel": "t-kaapnoord.webp",
+    "beelden": [
+      {
+        "bestand": "kaapnoord-1.webp",
+        "titel": "de winkel",
+        "bijschrift": "Warm en op papier — bewust het tegenovergestelde van een dashboard.",
+        "alt": "Homepage van koffiebranderij Kaap Noord met een getekende kop koffie en de kop Koffie die nog naar de brander ruikt.",
+        "licht": 81
+      },
+      {
+        "bestand": "kaapnoord-2.webp",
+        "titel": "de koffiekaart",
+        "bijschrift": "Elke koffie een eigen getekende zak, geen stockfoto.",
+        "alt": "Raster met koffiesoorten, elk met een getekende zak in een eigen kleur, prijs en voorraad.",
+        "licht": 84
+      },
+      {
+        "bestand": "kaapnoord-3.webp",
+        "titel": "per soort",
+        "bijschrift": "Herkomst, hoogte, proces en brandingsgraad in één blik.",
+        "alt": "Productpaneel met herkomst, hoogte, proces, een brandingsmeter en keuzeknoppen voor de maling.",
+        "licht": 86
+      }
+    ],
+    "bereikbaar": true,
+    "gecontroleerd": "2 okt 2026"
+  },
+  {
+    "status": "live",
+    "statusLabel": "Live · eigen concept",
+    "periode": "september 2026",
+    "eersteDag": "2026-09-30",
+    "laatsteDag": "2026-09-30",
+    "github": "https://github.com/protuber033/portfolio",
+    "urlLabel": "Probeer de demo",
+    "id": "vandijk",
+    "naam": "Van Dijk Installatie",
+    "eenRegel": "Een klantportaal waarin je zelf kunt proberen of je bij andermans dossier komt.",
+    "voorWie": "Een bedacht installatiebedrijf. Het laat zien wat een portaal echt moet doen: niet mooie schermen, maar sluitende afspraken over wie wat mag zien. Er zitten drie accounts in — twee klanten en een medewerker.",
+    "voorbeeld": "Log in als Marieke en je ziet je eigen offertes, facturen en onderhoudsrapporten. In het blok “probeer het zelf” vraag je vervolgens het dossier van Hotel De Eemhof op. Dat krijg je niet, en je ziet precies waarom. Log daarna in als monteur en dezelfde vraag wordt wél beantwoord.",
+    "doet": [
+      "Rechten worden **op de server** bepaald, niet in het scherm verstopt.",
+      "Een vervalst dossiernummer in een verzoek wordt genegeerd.",
+      "Fout wachtwoord en onbekend adres geven dezelfde melding, zodat je niet kunt aftasten welke adressen bestaan.",
+      "Offertes ter plekke accepteren of afwijzen.",
+      "Een storing melden die meteen als afspraak in het dossier komt."
+    ],
+    "stappen": [
+      "Inloggen",
+      "Je eigen dossier zien",
+      "Een offerte beoordelen",
+      "Proberen wat niet van jou is",
+      "De weigering lezen",
+      "Als medewerker opnieuw kijken"
+    ],
+    "techniek": [
+      "Node 22",
+      "Sessies",
+      "Rechten per rol",
+      "Railway"
+    ],
+    "tags": [
+      "software"
+    ],
+    "url": "https://demos-production-4ca7.up.railway.app/portaal/",
+    "besloten": "Verzonnen bedrijf — de site is echt, de klant niet.",
+    "tegelTekst": "Van Dijk\nklantportaal",
+    "tegel": "t-vandijk.webp",
+    "beelden": [
+      {
+        "bestand": "vandijk-1.webp",
+        "titel": "inloggen",
+        "bijschrift": "Drie accounts klaar: twee klanten en een monteur.",
+        "alt": "Inlogscherm van het klantportaal met drie voorgevulde proefaccounts eronder.",
+        "licht": 52
+      }
+    ],
+    "bereikbaar": true,
+    "gecontroleerd": "2 okt 2026"
+  },
+  {
+    "status": "live",
+    "statusLabel": "Live · eigen concept",
+    "periode": "september 2026",
+    "eersteDag": "2026-09-30",
+    "laatsteDag": "2026-09-30",
+    "github": "https://github.com/protuber033/portfolio",
+    "urlLabel": "Probeer de demo",
+    "id": "wilgenhof",
+    "naam": "Hovenier Wilgenhof",
+    "eenRegel": "Klussen over ploegen verdelen, met een kaart en een reistijd die meerekent.",
+    "voorWie": "Een bedacht hoveniersbedrijf met vier ploegen. Voor iedereen die zijn dag nu nog op een whiteboard of in een groepsapp verdeelt en wil zien wat het alternatief is.",
+    "voorbeeld": "Je sleept een klus naar Ploeg Noord in de ochtend. De server rekent meteen de rit uit vanaf de loods langs alle klussen en weer terug, en zegt of dat dagdeel nog past of hoeveel minuten je tekortkomt. De kaart tekent de rit mee. Met één knop verdeelt hij alles wat nog openstaat over de ploeg die er het dichtst langs rijdt.",
+    "doet": [
+      "Slepen met de muis, of aantikken en het vak aanwijzen op een telefoon.",
+      "Reistijd en werktijd samen tegen de lengte van het dagdeel — **te vol is meteen zichtbaar**.",
+      "Automatisch verdelen op wie er het dichtst langs rijdt, spoed eerst.",
+      "De volgorde binnen een rit aanpassen, de kaart volgt.",
+      "De kaart wordt zelf getekend uit de coördinaten, dus er hangt geen kaartendienst van derden aan."
+    ],
+    "stappen": [
+      "Openstaande klussen bekijken",
+      "Naar een ploeg slepen",
+      "Rit en reistijd zien meerekenen",
+      "Volgorde bijstellen",
+      "De rest automatisch laten verdelen"
+    ],
+    "techniek": [
+      "Node 22",
+      "SVG-kaart",
+      "Afstandsberekening",
+      "Slepen en neerzetten",
+      "Railway"
+    ],
+    "tags": [
+      "software",
+      "mobiel"
+    ],
+    "url": "https://demos-production-4ca7.up.railway.app/planning/",
+    "besloten": "Verzonnen bedrijf — de site is echt, de klant niet.",
+    "tegelTekst": "Wilgenhof\ndagplanning",
+    "tegel": "t-wilgenhof.webp",
+    "beelden": [
+      {
+        "bestand": "wilgenhof-1.webp",
+        "titel": "de dag verdelen",
+        "bijschrift": "Sleep een klus naar een ploeg; de reistijd rekent meteen mee.",
+        "alt": "Planningsscherm met een kolom openstaande klussen links en vier ploegen met ochtend- en middagvakken ernaast.",
+        "licht": 89
+      },
+      {
+        "bestand": "wilgenhof-2.webp",
+        "titel": "past het nog?",
+        "bijschrift": "Werk plus rijden tegen de lengte van het dagdeel.",
+        "alt": "Dagdeelvak met een capaciteitsbalk en de tekst drie uur vijftig werk plus achttien minuten rijden, tweeentwintig minuten over.",
+        "licht": 90
+      }
+    ],
+    "bereikbaar": true,
+    "gecontroleerd": "2 okt 2026"
+  },
+  {
+    "status": "live",
+    "statusLabel": "Live · eigen concept",
+    "periode": "september 2026",
+    "eersteDag": "2026-09-30",
+    "laatsteDag": "2026-09-30",
+    "github": "https://github.com/protuber033/portfolio",
+    "urlLabel": "Probeer de demo",
+    "id": "kempen",
+    "naam": "Kempen Transport",
+    "eenRegel": "Een dashboard dat uit zichzelf bijwerkt, zonder de pagina te verversen.",
+    "voorWie": "Een bedacht transportbedrijf. Voor wie een scherm aan de muur wil dat altijd klopt, en wil weten hoe dat kan zonder dat er elke seconde iets wordt opgevraagd.",
+    "voorbeeld": "Je opent het dashboard en de cijfers beginnen te lopen: ritten die binnenkomen, stiptheid die meebeweegt, wagens die van laden naar onderweg gaan. De pagina vraagt zelf niets op — de server houdt één verbinding open en duwt er een regel doorheen zodra er iets gebeurt. Zet je twee tabbladen naast elkaar, dan lopen ze gelijk.",
+    "doet": [
+      "Eén open verbinding in plaats van elke paar seconden opnieuw vragen.",
+      "Cijfers, grafiek en meldingen bewegen **samen** mee.",
+      "Valt de verbinding weg, dan herstelt hij zichzelf en zegt het scherm dat eerlijk.",
+      "Kijkt er niemand meer, dan stopt de simulatie vanzelf — geen werk voor niets.",
+      "Status draagt nooit alleen kleur: er staat altijd een teken en een woord bij."
+    ],
+    "stappen": [
+      "Dashboard openen",
+      "Verbinding komt tot stand",
+      "Ritten komen binnen",
+      "Grafiek loopt mee",
+      "Tweede tabblad ernaast"
+    ],
+    "techniek": [
+      "Node 22",
+      "Server-sent events",
+      "SVG-grafiek",
+      "Railway"
+    ],
+    "tags": [
+      "software"
+    ],
+    "url": "https://demos-production-4ca7.up.railway.app/vloot/",
+    "besloten": "Verzonnen bedrijf — de site is echt, de klant niet.",
+    "tegelTekst": "Kempen\nlive dashboard",
+    "tegel": "t-kempen.webp",
+    "beelden": [
+      {
+        "bestand": "kempen-1.webp",
+        "titel": "het dashboard",
+        "bijschrift": "De cijfers lopen terwijl je kijkt; de pagina vraagt zelf niets op.",
+        "alt": "Donker dashboard met het aantal geleverde ritten als groot getal en daaronder tegels voor stiptheid en wagens onderweg.",
+        "licht": 9
+      },
+      {
+        "bestand": "kempen-2.webp",
+        "titel": "wat er binnenkomt",
+        "bijschrift": "Elke regel verschijnt op het moment dat het gebeurt.",
+        "alt": "Lijst met meldingen van geloste ritten en statuswisselingen, elk met een tijdstip.",
+        "licht": 8
+      }
+    ],
+    "bereikbaar": true,
+    "gecontroleerd": "2 okt 2026"
+  },
+  {
     "id": "eemland",
     "naam": "Eemland Boekt",
     "status": "live",
@@ -50,6 +293,207 @@
       "Factuur eruit",
       "Kwartaalcijfers",
       "Btw-aangifte"
+    ]
+  },
+  {
+    "id": "funstudios",
+    "naam": "Fun Studios",
+    "status": "live",
+    "statusLabel": "Live online",
+    "map": "C:/Users/mstic/Desktop/funstudios",
+    "periode": "september 2026",
+    "eersteDag": "2026-09-07",
+    "laatsteDag": "2026-09-22",
+    "eenRegel": "Eventsite met boekingsflow: photo booths, low fog en indoor vuurwerk.",
+    "voorWie": "Voor een entertainmentbedrijf: photo booths, 360 booth, low fog, indoor vuurwerk en lichtletters — met een boekingsflow die de aanvragen binnenhaalt.",
+    "voorbeeld": "Iemand plant een bruiloft, klikt op “Plan mijn event” en verstuurt het formulier. Hij krijgt meteen een bevestiging in zijn mail. De aanvraag staat op dat moment al in het adminpaneel — ook als het mailen hapert, raakt er niets kwijt.",
+    "doet": [
+      "Offerteformulier dat opslaat **én** mailt, met bevestiging naar de klant.",
+      "Adminpaneel waar elke aanvraag binnenkomt.",
+      "Foto's worden automatisch bijgesneden en geoptimaliseerd.",
+      "Animaties die de site niet traag maken.",
+      "Projectenpagina en Instagram-feed die zichzelf bijwerkt."
+    ],
+    "techniek": [
+      "React 19",
+      "Vite",
+      "Tailwind 4",
+      "Motion",
+      "Express",
+      "sharp"
+    ],
+    "tags": [
+      "website"
+    ],
+    "url": "https://www.funstudios.nl",
+    "urlLabel": "Open de site",
+    "besloten": null,
+    "tegel": "t-funstudios.webp",
+    "beelden": [
+      {
+        "bestand": "funstudios-1.webp",
+        "titel": "homepage",
+        "bijschrift": "Opent met echte foto's van eerdere events.",
+        "alt": "Donkere homepage met de kop Wij maken jouw event onvergetelijk en zwevende polaroidfoto's.",
+        "licht": 25
+      },
+      {
+        "bestand": "funstudios-2.webp",
+        "titel": "projecten",
+        "bijschrift": "Uitgelichte projecten.",
+        "alt": "Sectie Dit hebben we laatst gedaan met een raster van eventfoto's.",
+        "licht": 16
+      },
+      {
+        "bestand": "funstudios-3.webp",
+        "titel": "sectie 3",
+        "bijschrift": "Verder op de pagina.",
+        "alt": "Schermafbeelding van Fun Studios.",
+        "licht": 18
+      }
+    ],
+    "bereikbaar": true,
+    "gecontroleerd": "2 okt 2026",
+    "stappen": [
+      "Bezoeker kiest een dienst",
+      "Formulier invullen",
+      "Bevestiging in de mail",
+      "Aanvraag in het adminpaneel",
+      "Offerte terug"
+    ]
+  },
+  {
+    "id": "glacio",
+    "naam": "Glacio Klimaattechniek",
+    "status": "live",
+    "statusLabel": "Live · eigen concept",
+    "map": null,
+    "periode": "augustus – september 2026",
+    "eersteDag": "2026-08-28",
+    "laatsteDag": "2026-09-16",
+    "eenRegel": "Eigen concept: hoe een installatiebedrijf zijn site zou kunnen inrichten.",
+    "voorWie": "Zelf bedacht en gebouwd voor een verzonnen airco-installateur. Geen klantopdracht, maar een uitgewerkt voorbeeld van hoe zo'n bedrijf online kan werken: keuzehulp, vaste tarieven en een intake zonder telefoontje.",
+    "voorbeeld": "Een bezoeker zoekt koeling voor de slaapkamer, beantwoordt drie vragen in de keuzehulp en ziet welke van de acht modellen daarbij passen, met garantie en levertijd erbij. Daarna plant hij meteen een intake — zonder te hoeven bellen.",
+    "doet": [
+      "Keuzehulp die vraagt welke ruimte gekoeld moet worden.",
+      "Acht modellen naast elkaar, met garantie en energielabel.",
+      "**Montage zit in de prijs** — tarieven staan gewoon op de pagina.",
+      "Het hele traject uitgelegd, van eerste contact tot koeling in huis.",
+      "Eén html-bestand, geen bouwstap: laadt vrijwel meteen."
+    ],
+    "techniek": [
+      "Node",
+      "Railway"
+    ],
+    "tags": [
+      "website"
+    ],
+    "url": "https://glacio-site-production.up.railway.app",
+    "urlLabel": "Open de site",
+    "besloten": "Verzonnen bedrijf — de site is echt, de klant niet.",
+    "tegel": "t-glacio.webp",
+    "beelden": [
+      {
+        "bestand": "glacio-1.webp",
+        "titel": "homepage",
+        "bijschrift": "Vaste prijs vooraf, direct zichtbaar.",
+        "alt": "Donkere homepage met de kop Koeling die net zo strak oogt als hij presteert.",
+        "licht": 13
+      },
+      {
+        "bestand": "glacio-2.webp",
+        "titel": "keuzehulp",
+        "bijschrift": "Drie vragen, dan een passend model.",
+        "alt": "Keuzehulp met vragen over de te koelen ruimte naast een lijst favoriete modellen.",
+        "licht": 12
+      },
+      {
+        "bestand": "glacio-3.webp",
+        "titel": "tarieven",
+        "bijschrift": "Geen verrassingen achteraf.",
+        "alt": "Sectie Montage zit in de prijs met tarieven voor jaarlijks onderhoud en een aansluitpakket.",
+        "licht": 13
+      }
+    ],
+    "bereikbaar": true,
+    "gecontroleerd": "2 okt 2026",
+    "github": "protuber033/glacio",
+    "stappen": [
+      "Drie vragen beantwoorden",
+      "Passende modellen zien",
+      "Prijs inclusief montage",
+      "Intake plannen"
+    ]
+  },
+  {
+    "id": "kozijnfabriek",
+    "naam": "Kozijnfabriek Direct",
+    "status": "live",
+    "statusLabel": "Live online",
+    "map": "C:/framescan",
+    "periode": "augustus – september 2026",
+    "eersteDag": "2026-08-22",
+    "laatsteDag": "2026-09-15",
+    "eenRegel": "Gevelfoto erin, offerte eruit — plus een dashboard voor het personeel.",
+    "voorWie": "Voor een kozijnenfabrikant in de regio Amsterdam: een website die zelf offertes voorbereidt, en een dashboard waar het personeel de rest afhandelt.",
+    "voorbeeld": "Een klant typt zijn adres in en uploadt een foto van zijn gevel. Binnen dertig seconden ziet hij welke kozijnen erin zitten en wat vervanging ongeveer kost. Op kantoor staat die aanvraag dan al klaar in het dashboard, klaar om in te plannen voor een inmeting.",
+    "doet": [
+      "De AI herkent de kozijnen op de gevelfoto en **stelt maten voor**.",
+      "Klant kiest zelf materiaal, kleur en beglazing.",
+      "Aanvragen, inmetingen, planning en leveranciersorders op één plek.",
+      "De zakelijke mailbox zit in het dashboard.",
+      "Klanten volgen hun dossier in een eigen portaal."
+    ],
+    "techniek": [
+      "React 19",
+      "Node 22",
+      "Supabase",
+      "Google Gemini",
+      "Google Maps",
+      "Railway"
+    ],
+    "tags": [
+      "software",
+      "website",
+      "ai"
+    ],
+    "url": "https://kozijnfabriekdirect.nl",
+    "urlLabel": "Open de site",
+    "besloten": null,
+    "tegel": "t-kozijnfabriek.webp",
+    "beelden": [
+      {
+        "bestand": "kozijnfabriek-1.webp",
+        "titel": "homepage",
+        "bijschrift": "De klant begint met zijn adres.",
+        "alt": "Homepage met de tekst Scan uw woning in 30 seconden en een formulier voor het adres.",
+        "licht": 94
+      },
+      {
+        "bestand": "kozijnfabriek-2.webp",
+        "titel": "vraag & antwoord",
+        "bijschrift": "Veelgestelde vragen op de pagina zelf.",
+        "alt": "Uitklapbare vragen over de AI-scan, offertes en subsidie.",
+        "licht": 93
+      },
+      {
+        "bestand": "kozijnfabriek-3.webp",
+        "titel": "reviews",
+        "bijschrift": "Reviews van echte klanten — namen bewust onleesbaar.",
+        "alt": "Sectie Wat onze klanten zeggen met drie reviews; de namen eronder zijn onleesbaar gemaakt.",
+        "licht": 94
+      }
+    ],
+    "bereikbaar": true,
+    "gecontroleerd": "2 okt 2026",
+    "stappen": [
+      "Adres invullen",
+      "Gevelfoto uploaden",
+      "AI herkent de kozijnen",
+      "Materiaal en kleur kiezen",
+      "Offerte aanvragen",
+      "Staat klaar in het dashboard",
+      "Inmeting inplannen"
     ]
   },
   {
@@ -121,145 +565,9 @@
       "Speler betaalt met pas of telefoon",
       "Automaat meldt zelf de voorraad",
       "Club ziet de opbrengst"
-    ]
-  },
-  {
-    "id": "funstudios",
-    "naam": "Fun Studios",
-    "status": "live",
-    "statusLabel": "Live online",
-    "map": "C:/Users/mstic/Desktop/funstudios",
-    "periode": "september 2026",
-    "eersteDag": "2026-09-07",
-    "laatsteDag": "2026-09-22",
-    "eenRegel": "Eventsite met boekingsflow: photo booths, low fog en indoor vuurwerk.",
-    "voorWie": "Voor een entertainmentbedrijf: photo booths, 360 booth, low fog, indoor vuurwerk en lichtletters — met een boekingsflow die de aanvragen binnenhaalt.",
-    "voorbeeld": "Iemand plant een bruiloft, klikt op “Plan mijn event” en verstuurt het formulier. Hij krijgt meteen een bevestiging in zijn mail. De aanvraag staat op dat moment al in het adminpaneel — ook als het mailen hapert, raakt er niets kwijt.",
-    "doet": [
-      "Offerteformulier dat opslaat **én** mailt, met bevestiging naar de klant.",
-      "Adminpaneel waar elke aanvraag binnenkomt.",
-      "Foto's worden automatisch bijgesneden en geoptimaliseerd.",
-      "Animaties die de site niet traag maken.",
-      "Projectenpagina en Instagram-feed die zichzelf bijwerkt."
-    ],
-    "techniek": [
-      "React 19",
-      "Vite",
-      "Tailwind 4",
-      "Motion",
-      "Express",
-      "sharp"
-    ],
-    "tags": [
-      "website"
-    ],
-    "url": "https://www.funstudios.nl",
-    "urlLabel": "Open de site",
-    "besloten": null,
-    "tegel": "t-funstudios.webp",
-    "beelden": [
-      {
-        "bestand": "funstudios-1.webp",
-        "titel": "homepage",
-        "bijschrift": "Opent met echte foto's van eerdere events.",
-        "alt": "Donkere homepage met de kop Wij maken jouw event onvergetelijk en zwevende polaroidfoto's.",
-        "licht": 25
-      },
-      {
-        "bestand": "funstudios-2.webp",
-        "titel": "projecten",
-        "bijschrift": "Uitgelichte projecten.",
-        "alt": "Sectie Dit hebben we laatst gedaan met een raster van eventfoto's.",
-        "licht": 16
-      },
-      {
-        "bestand": "funstudios-3.webp",
-        "titel": "sectie 3",
-        "bijschrift": "Verder op de pagina.",
-        "alt": "Schermafbeelding van Fun Studios.",
-        "licht": 18
-      }
     ],
     "bereikbaar": true,
-    "gecontroleerd": "28 sep 2026",
-    "stappen": [
-      "Bezoeker kiest een dienst",
-      "Formulier invullen",
-      "Bevestiging in de mail",
-      "Aanvraag in het adminpaneel",
-      "Offerte terug"
-    ]
-  },
-  {
-    "id": "kozijnfabriek",
-    "naam": "Kozijnfabriek Direct",
-    "status": "live",
-    "statusLabel": "Live online",
-    "map": "C:/framescan",
-    "periode": "augustus – september 2026",
-    "eersteDag": "2026-08-22",
-    "laatsteDag": "2026-09-15",
-    "eenRegel": "Gevelfoto erin, offerte eruit — plus een dashboard voor het personeel.",
-    "voorWie": "Voor een kozijnenfabrikant in de regio Amsterdam: een website die zelf offertes voorbereidt, en een dashboard waar het personeel de rest afhandelt.",
-    "voorbeeld": "Een klant typt zijn adres in en uploadt een foto van zijn gevel. Binnen dertig seconden ziet hij welke kozijnen erin zitten en wat vervanging ongeveer kost. Op kantoor staat die aanvraag dan al klaar in het dashboard, klaar om in te plannen voor een inmeting.",
-    "doet": [
-      "De AI herkent de kozijnen op de gevelfoto en **stelt maten voor**.",
-      "Klant kiest zelf materiaal, kleur en beglazing.",
-      "Aanvragen, inmetingen, planning en leveranciersorders op één plek.",
-      "De zakelijke mailbox zit in het dashboard.",
-      "Klanten volgen hun dossier in een eigen portaal."
-    ],
-    "techniek": [
-      "React 19",
-      "Node 22",
-      "Supabase",
-      "Google Gemini",
-      "Google Maps",
-      "Railway"
-    ],
-    "tags": [
-      "software",
-      "website",
-      "ai"
-    ],
-    "url": "https://kozijnfabriekdirect.nl",
-    "urlLabel": "Open de site",
-    "besloten": null,
-    "tegel": "t-kozijnfabriek.webp",
-    "beelden": [
-      {
-        "bestand": "kozijnfabriek-1.webp",
-        "titel": "homepage",
-        "bijschrift": "De klant begint met zijn adres.",
-        "alt": "Homepage met de tekst Scan uw woning in 30 seconden en een formulier voor het adres.",
-        "licht": 94
-      },
-      {
-        "bestand": "kozijnfabriek-2.webp",
-        "titel": "vraag & antwoord",
-        "bijschrift": "Veelgestelde vragen op de pagina zelf.",
-        "alt": "Uitklapbare vragen over de AI-scan, offertes en subsidie.",
-        "licht": 93
-      },
-      {
-        "bestand": "kozijnfabriek-3.webp",
-        "titel": "reviews",
-        "bijschrift": "Reviews van echte klanten — namen bewust onleesbaar.",
-        "alt": "Sectie Wat onze klanten zeggen met drie reviews; de namen eronder zijn onleesbaar gemaakt.",
-        "licht": 94
-      }
-    ],
-    "bereikbaar": true,
-    "gecontroleerd": "28 sep 2026",
-    "stappen": [
-      "Adres invullen",
-      "Gevelfoto uploaden",
-      "AI herkent de kozijnen",
-      "Materiaal en kleur kiezen",
-      "Offerte aanvragen",
-      "Staat klaar in het dashboard",
-      "Inmeting inplannen"
-    ]
+    "gecontroleerd": "2 okt 2026"
   },
   {
     "id": "courtswap",
@@ -307,7 +615,7 @@
       }
     ],
     "bereikbaar": true,
-    "gecontroleerd": "28 sep 2026",
+    "gecontroleerd": "2 okt 2026",
     "stappen": [
       "Advertentie plaatsen met foto's",
       "Koper vindt hem op de kaart",
@@ -316,67 +624,68 @@
     ]
   },
   {
-    "id": "glacio",
-    "naam": "Glacio Klimaattechniek",
+    "id": "eemlandwerkt",
+    "naam": "Eemlandwerkt",
     "status": "live",
-    "statusLabel": "Live · eigen concept",
+    "statusLabel": "Live online",
     "map": null,
-    "periode": "augustus – september 2026",
-    "eersteDag": "2026-08-28",
-    "laatsteDag": "2026-09-16",
-    "eenRegel": "Eigen concept: hoe een installatiebedrijf zijn site zou kunnen inrichten.",
-    "voorWie": "Zelf bedacht en gebouwd voor een verzonnen airco-installateur. Geen klantopdracht, maar een uitgewerkt voorbeeld van hoe zo'n bedrijf online kan werken: keuzehulp, vaste tarieven en een intake zonder telefoontje.",
-    "voorbeeld": "Een bezoeker zoekt koeling voor de slaapkamer, beantwoordt drie vragen in de keuzehulp en ziet welke van de acht modellen daarbij passen, met garantie en levertijd erbij. Daarna plant hij meteen een intake — zonder te hoeven bellen.",
+    "github": "protuber033/eemlandwerkt",
+    "periode": "december 2025 – januari 2026",
+    "eersteDag": "2025-12-17",
+    "laatsteDag": "2026-01-25",
+    "eenRegel": "Bedrijfssite voor een detacheerder: diensten, vacatures en een eigen inlog.",
+    "voorWie": "Voor een detacheringsbureau dat professionals levert aan overheid, zorg en techniek. De site moet twee kanten bedienen: opdrachtgevers die personeel zoeken, en professionals die een functie zoeken.",
+    "voorbeeld": "Een gemeente zoekt tijdelijk een jurist omgevingsrecht en klikt door naar het Legal Team. Een verpleegkundige komt binnen op de vacaturepagina, filtert op regio en uren, en meldt zich aan. Beide routes komen uit bij dezelfde intake, en achter de inlog zit het dossier.",
     "doet": [
-      "Keuzehulp die vraagt welke ruimte gekoeld moet worden.",
-      "Acht modellen naast elkaar, met garantie en energielabel.",
-      "**Montage zit in de prijs** — tarieven staan gewoon op de pagina.",
-      "Het hele traject uitgelegd, van eerste contact tot koeling in huis.",
-      "Eén html-bestand, geen bouwstap: laadt vrijwel meteen."
+      "Vier vakgebieden met een eigen pagina: legal, zorg, verzuimregie en engineering.",
+      "Vacatures met **filters op vakgebied, regio en uren**.",
+      "Een rekenhulp die vooraf een indicatie geeft.",
+      "Inloggen en account aanmaken voor een eigen omgeving.",
+      "Referenties per sector, met een filter erop."
     ],
     "techniek": [
-      "Node",
-      "Railway"
+      "React 19",
+      "React Router 7",
+      "Tailwind",
+      "Vite",
+      "TypeScript",
+      "PostgreSQL"
     ],
     "tags": [
-      "website"
+      "website",
+      "software"
     ],
-    "url": "https://glacio-site-production.up.railway.app",
+    "url": "https://eemlandwerkt.com",
     "urlLabel": "Open de site",
-    "besloten": "Verzonnen bedrijf — de site is echt, de klant niet.",
-    "tegel": "t-glacio.webp",
+    "besloten": null,
+    "tegel": "t-eemlandwerkt.webp",
+    "tegelTekst": null,
     "beelden": [
       {
-        "bestand": "glacio-1.webp",
-        "titel": "homepage",
-        "bijschrift": "Vaste prijs vooraf, direct zichtbaar.",
-        "alt": "Donkere homepage met de kop Koeling die net zo strak oogt als hij presteert.",
-        "licht": 13
+        "bestand": "eemlandwerkt-1.webp",
+        "titel": "de homepage",
+        "bijschrift": "Rustig en zakelijk, met de cijfers meteen in beeld.",
+        "alt": "Homepage van Eemlandwerkt met de kop Kennis met resultaat en daaronder sinds 1998, 30 plus overheidsinstanties en 500 plus projecten.",
+        "licht": 85
       },
       {
-        "bestand": "glacio-2.webp",
-        "titel": "keuzehulp",
-        "bijschrift": "Drie vragen, dan een passend model.",
-        "alt": "Keuzehulp met vragen over de te koelen ruimte naast een lijst favoriete modellen.",
-        "licht": 12
-      },
-      {
-        "bestand": "glacio-3.webp",
-        "titel": "tarieven",
-        "bijschrift": "Geen verrassingen achteraf.",
-        "alt": "Sectie Montage zit in de prijs met tarieven voor jaarlijks onderhoud en een aansluitpakket.",
-        "licht": 13
+        "bestand": "eemlandwerkt-2.webp",
+        "titel": "de vakgebieden",
+        "bijschrift": "Vier disciplines, elk met een eigen ingang.",
+        "alt": "Vier blokken naast elkaar: Legal Team, Zorgprofessionals, Verzuimregie en Technical Engineering, elk met een korte omschrijving.",
+        "licht": 97,
+        "showcase": false
       }
     ],
-    "bereikbaar": true,
-    "gecontroleerd": "28 sep 2026",
-    "github": "protuber033/glacio",
     "stappen": [
-      "Drie vragen beantwoorden",
-      "Passende modellen zien",
-      "Prijs inclusief montage",
-      "Intake plannen"
-    ]
+      "Binnenkomen op je vakgebied",
+      "Vacature of dienst bekijken",
+      "Indicatie via de rekenhulp",
+      "Intake aanvragen",
+      "Inloggen op je eigen omgeving"
+    ],
+    "bereikbaar": true,
+    "gecontroleerd": "2 okt 2026"
   },
   {
     "id": "remh",
@@ -436,7 +745,7 @@
       }
     ],
     "bereikbaar": true,
-    "gecontroleerd": "28 sep 2026",
+    "gecontroleerd": "2 okt 2026",
     "stappen": [
       "Dienst kiezen",
       "Configureren",
@@ -446,239 +755,31 @@
     ]
   },
   {
-    "status": "live",
-    "statusLabel": "Live · eigen concept",
+    "id": "cfmoto-systeem",
+    "naam": "cfmoto systeem",
+    "status": "prototype",
+    "statusLabel": "Prototype",
+    "map": "C:/Users/mstic/Desktop/Samih Tichtti/cfmoto systeem",
     "periode": "september 2026",
-    "eersteDag": "2026-09-30",
-    "laatsteDag": "2026-09-30",
-    "github": "https://github.com/protuber033/portfolio",
-    "urlLabel": "Probeer de demo",
-    "id": "kaapnoord",
-    "naam": "Kaap Noord",
-    "eenRegel": "Een webshop waar je echt doorheen kunt lopen, tot en met de betaling.",
-    "voorWie": "Een bedachte koffiebranderij, gebouwd om te laten zien hoe online verkopen er van binnen uitziet. Niet alleen het winkeltje, maar ook wat er misgaat: voorraad die op is, een code die niet bestaat, een betaling die afbreekt.",
-    "voorbeeld": "Iemand legt twee zakken in zijn mand, kiest hoe ze gemalen moeten worden en typt een kortingscode in. Bij het afrekenen kiest hij tussen post, bakfiets of afhalen — boven de drempel vervallen de verzendkosten vanzelf. Daarna komt een nagebootste iDEAL-stap waarin je zelf mag kiezen of de betaling lukt. Kiest hij “annuleren”, dan blijft zijn mand netjes staan en gaat er geen voorraad af.",
+    "eersteDag": "2026-09-28",
+    "laatsteDag": "2026-09-28",
+    "eenRegel": "Local-first diagnose-applicatie voor motorfietsen, gebouwd voor een CFMOTO 800MT ES (2026) en uitbreidbaar via voertuigprofielen. Windows 11, browserfrontend (React/TypeScript) + l",
+    "voorWie": "Local-first diagnose-applicatie voor motorfietsen, gebouwd voor een CFMOTO 800MT ES (2026) en uitbreidbaar via voertuigprofielen. Windows 11, browserfrontend (React/TypeScript) + l",
+    "voorbeeld": "Nog te schrijven: wat merkt een gebruiker hiervan in de praktijk?",
     "doet": [
-      "Winkelwagen met **maling per zak**, dus dezelfde koffie twee keer met een andere keuze.",
-      "Voorraad die live meeloopt en pas afgaat bij een **geslaagde** betaling.",
-      "Kortingscodes met echte controle — een verzonnen code wordt geweigerd.",
-      "Bezorgkosten met een drempel voor gratis verzenden.",
-      "Btw wordt eruit gerekend en apart getoond, zoals het hoort bij een Nederlandse prijs."
+      "Nog te schrijven."
     ],
-    "stappen": [
-      "Koffie kiezen",
-      "Maling en aantal",
-      "Mand en kortingscode",
-      "Bezorging kiezen",
-      "Gegevens invullen",
-      "iDEAL-stap",
-      "Bevestiging met bon"
-    ],
-    "techniek": [
-      "Node 22",
-      "Server-side rekenen",
-      "Sessies per bezoeker",
-      "SVG",
-      "Railway"
-    ],
-    "tags": [
-      "website",
-      "software"
-    ],
-    "url": "https://demos-production-4ca7.up.railway.app/koffie/",
-    "besloten": "Verzonnen bedrijf — de site is echt, de klant niet.",
-    "tegelTekst": "Kaap Noord\nwebshop",
-    "tegel": "t-kaapnoord.webp",
-    "beelden": [
-      {
-        "bestand": "kaapnoord-1.webp",
-        "titel": "de winkel",
-        "bijschrift": "Warm en op papier — bewust het tegenovergestelde van een dashboard.",
-        "alt": "Homepage van koffiebranderij Kaap Noord met een getekende kop koffie en de kop Koffie die nog naar de brander ruikt.",
-        "licht": 81
-      },
-      {
-        "bestand": "kaapnoord-2.webp",
-        "titel": "de koffiekaart",
-        "bijschrift": "Elke koffie een eigen getekende zak, geen stockfoto.",
-        "alt": "Raster met koffiesoorten, elk met een getekende zak in een eigen kleur, prijs en voorraad.",
-        "licht": 84
-      },
-      {
-        "bestand": "kaapnoord-3.webp",
-        "titel": "per soort",
-        "bijschrift": "Herkomst, hoogte, proces en brandingsgraad in één blik.",
-        "alt": "Productpaneel met herkomst, hoogte, proces, een brandingsmeter en keuzeknoppen voor de maling.",
-        "licht": 86
-      }
-    ]
-  },
-  {
-    "status": "live",
-    "statusLabel": "Live · eigen concept",
-    "periode": "september 2026",
-    "eersteDag": "2026-09-30",
-    "laatsteDag": "2026-09-30",
-    "github": "https://github.com/protuber033/portfolio",
-    "urlLabel": "Probeer de demo",
-    "id": "vandijk",
-    "naam": "Van Dijk Installatie",
-    "eenRegel": "Een klantportaal waarin je zelf kunt proberen of je bij andermans dossier komt.",
-    "voorWie": "Een bedacht installatiebedrijf. Het laat zien wat een portaal echt moet doen: niet mooie schermen, maar sluitende afspraken over wie wat mag zien. Er zitten drie accounts in — twee klanten en een medewerker.",
-    "voorbeeld": "Log in als Marieke en je ziet je eigen offertes, facturen en onderhoudsrapporten. In het blok “probeer het zelf” vraag je vervolgens het dossier van Hotel De Eemhof op. Dat krijg je niet, en je ziet precies waarom. Log daarna in als monteur en dezelfde vraag wordt wél beantwoord.",
-    "doet": [
-      "Rechten worden **op de server** bepaald, niet in het scherm verstopt.",
-      "Een vervalst dossiernummer in een verzoek wordt genegeerd.",
-      "Fout wachtwoord en onbekend adres geven dezelfde melding, zodat je niet kunt aftasten welke adressen bestaan.",
-      "Offertes ter plekke accepteren of afwijzen.",
-      "Een storing melden die meteen als afspraak in het dossier komt."
-    ],
-    "stappen": [
-      "Inloggen",
-      "Je eigen dossier zien",
-      "Een offerte beoordelen",
-      "Proberen wat niet van jou is",
-      "De weigering lezen",
-      "Als medewerker opnieuw kijken"
-    ],
-    "techniek": [
-      "Node 22",
-      "Sessies",
-      "Rechten per rol",
-      "Railway"
-    ],
+    "techniek": [],
     "tags": [
       "software"
     ],
-    "url": "https://demos-production-4ca7.up.railway.app/portaal/",
-    "besloten": "Verzonnen bedrijf — de site is echt, de klant niet.",
-    "tegelTekst": "Van Dijk\nklantportaal",
-    "tegel": "t-vandijk.webp",
-    "beelden": [
-      {
-        "bestand": "vandijk-1.webp",
-        "titel": "inloggen",
-        "bijschrift": "Drie accounts klaar: twee klanten en een monteur.",
-        "alt": "Inlogscherm van het klantportaal met drie voorgevulde proefaccounts eronder.",
-        "licht": 52
-      }
-    ]
-  },
-  {
-    "status": "live",
-    "statusLabel": "Live · eigen concept",
-    "periode": "september 2026",
-    "eersteDag": "2026-09-30",
-    "laatsteDag": "2026-09-30",
-    "github": "https://github.com/protuber033/portfolio",
-    "urlLabel": "Probeer de demo",
-    "id": "wilgenhof",
-    "naam": "Hovenier Wilgenhof",
-    "eenRegel": "Klussen over ploegen verdelen, met een kaart en een reistijd die meerekent.",
-    "voorWie": "Een bedacht hoveniersbedrijf met vier ploegen. Voor iedereen die zijn dag nu nog op een whiteboard of in een groepsapp verdeelt en wil zien wat het alternatief is.",
-    "voorbeeld": "Je sleept een klus naar Ploeg Noord in de ochtend. De server rekent meteen de rit uit vanaf de loods langs alle klussen en weer terug, en zegt of dat dagdeel nog past of hoeveel minuten je tekortkomt. De kaart tekent de rit mee. Met één knop verdeelt hij alles wat nog openstaat over de ploeg die er het dichtst langs rijdt.",
-    "doet": [
-      "Slepen met de muis, of aantikken en het vak aanwijzen op een telefoon.",
-      "Reistijd en werktijd samen tegen de lengte van het dagdeel — **te vol is meteen zichtbaar**.",
-      "Automatisch verdelen op wie er het dichtst langs rijdt, spoed eerst.",
-      "De volgorde binnen een rit aanpassen, de kaart volgt.",
-      "De kaart wordt zelf getekend uit de coördinaten, dus er hangt geen kaartendienst van derden aan."
-    ],
-    "stappen": [
-      "Openstaande klussen bekijken",
-      "Naar een ploeg slepen",
-      "Rit en reistijd zien meerekenen",
-      "Volgorde bijstellen",
-      "De rest automatisch laten verdelen"
-    ],
-    "techniek": [
-      "Node 22",
-      "SVG-kaart",
-      "Afstandsberekening",
-      "Slepen en neerzetten",
-      "Railway"
-    ],
-    "tags": [
-      "software",
-      "mobiel"
-    ],
-    "url": "https://demos-production-4ca7.up.railway.app/planning/",
-    "besloten": "Verzonnen bedrijf — de site is echt, de klant niet.",
-    "tegelTekst": "Wilgenhof\ndagplanning",
-    "tegel": "t-wilgenhof.webp",
-    "beelden": [
-      {
-        "bestand": "wilgenhof-1.webp",
-        "titel": "de dag verdelen",
-        "bijschrift": "Sleep een klus naar een ploeg; de reistijd rekent meteen mee.",
-        "alt": "Planningsscherm met een kolom openstaande klussen links en vier ploegen met ochtend- en middagvakken ernaast.",
-        "licht": 89
-      },
-      {
-        "bestand": "wilgenhof-2.webp",
-        "titel": "past het nog?",
-        "bijschrift": "Werk plus rijden tegen de lengte van het dagdeel.",
-        "alt": "Dagdeelvak met een capaciteitsbalk en de tekst drie uur vijftig werk plus achttien minuten rijden, tweeentwintig minuten over.",
-        "licht": 90
-      }
-    ]
-  },
-  {
-    "status": "live",
-    "statusLabel": "Live · eigen concept",
-    "periode": "september 2026",
-    "eersteDag": "2026-09-30",
-    "laatsteDag": "2026-09-30",
-    "github": "https://github.com/protuber033/portfolio",
-    "urlLabel": "Probeer de demo",
-    "id": "kempen",
-    "naam": "Kempen Transport",
-    "eenRegel": "Een dashboard dat uit zichzelf bijwerkt, zonder de pagina te verversen.",
-    "voorWie": "Een bedacht transportbedrijf. Voor wie een scherm aan de muur wil dat altijd klopt, en wil weten hoe dat kan zonder dat er elke seconde iets wordt opgevraagd.",
-    "voorbeeld": "Je opent het dashboard en de cijfers beginnen te lopen: ritten die binnenkomen, stiptheid die meebeweegt, wagens die van laden naar onderweg gaan. De pagina vraagt zelf niets op — de server houdt één verbinding open en duwt er een regel doorheen zodra er iets gebeurt. Zet je twee tabbladen naast elkaar, dan lopen ze gelijk.",
-    "doet": [
-      "Eén open verbinding in plaats van elke paar seconden opnieuw vragen.",
-      "Cijfers, grafiek en meldingen bewegen **samen** mee.",
-      "Valt de verbinding weg, dan herstelt hij zichzelf en zegt het scherm dat eerlijk.",
-      "Kijkt er niemand meer, dan stopt de simulatie vanzelf — geen werk voor niets.",
-      "Status draagt nooit alleen kleur: er staat altijd een teken en een woord bij."
-    ],
-    "stappen": [
-      "Dashboard openen",
-      "Verbinding komt tot stand",
-      "Ritten komen binnen",
-      "Grafiek loopt mee",
-      "Tweede tabblad ernaast"
-    ],
-    "techniek": [
-      "Node 22",
-      "Server-sent events",
-      "SVG-grafiek",
-      "Railway"
-    ],
-    "tags": [
-      "software"
-    ],
-    "url": "https://demos-production-4ca7.up.railway.app/vloot/",
-    "besloten": "Verzonnen bedrijf — de site is echt, de klant niet.",
-    "tegelTekst": "Kempen\nlive dashboard",
-    "tegel": "t-kempen.webp",
-    "beelden": [
-      {
-        "bestand": "kempen-1.webp",
-        "titel": "het dashboard",
-        "bijschrift": "De cijfers lopen terwijl je kijkt; de pagina vraagt zelf niets op.",
-        "alt": "Donker dashboard met het aantal geleverde ritten als groot getal en daaronder tegels voor stiptheid en wagens onderweg.",
-        "licht": 9
-      },
-      {
-        "bestand": "kempen-2.webp",
-        "titel": "wat er binnenkomt",
-        "bijschrift": "Elke regel verschijnt op het moment dat het gebeurt.",
-        "alt": "Lijst met meldingen van geloste ritten en statuswisselingen, elk met een tijdstip.",
-        "licht": 8
-      }
-    ]
+    "url": null,
+    "urlLabel": null,
+    "besloten": "Draait lokaal.",
+    "tegel": null,
+    "tegelTekst": "NOG GEEN SCHERMAFBEELDING",
+    "beelden": [],
+    "concept": true
   },
   {
     "id": "kijkvergunning",
@@ -836,68 +937,6 @@
       "Sensor stuurt het antwoord door",
       "Webserver zet het in de database",
       "Uitslag op het scherm"
-    ]
-  },
-  {
-    "id": "eemlandwerkt",
-    "naam": "Eemlandwerkt",
-    "status": "live",
-    "statusLabel": "Live online",
-    "map": null,
-    "github": "protuber033/eemlandwerkt",
-    "periode": "december 2025 – januari 2026",
-    "eersteDag": "2025-12-17",
-    "laatsteDag": "2026-01-25",
-    "eenRegel": "Bedrijfssite voor een detacheerder: diensten, vacatures en een eigen inlog.",
-    "voorWie": "Voor een detacheringsbureau dat professionals levert aan overheid, zorg en techniek. De site moet twee kanten bedienen: opdrachtgevers die personeel zoeken, en professionals die een functie zoeken.",
-    "voorbeeld": "Een gemeente zoekt tijdelijk een jurist omgevingsrecht en klikt door naar het Legal Team. Een verpleegkundige komt binnen op de vacaturepagina, filtert op regio en uren, en meldt zich aan. Beide routes komen uit bij dezelfde intake, en achter de inlog zit het dossier.",
-    "doet": [
-      "Vier vakgebieden met een eigen pagina: legal, zorg, verzuimregie en engineering.",
-      "Vacatures met **filters op vakgebied, regio en uren**.",
-      "Een rekenhulp die vooraf een indicatie geeft.",
-      "Inloggen en account aanmaken voor een eigen omgeving.",
-      "Referenties per sector, met een filter erop."
-    ],
-    "techniek": [
-      "React 19",
-      "React Router 7",
-      "Tailwind",
-      "Vite",
-      "TypeScript",
-      "PostgreSQL"
-    ],
-    "tags": [
-      "website",
-      "software"
-    ],
-    "url": "https://eemlandwerkt.com",
-    "urlLabel": "Open de site",
-    "besloten": null,
-    "tegel": "t-eemlandwerkt.webp",
-    "tegelTekst": null,
-    "beelden": [
-      {
-        "bestand": "eemlandwerkt-1.webp",
-        "titel": "de homepage",
-        "bijschrift": "Rustig en zakelijk, met de cijfers meteen in beeld.",
-        "alt": "Homepage van Eemlandwerkt met de kop Kennis met resultaat en daaronder sinds 1998, 30 plus overheidsinstanties en 500 plus projecten.",
-        "licht": 85
-      },
-      {
-        "bestand": "eemlandwerkt-2.webp",
-        "titel": "de vakgebieden",
-        "bijschrift": "Vier disciplines, elk met een eigen ingang.",
-        "alt": "Vier blokken naast elkaar: Legal Team, Zorgprofessionals, Verzuimregie en Technical Engineering, elk met een korte omschrijving.",
-        "licht": 97,
-        "showcase": false
-      }
-    ],
-    "stappen": [
-      "Binnenkomen op je vakgebied",
-      "Vacature of dienst bekijken",
-      "Indicatie via de rekenhulp",
-      "Intake aanvragen",
-      "Inloggen op je eigen omgeving"
     ]
   }
 ]
