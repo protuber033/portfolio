@@ -97,7 +97,9 @@ if (!mis) ok(`${aanwezig.size} bestanden in img/, alles waarnaar verwezen wordt 
 ---------------------------------------------------------------- */
 kop('Syntax');
 const teControleren = ['server.js', 'tools/build.mjs', 'tools/scan.mjs', 'tools/shots.mjs', 'tools/controle.mjs', 'tools/gedrag.js', 'tools/werkpagina.js',
-  'tools/sitescan.mjs', 'tools/contactpagina.mjs', 'tools/contact.js'];
+  'tools/sitescan.mjs', 'tools/contactpagina.mjs', 'tools/contact.js',
+  'tools/beheer-auth.mjs', 'tools/beheer-routes.mjs', 'tools/beheerpagina.mjs',
+  'tools/beheer.js', 'tools/mail.mjs'];
 for (const bestand of teControleren) {
   const pad = join(WORTEL, bestand);
   if (!existsSync(pad)) { let_op(`${bestand} bestaat niet`); continue; }
@@ -164,7 +166,8 @@ await new Promise((klaar) => {
       ['projectpagina zonder streep', eersteId ? `/werk/${eersteId}` : '/werk', eersteId ? 200 : 404],
       ['onbekend project geeft 404', '/werk/bestaat-niet/', 404],
       ['onbekend pad geeft 404', '/bestaat-niet', 404],
-      ['gegevens niet bereikbaar', '/data/projects.json', 404]
+      ['gegevens niet bereikbaar', '/data/projects.json', 404],
+      ['de beheerpagina', '/beheer/', 200]
     ];
     for (const [wat, pad, verwacht] of proeven) {
       try {
@@ -195,6 +198,47 @@ await new Promise((klaar) => {
       } catch (e) {
         fout(`${wat}: geen antwoord (${e.message})`);
       }
+    }
+
+    /* Het beheer geeft toegang tot de mailbox. Zonder geldig token mag er
+       niets uit komen: niet de lijst, niet een bericht, en al helemaal niet
+       de mogelijkheid om iets te versturen. Of de instellingen op deze
+       computer staan weet de controle niet, dus beide antwoorden zijn goed:
+       503 (nog niet ingesteld) of 401 (ingesteld, maar jij bent het niet).
+       Wat niet mag, is een 200. */
+    const dicht = [
+      ['de berichtenlijst', '/api/beheer/mail', 'GET'],
+      ['een los bericht', '/api/beheer/mail/1', 'GET'],
+      ['iets versturen', '/api/beheer/mail/1/antwoord', 'POST']
+    ];
+    for (const [wat, pad, methode] of dicht) {
+      try {
+        const a = await fetch(basis + pad, {
+          method: methode,
+          headers: { 'content-type': 'application/json' },
+          body: methode === 'POST' ? JSON.stringify({ tekst: 'proef' }) : undefined,
+          signal: AbortSignal.timeout(8000)
+        });
+        if (a.status === 401) ok(`${wat} vraagt eerst om inloggen (401)`);
+        else if (a.status === 503) ok(`${wat} is dicht, beheer staat hier niet ingesteld (503)`);
+        else fout(`${wat}: kreeg ${a.status} zonder in te loggen`);
+      } catch (e) {
+        fout(`${wat}: geen antwoord (${e.message})`);
+      }
+    }
+
+    // een leeg wachtwoord is geen wachtwoord
+    try {
+      const a = await fetch(basis + '/api/beheer/inloggen', {
+        method: 'POST',
+        headers: { 'content-type': 'application/json' },
+        body: JSON.stringify({ wachtwoord: '' }),
+        signal: AbortSignal.timeout(8000)
+      });
+      if (a.status === 401 || a.status === 503) ok(`leeg wachtwoord komt er niet in (${a.status})`);
+      else fout(`leeg wachtwoord: kreeg ${a.status}`);
+    } catch (e) {
+      fout(`leeg wachtwoord: geen antwoord (${e.message})`);
     }
 
     // tekst hoort ingepakt over de lijn te gaan
@@ -274,6 +318,22 @@ if (!domein) {
     if (teveel.length) fout(`sitemap noemt adressen die niet bestaan: ${teveel.join(', ')}`);
     if (tekort.length) fout(`sitemap mist: ${tekort.join(', ')}`);
     if (!teveel.length && !tekort.length) ok(`sitemap noemt precies de ${moeten.length} pagina's die er zijn`);
+  }
+
+  /* De beheerpagina is het omgekeerde geval: die mag juist niet gevonden
+     worden. Geen regel in de sitemap, en noindex in de kop zodat hij ook niet
+     blijft hangen als iemand er ooit naar linkt. In robots.txt staat hij met
+     opzet niet: dat bestand is openbaar, dus een Disallow zou het adres
+     aankondigen in plaats van verbergen. */
+  const beheerPad = join(WORTEL, 'beheer', 'index.html');
+  if (!existsSync(beheerPad)) fout('beheer/index.html ontbreekt — heb je gebouwd?');
+  else {
+    const h = readFileSync(beheerPad, 'utf8');
+    const robots = (h.match(/<meta name="robots" content="([^"]*)"/) || [])[1] || '';
+    if (!/noindex/.test(robots)) fout(`beheer/index.html staat op "${robots}" en mag niet in Google komen`);
+    else if (readFileSync(join(WORTEL, 'sitemap.xml'), 'utf8').includes('/beheer'))
+      fout('de sitemap noemt de beheerpagina, die hoort daar niet in');
+    else ok('beheerpagina staat op noindex en niet in de sitemap');
   }
 
   const robotsPad = join(WORTEL, 'robots.txt');

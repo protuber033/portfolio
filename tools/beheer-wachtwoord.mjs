@@ -6,7 +6,13 @@
 // Wat eruit komt is een scrypt-afdruk: daar kun je het wachtwoord niet uit
 // terugrekenen, dus die mag veilig in een instelling staan.
 import { createInterface } from 'node:readline';
+import { readFileSync } from 'node:fs';
+import { join, dirname } from 'node:path';
+import { fileURLToPath } from 'node:url';
 import { maakAfdruk } from './beheer-auth.mjs';
+
+const WORTEL = join(dirname(fileURLToPath(import.meta.url)), '..');
+const site = JSON.parse(readFileSync(join(WORTEL, 'data/site.json'), 'utf8'));
 
 const lees = createInterface({ input: process.stdin, output: process.stdout });
 
@@ -30,7 +36,7 @@ console.log('Zet deze twee in Railway bij de service "site", onder Variables:\n'
 console.log('BEHEER_HASH=' + maakAfdruk(wachtwoord));
 console.log('AUTH_SECRET=' + (await import('node:crypto')).randomBytes(32).toString('hex'));
 console.log('\nEn deze drie voor de mailbox:\n');
-console.log('MAIL_ADRES=info@eemland-digital.nl');
+console.log('MAIL_ADRES=' + site.email);
 console.log('MAIL_WACHTWOORD=  (het wachtwoord van die mailbox bij TransIP)');
 console.log('MAIL_HOST=transip.email   (laat weg, dit is de standaard)');
 console.log('\nHet wachtwoord zelf is nergens opgeslagen. Raak je het kwijt, draai dit dan opnieuw.');

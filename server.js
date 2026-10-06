@@ -5,6 +5,7 @@ import { readFile } from 'node:fs/promises';
 import { extname, join, normalize, sep } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { scanStroom } from './tools/sitescan.mjs';
+import { beheerRoute } from './tools/beheer-routes.mjs';
 import { gzipSync, brotliCompressSync, constants as zlibConstants } from 'node:zlib';
 
 const ROOT = fileURLToPath(new URL('.', import.meta.url));
@@ -93,7 +94,9 @@ function magDit(rel) {
   if (rel.startsWith('img' + sep) || rel.startsWith('img/')) return true;
   // werk/<project>/index.html: elk project heeft ook een eigen adres
   if (rel.startsWith('werk' + sep) || rel.startsWith('werk/')) return true;
-  return rel.startsWith('contact' + sep) || rel.startsWith('contact/');
+  if (rel.startsWith('contact' + sep) || rel.startsWith('contact/')) return true;
+  // de beheerpagina zelf is gewoon een pagina; wat erachter zit is dicht
+  return rel.startsWith('beheer' + sep) || rel.startsWith('beheer/');
 }
 
 async function pagina() {
@@ -136,6 +139,11 @@ createServer(async (req, res) => {
     return;
   }
 
+  if (url.pathname.startsWith('/api/beheer')) {
+    await beheerRoute(req, res, url);
+    return;
+  }
+
   let rel = opschonen(decodeURIComponent(url.pathname));
   if (rel === '') rel = 'index.html';
   // een map vraagt om zijn index.html — /werk/glacio/ net als /werk/glacio
@@ -166,6 +174,16 @@ createServer(async (req, res) => {
     if (ingepakt) {
       koppen['content-encoding'] = ingepakt.vorm;
       koppen.vary = 'accept-encoding';
+    }
+    /* De beheerpagina mag niet in de lijst van iemand anders hangen: anders
+       kan een vreemde pagina hem onzichtbaar over zijn eigen knoppen leggen en
+       jou op "versturen" laten klikken terwijl je iets anders denkt aan te
+       raken. En hij hoort nergens in een geschiedenis thuis. */
+    if (rel.startsWith('beheer')) {
+      koppen['x-frame-options'] = 'DENY';
+      koppen['content-security-policy'] = "frame-ancestors 'none'";
+      koppen['referrer-policy'] = 'no-referrer';
+      koppen['cache-control'] = 'no-store';
     }
     res.writeHead(200, koppen).end(ingepakt ? ingepakt.inhoud : inhoud);
   } catch {

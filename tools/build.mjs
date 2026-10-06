@@ -2,6 +2,7 @@
 // Een nieuw project toevoegen = een blok in projects.json erbij; hier hoeft niets te wijzigen.
 import { readFileSync, writeFileSync, existsSync, mkdirSync, readdirSync, rmSync } from 'node:fs';
 import { contactPagina } from './contactpagina.mjs';
+import { beheerPagina } from './beheerpagina.mjs';
 import { vindbaar } from './vindbaar.mjs';
 import { maakOnderdelen } from './onderdelen.mjs';
 import { join, dirname } from 'node:path';
@@ -101,6 +102,14 @@ const css = [
 const werkCss = readFileSync(join(WORTEL, 'tools/werkpagina.css'), 'utf8');
 const werkJs = readFileSync(join(WORTEL, 'tools/werkpagina.js'), 'utf8');
 const contactCss = readFileSync(join(WORTEL, 'tools/contact.css'), 'utf8');
+/* Het beheer krijgt niet de hele sitestijl mee: geen showcase, geen
+   keuzehulp, geen scrollanimaties. Alleen de basis voor de kleuren, de
+   knoppen en het lettertype, plus zijn eigen stijlblad. */
+const beheerCss = [
+  readFileSync(join(WORTEL, 'tools/stijl.css'), 'utf8'),
+  readFileSync(join(WORTEL, 'tools/beheer.css'), 'utf8')
+].join('\n');
+const beheerJs = readFileSync(join(WORTEL, 'tools/beheer.js'), 'utf8');
 const contactJs = readFileSync(join(WORTEL, 'tools/contact.js'), 'utf8');
 
 /* ---------- vindbaar worden ----------
@@ -109,9 +118,11 @@ const contactJs = readFileSync(join(WORTEL, 'tools/contact.js'), 'utf8');
 const { abs, kort, ldJson, hoofd, bedrijf, projectLd, wegwijzers } =
   vindbaar({ site, projecten, esc, zonderVersie });
 
-const middelen = `<link rel="preconnect" href="https://fonts.googleapis.com">
+const fonts = `<link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&family=Manrope:wght@400;500;600;700&family=Sora:wght@600;700&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&family=Manrope:wght@400;500;600;700&family=Sora:wght@600;700&display=swap">`;
+
+const middelen = `${fonts}
 <style>${css}</style>`;
 
 // het artifact heeft geen eigen <head>, dus daar blijft de titel erbij horen
@@ -507,6 +518,10 @@ writeFileSync(join(contactMap, 'index.html'), contactPagina({
   site, esc, vet, hoofd, middelen, ldJson, abs, bedrijf, contactCss, contactJs, aantal
 }));
 
+const beheerMap = join(WORTEL, 'beheer');
+mkdirSync(beheerMap, { recursive: true });
+writeFileSync(join(beheerMap, 'index.html'), beheerPagina({ site, esc, fonts, beheerCss, beheerJs }));
+
 const werkMap = join(WORTEL, 'werk');
 mkdirSync(werkMap, { recursive: true });
 for (const p of projecten) {
@@ -524,7 +539,7 @@ for (const naam of readdirSync(werkMap)) {
   }
 }
 console.log(`index.html gebouwd — ${aantal} projecten, ${aantalLive} live`);
-console.log(`${projecten.length} projectpagina's onder werk/, plus sitemap.xml en robots.txt`);
+console.log(`${projecten.length} projectpagina's onder werk/, plus contact/, beheer/, sitemap.xml en robots.txt`);
 if (wachtkamer.length) {
   console.log(`${wachtkamer.length} in de wachtkamer (nog niet gepubliceerd): ` +
     wachtkamer.map((p) => p.naam).join(', '));

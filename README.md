@@ -1,4 +1,4 @@
-# Portfolio van Samih Tichtti
+# Eemland Digital
 
 De site draait op **https://eemland-digital.nl** en wordt gebouwd uit twee
 databestanden. Je past nooit HTML aan — alleen de data.
@@ -60,6 +60,7 @@ Railway bouwt daarna vanzelf opnieuw.
 | `tools/shots.mjs` | maakt de screenshots |
 | `tools/stijl.css` | alle opmaak |
 | `tools/gedrag.js` | filteren, zoeken en het projectvenster |
+| `tools/beheer*.mjs` / `tools/beheer.*` | de beheerpagina en de mailbox erachter |
 | `index.html` | gegenereerd — niet met de hand aanpassen |
 | `artifact.html` | dezelfde pagina, zonder eigen html-omhulsel |
 
@@ -84,6 +85,8 @@ Wat hij nakijkt, en waarom elk punt erin staat:
 | de server start écht en geeft 200 | dit is de controle die die crash had voorkomen |
 | `data/` geeft 404 | je gegevens horen niet op internet te staan |
 | shellscripts hebben LF | met CRLF weigert bash ze op Linux |
+| `/api/beheer` vraagt eerst om inloggen | daarachter zit je mailbox |
+| de beheerpagina staat op noindex | een postvak hoort niet in Google |
 
 Na een verse clone staat de hook er niet, want die gaat niet mee in git:
 
@@ -114,6 +117,48 @@ waar de code ligt.
 In `vps/` staat een complete opzet om deze site op je eigen Linux-server te
 zetten in plaats van op Railway: server klaarmaken, als service draaien, nginx
 ervoor, gratis ssl, en bijwerken met één commando. Zie `vps/README.md`.
+
+## Het postvak op `/beheer`
+
+Mail die op `info@eemland-digital.nl` binnenkomt kun je lezen en beantwoorden
+zonder de site uit te gaan. De pagina staat op `/beheer`, is afgeschermd met een
+wachtwoord en staat op `noindex` — hij komt dus niet in Google en staat ook niet
+in `robots.txt`, want dat bestand is openbaar en zou het adres juist verklappen.
+
+### Eenmalig instellen
+
+```
+npm run wachtwoord
+```
+
+Je typt een wachtwoord (minstens twaalf tekens, dit geeft toegang tot je
+mailbox). Het wordt nergens opgeslagen. Wat je terugkrijgt zijn de regels die je
+in Railway bij de service **site** onder *Variables* zet:
+
+| Instelling | Wat het is |
+| --- | --- |
+| `BEHEER_HASH` | de afdruk van je wachtwoord — hier kun je het wachtwoord niet uit terugrekenen |
+| `AUTH_SECRET` | waarmee je inlogtokens worden ondertekend, minstens 32 tekens |
+| `MAIL_ADRES` | het mailadres zelf |
+| `MAIL_WACHTWOORD` | het wachtwoord van die mailbox bij TransIP |
+| `MAIL_HOST` | alleen nodig als je mail niet bij TransIP staat (standaard `transip.email`) |
+
+Staan ze er niet, dan geeft `/api/beheer` netjes een 503 met uitleg in plaats van
+stilletjes stuk te gaan. De pagina zelf blijft gewoon bereikbaar.
+
+### Hoe het dicht blijft
+
+- Eén wachtwoord, bewaard als scrypt-afdruk, vergeleken in constante tijd.
+- Vijf pogingen per kwartier per ip; daarna een kwartier op slot.
+- Het inlogtoken is ondertekend met HMAC en vervalt na vier uur. Hij staat in
+  `sessionStorage`, dus je tab sluiten is uitloggen.
+- De **html-versie** van een bericht wordt bewust niet doorgegeven, alleen de
+  platte tekst. Anders bepaalt de afzender wat er in jouw beheerscherm gebeurt.
+- Niets uit een bericht komt in een logregel terecht.
+
+`npm run check` controleert elke keer opnieuw dat de lijst, een los bericht en
+het versturen zonder inloggen dichtzitten, en dat de beheerpagina op `noindex`
+staat en niet in de sitemap is beland.
 
 ## Goed om te weten
 

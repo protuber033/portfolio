@@ -1,0 +1,130 @@
+/* ============ /beheer ============
+   Een postvak. Twee kolommen op een breed scherm, één op een telefoon.
+   Dezelfde kleuren als de rest van de site, maar strakker: dit is geen
+   etalage maar gereedschap. */
+[hidden] { display: none !important; }
+
+.beheer-schil { min-height: 100vh; display: flex; flex-direction: column; }
+
+.beheer-balk {
+  display: flex; align-items: center; gap: 14px; flex-wrap: wrap;
+  padding: 14px clamp(14px, 3vw, 26px);
+  border-bottom: 1px solid var(--rand); background: var(--vlak);
+}
+.beheer-balk b { font-family: var(--display); font-weight: 700; font-size: 1.05rem; }
+/* .adres is op de contactpagina een doos met een rand; hier is het gewoon
+   een regel tekst in de balk. */
+.beheer-balk .adres {
+  font-family: var(--mono); font-size: .78rem; color: var(--tekst-3);
+  border: 0; padding: 0; background: none; border-radius: 0;
+}
+.beheer-balk .rechts {
+  margin-left: auto; display: flex; align-items: center; gap: 10px;
+  flex-wrap: wrap; justify-content: flex-end;
+}
+.teller {
+  font-family: var(--mono); font-size: .75rem; color: var(--tekst-2);
+  border: 1px solid var(--rand); border-radius: 999px; padding: 4px 11px;
+  white-space: nowrap;
+}
+.teller b { color: var(--accent); font-family: var(--mono); font-size: .75rem; }
+
+/* Op een smal scherm passen het adres en vier knoppen niet naast elkaar. Welke
+   mailbox dit is weet je op je telefoon ook zonder dat het erbij staat. */
+@media (max-width: 560px) {
+  .beheer-balk { gap: 10px; padding: 12px 14px; }
+  .beheer-balk .adres { display: none; }
+  .beheer-balk .knop-klein { padding: 6px 11px; font-size: .8rem; }
+  .teller { font-size: .7rem; padding: 3px 9px; }
+}
+
+/* ---- inloggen ---- */
+.inlogvak { display: grid; place-items: center; flex: 1; padding: 24px; }
+.inlogdoos {
+  width: min(380px, 100%); background: var(--vlak);
+  border: 1px solid var(--rand-op); border-radius: 18px; padding: clamp(22px, 4vw, 32px);
+}
+.inlogdoos h1 { font-family: var(--display); font-weight: 700; font-size: 1.5rem; letter-spacing: -.03em; margin: 0 0 6px; }
+.inlogdoos p { color: var(--tekst-2); margin: 0 0 22px; font-size: .94rem; }
+.inlogdoos label { display: block; font-size: .82rem; color: var(--tekst-2); margin-bottom: 6px; }
+.inlogdoos input {
+  width: 100%; padding: 13px 15px; border-radius: 11px;
+  border: 1px solid var(--rand); background: var(--grond); color: var(--tekst);
+  font: inherit; font-family: var(--mono); font-size: .95rem;
+}
+.inlogdoos input:focus { outline: none; border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-zacht); }
+.inlogdoos button { width: 100%; margin-top: 16px; }
+
+/* ---- postvak ---- */
+.postvak { flex: 1; display: grid; grid-template-columns: minmax(300px, 380px) 1fr; min-height: 0; }
+.lijstkant { border-right: 1px solid var(--rand); overflow-y: auto; min-height: 0; }
+.leeskant { overflow-y: auto; min-height: 0; padding: clamp(18px, 3vw, 32px); }
+
+/* Op een telefoon is er geen ruimte voor twee kolommen: je ziet de lijst, en
+   zodra je een bericht opent schuift het bericht ervoor. Dat "je leest nu iets"
+   staat als klasse op de body en niet op het postvak, want de terugknop staat
+   in de balk bovenin en is dus geen kind van het postvak. */
+@media (max-width: 860px) {
+  .postvak { grid-template-columns: 1fr; }
+  .leeskant { display: none; }
+  body.leest .lijstkant { display: none; }
+  body.leest .leeskant { display: block; }
+  body.leest .terugknop { display: inline-flex; }
+}
+
+.regel {
+  display: grid; grid-template-columns: 8px 1fr auto; gap: 10px; align-items: start;
+  width: 100%; text-align: left; font: inherit; cursor: pointer;
+  padding: 14px 16px; border: 0; border-bottom: 1px solid var(--rand);
+  background: transparent; color: inherit;
+}
+.regel:hover { background: var(--vlak); }
+.regel[aria-current="true"] { background: var(--vlak-2); box-shadow: inset 3px 0 0 var(--accent); }
+.regel .stip { width: 8px; height: 8px; border-radius: 50%; background: var(--accent); margin-top: 6px; }
+.regel.gelezen .stip { background: transparent; }
+.regel .van { display: block; font-weight: 600; font-size: .94rem; }
+.regel.gelezen .van { font-weight: 400; color: var(--tekst-2); }
+/* afzender, onderwerp en de vlag staan onder elkaar; spans zijn van zichzelf
+   inline en zouden anders aan elkaar plakken */
+.regel .onderwerp {
+  font-size: .88rem; color: var(--tekst-2); margin-top: 2px;
+  display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+.regel .wanneer { font-family: var(--mono); font-size: .72rem; color: var(--tekst-3); white-space: nowrap; }
+.regel .vlag { font-size: .68rem; color: var(--live); margin-top: 4px; display: block; }
+
+.leeg { padding: 50px 20px; text-align: center; color: var(--tekst-3); font-size: .92rem; }
+
+.bericht-kop { border-bottom: 1px solid var(--rand); padding-bottom: 18px; margin-bottom: 20px; }
+.bericht-kop h2 { font-family: var(--display); font-weight: 700; font-size: clamp(1.2rem, 2.6vw, 1.6rem); letter-spacing: -.025em; margin: 0 0 10px; text-wrap: balance; }
+.bericht-kop .afzender { display: flex; gap: 10px; align-items: baseline; flex-wrap: wrap; font-size: .9rem; }
+.bericht-kop .afzender b { color: var(--tekst); }
+.bericht-kop .afzender span { font-family: var(--mono); font-size: .8rem; color: var(--tekst-3); }
+.bericht-tekst {
+  white-space: pre-wrap; word-break: break-word; line-height: 1.65;
+  color: var(--tekst-2); font-size: .95rem; max-width: 72ch;
+}
+.bijlagen { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 18px; }
+.bijlagen span {
+  font-family: var(--mono); font-size: .74rem; color: var(--tekst-3);
+  border: 1px solid var(--rand); border-radius: 8px; padding: 5px 10px;
+}
+
+.antwoordvak { margin-top: 26px; border-top: 1px solid var(--rand); padding-top: 20px; max-width: 72ch; }
+.antwoordvak h3 { font-family: var(--display); font-weight: 700; font-size: 1.05rem; margin: 0 0 12px; }
+.antwoordvak textarea {
+  width: 100%; min-height: 150px; resize: vertical; padding: 14px 16px;
+  border-radius: 12px; border: 1px solid var(--rand);
+  background: var(--grond); color: var(--tekst); font: inherit; font-size: .95rem; line-height: 1.6;
+}
+.antwoordvak textarea:focus { outline: none; border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-zacht); }
+.antwoordvak .knoppen { display: flex; gap: 10px; align-items: center; margin-top: 14px; flex-wrap: wrap; }
+
+.melding { padding: 12px 15px; border-radius: 11px; font-size: .9rem; margin: 14px 0; }
+.melding.fout { background: rgba(255, 107, 107, .1); color: #FFB4B4; border: 1px solid rgba(255, 107, 107, .3); }
+.melding.goed { background: rgba(47, 232, 176, .1); color: #8CF0D0; border: 1px solid rgba(47, 232, 176, .3); }
+
+.terugknop { display: none; }
+
+.bijlage-bij { font-size: .82rem; color: var(--tekst-3); margin: 10px 0 0; max-width: 72ch; }
