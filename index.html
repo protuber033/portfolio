@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Eemland Digital — websites en bedrijfssoftware | Amersfoort</title>
-<meta name="description" content="Eemland Digital bouwt websites en bedrijfssoftware voor Nederlandse bedrijven: front-end en back-end, allebei geoptimaliseerd. 15 projecten, 12 live.">
+<meta name="description" content="Eemland Digital bouwt websites en bedrijfssoftware voor Nederlandse bedrijven: front-end en back-end, allebei geoptimaliseerd. 15 projecten, 11 live.">
 <link rel="canonical" href="https://eemland-digital.nl/">
 <meta name="robots" content="index, follow, max-image-preview:large">
 <meta name="author" content="Eemland Digital">
@@ -15,7 +15,7 @@
 <meta property="og:locale" content="nl_NL">
 <meta property="og:url" content="https://eemland-digital.nl/">
 <meta property="og:title" content="Eemland Digital — websites en bedrijfssoftware | Amersfoort">
-<meta property="og:description" content="Eemland Digital bouwt websites en bedrijfssoftware voor Nederlandse bedrijven: front-end en back-end, allebei geoptimaliseerd. 15 projecten, 12 live.">
+<meta property="og:description" content="Eemland Digital bouwt websites en bedrijfssoftware voor Nederlandse bedrijven: front-end en back-end, allebei geoptimaliseerd. 15 projecten, 11 live.">
 <meta property="og:image" content="https://eemland-digital.nl/img/kozijnfabriek-1.webp">
 <meta property="og:image:alt" content="Scherm uit een van de projecten van Eemland Digital">
 <meta name="twitter:card" content="summary_large_image">
@@ -1322,6 +1322,10 @@ p, .kaart-regel, .paneel-lead, li { text-wrap: pretty; }
 .groep[data-groep="live"] .duim { aspect-ratio: 16 / 10; }
 .groep[data-groep="live"] .kaart-naam { font-size: 1.3rem; }
 
+/* Een adres dat bij de laatste controle niet antwoordde. Geen rood alarm —
+   het is meestal tijdelijk — maar ook niet het groene stipje van "live". */
+.stip.weg { background: var(--prototype); box-shadow: none; }
+
 /* ============ de afsluiting ============ */
 .slot {
   position: relative; overflow: hidden; margin-top: var(--lucht);
@@ -1519,7 +1523,7 @@ p, .kaart-regel, .paneel-lead, li { text-wrap: pretty; }
       <div class="binnen">
         <ul class="bewijs">
           <li><b>15</b><span>projecten gebouwd</span></li>
-          <li><b>12</b><span>draaien nu live</span></li>
+          <li><b>11</b><span>draaien nu live</span></li>
           <li><b>3</b><span>op een eigen domein</span></li>
           <li><b>1</b><span>aanspreekpunt, van eerste gesprek tot beheer</span></li>
         </ul>
@@ -1542,7 +1546,6 @@ p, .kaart-regel, .paneel-lead, li { text-wrap: pretty; }
         <li>RALOX Sports</li>
         <li>CourtSwap</li>
         <li>Eemlandwerkt</li>
-        <li>REMH Bouw &amp; Verbouw</li>
       </ul>
     </div>
   </div>
@@ -1571,7 +1574,7 @@ p, .kaart-regel, .paneel-lead, li { text-wrap: pretty; }
         <div class="groep-kop">
           <h3>Draait nu live <span class="telling">12</span></h3>
           <p>Staat vandaag online, zelf te bekijken.</p>
-          <span class="gecheckt"><span class="stip live"></span>alle 12 reageerden bij de laatste controle op 27 okt 2026</span>
+          <span class="gecheckt"><span class="stip weg"></span>11 van de 12 reageerden bij de laatste controle op 27 okt 2026</span>
         </div>
         <ul class="raster">
         <li class="kaart" data-id="eemland" data-tags="software ai" data-zoek="eemland boekt offertes, facturen, urenbriefjes scannen en btw-aangifte in één systeem. de complete administratie van een bouwbedrijf, van offerte tot btw-aangifte, in één systeem dat elke dag gebruikt wordt. react 19 express postgresql supabase storage pdf-lib google gemini">
@@ -1699,7 +1702,7 @@ p, .kaart-regel, .paneel-lead, li { text-wrap: pretty; }
           <a class="kaart-knop" href="werk/remh/" aria-haspopup="dialog">
             <span class="duim"><img src="img/t-remh.webp" width="760" height="475" loading="lazy" alt="Scherm van REMH Bouw &amp; Verbouw"></span>
             <span class="kaart-tekst">
-              <span class="kaart-status"><span class="stip live" aria-hidden="true"></span>Live online</span>
+              <span class="kaart-status"><span class="stip weg" aria-hidden="true"></span>Nu even niet bereikbaar</span>
               <span class="kaart-naam">REMH Bouw &amp; Verbouw</span>
               <span class="kaart-regel">Aannemerssite waar de klant zijn eigen dakkapel samenstelt.</span>
               <span class="kaart-chips"><span>React 19</span><span>Express</span><span>MySQL</span></span>
@@ -2642,7 +2645,7 @@ p, .kaart-regel, .paneel-lead, li { text-wrap: pretty; }
       </article>
       <article class="paneel" id="paneel-remh" data-id="remh" hidden>
         <header class="paneel-kop">
-          <p class="paneel-meta"><span class="stip live" aria-hidden="true"></span>Live online <span class="punt">·</span> november 2025 – januari 2026</p>
+          <p class="paneel-meta"><span class="stip weg" aria-hidden="true"></span>Nu even niet bereikbaar <span class="punt">·</span> november 2025 – januari 2026</p>
           <h2>REMH Bouw &amp; Verbouw</h2>
           <p class="paneel-lead">Website voor een aannemer, met een configurator die de klant zijn eigen dakkapel laat samenstellen.</p>
           <button type="button" class="deel" data-deel="remh">Kopieer link naar dit project</button>

@@ -14,6 +14,18 @@ function statusStip(status) {
   return `<span class="stip ${esc(status)}" aria-hidden="true"></span>`;
 }
 
+/* Wat er bij een project op het schermpje staat.
+   De wekelijkse controle zet "bereikbaar" op false als een adres niet meer
+   antwoordt. Dan mag de pagina er niet "live online" boven blijven zetten:
+   iemand klikt erop, krijgt een 404 en weet meteen genoeg over de rest van
+   wat er staat. Zodra de controle hem weer vindt, draait dit vanzelf terug. */
+function hoeStaatHij(p) {
+  if (p.bereikbaar === false) {
+    return { stip: statusStip('weg'), label: 'Nu even niet bereikbaar' };
+  }
+  return { stip: statusStip(p.status), label: p.statusLabel };
+}
+
 function kaart(p, pre = '') {
   const beeld = p.tegel
     ? `<img src="${pre}img/${esc(p.tegel)}" width="760" height="475" loading="lazy" alt="Scherm van ${esc(p.naam)}">`
@@ -25,7 +37,7 @@ function kaart(p, pre = '') {
           <a class="kaart-knop" href="${pre}werk/${esc(p.id)}/" aria-haspopup="dialog">
             <span class="duim">${beeld}</span>
             <span class="kaart-tekst">
-              <span class="kaart-status">${statusStip(p.status)}${esc(p.statusLabel)}</span>
+              <span class="kaart-status">${hoeStaatHij(p).stip}${esc(hoeStaatHij(p).label)}</span>
               <span class="kaart-naam">${esc(p.naam)}</span>
               <span class="kaart-regel">${esc(p.eenRegel)}</span>
               <span class="kaart-chips">${chips}</span>
@@ -37,8 +49,13 @@ function kaart(p, pre = '') {
 function groep(g) {
   const leden = projecten.filter((p) => p.status === g.sleutel);
   if (!leden.length) return '';
+  // "alle zoveel reageerden" mag alleen als dat ook zo is: eentje die bij de
+  // laatste controle niet antwoordde telt hier niet stilletjes mee
+  const bereikbaar = leden.filter((p) => p.bereikbaar !== false).length;
   const gecheckt = g.sleutel === 'live' && gecontroleerd
-    ? `<span class="gecheckt"><span class="stip live"></span>alle ${leden.length} reageerden bij de laatste controle op ${esc(gecontroleerd)}</span>`
+    ? (bereikbaar === leden.length
+      ? `<span class="gecheckt"><span class="stip live"></span>alle ${leden.length} reageerden bij de laatste controle op ${esc(gecontroleerd)}</span>`
+      : `<span class="gecheckt"><span class="stip weg"></span>${bereikbaar} van de ${leden.length} reageerden bij de laatste controle op ${esc(gecontroleerd)}</span>`)
     : '';
   return `
       <section class="groep" data-groep="${esc(g.sleutel)}">
@@ -100,7 +117,7 @@ function paneel(p, { pre = '', los = false } = {}) {
   return `
       <article class="paneel" id="paneel-${esc(p.id)}" data-id="${esc(p.id)}"${los ? '' : ' hidden'}>
         <header class="paneel-kop">
-          <p class="paneel-meta">${statusStip(p.status)}${esc(p.statusLabel)} <span class="punt">·</span> ${esc(p.periode)}</p>
+          <p class="paneel-meta">${hoeStaatHij(p).stip}${esc(hoeStaatHij(p).label)} <span class="punt">·</span> ${esc(p.periode)}</p>
           <${titelTag}>${esc(p.naam)}</${titelTag}>
           <p class="paneel-lead">${esc(p.voorWie)}</p>${deel}
         </header>
@@ -205,6 +222,6 @@ ${rijen.map(([naam, n]) => `            <li>
           </ul>`;
 }
 
-  return { statusStip, kaart, groep, galerij, stroom, paneel, laag, blok, kunde,
+  return { statusStip, hoeStaatHij, kaart, groep, galerij, stroom, paneel, laag, blok, kunde,
     balkje, staven, tel, term, uitlegVoor, uitlegVensters };
 }

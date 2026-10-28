@@ -1322,6 +1322,10 @@ p, .kaart-regel, .paneel-lead, li { text-wrap: pretty; }
 .groep[data-groep="live"] .duim { aspect-ratio: 16 / 10; }
 .groep[data-groep="live"] .kaart-naam { font-size: 1.3rem; }
 
+/* Een adres dat bij de laatste controle niet antwoordde. Geen rood alarm —
+   het is meestal tijdelijk — maar ook niet het groene stipje van "live". */
+.stip.weg { background: var(--prototype); box-shadow: none; }
+
 /* ============ de afsluiting ============ */
 .slot {
   position: relative; overflow: hidden; margin-top: var(--lucht);

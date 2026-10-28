@@ -26,7 +26,13 @@ const gecontroleerd = projecten.map((p) => p.gecontroleerd).filter(Boolean).sort
 
 /* ---------- afgeleide cijfers: groeien vanzelf mee ---------- */
 const aantal = projecten.length;
-const aantalLive = projecten.filter((p) => p.status === 'live').length;
+/* "Live" betekent op deze pagina: het draait nu echt. De wekelijkse controle
+   zet bereikbaar op false zodra een adres niet meer antwoordt; zo'n project
+   telt dan niet mee in het cijfer en staat ook niet in de strook met namen.
+   Een project zonder adres (besloten software bij een klant) heeft geen
+   bereikbaar-veld en blijft dus gewoon meetellen. */
+const draaitNu = (p) => p.status === 'live' && p.bereikbaar !== false;
+const aantalLive = projecten.filter(draaitNu).length;
 const domeinen = projecten.filter((p) => p.url && !/railway\.app/.test(p.url)).length;
 
 // de showcase pakt automatisch alle schermen van alle projecten mee
@@ -209,7 +215,7 @@ ${[...baan, ...baan].map((b) => `          <img src="img/m-${esc(b.bestand)}" wi
     <div class="namenbalk">
       <span class="namenbalk-label"><span class="stip live"></span>Nu live</span>
       <ul class="namen">
-${projecten.filter((p) => p.status === 'live').map((p) => `        <li>${esc(p.naam)}</li>`).join('\n')}
+${projecten.filter(draaitNu).map((p) => `        <li>${esc(p.naam)}</li>`).join('\n')}
       </ul>
     </div>
   </div>

@@ -1322,6 +1322,10 @@ p, .kaart-regel, .paneel-lead, li { text-wrap: pretty; }
 .groep[data-groep="live"] .duim { aspect-ratio: 16 / 10; }
 .groep[data-groep="live"] .kaart-naam { font-size: 1.3rem; }
 
+/* Een adres dat bij de laatste controle niet antwoordde. Geen rood alarm —
+   het is meestal tijdelijk — maar ook niet het groene stipje van "live". */
+.stip.weg { background: var(--prototype); box-shadow: none; }
+
 /* ============ de afsluiting ============ */
 .slot {
   position: relative; overflow: hidden; margin-top: var(--lucht);
@@ -1476,7 +1480,7 @@ p, .kaart-regel, .paneel-lead, li { text-wrap: pretty; }
     <div class="los-doos">
       <article class="paneel" id="paneel-remh" data-id="remh">
         <header class="paneel-kop">
-          <p class="paneel-meta"><span class="stip live" aria-hidden="true"></span>Live online <span class="punt">·</span> november 2025 – januari 2026</p>
+          <p class="paneel-meta"><span class="stip weg" aria-hidden="true"></span>Nu even niet bereikbaar <span class="punt">·</span> november 2025 – januari 2026</p>
           <h1>REMH Bouw &amp; Verbouw</h1>
           <p class="paneel-lead">Website voor een aannemer, met een configurator die de klant zijn eigen dakkapel laat samenstellen.</p>
         </header>
