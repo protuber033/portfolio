@@ -259,8 +259,11 @@
   var knopKopieer = document.getElementById('kopieer');
   var adres = document.getElementById('adres');
   if (knopKopieer && adres) {
+    // het oorspronkelijke opschrift onthouden in plaats van het hier vast te
+    // leggen: de knop heet niet overal hetzelfde
+    var opschrift = knopKopieer.textContent;
     var terug = function () {
-      setTimeout(function () { knopKopieer.textContent = 'Kopieer adres'; }, 2000);
+      setTimeout(function () { knopKopieer.textContent = opschrift; }, 2000);
     };
     var selecteer = function () {
       try {

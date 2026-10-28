@@ -96,7 +96,10 @@ const css = [
   readFileSync(join(WORTEL, 'tools/stijl.css'), 'utf8'),
   readFileSync(join(WORTEL, 'tools/extra.css'), 'utf8'),
   readFileSync(join(WORTEL, 'tools/traject.css'), 'utf8'),
-  readFileSync(join(WORTEL, 'tools/vloeiend.css'), 'utf8')
+  readFileSync(join(WORTEL, 'tools/vloeiend.css'), 'utf8'),
+  // koers.css staat bewust als laatste: dat blad tilt de pagina van een
+  // opsomming naar een etalage, en mag daarvoor eerdere regels overrulen
+  readFileSync(join(WORTEL, 'tools/koers.css'), 'utf8')
 ].join('\n');
 
 const werkCss = readFileSync(join(WORTEL, 'tools/werkpagina.css'), 'utf8');
@@ -171,37 +174,53 @@ const binnenkant = `<a class="overslaan" href="#werk">Direct naar het werk</a>
 
 <main id="top">
 
-  <section class="toonbank">
-    <div class="showcase" aria-hidden="true">
+  <section class="held">
+    <div class="held-doek" aria-hidden="true">
 ${banen.map((baan, i) => `      <div class="baan baan-${i + 1}">
         <div class="sleep">
 ${[...baan, ...baan].map((b) => `          <img src="img/m-${esc(b.bestand)}" width="440" height="275" loading="${i === 0 ? 'eager' : 'lazy'}" alt="">`).join('\n')}
         </div>
       </div>`).join('\n')}
     </div>
-    <p class="showcase-bij"><span class="stip live"></span>Echte schermen uit ${aantal} projecten. Hieronder kun je ze een voor een bekijken.</p>
-  </section>
 
-  <section class="kop-blok">
-    <div class="binnen">
-      <p class="rol">${esc(site.rol)}</p>
-      <h1>${esc(site.kop)}</h1>
-      <ul class="cijfers">
-        <li><b>${aantal}</b> projecten</li>
-        <li><b>${aantalLive}</b> draaien nu live</li>
-        <li><b>${domeinen}</b> op een eigen domein</li>
-      </ul>
-      <p class="kop-knoppen">
-        <button type="button" class="knop knop-vol" data-hulp-open>Wat past bij jou?</button>
-        <a class="knop knop-klein" href="#werk">Of blader zelf door het werk</a>
+    <div class="binnen held-binnen">
+      <p class="ogen">${esc(site.rol)}</p>
+      <h1>Ik bouw de voorkant<br><span class="glans">én de achterkant.</span></h1>
+      <p class="held-intro">Websites die verkopen en software die het werk erachter doet &mdash; door dezelfde handen gebouwd, zodat de knop die je klant indrukt en de database die antwoord geeft op elkaar passen.</p>
+      <p class="held-knoppen">
+        <button type="button" class="knop knop-vol knop-groot" data-hulp-open>Wat past bij jou? <span class="pijltje" aria-hidden="true">&rarr;</span></button>
+        <a class="knop knop-leeg knop-groot" href="#werk">Bekijk het werk</a>
       </p>
+    </div>
+
+    <div class="bewijsbalk">
+      <div class="binnen">
+        <ul class="bewijs">
+          <li><b>${aantal}</b><span>projecten gebouwd</span></li>
+          <li><b>${aantalLive}</b><span>draaien nu live</span></li>
+          <li><b>${domeinen}</b><span>op een eigen domein</span></li>
+          <li><b>1</b><span>aanspreekpunt, van eerste gesprek tot beheer</span></li>
+        </ul>
+      </div>
     </div>
   </section>
 
+  <div class="binnen">
+    <div class="namenbalk">
+      <span class="namenbalk-label"><span class="stip live"></span>Nu live</span>
+      <ul class="namen">
+${projecten.filter((p) => p.status === 'live').map((p) => `        <li>${esc(p.naam)}</li>`).join('\n')}
+      </ul>
+    </div>
+  </div>
+
   <section class="sectie" id="werk">
     <div class="binnen">
-      <h2 class="sectie-kop">Het werk</h2>
-      <p class="sectie-uitleg">Klik een project aan voor het hele verhaal: een voorbeeld uit de praktijk, wat het doet en schermen van de draaiende versie.</p>
+      <div class="sectie-kop-blok">
+        <p class="ogen">Het werk</p>
+        <h2 class="sectie-kop">${aantal} projecten, en je kunt ze allemaal bekijken</h2>
+        <p class="sectie-uitleg">Geen mockups en geen portfolioplaatjes: elk scherm hieronder komt uit de draaiende versie. Klik een project aan voor het hele verhaal &mdash; een voorbeeld uit de praktijk, wat het doet en waarom het zo gebouwd is.</p>
+      </div>
     </div>
     <div class="regelbalk">
       <div class="binnen regelbalk-binnen">
@@ -221,8 +240,11 @@ ${[...baan, ...baan].map((b) => `          <img src="img/m-${esc(b.bestand)}" wi
 
   <section class="sectie" id="lagen">
     <div class="binnen">
-      <h2 class="sectie-kop">Voorkant én achterkant, door dezelfde handen</h2>
-      <p class="sectie-uitleg">Bij de meeste bureaus bouwt de een de website en moet je voor alles wat erachter zit bij iemand anders zijn. Ik doe allebei, en juist daar zit de winst: de knop die de klant indrukt en de database die het antwoord geeft zijn samen ontworpen.</p>
+      <div class="sectie-kop-blok midden">
+        <p class="ogen">De aanpak</p>
+        <h2 class="sectie-kop">Voorkant én achterkant, door dezelfde handen</h2>
+        <p class="sectie-uitleg">Bij de meeste bureaus bouwt de een de website en moet je voor alles wat erachter zit bij iemand anders zijn. Ik doe allebei, en juist daar zit de winst: de knop die de klant indrukt en de database die het antwoord geeft zijn samen ontworpen.</p>
+      </div>
       <div class="lagen">${site.lagen.map(laag).join('')}</div>
 
       <div class="bouw">
@@ -252,8 +274,11 @@ ${[...baan, ...baan].map((b) => `          <img src="img/m-${esc(b.bestand)}" wi
 
   <section class="sectie" id="cijfers">
     <div class="binnen">
-      <h2 class="sectie-kop">Waar het werk in zit</h2>
-      <p class="sectie-uitleg">Geteld over alle ${aantal} projecten op deze pagina. Groeit vanzelf mee als er werk bij komt.</p>
+      <div class="sectie-kop-blok">
+        <p class="ogen">In cijfers</p>
+        <h2 class="sectie-kop">Waar het werk in zit</h2>
+        <p class="sectie-uitleg">Geteld over alle ${aantal} projecten op deze pagina. Groeit vanzelf mee als er werk bij komt.</p>
+      </div>
       <div class="grafieken">
         <figure class="grafiek">
           <figcaption>Techniek die in meer dan &eacute;&eacute;n project terugkomt</figcaption>
@@ -271,16 +296,24 @@ ${[...baan, ...baan].map((b) => `          <img src="img/m-${esc(b.bestand)}" wi
 
   <section class="sectie" id="kunnen">
     <div class="binnen">
-      <h2 class="sectie-kop">Waar ik je mee kan helpen</h2>
-      <p class="sectie-uitleg">Alles hieronder draait al ergens. Geen lijstje met technieken die ik ooit eens geprobeerd heb.</p>
-      <div class="kundes">${site.kunnen.map(kunde).join('')}</div>
+      <div class="eiland">
+        <div class="sectie-kop-blok midden">
+          <p class="ogen">Wat ik doe</p>
+          <h2 class="sectie-kop">Waar ik je mee kan helpen</h2>
+          <p class="sectie-uitleg">Alles hieronder draait al ergens. Geen lijstje met technieken die ik ooit eens geprobeerd heb.</p>
+        </div>
+        <div class="kundes">${site.kunnen.map(kunde).join('')}</div>
+      </div>
     </div>
   </section>
 
   <section class="sectie" id="traject">
     <div class="binnen">
-      <h2 class="sectie-kop">${esc(site.traject.kop)}</h2>
-      <p class="sectie-uitleg">${esc(site.traject.intro)}</p>
+      <div class="sectie-kop-blok midden">
+        <p class="ogen">Samenwerken</p>
+        <h2 class="sectie-kop">${esc(site.traject.kop)}</h2>
+        <p class="sectie-uitleg">${esc(site.traject.intro)}</p>
+      </div>
 
       <div class="stroom stroom-los">
         <h4>Zo loopt het</h4>
@@ -293,19 +326,19 @@ ${site.traject.stappen.map((st, i) => `          <li><span class="nr">${i + 1}</
     </div>
   </section>
 
-  <section class="sectie" id="contact">
+  <section class="slot" id="contact">
     <div class="binnen">
-      <div class="contact">
-        <div>
-          <h2>Zullen we kijken wat er mogelijk is?</h2>
-          <p>Heb je al een website? Plak hem in de scan, dan meet ik hem nu voor je door — snelheid, gewicht, mobiel en wat Google ervan ziet. Je weet binnen een paar seconden of het zin heeft om verder te praten.</p>
-          <p><a class="knop knop-vol" href="${abs('contact/')}">Meet mijn site door</a></p>
-        </div>
-        <div class="contact-doos">
-          <span class="adres" id="adres">${esc(site.email)}</span>
-          <button type="button" class="knop knop-vol" id="kopieer">Kopieer adres</button>
-        </div>
-      </div>
+      <p class="ogen">Volgende stap</p>
+      <h2>Zullen we kijken wat er mogelijk is?</h2>
+      <p>Heb je al een website? Plak hem in de scan, dan meet ik hem nu voor je door &mdash; snelheid, gewicht, mobiel en wat Google ervan ziet. Je weet binnen een paar seconden of het zin heeft om verder te praten.</p>
+      <p class="slot-knoppen">
+        <a class="knop knop-vol knop-groot" href="${abs('contact/')}">Meet mijn site door <span class="pijltje" aria-hidden="true">&rarr;</span></a>
+        <button type="button" class="knop knop-leeg knop-groot" data-hulp-open>Wat past bij jou?</button>
+      </p>
+      <p class="slot-adres">
+        Of gewoon een mail: <a href="mailto:${esc(site.email)}" id="adres">${esc(site.email)}</a>
+        <button type="button" class="knop knop-klein" id="kopieer">Kopieer</button>
+      </p>
     </div>
   </section>
 
@@ -313,8 +346,23 @@ ${site.traject.stappen.map((st, i) => `          <li><span class="nr">${i + 1}</
 
 <footer class="voet">
   <div class="binnen">
-    <p>Alle schermen op deze pagina zijn echte screenshots van de draaiende projecten. Klantgegevens zijn onleesbaar gemaakt. ${esc(site.bedrijf)} · Amersfoort.</p>
-    <p class="bijgewerkt">Bijgewerkt ${new Date().toLocaleDateString('nl-NL', { day: 'numeric', month: 'long', year: 'numeric' })} · ${aantal} projecten</p>
+    <div class="voet-boven">
+      <div class="voet-merk">
+        <a class="merk" href="#top"><span class="merk-stip"></span>${esc(site.naam)}</a>
+        <p>Websites en bedrijfssoftware uit Amersfoort. Voorkant én achterkant, door dezelfde handen.</p>
+      </div>
+      <nav class="voet-wegen" aria-label="Voettekst">
+        <a href="#werk">Het werk</a>
+        <a href="#lagen">Aanpak</a>
+        <a href="#traject">Samenwerken</a>
+        <a href="${abs('contact/')}">Contact</a>
+        <a href="mailto:${esc(site.email)}">${esc(site.email)}</a>
+      </nav>
+    </div>
+    <div class="voet-onder">
+      <p>Alle schermen op deze pagina zijn echte screenshots van de draaiende projecten. Klantgegevens zijn onleesbaar gemaakt.</p>
+      <p class="bijgewerkt">Bijgewerkt ${new Date().toLocaleDateString('nl-NL', { day: 'numeric', month: 'long', year: 'numeric' })} · ${aantal} projecten</p>
+    </div>
   </div>
 </footer>
 

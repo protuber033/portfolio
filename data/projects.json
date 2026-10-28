@@ -1,5 +1,125 @@
 [
   {
+    "id": "eemland",
+    "naam": "Eemland Boekt",
+    "status": "live",
+    "statusLabel": "Draait in bedrijf",
+    "map": "C:/Users/mstic/Desktop/Samih Tichtti/voor-papa/eemlandboekt",
+    "periode": "januari – oktober 2026",
+    "eersteDag": "2026-01-21",
+    "laatsteDag": "2026-10-23",
+    "eenRegel": "Offertes, facturen, urenbriefjes scannen en btw-aangifte in één systeem.",
+    "voorWie": "De complete administratie van een bouwbedrijf, van offerte tot btw-aangifte, in één systeem dat elke dag gebruikt wordt.",
+    "voorbeeld": "De stapel papieren urenbriefjes gaat door de scanner. Het systeem leest ze uit, telt na of de totalen op het briefje zelf wel kloppen, en zet de uren op het juiste project. Aan het eind van het kwartaal rolt de btw-aangifte er kant-en-klaar uit.",
+    "doet": [
+      "Offertes en facturen maken, versturen en als pdf bewaren.",
+      "Urenbriefjes scannen **én narekenen**, zodat fouten opvallen.",
+      "Kwartaalcijfers, btw-overzicht en meerjarenrapport zonder handwerk.",
+      "Projecten, klanten, personeel en vacatures bij elkaar.",
+      "Documenten in beveiligde opslag, downloads via afgeschermde links."
+    ],
+    "techniek": [
+      "React 19",
+      "Express",
+      "PostgreSQL",
+      "Supabase Storage",
+      "pdf-lib",
+      "Google Gemini"
+    ],
+    "tags": [
+      "software",
+      "ai"
+    ],
+    "url": null,
+    "urlLabel": null,
+    "besloten": "Besloten klantomgeving — rondleiding op aanvraag.",
+    "tegel": "t-eemland.webp",
+    "beelden": [
+      {
+        "bestand": "eemland-1.webp",
+        "titel": "inlogportaal",
+        "bijschrift": "Bewust onscherp: dit is een besloten omgeving van een klant.",
+        "alt": "Onscherp gemaakt inlogscherm van de besloten klantomgeving; alleen de indeling is te zien.",
+        "licht": 55
+      }
+    ],
+    "stappen": [
+      "Urenbriefje door de scanner",
+      "Systeem leest en telt na",
+      "Uren op het juiste project",
+      "Factuur eruit",
+      "Kwartaalcijfers",
+      "Btw-aangifte"
+    ]
+  },
+  {
+    "id": "funstudios",
+    "naam": "Fun Studios",
+    "status": "live",
+    "statusLabel": "Live online",
+    "map": "C:/Users/mstic/Desktop/funstudios",
+    "periode": "september – oktober 2026",
+    "eersteDag": "2026-09-07",
+    "laatsteDag": "2026-10-21",
+    "eenRegel": "Eventsite met boekingsflow: photo booths, low fog en indoor vuurwerk.",
+    "voorWie": "Voor een entertainmentbedrijf: photo booths, 360 booth, low fog, indoor vuurwerk en lichtletters — met een boekingsflow die de aanvragen binnenhaalt.",
+    "voorbeeld": "Iemand plant een bruiloft, klikt op “Plan mijn event” en verstuurt het formulier. Hij krijgt meteen een bevestiging in zijn mail. De aanvraag staat op dat moment al in het adminpaneel — ook als het mailen hapert, raakt er niets kwijt.",
+    "doet": [
+      "Offerteformulier dat opslaat **én** mailt, met bevestiging naar de klant.",
+      "Adminpaneel waar elke aanvraag binnenkomt.",
+      "Foto's worden automatisch bijgesneden en geoptimaliseerd.",
+      "Animaties die de site niet traag maken.",
+      "Projectenpagina en Instagram-feed die zichzelf bijwerkt."
+    ],
+    "techniek": [
+      "React 19",
+      "Vite",
+      "Tailwind 4",
+      "Motion",
+      "Express",
+      "sharp"
+    ],
+    "tags": [
+      "website"
+    ],
+    "url": "https://www.funstudios.nl",
+    "urlLabel": "Open de site",
+    "besloten": null,
+    "tegel": "t-funstudios.webp",
+    "beelden": [
+      {
+        "bestand": "funstudios-1.webp",
+        "titel": "homepage",
+        "bijschrift": "Opent met echte foto's van eerdere events.",
+        "alt": "Donkere homepage met de kop Wij maken jouw event onvergetelijk en zwevende polaroidfoto's.",
+        "licht": 25
+      },
+      {
+        "bestand": "funstudios-2.webp",
+        "titel": "projecten",
+        "bijschrift": "Uitgelichte projecten.",
+        "alt": "Sectie Dit hebben we laatst gedaan met een raster van eventfoto's.",
+        "licht": 16
+      },
+      {
+        "bestand": "funstudios-3.webp",
+        "titel": "sectie 3",
+        "bijschrift": "Verder op de pagina.",
+        "alt": "Schermafbeelding van Fun Studios.",
+        "licht": 18
+      }
+    ],
+    "bereikbaar": true,
+    "gecontroleerd": "27 okt 2026",
+    "stappen": [
+      "Bezoeker kiest een dienst",
+      "Formulier invullen",
+      "Bevestiging in de mail",
+      "Aanvraag in het adminpaneel",
+      "Offerte terug"
+    ]
+  },
+  {
     "status": "live",
     "statusLabel": "Live · eigen concept",
     "periode": "september 2026",
@@ -67,7 +187,7 @@
       }
     ],
     "bereikbaar": true,
-    "gecontroleerd": "2 okt 2026"
+    "gecontroleerd": "27 okt 2026"
   },
   {
     "status": "live",
@@ -120,7 +240,7 @@
       }
     ],
     "bereikbaar": true,
-    "gecontroleerd": "2 okt 2026"
+    "gecontroleerd": "27 okt 2026"
   },
   {
     "status": "live",
@@ -181,7 +301,7 @@
       }
     ],
     "bereikbaar": true,
-    "gecontroleerd": "2 okt 2026"
+    "gecontroleerd": "27 okt 2026"
   },
   {
     "status": "live",
@@ -240,127 +360,7 @@
       }
     ],
     "bereikbaar": true,
-    "gecontroleerd": "2 okt 2026"
-  },
-  {
-    "id": "eemland",
-    "naam": "Eemland Boekt",
-    "status": "live",
-    "statusLabel": "Draait in bedrijf",
-    "map": "C:/Users/mstic/Desktop/Samih Tichtti/voor-papa/eemlandboekt",
-    "periode": "januari – september 2026",
-    "eersteDag": "2026-01-21",
-    "laatsteDag": "2026-09-22",
-    "eenRegel": "Offertes, facturen, urenbriefjes scannen en btw-aangifte in één systeem.",
-    "voorWie": "De complete administratie van een bouwbedrijf, van offerte tot btw-aangifte, in één systeem dat elke dag gebruikt wordt.",
-    "voorbeeld": "De stapel papieren urenbriefjes gaat door de scanner. Het systeem leest ze uit, telt na of de totalen op het briefje zelf wel kloppen, en zet de uren op het juiste project. Aan het eind van het kwartaal rolt de btw-aangifte er kant-en-klaar uit.",
-    "doet": [
-      "Offertes en facturen maken, versturen en als pdf bewaren.",
-      "Urenbriefjes scannen **én narekenen**, zodat fouten opvallen.",
-      "Kwartaalcijfers, btw-overzicht en meerjarenrapport zonder handwerk.",
-      "Projecten, klanten, personeel en vacatures bij elkaar.",
-      "Documenten in beveiligde opslag, downloads via afgeschermde links."
-    ],
-    "techniek": [
-      "React 19",
-      "Express",
-      "PostgreSQL",
-      "Supabase Storage",
-      "pdf-lib",
-      "Google Gemini"
-    ],
-    "tags": [
-      "software",
-      "ai"
-    ],
-    "url": null,
-    "urlLabel": null,
-    "besloten": "Besloten klantomgeving — rondleiding op aanvraag.",
-    "tegel": "t-eemland.webp",
-    "beelden": [
-      {
-        "bestand": "eemland-1.webp",
-        "titel": "inlogportaal",
-        "bijschrift": "Bewust onscherp: dit is een besloten omgeving van een klant.",
-        "alt": "Onscherp gemaakt inlogscherm van de besloten klantomgeving; alleen de indeling is te zien.",
-        "licht": 55
-      }
-    ],
-    "stappen": [
-      "Urenbriefje door de scanner",
-      "Systeem leest en telt na",
-      "Uren op het juiste project",
-      "Factuur eruit",
-      "Kwartaalcijfers",
-      "Btw-aangifte"
-    ]
-  },
-  {
-    "id": "funstudios",
-    "naam": "Fun Studios",
-    "status": "live",
-    "statusLabel": "Live online",
-    "map": "C:/Users/mstic/Desktop/funstudios",
-    "periode": "september 2026",
-    "eersteDag": "2026-09-07",
-    "laatsteDag": "2026-09-22",
-    "eenRegel": "Eventsite met boekingsflow: photo booths, low fog en indoor vuurwerk.",
-    "voorWie": "Voor een entertainmentbedrijf: photo booths, 360 booth, low fog, indoor vuurwerk en lichtletters — met een boekingsflow die de aanvragen binnenhaalt.",
-    "voorbeeld": "Iemand plant een bruiloft, klikt op “Plan mijn event” en verstuurt het formulier. Hij krijgt meteen een bevestiging in zijn mail. De aanvraag staat op dat moment al in het adminpaneel — ook als het mailen hapert, raakt er niets kwijt.",
-    "doet": [
-      "Offerteformulier dat opslaat **én** mailt, met bevestiging naar de klant.",
-      "Adminpaneel waar elke aanvraag binnenkomt.",
-      "Foto's worden automatisch bijgesneden en geoptimaliseerd.",
-      "Animaties die de site niet traag maken.",
-      "Projectenpagina en Instagram-feed die zichzelf bijwerkt."
-    ],
-    "techniek": [
-      "React 19",
-      "Vite",
-      "Tailwind 4",
-      "Motion",
-      "Express",
-      "sharp"
-    ],
-    "tags": [
-      "website"
-    ],
-    "url": "https://www.funstudios.nl",
-    "urlLabel": "Open de site",
-    "besloten": null,
-    "tegel": "t-funstudios.webp",
-    "beelden": [
-      {
-        "bestand": "funstudios-1.webp",
-        "titel": "homepage",
-        "bijschrift": "Opent met echte foto's van eerdere events.",
-        "alt": "Donkere homepage met de kop Wij maken jouw event onvergetelijk en zwevende polaroidfoto's.",
-        "licht": 25
-      },
-      {
-        "bestand": "funstudios-2.webp",
-        "titel": "projecten",
-        "bijschrift": "Uitgelichte projecten.",
-        "alt": "Sectie Dit hebben we laatst gedaan met een raster van eventfoto's.",
-        "licht": 16
-      },
-      {
-        "bestand": "funstudios-3.webp",
-        "titel": "sectie 3",
-        "bijschrift": "Verder op de pagina.",
-        "alt": "Schermafbeelding van Fun Studios.",
-        "licht": 18
-      }
-    ],
-    "bereikbaar": true,
-    "gecontroleerd": "2 okt 2026",
-    "stappen": [
-      "Bezoeker kiest een dienst",
-      "Formulier invullen",
-      "Bevestiging in de mail",
-      "Aanvraag in het adminpaneel",
-      "Offerte terug"
-    ]
+    "gecontroleerd": "27 okt 2026"
   },
   {
     "id": "glacio",
@@ -416,7 +416,7 @@
       }
     ],
     "bereikbaar": true,
-    "gecontroleerd": "2 okt 2026",
+    "gecontroleerd": "27 okt 2026",
     "github": "protuber033/glacio",
     "stappen": [
       "Drie vragen beantwoorden",
@@ -485,7 +485,7 @@
       }
     ],
     "bereikbaar": true,
-    "gecontroleerd": "2 okt 2026",
+    "gecontroleerd": "27 okt 2026",
     "stappen": [
       "Adres invullen",
       "Gevelfoto uploaden",
@@ -567,7 +567,7 @@
       "Club ziet de opbrengst"
     ],
     "bereikbaar": true,
-    "gecontroleerd": "2 okt 2026"
+    "gecontroleerd": "27 okt 2026"
   },
   {
     "id": "courtswap",
@@ -615,7 +615,7 @@
       }
     ],
     "bereikbaar": true,
-    "gecontroleerd": "2 okt 2026",
+    "gecontroleerd": "27 okt 2026",
     "stappen": [
       "Advertentie plaatsen met foto's",
       "Koper vindt hem op de kaart",
@@ -685,7 +685,7 @@
       "Inloggen op je eigen omgeving"
     ],
     "bereikbaar": true,
-    "gecontroleerd": "2 okt 2026"
+    "gecontroleerd": "27 okt 2026"
   },
   {
     "id": "remh",
@@ -744,8 +744,8 @@
         "licht": 80
       }
     ],
-    "bereikbaar": true,
-    "gecontroleerd": "2 okt 2026",
+    "bereikbaar": false,
+    "gecontroleerd": "27 okt 2026",
     "stappen": [
       "Dienst kiezen",
       "Configureren",

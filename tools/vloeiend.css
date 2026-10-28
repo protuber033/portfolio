@@ -69,6 +69,7 @@ p, .kaart-regel, .paneel-lead, li { text-wrap: pretty; }
     }
     @keyframes aanklampen {
       to {
+        background: rgba(10, 13, 22, .86);
         box-shadow: 0 10px 34px rgba(0, 0, 0, .45);
         border-bottom-color: var(--rand-op);
       }

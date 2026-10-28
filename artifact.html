@@ -469,34 +469,10 @@ body.vast { overflow: hidden; }
 .groot img { max-height: 52vh; object-fit: cover; object-position: top center; }
 .duimen { margin: 0 0 10px; }
 
-/* ============ eerst beeld, dan pas woorden ============ */
-.toonbank { padding-top: clamp(14px, 2.4vw, 28px); }
-.toonbank .showcase { margin-top: 0; }
-.sleep img { width: 320px; }
-.showcase-bij { margin-top: 15px; }
-
-.kop-blok { padding-block: clamp(26px, 3.6vw, 46px) clamp(16px, 2.4vw, 28px); }
-h1 { font-size: clamp(1.9rem, 4.4vw, 2.9rem); max-width: 22ch; }
-.kop-blok .cijfers { margin-top: 20px; }
-
-/* het binnenkomen opnieuw verdelen nu de band vooraan staat */
-@media (prefers-reduced-motion: no-preference) {
-  .showcase { animation: opkomen .5s cubic-bezier(.2, .7, .3, 1) both; animation-delay: 0s; }
-  .showcase-bij { animation-delay: .1s; }
-  .kop-blok .rol { animation-delay: .14s; }
-  .kop-blok h1 { animation-delay: .19s; }
-  .kop-blok .cijfers { animation-delay: .24s; }
-}
-
-@media (max-width: 620px) {
-  .sleep img { width: 210px; }
-}
-
-/* het gat tussen kop en werk dichttrekken */
-.kop-blok + .sectie { padding-top: clamp(18px, 2.4vw, 32px); }
-
-.showcase-bij { align-items: flex-start; }
-.showcase-bij .stip { margin-top: .5em; flex: none; }
+/* De losse band bovenaan is vervangen door een echte kop, met diezelfde
+   schermen als decor erachter. De regels die die band op zijn plek hielden
+   stonden hier; ze zijn weg omdat ze de h1 juist kleiner maakten dan de rest
+   van het blad bedoelde. Wat ervoor in de plaats komt staat in koers.css. */
 
 .stip.archief { background: var(--tekst-3); }
 .balkje.archief { background: rgba(154, 166, 198, .3); }
@@ -736,6 +712,7 @@ p, .kaart-regel, .paneel-lead, li { text-wrap: pretty; }
     }
     @keyframes aanklampen {
       to {
+        background: rgba(10, 13, 22, .86);
         box-shadow: 0 10px 34px rgba(0, 0, 0, .45);
         border-bottom-color: var(--rand-op);
       }
@@ -1069,6 +1046,349 @@ p, .kaart-regel, .paneel-lead, li { text-wrap: pretty; }
   h1, h2, h3 { break-after: avoid; }
   * { animation: none !important; transition: none !important; box-shadow: none !important; }
 }
+
+/* ============================================================
+   KOERS — de laag die de pagina van "lijst met blokken" naar
+   "etalage" tilt.
+
+   Wat er mis was: de pagina opende met een band schermen en begon
+   pas daarna te praten. Een bezoeker kreeg dus plaatjes voordat hij
+   wist waar hij was. Verder stonden alle secties op dezelfde hoogte,
+   met dezelfde kopgrootte en dezelfde witruimte — dat leest als een
+   opsomming, niet als een verhaal.
+
+   Wat hier gebeurt:
+   - de band gaat áchter de kop staan, gedempt, als decor
+   - de kop wordt een echte kop: label, grote zin, uitleg, twee knoppen
+   - elke sectie krijgt hetzelfde ritme: label, grote titel, uitleg
+   - veel meer lucht tussen de secties
+   Dit blad komt als laatste, dus het mag eerdere regels overschrijven.
+   ============================================================ */
+
+:root {
+  --lucht: clamp(68px, 9vw, 132px);      /* ruimte tussen twee secties */
+  --glans-1: #5B8CFF;
+  --glans-2: #2FE8B0;
+}
+
+/* ---------- de balk bovenin ----------
+   Over de kop heen is hij doorzichtig; zodra je scrolt wordt hij vast.
+   Dat scheelt een harde lijn op het mooiste stuk van de pagina. */
+.balk-boven {
+  height: auto; min-height: 64px;
+  background: transparent; border-bottom-color: transparent;
+  transition: background .25s ease, border-color .25s ease;
+}
+.balk-boven .binnen { padding-block: 12px; }
+/* De animatie zelf staat in vloeiend.css ("aanklampen"); daar is de
+   achtergrond aan toegevoegd. Twee animaties op hetzelfde element zouden
+   elkaar opheffen, want de laatste wint. Zonder ondersteuning voor
+   scroll-animaties blijft de balk gewoon altijd vast. */
+@supports not (animation-timeline: scroll()) {
+  .balk-boven { background: rgba(10, 13, 22, .88); border-bottom-color: var(--rand); }
+}
+.merk { font-size: 1.04rem; }
+
+/* ============ de kop ============ */
+.held {
+  position: relative; isolation: isolate;
+  padding-block: clamp(76px, 13vw, 170px) 0;
+  overflow: hidden;
+}
+
+/* Het decor: dezelfde echte schermen als voorheen, maar nu gedempt en
+   achter de tekst. Ze mogen gezien worden, niet gelezen — vandaar de
+   lage dekking en het masker dat ze naar de randen laat uitdoven. */
+.held-doek {
+  position: absolute; inset: 0; z-index: -2;
+  display: grid; align-content: center; gap: 18px;
+  opacity: .5;
+  transform: scale(1.06);
+  -webkit-mask-image:
+    linear-gradient(90deg, transparent, #000 18%, #000 82%, transparent),
+    radial-gradient(130% 92% at 50% 42%, transparent 28%, #000 78%);
+  mask-image:
+    linear-gradient(90deg, transparent, #000 18%, #000 82%, transparent),
+    radial-gradient(130% 92% at 50% 42%, transparent 28%, #000 78%);
+  -webkit-mask-composite: source-in;
+  mask-composite: intersect;
+}
+.held-doek .sleep img {
+  width: 300px; border-radius: 12px;
+  box-shadow: 0 0 0 1px rgba(255, 255, 255, .06), 0 18px 40px rgba(0, 0, 0, .5);
+  transition: none;
+}
+.held-doek .sleep img:hover { transform: none; }
+/* een donkere sluier eroverheen, anders vecht de tekst met de schermen */
+.held::before {
+  content: ''; position: absolute; inset: 0; z-index: -1;
+  background:
+    radial-gradient(90% 62% at 50% 40%, rgba(10, 13, 22, .86) 0%, rgba(10, 13, 22, .6) 55%, transparent 100%),
+    linear-gradient(180deg, rgba(10, 13, 22, .7), transparent 26%, rgba(10, 13, 22, .55) 82%, var(--grond) 100%);
+}
+
+.held-binnen { position: relative; text-align: center; }
+
+/* het labeltje boven de kop */
+.ogen {
+  display: inline-flex; align-items: center; gap: 10px;
+  font-family: var(--mono); font-size: .72rem; letter-spacing: .18em;
+  text-transform: uppercase; color: var(--accent);
+  margin: 0 0 22px;
+}
+.ogen::before {
+  content: ''; width: 26px; height: 1px; flex: none;
+  background: linear-gradient(90deg, transparent, var(--accent));
+}
+.held-binnen .ogen {
+  border: 1px solid var(--rand-op); border-radius: 999px;
+  padding: 7px 16px 7px 13px; background: rgba(17, 23, 37, .6);
+  backdrop-filter: blur(8px);
+}
+
+.held h1 {
+  font-size: clamp(2.5rem, 7.2vw, 5rem);
+  line-height: 1.02; letter-spacing: -.045em;
+  max-width: 17ch; margin-inline: auto;
+}
+/* de tweede regel in kleur: hetzelfde trucje dat funstudios gebruikt, en
+   het werkt omdat je oog dan weet waar de zin uit twee delen bestaat */
+.glans {
+  background: linear-gradient(100deg, var(--glans-1), var(--glans-2));
+  -webkit-background-clip: text; background-clip: text;
+  -webkit-text-fill-color: transparent; color: transparent;
+}
+.held-intro {
+  margin: 26px auto 0; max-width: 56ch;
+  font-size: clamp(1.02rem, 1.6vw, 1.2rem); color: var(--tekst-2); line-height: 1.65;
+}
+.held-knoppen {
+  display: flex; flex-wrap: wrap; gap: 12px; justify-content: center;
+  margin: 34px 0 0;
+}
+.knop-groot { padding: 15px 26px; font-size: 1rem; border-radius: 12px; }
+.knop-vol.knop-groot { box-shadow: 0 10px 30px rgba(91, 140, 255, .28); }
+.knop-leeg {
+  background: rgba(255, 255, 255, .04); border: 1px solid var(--rand-op); color: var(--tekst);
+}
+.knop-leeg:hover { border-color: var(--accent); background: rgba(91, 140, 255, .1); }
+.knop .pijltje { display: inline-block; margin-left: 7px; transition: transform .2s ease; }
+.knop:hover .pijltje { transform: translateX(3px); }
+
+/* ---------- de cijfers onder de kop ---------- */
+.bewijsbalk {
+  position: relative; margin-top: clamp(54px, 8vw, 96px);
+  border-top: 1px solid var(--rand); border-bottom: 1px solid var(--rand);
+  background: rgba(17, 23, 37, .45);
+}
+.bewijs {
+  display: grid; grid-template-columns: repeat(4, minmax(0, 1fr));
+  list-style: none; margin: 0; padding: 0;
+}
+.bewijs li {
+  padding: clamp(20px, 3vw, 30px) 10px; text-align: center;
+  border-left: 1px solid var(--rand);
+}
+.bewijs li:first-child { border-left: 0; }
+.bewijs b {
+  display: block; font-family: var(--display); font-weight: 700;
+  font-size: clamp(1.7rem, 3.4vw, 2.5rem); letter-spacing: -.04em; line-height: 1;
+  background: linear-gradient(100deg, var(--glans-1), var(--glans-2));
+  -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent;
+}
+.bewijs span {
+  display: block; margin-top: 9px;
+  font-size: .82rem; color: var(--tekst-3); line-height: 1.4;
+}
+
+/* ---------- de strook met namen ---------- */
+.namenbalk {
+  display: flex; align-items: center; gap: clamp(16px, 3vw, 40px); flex-wrap: wrap;
+  padding-block: clamp(20px, 3vw, 30px);
+}
+.namenbalk-label {
+  font-family: var(--mono); font-size: .68rem; letter-spacing: .18em;
+  text-transform: uppercase; color: var(--tekst-3); white-space: nowrap;
+  display: inline-flex; align-items: center; gap: 8px;
+}
+.namen {
+  display: flex; flex-wrap: wrap; align-items: center;
+  gap: clamp(14px, 2.4vw, 30px); list-style: none; margin: 0; padding: 0;
+}
+.namen li {
+  display: inline-flex; align-items: center;
+  font-family: var(--display); font-weight: 700; font-size: clamp(.9rem, 1.4vw, 1.04rem);
+  letter-spacing: -.02em; color: var(--tekst-2);
+  transition: color .2s ease;
+}
+.namen li:hover { color: var(--tekst); }
+/* Een punt achter elke naam behalve de laatste, zodat het een opsomming
+   blijft. Achter en niet ervoor: bij het afbreken van een regel hoort het
+   teken bij de naam die eraan voorafging, niet bij de volgende. */
+.namen li:not(:last-child)::after {
+  content: '·'; color: var(--rand-op);
+  margin-left: calc(clamp(14px, 2.4vw, 30px) / 2);
+}
+
+/* ============ het ritme van de secties ============ */
+.sectie { padding-block: var(--lucht) 0; }
+.sectie:last-of-type { padding-bottom: var(--lucht); }
+
+.sectie-kop {
+  font-size: clamp(1.9rem, 4.2vw, 3rem);
+  line-height: 1.08; letter-spacing: -.04em;
+  max-width: 20ch;
+}
+.sectie-uitleg {
+  margin-top: 16px; font-size: clamp(.98rem, 1.4vw, 1.08rem);
+  line-height: 1.7; max-width: 60ch;
+}
+.sectie-kop-blok { margin-bottom: clamp(30px, 4.4vw, 54px); }
+.sectie-kop-blok.midden {
+  text-align: center;
+}
+.sectie-kop-blok.midden .sectie-kop,
+.sectie-kop-blok.midden .sectie-uitleg { margin-inline: auto; }
+.sectie-kop-blok.midden .ogen { justify-content: center; }
+.sectie-kop-blok.midden .ogen::after {
+  content: ''; width: 26px; height: 1px; flex: none;
+  background: linear-gradient(90deg, var(--accent), transparent);
+}
+
+/* Een sectie mag ook een eiland zijn: afgeronde doos op de achtergrond,
+   met een haarlijn in kleur bovenop. Dat breekt de eentonigheid zonder
+   dat er een tweede achtergrondkleur bij hoeft. */
+.eiland {
+  position: relative; overflow: hidden;
+  background: linear-gradient(180deg, var(--vlak) 0%, rgba(17, 23, 37, .4) 100%);
+  border: 1px solid var(--rand); border-radius: 26px;
+  padding: clamp(30px, 5vw, 66px);
+}
+.eiland::before {
+  content: ''; position: absolute; inset-inline: 0; top: 0; height: 1px;
+  background: linear-gradient(90deg, transparent, var(--glans-1), var(--glans-2), transparent);
+}
+
+/* ============ het werk ============ */
+/* De regelbalk was een werkbalk met randen over de volle breedte; dat gaf
+   de pagina het gevoel van een beheerscherm. Nu alleen nog een haarlijn
+   onderaan — maar wel met een achtergrond, want hij blijft plakken en de
+   kaarten moeten eronderdoor kunnen zonder erdoorheen te schijnen. */
+.regelbalk {
+  border-top: 0; border-bottom: 0; margin-top: 0;
+  margin-bottom: clamp(22px, 3vw, 34px);
+  background: rgba(10, 13, 22, .92);
+  backdrop-filter: blur(12px);
+}
+.regelbalk-binnen {
+  padding-block: 14px;
+  border-bottom: 1px solid var(--rand);
+}
+.filter { border-radius: 999px; }
+
+.raster { grid-template-columns: repeat(auto-fill, minmax(330px, 1fr)); gap: clamp(16px, 2vw, 24px); }
+.kaart-knop { border-radius: 18px; }
+.kaart-knop:hover { transform: translateY(-5px); box-shadow: 0 18px 40px rgba(0, 0, 0, .45); }
+.duim { aspect-ratio: 16 / 11; }
+.kaart-tekst { padding: 18px 20px 20px; gap: 7px; }
+.kaart-naam { font-size: 1.16rem; }
+.kaart-regel { font-size: .94rem; line-height: 1.55; }
+.groep { padding-top: clamp(34px, 4.6vw, 56px); }
+.groep-kop h3 { font-size: 1.34rem; }
+
+/* De eerste groep mag groter: dat is het werk dat nu draait, en daar wil
+   je dat iemand naar kijkt. Twee kolommen in plaats van drie. */
+.groep[data-groep="live"] .raster { grid-template-columns: repeat(auto-fill, minmax(420px, 1fr)); }
+.groep[data-groep="live"] .duim { aspect-ratio: 16 / 10; }
+.groep[data-groep="live"] .kaart-naam { font-size: 1.3rem; }
+
+/* ============ de afsluiting ============ */
+.slot {
+  position: relative; overflow: hidden; margin-top: var(--lucht);
+  border-top: 1px solid var(--rand);
+  padding-block: clamp(70px, 11vw, 150px);
+  text-align: center;
+}
+.slot::before {
+  content: ''; position: absolute; inset: 0; z-index: -1;
+  background: radial-gradient(70% 120% at 50% 0%, rgba(91, 140, 255, .14), transparent 62%);
+}
+.slot h2 {
+  font-family: var(--display); font-weight: 700;
+  font-size: clamp(2rem, 5.4vw, 3.6rem); line-height: 1.05; letter-spacing: -.04em;
+  margin: 0 auto; max-width: 16ch; text-wrap: balance;
+}
+.slot p {
+  margin: 22px auto 0; max-width: 54ch; color: var(--tekst-2);
+  font-size: clamp(1rem, 1.5vw, 1.12rem); line-height: 1.65;
+}
+.slot-knoppen { display: flex; flex-wrap: wrap; gap: 12px; justify-content: center; margin-top: 36px; }
+.slot-adres {
+  display: inline-flex; align-items: center; gap: 10px; margin-top: 28px;
+  font-family: var(--mono); font-size: .88rem; color: var(--tekst-3);
+}
+.slot-adres a { color: var(--tekst-2); text-decoration: none; border-bottom: 1px solid var(--rand-op); }
+.slot-adres a:hover { color: var(--accent); border-color: var(--accent); }
+
+/* ============ de voet ============
+   Was een grijze regel onder een paginabrede streep. Dat haalt de lucht uit
+   de afsluiting die er net boven staat: je leest een grote vraag en belandt
+   meteen in een kleine lettertje. Nu eerst de naam en waar je heen kunt, en
+   pas daaronder het kleine lettertje. */
+.voet { margin-top: 0; padding-block: clamp(40px, 5vw, 64px) clamp(34px, 4vw, 52px); }
+.voet-boven {
+  display: flex; flex-wrap: wrap; gap: clamp(26px, 5vw, 70px);
+  align-items: flex-start; justify-content: space-between;
+  padding-bottom: clamp(26px, 3.4vw, 40px);
+  border-bottom: 1px solid var(--rand);
+}
+.voet-merk { max-width: 42ch; }
+.voet-merk .merk { font-size: 1.08rem; }
+.voet-merk p { margin: 12px 0 0; font-size: .9rem; color: var(--tekst-2); max-width: none; }
+.voet-wegen { display: flex; flex-wrap: wrap; gap: 10px 26px; align-items: center; }
+.voet-wegen a {
+  color: var(--tekst-2); text-decoration: none; font-size: .9rem;
+  border-bottom: 1px solid transparent; transition: color .15s ease, border-color .15s ease;
+}
+.voet-wegen a:hover { color: var(--tekst); border-bottom-color: var(--rand-op); }
+.voet-wegen a:last-child { font-family: var(--mono); font-size: .82rem; color: var(--tekst-3); }
+.voet-onder {
+  display: flex; flex-wrap: wrap; gap: 10px 30px; justify-content: space-between;
+  margin-top: clamp(20px, 2.6vw, 28px);
+}
+.voet-onder p { font-size: .8rem; }
+
+/* ============ smaller ============ */
+@media (max-width: 860px) {
+  .bewijs { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .bewijs li:nth-child(3) { border-left: 0; }
+  .bewijs li:nth-child(n+3) { border-top: 1px solid var(--rand); }
+  .groep[data-groep="live"] .raster { grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); }
+}
+@media (max-width: 620px) {
+  /* Op een telefoon worden het de filters drie rijen plus een zoekveld. Dat
+     blijven laten plakken kost de helft van het scherm, en je scrolt juist
+     om de kaarten te zien. */
+  .regelbalk { position: static; backdrop-filter: none; }
+
+  .held { padding-top: clamp(54px, 16vw, 90px); }
+  .held-doek { opacity: .22; }
+  .held-doek .sleep img { width: 200px; }
+  .held h1 { font-size: clamp(2.1rem, 10vw, 2.9rem); max-width: 14ch; }
+  .held-knoppen .knop { width: 100%; justify-content: center; }
+  .raster { grid-template-columns: 1fr; }
+  .eiland { border-radius: 18px; padding: 24px 18px; }
+}
+
+/* ============ rustig binnenkomen ============ */
+@media (prefers-reduced-motion: no-preference) {
+  .held-binnen > * { animation: opkomen .6s cubic-bezier(.2, .7, .3, 1) both; }
+  .held-binnen .ogen { animation-delay: .05s; }
+  .held-binnen h1 { animation-delay: .12s; }
+  .held-intro { animation-delay: .2s; }
+  .held-knoppen { animation-delay: .28s; }
+  .bewijsbalk { animation: opkomen .6s cubic-bezier(.2, .7, .3, 1) both; animation-delay: .36s; }
+}
 </style>
 <a class="overslaan" href="#werk">Direct naar het werk</a>
 <div class="leesbalk" aria-hidden="true"></div>
@@ -1092,8 +1412,8 @@ p, .kaart-regel, .paneel-lead, li { text-wrap: pretty; }
 
 <main id="top">
 
-  <section class="toonbank">
-    <div class="showcase" aria-hidden="true">
+  <section class="held">
+    <div class="held-doek" aria-hidden="true">
       <div class="baan baan-1">
         <div class="sleep">
           <img src="img/m-kempen-2.webp" width="440" height="275" loading="eager" alt="">
@@ -1161,29 +1481,56 @@ p, .kaart-regel, .paneel-lead, li { text-wrap: pretty; }
         </div>
       </div>
     </div>
-    <p class="showcase-bij"><span class="stip live"></span>Echte schermen uit 15 projecten. Hieronder kun je ze een voor een bekijken.</p>
-  </section>
 
-  <section class="kop-blok">
-    <div class="binnen">
-      <p class="rol">Websites en bedrijfssoftware</p>
-      <h1>Ik bouw de voorkant én de achterkant.</h1>
-      <ul class="cijfers">
-        <li><b>15</b> projecten</li>
-        <li><b>12</b> draaien nu live</li>
-        <li><b>3</b> op een eigen domein</li>
-      </ul>
-      <p class="kop-knoppen">
-        <button type="button" class="knop knop-vol" data-hulp-open>Wat past bij jou?</button>
-        <a class="knop knop-klein" href="#werk">Of blader zelf door het werk</a>
+    <div class="binnen held-binnen">
+      <p class="ogen">Websites en bedrijfssoftware</p>
+      <h1>Ik bouw de voorkant<br><span class="glans">én de achterkant.</span></h1>
+      <p class="held-intro">Websites die verkopen en software die het werk erachter doet &mdash; door dezelfde handen gebouwd, zodat de knop die je klant indrukt en de database die antwoord geeft op elkaar passen.</p>
+      <p class="held-knoppen">
+        <button type="button" class="knop knop-vol knop-groot" data-hulp-open>Wat past bij jou? <span class="pijltje" aria-hidden="true">&rarr;</span></button>
+        <a class="knop knop-leeg knop-groot" href="#werk">Bekijk het werk</a>
       </p>
+    </div>
+
+    <div class="bewijsbalk">
+      <div class="binnen">
+        <ul class="bewijs">
+          <li><b>15</b><span>projecten gebouwd</span></li>
+          <li><b>12</b><span>draaien nu live</span></li>
+          <li><b>3</b><span>op een eigen domein</span></li>
+          <li><b>1</b><span>aanspreekpunt, van eerste gesprek tot beheer</span></li>
+        </ul>
+      </div>
     </div>
   </section>
 
+  <div class="binnen">
+    <div class="namenbalk">
+      <span class="namenbalk-label"><span class="stip live"></span>Nu live</span>
+      <ul class="namen">
+        <li>Eemland Boekt</li>
+        <li>Fun Studios</li>
+        <li>Kaap Noord</li>
+        <li>Van Dijk Installatie</li>
+        <li>Hovenier Wilgenhof</li>
+        <li>Kempen Transport</li>
+        <li>Glacio Klimaattechniek</li>
+        <li>Kozijnfabriek Direct</li>
+        <li>RALOX Sports</li>
+        <li>CourtSwap</li>
+        <li>Eemlandwerkt</li>
+        <li>REMH Bouw &amp; Verbouw</li>
+      </ul>
+    </div>
+  </div>
+
   <section class="sectie" id="werk">
     <div class="binnen">
-      <h2 class="sectie-kop">Het werk</h2>
-      <p class="sectie-uitleg">Klik een project aan voor het hele verhaal: een voorbeeld uit de praktijk, wat het doet en schermen van de draaiende versie.</p>
+      <div class="sectie-kop-blok">
+        <p class="ogen">Het werk</p>
+        <h2 class="sectie-kop">15 projecten, en je kunt ze allemaal bekijken</h2>
+        <p class="sectie-uitleg">Geen mockups en geen portfolioplaatjes: elk scherm hieronder komt uit de draaiende versie. Klik een project aan voor het hele verhaal &mdash; een voorbeeld uit de praktijk, wat het doet en waarom het zo gebouwd is.</p>
+      </div>
     </div>
     <div class="regelbalk">
       <div class="binnen regelbalk-binnen">
@@ -1201,9 +1548,31 @@ p, .kaart-regel, .paneel-lead, li { text-wrap: pretty; }
         <div class="groep-kop">
           <h3>Draait nu live <span class="telling">12</span></h3>
           <p>Staat vandaag online, zelf te bekijken.</p>
-          <span class="gecheckt"><span class="stip live"></span>alle 12 reageerden bij de laatste controle op 2 okt 2026</span>
+          <span class="gecheckt"><span class="stip live"></span>alle 12 reageerden bij de laatste controle op 27 okt 2026</span>
         </div>
         <ul class="raster">
+        <li class="kaart" data-id="eemland" data-tags="software ai" data-zoek="eemland boekt offertes, facturen, urenbriefjes scannen en btw-aangifte in één systeem. de complete administratie van een bouwbedrijf, van offerte tot btw-aangifte, in één systeem dat elke dag gebruikt wordt. react 19 express postgresql supabase storage pdf-lib google gemini">
+          <a class="kaart-knop" href="werk/eemland/" aria-haspopup="dialog">
+            <span class="duim"><img src="img/t-eemland.webp" width="760" height="475" loading="lazy" alt="Scherm van Eemland Boekt"></span>
+            <span class="kaart-tekst">
+              <span class="kaart-status"><span class="stip live" aria-hidden="true"></span>Draait in bedrijf</span>
+              <span class="kaart-naam">Eemland Boekt</span>
+              <span class="kaart-regel">Offertes, facturen, urenbriefjes scannen en btw-aangifte in één systeem.</span>
+              <span class="kaart-chips"><span>React 19</span><span>Express</span><span>PostgreSQL</span></span>
+            </span>
+          </a>
+        </li>
+        <li class="kaart" data-id="funstudios" data-tags="website" data-zoek="fun studios eventsite met boekingsflow: photo booths, low fog en indoor vuurwerk. voor een entertainmentbedrijf: photo booths, 360 booth, low fog, indoor vuurwerk en lichtletters — met een boekingsflow die de aanvragen binnenhaalt. react 19 vite tailwind 4 motion express sharp">
+          <a class="kaart-knop" href="werk/funstudios/" aria-haspopup="dialog">
+            <span class="duim"><img src="img/t-funstudios.webp" width="760" height="475" loading="lazy" alt="Scherm van Fun Studios"></span>
+            <span class="kaart-tekst">
+              <span class="kaart-status"><span class="stip live" aria-hidden="true"></span>Live online</span>
+              <span class="kaart-naam">Fun Studios</span>
+              <span class="kaart-regel">Eventsite met boekingsflow: photo booths, low fog en indoor vuurwerk.</span>
+              <span class="kaart-chips"><span>React 19</span><span>Vite</span><span>Tailwind 4</span></span>
+            </span>
+          </a>
+        </li>
         <li class="kaart" data-id="kaapnoord" data-tags="website software" data-zoek="kaap noord een webshop waar je echt doorheen kunt lopen, tot en met de betaling. een bedachte koffiebranderij, gebouwd om te laten zien hoe online verkopen er van binnen uitziet. niet alleen het winkeltje, maar ook wat er misgaat: voorraad die op is, een code die niet bestaat, een betaling die afbreekt. node 22 server-side rekenen sessies per bezoeker svg railway">
           <a class="kaart-knop" href="werk/kaapnoord/" aria-haspopup="dialog">
             <span class="duim"><img src="img/t-kaapnoord.webp" width="760" height="475" loading="lazy" alt="Scherm van Kaap Noord"></span>
@@ -1245,28 +1614,6 @@ p, .kaart-regel, .paneel-lead, li { text-wrap: pretty; }
               <span class="kaart-naam">Kempen Transport</span>
               <span class="kaart-regel">Een dashboard dat uit zichzelf bijwerkt, zonder de pagina te verversen.</span>
               <span class="kaart-chips"><span>Node 22</span><span>Server-sent events</span><span>SVG-grafiek</span></span>
-            </span>
-          </a>
-        </li>
-        <li class="kaart" data-id="eemland" data-tags="software ai" data-zoek="eemland boekt offertes, facturen, urenbriefjes scannen en btw-aangifte in één systeem. de complete administratie van een bouwbedrijf, van offerte tot btw-aangifte, in één systeem dat elke dag gebruikt wordt. react 19 express postgresql supabase storage pdf-lib google gemini">
-          <a class="kaart-knop" href="werk/eemland/" aria-haspopup="dialog">
-            <span class="duim"><img src="img/t-eemland.webp" width="760" height="475" loading="lazy" alt="Scherm van Eemland Boekt"></span>
-            <span class="kaart-tekst">
-              <span class="kaart-status"><span class="stip live" aria-hidden="true"></span>Draait in bedrijf</span>
-              <span class="kaart-naam">Eemland Boekt</span>
-              <span class="kaart-regel">Offertes, facturen, urenbriefjes scannen en btw-aangifte in één systeem.</span>
-              <span class="kaart-chips"><span>React 19</span><span>Express</span><span>PostgreSQL</span></span>
-            </span>
-          </a>
-        </li>
-        <li class="kaart" data-id="funstudios" data-tags="website" data-zoek="fun studios eventsite met boekingsflow: photo booths, low fog en indoor vuurwerk. voor een entertainmentbedrijf: photo booths, 360 booth, low fog, indoor vuurwerk en lichtletters — met een boekingsflow die de aanvragen binnenhaalt. react 19 vite tailwind 4 motion express sharp">
-          <a class="kaart-knop" href="werk/funstudios/" aria-haspopup="dialog">
-            <span class="duim"><img src="img/t-funstudios.webp" width="760" height="475" loading="lazy" alt="Scherm van Fun Studios"></span>
-            <span class="kaart-tekst">
-              <span class="kaart-status"><span class="stip live" aria-hidden="true"></span>Live online</span>
-              <span class="kaart-naam">Fun Studios</span>
-              <span class="kaart-regel">Eventsite met boekingsflow: photo booths, low fog en indoor vuurwerk.</span>
-              <span class="kaart-chips"><span>React 19</span><span>Vite</span><span>Tailwind 4</span></span>
             </span>
           </a>
         </li>
@@ -1392,8 +1739,11 @@ p, .kaart-regel, .paneel-lead, li { text-wrap: pretty; }
 
   <section class="sectie" id="lagen">
     <div class="binnen">
-      <h2 class="sectie-kop">Voorkant én achterkant, door dezelfde handen</h2>
-      <p class="sectie-uitleg">Bij de meeste bureaus bouwt de een de website en moet je voor alles wat erachter zit bij iemand anders zijn. Ik doe allebei, en juist daar zit de winst: de knop die de klant indrukt en de database die het antwoord geeft zijn samen ontworpen.</p>
+      <div class="sectie-kop-blok midden">
+        <p class="ogen">De aanpak</p>
+        <h2 class="sectie-kop">Voorkant én achterkant, door dezelfde handen</h2>
+        <p class="sectie-uitleg">Bij de meeste bureaus bouwt de een de website en moet je voor alles wat erachter zit bij iemand anders zijn. Ik doe allebei, en juist daar zit de winst: de knop die de klant indrukt en de database die het antwoord geeft zijn samen ontworpen.</p>
+      </div>
       <div class="lagen">
         <article class="laag">
           <p class="laag-label">Front-end</p>
@@ -1441,8 +1791,11 @@ p, .kaart-regel, .paneel-lead, li { text-wrap: pretty; }
 
   <section class="sectie" id="cijfers">
     <div class="binnen">
-      <h2 class="sectie-kop">Waar het werk in zit</h2>
-      <p class="sectie-uitleg">Geteld over alle 15 projecten op deze pagina. Groeit vanzelf mee als er werk bij komt.</p>
+      <div class="sectie-kop-blok">
+        <p class="ogen">In cijfers</p>
+        <h2 class="sectie-kop">Waar het werk in zit</h2>
+        <p class="sectie-uitleg">Geteld over alle 15 projecten op deze pagina. Groeit vanzelf mee als er werk bij komt.</p>
+      </div>
       <div class="grafieken">
         <figure class="grafiek">
           <figcaption>Techniek die in meer dan &eacute;&eacute;n project terugkomt</figcaption>
@@ -1537,9 +1890,13 @@ p, .kaart-regel, .paneel-lead, li { text-wrap: pretty; }
 
   <section class="sectie" id="kunnen">
     <div class="binnen">
-      <h2 class="sectie-kop">Waar ik je mee kan helpen</h2>
-      <p class="sectie-uitleg">Alles hieronder draait al ergens. Geen lijstje met technieken die ik ooit eens geprobeerd heb.</p>
-      <div class="kundes">
+      <div class="eiland">
+        <div class="sectie-kop-blok midden">
+          <p class="ogen">Wat ik doe</p>
+          <h2 class="sectie-kop">Waar ik je mee kan helpen</h2>
+          <p class="sectie-uitleg">Alles hieronder draait al ergens. Geen lijstje met technieken die ik ooit eens geprobeerd heb.</p>
+        </div>
+        <div class="kundes">
         <article class="kunde">
           <p class="kunde-label">Beeldherkenning</p>
           <h3>Een foto erin, gegevens eruit</h3>
@@ -1576,13 +1933,17 @@ p, .kaart-regel, .paneel-lead, li { text-wrap: pretty; }
           <p>Hosting, domein, ssl, database met back-ups en zakelijke mail. En waar het nodig is verder dan de browser: dezelfde code als app voor iOS en Android, of sensoren die hun metingen naar een webserver sturen.</p>
           <p class="bewijs">Railway, Cloudflare, Supabase · CourtSwap, Kiesradar</p>
         </article></div>
+      </div>
     </div>
   </section>
 
   <section class="sectie" id="traject">
     <div class="binnen">
-      <h2 class="sectie-kop">Wat je krijgt als je met mij werkt</h2>
-      <p class="sectie-uitleg">Geen offerte van drie kantjes met vaktermen erin. Zo loopt het, en dit zit er standaard bij.</p>
+      <div class="sectie-kop-blok midden">
+        <p class="ogen">Samenwerken</p>
+        <h2 class="sectie-kop">Wat je krijgt als je met mij werkt</h2>
+        <p class="sectie-uitleg">Geen offerte van drie kantjes met vaktermen erin. Zo loopt het, en dit zit er standaard bij.</p>
+      </div>
 
       <div class="stroom stroom-los">
         <h4>Zo loopt het</h4>
@@ -1614,19 +1975,19 @@ p, .kaart-regel, .paneel-lead, li { text-wrap: pretty; }
     </div>
   </section>
 
-  <section class="sectie" id="contact">
+  <section class="slot" id="contact">
     <div class="binnen">
-      <div class="contact">
-        <div>
-          <h2>Zullen we kijken wat er mogelijk is?</h2>
-          <p>Heb je al een website? Plak hem in de scan, dan meet ik hem nu voor je door — snelheid, gewicht, mobiel en wat Google ervan ziet. Je weet binnen een paar seconden of het zin heeft om verder te praten.</p>
-          <p><a class="knop knop-vol" href="https://eemland-digital.nl/contact/">Meet mijn site door</a></p>
-        </div>
-        <div class="contact-doos">
-          <span class="adres" id="adres">info@eemland-digital.nl</span>
-          <button type="button" class="knop knop-vol" id="kopieer">Kopieer adres</button>
-        </div>
-      </div>
+      <p class="ogen">Volgende stap</p>
+      <h2>Zullen we kijken wat er mogelijk is?</h2>
+      <p>Heb je al een website? Plak hem in de scan, dan meet ik hem nu voor je door &mdash; snelheid, gewicht, mobiel en wat Google ervan ziet. Je weet binnen een paar seconden of het zin heeft om verder te praten.</p>
+      <p class="slot-knoppen">
+        <a class="knop knop-vol knop-groot" href="https://eemland-digital.nl/contact/">Meet mijn site door <span class="pijltje" aria-hidden="true">&rarr;</span></a>
+        <button type="button" class="knop knop-leeg knop-groot" data-hulp-open>Wat past bij jou?</button>
+      </p>
+      <p class="slot-adres">
+        Of gewoon een mail: <a href="mailto:info@eemland-digital.nl" id="adres">info@eemland-digital.nl</a>
+        <button type="button" class="knop knop-klein" id="kopieer">Kopieer</button>
+      </p>
     </div>
   </section>
 
@@ -1634,8 +1995,23 @@ p, .kaart-regel, .paneel-lead, li { text-wrap: pretty; }
 
 <footer class="voet">
   <div class="binnen">
-    <p>Alle schermen op deze pagina zijn echte screenshots van de draaiende projecten. Klantgegevens zijn onleesbaar gemaakt. Eemland Digital · Amersfoort.</p>
-    <p class="bijgewerkt">Bijgewerkt 6 oktober 2026 · 15 projecten</p>
+    <div class="voet-boven">
+      <div class="voet-merk">
+        <a class="merk" href="#top"><span class="merk-stip"></span>Eemland Digital</a>
+        <p>Websites en bedrijfssoftware uit Amersfoort. Voorkant én achterkant, door dezelfde handen.</p>
+      </div>
+      <nav class="voet-wegen" aria-label="Voettekst">
+        <a href="#werk">Het werk</a>
+        <a href="#lagen">Aanpak</a>
+        <a href="#traject">Samenwerken</a>
+        <a href="https://eemland-digital.nl/contact/">Contact</a>
+        <a href="mailto:info@eemland-digital.nl">info@eemland-digital.nl</a>
+      </nav>
+    </div>
+    <div class="voet-onder">
+      <p>Alle schermen op deze pagina zijn echte screenshots van de draaiende projecten. Klantgegevens zijn onleesbaar gemaakt.</p>
+      <p class="bijgewerkt">Bijgewerkt 28 oktober 2026 · 15 projecten</p>
+    </div>
   </div>
 </footer>
 
@@ -1643,6 +2019,110 @@ p, .kaart-regel, .paneel-lead, li { text-wrap: pretty; }
   <div class="venster" role="dialog" aria-modal="true" aria-labelledby="venster-titel" tabindex="-1">
     <button type="button" class="sluit" id="sluit" aria-label="Sluiten">&times;</button>
     <div id="venster-inhoud">
+      <article class="paneel" id="paneel-eemland" data-id="eemland" hidden>
+        <header class="paneel-kop">
+          <p class="paneel-meta"><span class="stip live" aria-hidden="true"></span>Draait in bedrijf <span class="punt">·</span> januari – oktober 2026</p>
+          <h2>Eemland Boekt</h2>
+          <p class="paneel-lead">De complete administratie van een bouwbedrijf, van offerte tot btw-aangifte, in één systeem dat elke dag gebruikt wordt.</p>
+          <button type="button" class="deel" data-deel="eemland">Kopieer link naar dit project</button>
+        </header>
+        <div class="paneel-cols">
+          <div class="vak voorbeeld">
+            <h4>Zo gaat het in de praktijk</h4>
+            <p>De stapel papieren urenbriefjes gaat door de scanner. Het systeem leest ze uit, telt na of de totalen op het briefje zelf wel kloppen, en zet de uren op het juiste project. Aan het eind van het kwartaal rolt de btw-aangifte er kant-en-klaar uit.</p>
+          </div>
+          <div class="vak">
+            <h4>Wat het doet</h4>
+            <ul class="doet"><li>Offertes en facturen maken, versturen en als pdf bewaren.</li><li>Urenbriefjes scannen <strong>én narekenen</strong>, zodat fouten opvallen.</li><li>Kwartaalcijfers, btw-overzicht en meerjarenrapport zonder handwerk.</li><li>Projecten, klanten, personeel en vacatures bij elkaar.</li><li>Documenten in beveiligde opslag, downloads via afgeschermde links.</li></ul>
+          </div>
+          <div class="vak">
+            <h4>Techniek</h4>
+            <ul class="techniek"><li><button type="button" class="term" popovertarget="uitleg-react">React 19</button></li><li><button type="button" class="term" popovertarget="uitleg-express">Express</button></li><li><button type="button" class="term" popovertarget="uitleg-postgresql">PostgreSQL</button></li><li><button type="button" class="term" popovertarget="uitleg-supabase-storage">Supabase Storage</button></li><li><button type="button" class="term" popovertarget="uitleg-pdf-lib">pdf-lib</button></li><li><button type="button" class="term" popovertarget="uitleg-google-gemini">Google Gemini</button></li></ul>
+            
+            <p class="dicht">Besloten klantomgeving — rondleiding op aanvraag.</p>
+          </div>
+        </div>
+        
+        <div class="stroom">
+          <h4>Zo loopt het van begin tot eind</h4>
+          <ol class="stappen">
+            <li><span class="nr">1</span><span class="wat">Urenbriefje door de scanner</span></li>
+            <li><span class="nr">2</span><span class="wat">Systeem leest en telt na</span></li>
+            <li><span class="nr">3</span><span class="wat">Uren op het juiste project</span></li>
+            <li><span class="nr">4</span><span class="wat">Factuur eruit</span></li>
+            <li><span class="nr">5</span><span class="wat">Kwartaalcijfers</span></li>
+            <li><span class="nr">6</span><span class="wat">Btw-aangifte</span></li>
+          </ol>
+        </div>
+        
+        <div class="galerij" data-galerij data-basis="">
+          <figure class="groot">
+            <span class="balk"><i></i><i></i><i></i><b data-rol="titel">inlogportaal</b></span>
+            <img data-rol="groot" src="img/eemland-1.webp" width="1400" height="875" loading="lazy" alt="Onscherp gemaakt inlogscherm van de besloten klantomgeving; alleen de indeling is te zien.">
+            <figcaption data-rol="bijschrift">Bewust onscherp: dit is een besloten omgeving van een klant.</figcaption>
+          </figure>
+        </div>
+      </article>
+      <article class="paneel" id="paneel-funstudios" data-id="funstudios" hidden>
+        <header class="paneel-kop">
+          <p class="paneel-meta"><span class="stip live" aria-hidden="true"></span>Live online <span class="punt">·</span> september – oktober 2026</p>
+          <h2>Fun Studios</h2>
+          <p class="paneel-lead">Voor een entertainmentbedrijf: photo booths, 360 booth, low fog, indoor vuurwerk en lichtletters — met een boekingsflow die de aanvragen binnenhaalt.</p>
+          <button type="button" class="deel" data-deel="funstudios">Kopieer link naar dit project</button>
+        </header>
+        <div class="paneel-cols">
+          <div class="vak voorbeeld">
+            <h4>Zo gaat het in de praktijk</h4>
+            <p>Iemand plant een bruiloft, klikt op “Plan mijn event” en verstuurt het formulier. Hij krijgt meteen een bevestiging in zijn mail. De aanvraag staat op dat moment al in het adminpaneel — ook als het mailen hapert, raakt er niets kwijt.</p>
+          </div>
+          <div class="vak">
+            <h4>Wat het doet</h4>
+            <ul class="doet"><li>Offerteformulier dat opslaat <strong>én</strong> mailt, met bevestiging naar de klant.</li><li>Adminpaneel waar elke aanvraag binnenkomt.</li><li>Foto's worden automatisch bijgesneden en geoptimaliseerd.</li><li>Animaties die de site niet traag maken.</li><li>Projectenpagina en Instagram-feed die zichzelf bijwerkt.</li></ul>
+          </div>
+          <div class="vak">
+            <h4>Techniek</h4>
+            <ul class="techniek"><li><button type="button" class="term" popovertarget="uitleg-react">React 19</button></li><li><button type="button" class="term" popovertarget="uitleg-vite">Vite</button></li><li><button type="button" class="term" popovertarget="uitleg-tailwind">Tailwind 4</button></li><li><button type="button" class="term" popovertarget="uitleg-motion">Motion</button></li><li><button type="button" class="term" popovertarget="uitleg-express">Express</button></li><li><button type="button" class="term" popovertarget="uitleg-sharp">sharp</button></li></ul>
+            <a class="knop knop-vol" href="https://www.funstudios.nl" target="_blank" rel="noopener">Open de site</a>
+            
+          </div>
+        </div>
+        
+        <div class="stroom">
+          <h4>Zo loopt het van begin tot eind</h4>
+          <ol class="stappen">
+            <li><span class="nr">1</span><span class="wat">Bezoeker kiest een dienst</span></li>
+            <li><span class="nr">2</span><span class="wat">Formulier invullen</span></li>
+            <li><span class="nr">3</span><span class="wat">Bevestiging in de mail</span></li>
+            <li><span class="nr">4</span><span class="wat">Aanvraag in het adminpaneel</span></li>
+            <li><span class="nr">5</span><span class="wat">Offerte terug</span></li>
+          </ol>
+        </div>
+        
+        <div class="galerij" data-galerij data-basis="">
+          <div class="duimen" role="tablist" aria-label="Schermen van Fun Studios">
+            <button type="button" class="duimknop" role="tab" aria-selected="true"
+              data-bestand="funstudios-1.webp" data-titel="homepage"
+              data-bijschrift="Opent met echte foto's van eerdere events." data-alt="Donkere homepage met de kop Wij maken jouw event onvergetelijk en zwevende polaroidfoto's.">
+              <img src="img/m-funstudios-1.webp" width="440" height="275" loading="lazy" alt="homepage">
+            </button>
+            <button type="button" class="duimknop" role="tab" aria-selected="false"
+              data-bestand="funstudios-2.webp" data-titel="projecten"
+              data-bijschrift="Uitgelichte projecten." data-alt="Sectie Dit hebben we laatst gedaan met een raster van eventfoto's.">
+              <img src="img/m-funstudios-2.webp" width="440" height="275" loading="lazy" alt="projecten">
+            </button>
+            <button type="button" class="duimknop" role="tab" aria-selected="false"
+              data-bestand="funstudios-3.webp" data-titel="sectie 3"
+              data-bijschrift="Verder op de pagina." data-alt="Schermafbeelding van Fun Studios.">
+              <img src="img/m-funstudios-3.webp" width="440" height="275" loading="lazy" alt="sectie 3">
+            </button>
+          </div>
+          <figure class="groot">
+            <span class="balk"><i></i><i></i><i></i><b data-rol="titel">homepage</b></span>
+            <img data-rol="groot" src="img/funstudios-1.webp" width="1400" height="875" loading="lazy" alt="Donkere homepage met de kop Wij maken jouw event onvergetelijk en zwevende polaroidfoto's.">
+            <figcaption data-rol="bijschrift">Opent met echte foto's van eerdere events.</figcaption>
+          </figure>
+        </div>
+      </article>
       <article class="paneel" id="paneel-kaapnoord" data-id="kaapnoord" hidden>
         <header class="paneel-kop">
           <p class="paneel-meta"><span class="stip live" aria-hidden="true"></span>Live · eigen concept <span class="punt">·</span> september 2026</p>
@@ -1856,110 +2336,6 @@ p, .kaart-regel, .paneel-lead, li { text-wrap: pretty; }
             <span class="balk"><i></i><i></i><i></i><b data-rol="titel">het dashboard</b></span>
             <img data-rol="groot" src="img/kempen-1.webp" width="1400" height="875" loading="lazy" alt="Donker dashboard met het aantal geleverde ritten als groot getal en daaronder tegels voor stiptheid en wagens onderweg.">
             <figcaption data-rol="bijschrift">De cijfers lopen terwijl je kijkt; de pagina vraagt zelf niets op.</figcaption>
-          </figure>
-        </div>
-      </article>
-      <article class="paneel" id="paneel-eemland" data-id="eemland" hidden>
-        <header class="paneel-kop">
-          <p class="paneel-meta"><span class="stip live" aria-hidden="true"></span>Draait in bedrijf <span class="punt">·</span> januari – september 2026</p>
-          <h2>Eemland Boekt</h2>
-          <p class="paneel-lead">De complete administratie van een bouwbedrijf, van offerte tot btw-aangifte, in één systeem dat elke dag gebruikt wordt.</p>
-          <button type="button" class="deel" data-deel="eemland">Kopieer link naar dit project</button>
-        </header>
-        <div class="paneel-cols">
-          <div class="vak voorbeeld">
-            <h4>Zo gaat het in de praktijk</h4>
-            <p>De stapel papieren urenbriefjes gaat door de scanner. Het systeem leest ze uit, telt na of de totalen op het briefje zelf wel kloppen, en zet de uren op het juiste project. Aan het eind van het kwartaal rolt de btw-aangifte er kant-en-klaar uit.</p>
-          </div>
-          <div class="vak">
-            <h4>Wat het doet</h4>
-            <ul class="doet"><li>Offertes en facturen maken, versturen en als pdf bewaren.</li><li>Urenbriefjes scannen <strong>én narekenen</strong>, zodat fouten opvallen.</li><li>Kwartaalcijfers, btw-overzicht en meerjarenrapport zonder handwerk.</li><li>Projecten, klanten, personeel en vacatures bij elkaar.</li><li>Documenten in beveiligde opslag, downloads via afgeschermde links.</li></ul>
-          </div>
-          <div class="vak">
-            <h4>Techniek</h4>
-            <ul class="techniek"><li><button type="button" class="term" popovertarget="uitleg-react">React 19</button></li><li><button type="button" class="term" popovertarget="uitleg-express">Express</button></li><li><button type="button" class="term" popovertarget="uitleg-postgresql">PostgreSQL</button></li><li><button type="button" class="term" popovertarget="uitleg-supabase-storage">Supabase Storage</button></li><li><button type="button" class="term" popovertarget="uitleg-pdf-lib">pdf-lib</button></li><li><button type="button" class="term" popovertarget="uitleg-google-gemini">Google Gemini</button></li></ul>
-            
-            <p class="dicht">Besloten klantomgeving — rondleiding op aanvraag.</p>
-          </div>
-        </div>
-        
-        <div class="stroom">
-          <h4>Zo loopt het van begin tot eind</h4>
-          <ol class="stappen">
-            <li><span class="nr">1</span><span class="wat">Urenbriefje door de scanner</span></li>
-            <li><span class="nr">2</span><span class="wat">Systeem leest en telt na</span></li>
-            <li><span class="nr">3</span><span class="wat">Uren op het juiste project</span></li>
-            <li><span class="nr">4</span><span class="wat">Factuur eruit</span></li>
-            <li><span class="nr">5</span><span class="wat">Kwartaalcijfers</span></li>
-            <li><span class="nr">6</span><span class="wat">Btw-aangifte</span></li>
-          </ol>
-        </div>
-        
-        <div class="galerij" data-galerij data-basis="">
-          <figure class="groot">
-            <span class="balk"><i></i><i></i><i></i><b data-rol="titel">inlogportaal</b></span>
-            <img data-rol="groot" src="img/eemland-1.webp" width="1400" height="875" loading="lazy" alt="Onscherp gemaakt inlogscherm van de besloten klantomgeving; alleen de indeling is te zien.">
-            <figcaption data-rol="bijschrift">Bewust onscherp: dit is een besloten omgeving van een klant.</figcaption>
-          </figure>
-        </div>
-      </article>
-      <article class="paneel" id="paneel-funstudios" data-id="funstudios" hidden>
-        <header class="paneel-kop">
-          <p class="paneel-meta"><span class="stip live" aria-hidden="true"></span>Live online <span class="punt">·</span> september 2026</p>
-          <h2>Fun Studios</h2>
-          <p class="paneel-lead">Voor een entertainmentbedrijf: photo booths, 360 booth, low fog, indoor vuurwerk en lichtletters — met een boekingsflow die de aanvragen binnenhaalt.</p>
-          <button type="button" class="deel" data-deel="funstudios">Kopieer link naar dit project</button>
-        </header>
-        <div class="paneel-cols">
-          <div class="vak voorbeeld">
-            <h4>Zo gaat het in de praktijk</h4>
-            <p>Iemand plant een bruiloft, klikt op “Plan mijn event” en verstuurt het formulier. Hij krijgt meteen een bevestiging in zijn mail. De aanvraag staat op dat moment al in het adminpaneel — ook als het mailen hapert, raakt er niets kwijt.</p>
-          </div>
-          <div class="vak">
-            <h4>Wat het doet</h4>
-            <ul class="doet"><li>Offerteformulier dat opslaat <strong>én</strong> mailt, met bevestiging naar de klant.</li><li>Adminpaneel waar elke aanvraag binnenkomt.</li><li>Foto's worden automatisch bijgesneden en geoptimaliseerd.</li><li>Animaties die de site niet traag maken.</li><li>Projectenpagina en Instagram-feed die zichzelf bijwerkt.</li></ul>
-          </div>
-          <div class="vak">
-            <h4>Techniek</h4>
-            <ul class="techniek"><li><button type="button" class="term" popovertarget="uitleg-react">React 19</button></li><li><button type="button" class="term" popovertarget="uitleg-vite">Vite</button></li><li><button type="button" class="term" popovertarget="uitleg-tailwind">Tailwind 4</button></li><li><button type="button" class="term" popovertarget="uitleg-motion">Motion</button></li><li><button type="button" class="term" popovertarget="uitleg-express">Express</button></li><li><button type="button" class="term" popovertarget="uitleg-sharp">sharp</button></li></ul>
-            <a class="knop knop-vol" href="https://www.funstudios.nl" target="_blank" rel="noopener">Open de site</a>
-            
-          </div>
-        </div>
-        
-        <div class="stroom">
-          <h4>Zo loopt het van begin tot eind</h4>
-          <ol class="stappen">
-            <li><span class="nr">1</span><span class="wat">Bezoeker kiest een dienst</span></li>
-            <li><span class="nr">2</span><span class="wat">Formulier invullen</span></li>
-            <li><span class="nr">3</span><span class="wat">Bevestiging in de mail</span></li>
-            <li><span class="nr">4</span><span class="wat">Aanvraag in het adminpaneel</span></li>
-            <li><span class="nr">5</span><span class="wat">Offerte terug</span></li>
-          </ol>
-        </div>
-        
-        <div class="galerij" data-galerij data-basis="">
-          <div class="duimen" role="tablist" aria-label="Schermen van Fun Studios">
-            <button type="button" class="duimknop" role="tab" aria-selected="true"
-              data-bestand="funstudios-1.webp" data-titel="homepage"
-              data-bijschrift="Opent met echte foto's van eerdere events." data-alt="Donkere homepage met de kop Wij maken jouw event onvergetelijk en zwevende polaroidfoto's.">
-              <img src="img/m-funstudios-1.webp" width="440" height="275" loading="lazy" alt="homepage">
-            </button>
-            <button type="button" class="duimknop" role="tab" aria-selected="false"
-              data-bestand="funstudios-2.webp" data-titel="projecten"
-              data-bijschrift="Uitgelichte projecten." data-alt="Sectie Dit hebben we laatst gedaan met een raster van eventfoto's.">
-              <img src="img/m-funstudios-2.webp" width="440" height="275" loading="lazy" alt="projecten">
-            </button>
-            <button type="button" class="duimknop" role="tab" aria-selected="false"
-              data-bestand="funstudios-3.webp" data-titel="sectie 3"
-              data-bijschrift="Verder op de pagina." data-alt="Schermafbeelding van Fun Studios.">
-              <img src="img/m-funstudios-3.webp" width="440" height="275" loading="lazy" alt="sectie 3">
-            </button>
-          </div>
-          <figure class="groot">
-            <span class="balk"><i></i><i></i><i></i><b data-rol="titel">homepage</b></span>
-            <img data-rol="groot" src="img/funstudios-1.webp" width="1400" height="875" loading="lazy" alt="Donkere homepage met de kop Wij maken jouw event onvergetelijk en zwevende polaroidfoto's.">
-            <figcaption data-rol="bijschrift">Opent met echte foto's van eerdere events.</figcaption>
           </figure>
         </div>
       </article>
@@ -2484,7 +2860,7 @@ p, .kaart-regel, .paneel-lead, li { text-wrap: pretty; }
 }
 </script>
 
-<script type="application/json" id="hulp-data">{"vragen":[{"id":"wat","vraag":"Wat zoek je?","opties":[{"id":"website","label":"Een website","bij":"Een nieuwe site, of de huidige vervangen","tags":["website"]},{"id":"software","label":"Software die werk uit handen neemt","bij":"Een dashboard, een portaal, een koppeling","tags":["software"]},{"id":"verkopen","label":"Online kunnen verkopen","bij":"Bestellingen, betalingen, voorraad","tags":["website","software"]},{"id":"weetniet","label":"Dat weet ik nog niet","bij":"Er gaat iets stroef en ik zoek de oplossing","tags":[]}]},{"id":"wie","vraag":"Wie gaat het gebruiken?","opties":[{"id":"klanten","label":"Mijn klanten","bij":"Zij bestellen, vragen aan of kijken mee","tags":["website"]},{"id":"personeel","label":"Mijn personeel","bij":"Binnen het bedrijf, om werk te regelen","tags":["software"]},{"id":"allebei","label":"Allebei","bij":"Een voorkant voor klanten, een achterkant voor kantoor","tags":["website","software"]}]},{"id":"nu","vraag":"Wat heb je nu?","opties":[{"id":"niets","label":"Nog niets","bij":"We beginnen bij nul","tags":[]},{"id":"oud","label":"Iets dat verouderd is","bij":"Het werkt, maar het kan niet meer mee","tags":[]},{"id":"handmatig","label":"Veel handwerk","bij":"Excel, mailtjes, overtypen","tags":["ai","software"]},{"id":"goed","label":"Iets dat prima werkt","bij":"Maar het moet meer kunnen","tags":[]}]}],"slot":{"kop":"Dit lijkt me het interessantst voor jou","bij":"Klik op een project om te zien hoe het werkt, of stuur me meteen een bericht — je antwoorden staan er dan alvast in.","knop":"Stuur me dit"},"email":"info@eemland-digital.nl","projecten":[{"id":"kaapnoord","naam":"Kaap Noord","eenRegel":"Een webshop waar je echt doorheen kunt lopen, tot en met de betaling.","tags":["website","software"],"tegel":"t-kaapnoord.webp","zoek":"kaap noord een webshop waar je echt doorheen kunt lopen, tot en met de betaling. een bedachte koffiebranderij, gebouwd om te laten zien hoe online verkopen er van binnen uitziet. niet alleen het winkeltje, maar ook wat er misgaat: voorraad die op is, een code die niet bestaat, een betaling die afbreekt. website software node 22 server-side rekenen sessies per bezoeker svg railway"},{"id":"vandijk","naam":"Van Dijk Installatie","eenRegel":"Een klantportaal waarin je zelf kunt proberen of je bij andermans dossier komt.","tags":["software"],"tegel":"t-vandijk.webp","zoek":"van dijk installatie een klantportaal waarin je zelf kunt proberen of je bij andermans dossier komt. een bedacht installatiebedrijf. het laat zien wat een portaal echt moet doen: niet mooie schermen, maar sluitende afspraken over wie wat mag zien. er zitten drie accounts in — twee klanten en een medewerker. software node 22 sessies rechten per rol railway"},{"id":"wilgenhof","naam":"Hovenier Wilgenhof","eenRegel":"Klussen over ploegen verdelen, met een kaart en een reistijd die meerekent.","tags":["software","mobiel"],"tegel":"t-wilgenhof.webp","zoek":"hovenier wilgenhof klussen over ploegen verdelen, met een kaart en een reistijd die meerekent. een bedacht hoveniersbedrijf met vier ploegen. voor iedereen die zijn dag nu nog op een whiteboard of in een groepsapp verdeelt en wil zien wat het alternatief is. software mobiel node 22 svg-kaart afstandsberekening slepen en neerzetten railway"},{"id":"kempen","naam":"Kempen Transport","eenRegel":"Een dashboard dat uit zichzelf bijwerkt, zonder de pagina te verversen.","tags":["software"],"tegel":"t-kempen.webp","zoek":"kempen transport een dashboard dat uit zichzelf bijwerkt, zonder de pagina te verversen. een bedacht transportbedrijf. voor wie een scherm aan de muur wil dat altijd klopt, en wil weten hoe dat kan zonder dat er elke seconde iets wordt opgevraagd. software node 22 server-sent events svg-grafiek railway"},{"id":"eemland","naam":"Eemland Boekt","eenRegel":"Offertes, facturen, urenbriefjes scannen en btw-aangifte in één systeem.","tags":["software","ai"],"tegel":"t-eemland.webp","zoek":"eemland boekt offertes, facturen, urenbriefjes scannen en btw-aangifte in één systeem. de complete administratie van een bouwbedrijf, van offerte tot btw-aangifte, in één systeem dat elke dag gebruikt wordt. software ai react 19 express postgresql supabase storage pdf-lib google gemini"},{"id":"funstudios","naam":"Fun Studios","eenRegel":"Eventsite met boekingsflow: photo booths, low fog en indoor vuurwerk.","tags":["website"],"tegel":"t-funstudios.webp","zoek":"fun studios eventsite met boekingsflow: photo booths, low fog en indoor vuurwerk. voor een entertainmentbedrijf: photo booths, 360 booth, low fog, indoor vuurwerk en lichtletters — met een boekingsflow die de aanvragen binnenhaalt. website react 19 vite tailwind 4 motion express sharp"},{"id":"glacio","naam":"Glacio Klimaattechniek","eenRegel":"Eigen concept: hoe een installatiebedrijf zijn site zou kunnen inrichten.","tags":["website"],"tegel":"t-glacio.webp","zoek":"glacio klimaattechniek eigen concept: hoe een installatiebedrijf zijn site zou kunnen inrichten. zelf bedacht en gebouwd voor een verzonnen airco-installateur. geen klantopdracht, maar een uitgewerkt voorbeeld van hoe zo'n bedrijf online kan werken: keuzehulp, vaste tarieven en een intake zonder telefoontje. website node railway"},{"id":"kozijnfabriek","naam":"Kozijnfabriek Direct","eenRegel":"Gevelfoto erin, offerte eruit — plus een dashboard voor het personeel.","tags":["software","website","ai"],"tegel":"t-kozijnfabriek.webp","zoek":"kozijnfabriek direct gevelfoto erin, offerte eruit — plus een dashboard voor het personeel. voor een kozijnenfabrikant in de regio amsterdam: een website die zelf offertes voorbereidt, en een dashboard waar het personeel de rest afhandelt. software website ai react 19 node 22 supabase google gemini google maps railway"},{"id":"ralox","naam":"RALOX Sports","eenRegel":"Webshop voor padelballen, plus een balautomaat die clubs 24/7 laat verkopen.","tags":["website","software","ai"],"tegel":"t-ralox.webp","zoek":"ralox sports webshop voor padelballen, plus een balautomaat die clubs 24/7 laat verkopen. voor een padelmerk: een webshop voor ballen en grips, met daarnaast een balautomaat voor clubs — ballen uit de muur, betalen met pin of telefoon, en de club verdient mee. website software ai react vite tailwind 4 express anthropic sdk google gemini motion railway"},{"id":"courtswap","naam":"CourtSwap","eenRegel":"Marktplaatsplatform met chat, kaart en accounts — ook als app.","tags":["software","mobiel"],"tegel":"t-courtswap.webp","zoek":"courtswap marktplaatsplatform met chat, kaart en accounts — ook als app. een compleet marktplaatsplatform: adverteren, zoeken op de kaart, chatten en afspreken — als website én als app. software mobiel react express 5 prisma postgresql cloudinary capacitor"},{"id":"eemlandwerkt","naam":"Eemlandwerkt","eenRegel":"Bedrijfssite voor een detacheerder: diensten, vacatures en een eigen inlog.","tags":["website","software"],"tegel":"t-eemlandwerkt.webp","zoek":"eemlandwerkt bedrijfssite voor een detacheerder: diensten, vacatures en een eigen inlog. voor een detacheringsbureau dat professionals levert aan overheid, zorg en techniek. de site moet twee kanten bedienen: opdrachtgevers die personeel zoeken, en professionals die een functie zoeken. website software react 19 react router 7 tailwind vite typescript postgresql"},{"id":"remh","naam":"REMH Bouw & Verbouw","eenRegel":"Aannemerssite waar de klant zijn eigen dakkapel samenstelt.","tags":["website","3d"],"tegel":"t-remh.webp","zoek":"remh bouw & verbouw aannemerssite waar de klant zijn eigen dakkapel samenstelt. website voor een aannemer, met een configurator die de klant zijn eigen dakkapel laat samenstellen. website 3d react 19 express mysql pdfkit three.js railway"},{"id":"kijkvergunning","naam":"KijkVergunning","eenRegel":"Adres invullen en zien of je uitbouw vergunningvrij mag — op kaart en in 3D.","tags":["software","3d","ai"],"tegel":"t-kijkvergunning.webp","zoek":"kijkvergunning adres invullen en zien of je uitbouw vergunningvrij mag — op kaart en in 3d. zie wat je mag bouwen voordat je begint: adres invullen, en je weet of die uitbouw vergunningvrij kan. software 3d ai next.js 16 react 19 maplibre three.js supabase zustand"},{"id":"lumiere","naam":"Lumière Dakkapellen","eenRegel":"Je dakkapel in 3D op je eigen dak, met pdf-offerte eruit.","tags":["website","3d"],"tegel":"t-lumiere.webp","zoek":"lumière dakkapellen je dakkapel in 3d op je eigen dak, met pdf-offerte eruit. een dakkapel die je in 3d op je eigen dak ziet staan — draaien, afwerking kiezen, offerte eruit. website 3d react 19 three.js react three fiber framer motion jspdf"},{"id":"kiesradar","naam":"Kiesradar","eenRegel":"Fysieke opstelling met sensoren die met een webapp en database praten.","tags":["software","mobiel"],"tegel":null,"zoek":"kiesradar fysieke opstelling met sensoren die met een webapp en database praten. teamproject aan de hogeschool van amsterdam: een fysieke opstelling die studiekiezers helpt kiezen, met sensoren die met een webapp praten. software mobiel python flask mysql docker esp32 gitlab ci"}]}</script>
+<script type="application/json" id="hulp-data">{"vragen":[{"id":"wat","vraag":"Wat zoek je?","opties":[{"id":"website","label":"Een website","bij":"Een nieuwe site, of de huidige vervangen","tags":["website"]},{"id":"software","label":"Software die werk uit handen neemt","bij":"Een dashboard, een portaal, een koppeling","tags":["software"]},{"id":"verkopen","label":"Online kunnen verkopen","bij":"Bestellingen, betalingen, voorraad","tags":["website","software"]},{"id":"weetniet","label":"Dat weet ik nog niet","bij":"Er gaat iets stroef en ik zoek de oplossing","tags":[]}]},{"id":"wie","vraag":"Wie gaat het gebruiken?","opties":[{"id":"klanten","label":"Mijn klanten","bij":"Zij bestellen, vragen aan of kijken mee","tags":["website"]},{"id":"personeel","label":"Mijn personeel","bij":"Binnen het bedrijf, om werk te regelen","tags":["software"]},{"id":"allebei","label":"Allebei","bij":"Een voorkant voor klanten, een achterkant voor kantoor","tags":["website","software"]}]},{"id":"nu","vraag":"Wat heb je nu?","opties":[{"id":"niets","label":"Nog niets","bij":"We beginnen bij nul","tags":[]},{"id":"oud","label":"Iets dat verouderd is","bij":"Het werkt, maar het kan niet meer mee","tags":[]},{"id":"handmatig","label":"Veel handwerk","bij":"Excel, mailtjes, overtypen","tags":["ai","software"]},{"id":"goed","label":"Iets dat prima werkt","bij":"Maar het moet meer kunnen","tags":[]}]}],"slot":{"kop":"Dit lijkt me het interessantst voor jou","bij":"Klik op een project om te zien hoe het werkt, of stuur me meteen een bericht — je antwoorden staan er dan alvast in.","knop":"Stuur me dit"},"email":"info@eemland-digital.nl","projecten":[{"id":"eemland","naam":"Eemland Boekt","eenRegel":"Offertes, facturen, urenbriefjes scannen en btw-aangifte in één systeem.","tags":["software","ai"],"tegel":"t-eemland.webp","zoek":"eemland boekt offertes, facturen, urenbriefjes scannen en btw-aangifte in één systeem. de complete administratie van een bouwbedrijf, van offerte tot btw-aangifte, in één systeem dat elke dag gebruikt wordt. software ai react 19 express postgresql supabase storage pdf-lib google gemini"},{"id":"funstudios","naam":"Fun Studios","eenRegel":"Eventsite met boekingsflow: photo booths, low fog en indoor vuurwerk.","tags":["website"],"tegel":"t-funstudios.webp","zoek":"fun studios eventsite met boekingsflow: photo booths, low fog en indoor vuurwerk. voor een entertainmentbedrijf: photo booths, 360 booth, low fog, indoor vuurwerk en lichtletters — met een boekingsflow die de aanvragen binnenhaalt. website react 19 vite tailwind 4 motion express sharp"},{"id":"kaapnoord","naam":"Kaap Noord","eenRegel":"Een webshop waar je echt doorheen kunt lopen, tot en met de betaling.","tags":["website","software"],"tegel":"t-kaapnoord.webp","zoek":"kaap noord een webshop waar je echt doorheen kunt lopen, tot en met de betaling. een bedachte koffiebranderij, gebouwd om te laten zien hoe online verkopen er van binnen uitziet. niet alleen het winkeltje, maar ook wat er misgaat: voorraad die op is, een code die niet bestaat, een betaling die afbreekt. website software node 22 server-side rekenen sessies per bezoeker svg railway"},{"id":"vandijk","naam":"Van Dijk Installatie","eenRegel":"Een klantportaal waarin je zelf kunt proberen of je bij andermans dossier komt.","tags":["software"],"tegel":"t-vandijk.webp","zoek":"van dijk installatie een klantportaal waarin je zelf kunt proberen of je bij andermans dossier komt. een bedacht installatiebedrijf. het laat zien wat een portaal echt moet doen: niet mooie schermen, maar sluitende afspraken over wie wat mag zien. er zitten drie accounts in — twee klanten en een medewerker. software node 22 sessies rechten per rol railway"},{"id":"wilgenhof","naam":"Hovenier Wilgenhof","eenRegel":"Klussen over ploegen verdelen, met een kaart en een reistijd die meerekent.","tags":["software","mobiel"],"tegel":"t-wilgenhof.webp","zoek":"hovenier wilgenhof klussen over ploegen verdelen, met een kaart en een reistijd die meerekent. een bedacht hoveniersbedrijf met vier ploegen. voor iedereen die zijn dag nu nog op een whiteboard of in een groepsapp verdeelt en wil zien wat het alternatief is. software mobiel node 22 svg-kaart afstandsberekening slepen en neerzetten railway"},{"id":"kempen","naam":"Kempen Transport","eenRegel":"Een dashboard dat uit zichzelf bijwerkt, zonder de pagina te verversen.","tags":["software"],"tegel":"t-kempen.webp","zoek":"kempen transport een dashboard dat uit zichzelf bijwerkt, zonder de pagina te verversen. een bedacht transportbedrijf. voor wie een scherm aan de muur wil dat altijd klopt, en wil weten hoe dat kan zonder dat er elke seconde iets wordt opgevraagd. software node 22 server-sent events svg-grafiek railway"},{"id":"glacio","naam":"Glacio Klimaattechniek","eenRegel":"Eigen concept: hoe een installatiebedrijf zijn site zou kunnen inrichten.","tags":["website"],"tegel":"t-glacio.webp","zoek":"glacio klimaattechniek eigen concept: hoe een installatiebedrijf zijn site zou kunnen inrichten. zelf bedacht en gebouwd voor een verzonnen airco-installateur. geen klantopdracht, maar een uitgewerkt voorbeeld van hoe zo'n bedrijf online kan werken: keuzehulp, vaste tarieven en een intake zonder telefoontje. website node railway"},{"id":"kozijnfabriek","naam":"Kozijnfabriek Direct","eenRegel":"Gevelfoto erin, offerte eruit — plus een dashboard voor het personeel.","tags":["software","website","ai"],"tegel":"t-kozijnfabriek.webp","zoek":"kozijnfabriek direct gevelfoto erin, offerte eruit — plus een dashboard voor het personeel. voor een kozijnenfabrikant in de regio amsterdam: een website die zelf offertes voorbereidt, en een dashboard waar het personeel de rest afhandelt. software website ai react 19 node 22 supabase google gemini google maps railway"},{"id":"ralox","naam":"RALOX Sports","eenRegel":"Webshop voor padelballen, plus een balautomaat die clubs 24/7 laat verkopen.","tags":["website","software","ai"],"tegel":"t-ralox.webp","zoek":"ralox sports webshop voor padelballen, plus een balautomaat die clubs 24/7 laat verkopen. voor een padelmerk: een webshop voor ballen en grips, met daarnaast een balautomaat voor clubs — ballen uit de muur, betalen met pin of telefoon, en de club verdient mee. website software ai react vite tailwind 4 express anthropic sdk google gemini motion railway"},{"id":"courtswap","naam":"CourtSwap","eenRegel":"Marktplaatsplatform met chat, kaart en accounts — ook als app.","tags":["software","mobiel"],"tegel":"t-courtswap.webp","zoek":"courtswap marktplaatsplatform met chat, kaart en accounts — ook als app. een compleet marktplaatsplatform: adverteren, zoeken op de kaart, chatten en afspreken — als website én als app. software mobiel react express 5 prisma postgresql cloudinary capacitor"},{"id":"eemlandwerkt","naam":"Eemlandwerkt","eenRegel":"Bedrijfssite voor een detacheerder: diensten, vacatures en een eigen inlog.","tags":["website","software"],"tegel":"t-eemlandwerkt.webp","zoek":"eemlandwerkt bedrijfssite voor een detacheerder: diensten, vacatures en een eigen inlog. voor een detacheringsbureau dat professionals levert aan overheid, zorg en techniek. de site moet twee kanten bedienen: opdrachtgevers die personeel zoeken, en professionals die een functie zoeken. website software react 19 react router 7 tailwind vite typescript postgresql"},{"id":"remh","naam":"REMH Bouw & Verbouw","eenRegel":"Aannemerssite waar de klant zijn eigen dakkapel samenstelt.","tags":["website","3d"],"tegel":"t-remh.webp","zoek":"remh bouw & verbouw aannemerssite waar de klant zijn eigen dakkapel samenstelt. website voor een aannemer, met een configurator die de klant zijn eigen dakkapel laat samenstellen. website 3d react 19 express mysql pdfkit three.js railway"},{"id":"kijkvergunning","naam":"KijkVergunning","eenRegel":"Adres invullen en zien of je uitbouw vergunningvrij mag — op kaart en in 3D.","tags":["software","3d","ai"],"tegel":"t-kijkvergunning.webp","zoek":"kijkvergunning adres invullen en zien of je uitbouw vergunningvrij mag — op kaart en in 3d. zie wat je mag bouwen voordat je begint: adres invullen, en je weet of die uitbouw vergunningvrij kan. software 3d ai next.js 16 react 19 maplibre three.js supabase zustand"},{"id":"lumiere","naam":"Lumière Dakkapellen","eenRegel":"Je dakkapel in 3D op je eigen dak, met pdf-offerte eruit.","tags":["website","3d"],"tegel":"t-lumiere.webp","zoek":"lumière dakkapellen je dakkapel in 3d op je eigen dak, met pdf-offerte eruit. een dakkapel die je in 3d op je eigen dak ziet staan — draaien, afwerking kiezen, offerte eruit. website 3d react 19 three.js react three fiber framer motion jspdf"},{"id":"kiesradar","naam":"Kiesradar","eenRegel":"Fysieke opstelling met sensoren die met een webapp en database praten.","tags":["software","mobiel"],"tegel":null,"zoek":"kiesradar fysieke opstelling met sensoren die met een webapp en database praten. teamproject aan de hogeschool van amsterdam: een fysieke opstelling die studiekiezers helpt kiezen, met sensoren die met een webapp praten. software mobiel python flask mysql docker esp32 gitlab ci"}]}</script>
 
 <div popover id="uitleg-afstandsberekening" class="uitleg"><b>Afstandsberekening</b>Rekent uit hoe ver twee punten uit elkaar liggen en hoe lang je daarover doet.</div>
 <div popover id="uitleg-anthropic-sdk" class="uitleg"><b>Anthropic SDK</b>De koppeling met Claude, om tekst te laten lezen, samenvatten of controleren.</div>
@@ -2797,8 +3173,11 @@ p, .kaart-regel, .paneel-lead, li { text-wrap: pretty; }
   var knopKopieer = document.getElementById('kopieer');
   var adres = document.getElementById('adres');
   if (knopKopieer && adres) {
+    // het oorspronkelijke opschrift onthouden in plaats van het hier vast te
+    // leggen: de knop heet niet overal hetzelfde
+    var opschrift = knopKopieer.textContent;
     var terug = function () {
-      setTimeout(function () { knopKopieer.textContent = 'Kopieer adres'; }, 2000);
+      setTimeout(function () { knopKopieer.textContent = opschrift; }, 2000);
     };
     var selecteer = function () {
       try {

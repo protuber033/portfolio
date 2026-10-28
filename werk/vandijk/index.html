@@ -489,34 +489,10 @@ body.vast { overflow: hidden; }
 .groot img { max-height: 52vh; object-fit: cover; object-position: top center; }
 .duimen { margin: 0 0 10px; }
 
-/* ============ eerst beeld, dan pas woorden ============ */
-.toonbank { padding-top: clamp(14px, 2.4vw, 28px); }
-.toonbank .showcase { margin-top: 0; }
-.sleep img { width: 320px; }
-.showcase-bij { margin-top: 15px; }
-
-.kop-blok { padding-block: clamp(26px, 3.6vw, 46px) clamp(16px, 2.4vw, 28px); }
-h1 { font-size: clamp(1.9rem, 4.4vw, 2.9rem); max-width: 22ch; }
-.kop-blok .cijfers { margin-top: 20px; }
-
-/* het binnenkomen opnieuw verdelen nu de band vooraan staat */
-@media (prefers-reduced-motion: no-preference) {
-  .showcase { animation: opkomen .5s cubic-bezier(.2, .7, .3, 1) both; animation-delay: 0s; }
-  .showcase-bij { animation-delay: .1s; }
-  .kop-blok .rol { animation-delay: .14s; }
-  .kop-blok h1 { animation-delay: .19s; }
-  .kop-blok .cijfers { animation-delay: .24s; }
-}
-
-@media (max-width: 620px) {
-  .sleep img { width: 210px; }
-}
-
-/* het gat tussen kop en werk dichttrekken */
-.kop-blok + .sectie { padding-top: clamp(18px, 2.4vw, 32px); }
-
-.showcase-bij { align-items: flex-start; }
-.showcase-bij .stip { margin-top: .5em; flex: none; }
+/* De losse band bovenaan is vervangen door een echte kop, met diezelfde
+   schermen als decor erachter. De regels die die band op zijn plek hielden
+   stonden hier; ze zijn weg omdat ze de h1 juist kleiner maakten dan de rest
+   van het blad bedoelde. Wat ervoor in de plaats komt staat in koers.css. */
 
 .stip.archief { background: var(--tekst-3); }
 .balkje.archief { background: rgba(154, 166, 198, .3); }
@@ -756,6 +732,7 @@ p, .kaart-regel, .paneel-lead, li { text-wrap: pretty; }
     }
     @keyframes aanklampen {
       to {
+        background: rgba(10, 13, 22, .86);
         box-shadow: 0 10px 34px rgba(0, 0, 0, .45);
         border-bottom-color: var(--rand-op);
       }
@@ -1089,6 +1066,349 @@ p, .kaart-regel, .paneel-lead, li { text-wrap: pretty; }
   h1, h2, h3 { break-after: avoid; }
   * { animation: none !important; transition: none !important; box-shadow: none !important; }
 }
+
+/* ============================================================
+   KOERS — de laag die de pagina van "lijst met blokken" naar
+   "etalage" tilt.
+
+   Wat er mis was: de pagina opende met een band schermen en begon
+   pas daarna te praten. Een bezoeker kreeg dus plaatjes voordat hij
+   wist waar hij was. Verder stonden alle secties op dezelfde hoogte,
+   met dezelfde kopgrootte en dezelfde witruimte — dat leest als een
+   opsomming, niet als een verhaal.
+
+   Wat hier gebeurt:
+   - de band gaat áchter de kop staan, gedempt, als decor
+   - de kop wordt een echte kop: label, grote zin, uitleg, twee knoppen
+   - elke sectie krijgt hetzelfde ritme: label, grote titel, uitleg
+   - veel meer lucht tussen de secties
+   Dit blad komt als laatste, dus het mag eerdere regels overschrijven.
+   ============================================================ */
+
+:root {
+  --lucht: clamp(68px, 9vw, 132px);      /* ruimte tussen twee secties */
+  --glans-1: #5B8CFF;
+  --glans-2: #2FE8B0;
+}
+
+/* ---------- de balk bovenin ----------
+   Over de kop heen is hij doorzichtig; zodra je scrolt wordt hij vast.
+   Dat scheelt een harde lijn op het mooiste stuk van de pagina. */
+.balk-boven {
+  height: auto; min-height: 64px;
+  background: transparent; border-bottom-color: transparent;
+  transition: background .25s ease, border-color .25s ease;
+}
+.balk-boven .binnen { padding-block: 12px; }
+/* De animatie zelf staat in vloeiend.css ("aanklampen"); daar is de
+   achtergrond aan toegevoegd. Twee animaties op hetzelfde element zouden
+   elkaar opheffen, want de laatste wint. Zonder ondersteuning voor
+   scroll-animaties blijft de balk gewoon altijd vast. */
+@supports not (animation-timeline: scroll()) {
+  .balk-boven { background: rgba(10, 13, 22, .88); border-bottom-color: var(--rand); }
+}
+.merk { font-size: 1.04rem; }
+
+/* ============ de kop ============ */
+.held {
+  position: relative; isolation: isolate;
+  padding-block: clamp(76px, 13vw, 170px) 0;
+  overflow: hidden;
+}
+
+/* Het decor: dezelfde echte schermen als voorheen, maar nu gedempt en
+   achter de tekst. Ze mogen gezien worden, niet gelezen — vandaar de
+   lage dekking en het masker dat ze naar de randen laat uitdoven. */
+.held-doek {
+  position: absolute; inset: 0; z-index: -2;
+  display: grid; align-content: center; gap: 18px;
+  opacity: .5;
+  transform: scale(1.06);
+  -webkit-mask-image:
+    linear-gradient(90deg, transparent, #000 18%, #000 82%, transparent),
+    radial-gradient(130% 92% at 50% 42%, transparent 28%, #000 78%);
+  mask-image:
+    linear-gradient(90deg, transparent, #000 18%, #000 82%, transparent),
+    radial-gradient(130% 92% at 50% 42%, transparent 28%, #000 78%);
+  -webkit-mask-composite: source-in;
+  mask-composite: intersect;
+}
+.held-doek .sleep img {
+  width: 300px; border-radius: 12px;
+  box-shadow: 0 0 0 1px rgba(255, 255, 255, .06), 0 18px 40px rgba(0, 0, 0, .5);
+  transition: none;
+}
+.held-doek .sleep img:hover { transform: none; }
+/* een donkere sluier eroverheen, anders vecht de tekst met de schermen */
+.held::before {
+  content: ''; position: absolute; inset: 0; z-index: -1;
+  background:
+    radial-gradient(90% 62% at 50% 40%, rgba(10, 13, 22, .86) 0%, rgba(10, 13, 22, .6) 55%, transparent 100%),
+    linear-gradient(180deg, rgba(10, 13, 22, .7), transparent 26%, rgba(10, 13, 22, .55) 82%, var(--grond) 100%);
+}
+
+.held-binnen { position: relative; text-align: center; }
+
+/* het labeltje boven de kop */
+.ogen {
+  display: inline-flex; align-items: center; gap: 10px;
+  font-family: var(--mono); font-size: .72rem; letter-spacing: .18em;
+  text-transform: uppercase; color: var(--accent);
+  margin: 0 0 22px;
+}
+.ogen::before {
+  content: ''; width: 26px; height: 1px; flex: none;
+  background: linear-gradient(90deg, transparent, var(--accent));
+}
+.held-binnen .ogen {
+  border: 1px solid var(--rand-op); border-radius: 999px;
+  padding: 7px 16px 7px 13px; background: rgba(17, 23, 37, .6);
+  backdrop-filter: blur(8px);
+}
+
+.held h1 {
+  font-size: clamp(2.5rem, 7.2vw, 5rem);
+  line-height: 1.02; letter-spacing: -.045em;
+  max-width: 17ch; margin-inline: auto;
+}
+/* de tweede regel in kleur: hetzelfde trucje dat funstudios gebruikt, en
+   het werkt omdat je oog dan weet waar de zin uit twee delen bestaat */
+.glans {
+  background: linear-gradient(100deg, var(--glans-1), var(--glans-2));
+  -webkit-background-clip: text; background-clip: text;
+  -webkit-text-fill-color: transparent; color: transparent;
+}
+.held-intro {
+  margin: 26px auto 0; max-width: 56ch;
+  font-size: clamp(1.02rem, 1.6vw, 1.2rem); color: var(--tekst-2); line-height: 1.65;
+}
+.held-knoppen {
+  display: flex; flex-wrap: wrap; gap: 12px; justify-content: center;
+  margin: 34px 0 0;
+}
+.knop-groot { padding: 15px 26px; font-size: 1rem; border-radius: 12px; }
+.knop-vol.knop-groot { box-shadow: 0 10px 30px rgba(91, 140, 255, .28); }
+.knop-leeg {
+  background: rgba(255, 255, 255, .04); border: 1px solid var(--rand-op); color: var(--tekst);
+}
+.knop-leeg:hover { border-color: var(--accent); background: rgba(91, 140, 255, .1); }
+.knop .pijltje { display: inline-block; margin-left: 7px; transition: transform .2s ease; }
+.knop:hover .pijltje { transform: translateX(3px); }
+
+/* ---------- de cijfers onder de kop ---------- */
+.bewijsbalk {
+  position: relative; margin-top: clamp(54px, 8vw, 96px);
+  border-top: 1px solid var(--rand); border-bottom: 1px solid var(--rand);
+  background: rgba(17, 23, 37, .45);
+}
+.bewijs {
+  display: grid; grid-template-columns: repeat(4, minmax(0, 1fr));
+  list-style: none; margin: 0; padding: 0;
+}
+.bewijs li {
+  padding: clamp(20px, 3vw, 30px) 10px; text-align: center;
+  border-left: 1px solid var(--rand);
+}
+.bewijs li:first-child { border-left: 0; }
+.bewijs b {
+  display: block; font-family: var(--display); font-weight: 700;
+  font-size: clamp(1.7rem, 3.4vw, 2.5rem); letter-spacing: -.04em; line-height: 1;
+  background: linear-gradient(100deg, var(--glans-1), var(--glans-2));
+  -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent;
+}
+.bewijs span {
+  display: block; margin-top: 9px;
+  font-size: .82rem; color: var(--tekst-3); line-height: 1.4;
+}
+
+/* ---------- de strook met namen ---------- */
+.namenbalk {
+  display: flex; align-items: center; gap: clamp(16px, 3vw, 40px); flex-wrap: wrap;
+  padding-block: clamp(20px, 3vw, 30px);
+}
+.namenbalk-label {
+  font-family: var(--mono); font-size: .68rem; letter-spacing: .18em;
+  text-transform: uppercase; color: var(--tekst-3); white-space: nowrap;
+  display: inline-flex; align-items: center; gap: 8px;
+}
+.namen {
+  display: flex; flex-wrap: wrap; align-items: center;
+  gap: clamp(14px, 2.4vw, 30px); list-style: none; margin: 0; padding: 0;
+}
+.namen li {
+  display: inline-flex; align-items: center;
+  font-family: var(--display); font-weight: 700; font-size: clamp(.9rem, 1.4vw, 1.04rem);
+  letter-spacing: -.02em; color: var(--tekst-2);
+  transition: color .2s ease;
+}
+.namen li:hover { color: var(--tekst); }
+/* Een punt achter elke naam behalve de laatste, zodat het een opsomming
+   blijft. Achter en niet ervoor: bij het afbreken van een regel hoort het
+   teken bij de naam die eraan voorafging, niet bij de volgende. */
+.namen li:not(:last-child)::after {
+  content: '·'; color: var(--rand-op);
+  margin-left: calc(clamp(14px, 2.4vw, 30px) / 2);
+}
+
+/* ============ het ritme van de secties ============ */
+.sectie { padding-block: var(--lucht) 0; }
+.sectie:last-of-type { padding-bottom: var(--lucht); }
+
+.sectie-kop {
+  font-size: clamp(1.9rem, 4.2vw, 3rem);
+  line-height: 1.08; letter-spacing: -.04em;
+  max-width: 20ch;
+}
+.sectie-uitleg {
+  margin-top: 16px; font-size: clamp(.98rem, 1.4vw, 1.08rem);
+  line-height: 1.7; max-width: 60ch;
+}
+.sectie-kop-blok { margin-bottom: clamp(30px, 4.4vw, 54px); }
+.sectie-kop-blok.midden {
+  text-align: center;
+}
+.sectie-kop-blok.midden .sectie-kop,
+.sectie-kop-blok.midden .sectie-uitleg { margin-inline: auto; }
+.sectie-kop-blok.midden .ogen { justify-content: center; }
+.sectie-kop-blok.midden .ogen::after {
+  content: ''; width: 26px; height: 1px; flex: none;
+  background: linear-gradient(90deg, var(--accent), transparent);
+}
+
+/* Een sectie mag ook een eiland zijn: afgeronde doos op de achtergrond,
+   met een haarlijn in kleur bovenop. Dat breekt de eentonigheid zonder
+   dat er een tweede achtergrondkleur bij hoeft. */
+.eiland {
+  position: relative; overflow: hidden;
+  background: linear-gradient(180deg, var(--vlak) 0%, rgba(17, 23, 37, .4) 100%);
+  border: 1px solid var(--rand); border-radius: 26px;
+  padding: clamp(30px, 5vw, 66px);
+}
+.eiland::before {
+  content: ''; position: absolute; inset-inline: 0; top: 0; height: 1px;
+  background: linear-gradient(90deg, transparent, var(--glans-1), var(--glans-2), transparent);
+}
+
+/* ============ het werk ============ */
+/* De regelbalk was een werkbalk met randen over de volle breedte; dat gaf
+   de pagina het gevoel van een beheerscherm. Nu alleen nog een haarlijn
+   onderaan — maar wel met een achtergrond, want hij blijft plakken en de
+   kaarten moeten eronderdoor kunnen zonder erdoorheen te schijnen. */
+.regelbalk {
+  border-top: 0; border-bottom: 0; margin-top: 0;
+  margin-bottom: clamp(22px, 3vw, 34px);
+  background: rgba(10, 13, 22, .92);
+  backdrop-filter: blur(12px);
+}
+.regelbalk-binnen {
+  padding-block: 14px;
+  border-bottom: 1px solid var(--rand);
+}
+.filter { border-radius: 999px; }
+
+.raster { grid-template-columns: repeat(auto-fill, minmax(330px, 1fr)); gap: clamp(16px, 2vw, 24px); }
+.kaart-knop { border-radius: 18px; }
+.kaart-knop:hover { transform: translateY(-5px); box-shadow: 0 18px 40px rgba(0, 0, 0, .45); }
+.duim { aspect-ratio: 16 / 11; }
+.kaart-tekst { padding: 18px 20px 20px; gap: 7px; }
+.kaart-naam { font-size: 1.16rem; }
+.kaart-regel { font-size: .94rem; line-height: 1.55; }
+.groep { padding-top: clamp(34px, 4.6vw, 56px); }
+.groep-kop h3 { font-size: 1.34rem; }
+
+/* De eerste groep mag groter: dat is het werk dat nu draait, en daar wil
+   je dat iemand naar kijkt. Twee kolommen in plaats van drie. */
+.groep[data-groep="live"] .raster { grid-template-columns: repeat(auto-fill, minmax(420px, 1fr)); }
+.groep[data-groep="live"] .duim { aspect-ratio: 16 / 10; }
+.groep[data-groep="live"] .kaart-naam { font-size: 1.3rem; }
+
+/* ============ de afsluiting ============ */
+.slot {
+  position: relative; overflow: hidden; margin-top: var(--lucht);
+  border-top: 1px solid var(--rand);
+  padding-block: clamp(70px, 11vw, 150px);
+  text-align: center;
+}
+.slot::before {
+  content: ''; position: absolute; inset: 0; z-index: -1;
+  background: radial-gradient(70% 120% at 50% 0%, rgba(91, 140, 255, .14), transparent 62%);
+}
+.slot h2 {
+  font-family: var(--display); font-weight: 700;
+  font-size: clamp(2rem, 5.4vw, 3.6rem); line-height: 1.05; letter-spacing: -.04em;
+  margin: 0 auto; max-width: 16ch; text-wrap: balance;
+}
+.slot p {
+  margin: 22px auto 0; max-width: 54ch; color: var(--tekst-2);
+  font-size: clamp(1rem, 1.5vw, 1.12rem); line-height: 1.65;
+}
+.slot-knoppen { display: flex; flex-wrap: wrap; gap: 12px; justify-content: center; margin-top: 36px; }
+.slot-adres {
+  display: inline-flex; align-items: center; gap: 10px; margin-top: 28px;
+  font-family: var(--mono); font-size: .88rem; color: var(--tekst-3);
+}
+.slot-adres a { color: var(--tekst-2); text-decoration: none; border-bottom: 1px solid var(--rand-op); }
+.slot-adres a:hover { color: var(--accent); border-color: var(--accent); }
+
+/* ============ de voet ============
+   Was een grijze regel onder een paginabrede streep. Dat haalt de lucht uit
+   de afsluiting die er net boven staat: je leest een grote vraag en belandt
+   meteen in een kleine lettertje. Nu eerst de naam en waar je heen kunt, en
+   pas daaronder het kleine lettertje. */
+.voet { margin-top: 0; padding-block: clamp(40px, 5vw, 64px) clamp(34px, 4vw, 52px); }
+.voet-boven {
+  display: flex; flex-wrap: wrap; gap: clamp(26px, 5vw, 70px);
+  align-items: flex-start; justify-content: space-between;
+  padding-bottom: clamp(26px, 3.4vw, 40px);
+  border-bottom: 1px solid var(--rand);
+}
+.voet-merk { max-width: 42ch; }
+.voet-merk .merk { font-size: 1.08rem; }
+.voet-merk p { margin: 12px 0 0; font-size: .9rem; color: var(--tekst-2); max-width: none; }
+.voet-wegen { display: flex; flex-wrap: wrap; gap: 10px 26px; align-items: center; }
+.voet-wegen a {
+  color: var(--tekst-2); text-decoration: none; font-size: .9rem;
+  border-bottom: 1px solid transparent; transition: color .15s ease, border-color .15s ease;
+}
+.voet-wegen a:hover { color: var(--tekst); border-bottom-color: var(--rand-op); }
+.voet-wegen a:last-child { font-family: var(--mono); font-size: .82rem; color: var(--tekst-3); }
+.voet-onder {
+  display: flex; flex-wrap: wrap; gap: 10px 30px; justify-content: space-between;
+  margin-top: clamp(20px, 2.6vw, 28px);
+}
+.voet-onder p { font-size: .8rem; }
+
+/* ============ smaller ============ */
+@media (max-width: 860px) {
+  .bewijs { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .bewijs li:nth-child(3) { border-left: 0; }
+  .bewijs li:nth-child(n+3) { border-top: 1px solid var(--rand); }
+  .groep[data-groep="live"] .raster { grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); }
+}
+@media (max-width: 620px) {
+  /* Op een telefoon worden het de filters drie rijen plus een zoekveld. Dat
+     blijven laten plakken kost de helft van het scherm, en je scrolt juist
+     om de kaarten te zien. */
+  .regelbalk { position: static; backdrop-filter: none; }
+
+  .held { padding-top: clamp(54px, 16vw, 90px); }
+  .held-doek { opacity: .22; }
+  .held-doek .sleep img { width: 200px; }
+  .held h1 { font-size: clamp(2.1rem, 10vw, 2.9rem); max-width: 14ch; }
+  .held-knoppen .knop { width: 100%; justify-content: center; }
+  .raster { grid-template-columns: 1fr; }
+  .eiland { border-radius: 18px; padding: 24px 18px; }
+}
+
+/* ============ rustig binnenkomen ============ */
+@media (prefers-reduced-motion: no-preference) {
+  .held-binnen > * { animation: opkomen .6s cubic-bezier(.2, .7, .3, 1) both; }
+  .held-binnen .ogen { animation-delay: .05s; }
+  .held-binnen h1 { animation-delay: .12s; }
+  .held-intro { animation-delay: .2s; }
+  .held-knoppen { animation-delay: .28s; }
+  .bewijsbalk { animation: opkomen .6s cubic-bezier(.2, .7, .3, 1) both; animation-delay: .36s; }
+}
 </style>
 <style>/* ============ losse projectpagina ============
    Elk project heeft ook een eigen adres, zodat Google er een echte pagina
@@ -1200,11 +1520,11 @@ p, .kaart-regel, .paneel-lead, li { text-wrap: pretty; }
     <div class="verder">
       <h2>Ander werk van mij</h2>
       <ul>
+        <li><a href="/werk/eemland/">Eemland Boekt</a></li>
+        <li><a href="/werk/funstudios/">Fun Studios</a></li>
         <li><a href="/werk/kaapnoord/">Kaap Noord</a></li>
         <li><a href="/werk/wilgenhof/">Hovenier Wilgenhof</a></li>
         <li><a href="/werk/kempen/">Kempen Transport</a></li>
-        <li><a href="/werk/eemland/">Eemland Boekt</a></li>
-        <li><a href="/werk/funstudios/">Fun Studios</a></li>
         <li><a href="/werk/glacio/">Glacio Klimaattechniek</a></li>
         <li><a href="/werk/kozijnfabriek/">Kozijnfabriek Direct</a></li>
         <li><a href="/werk/ralox/">RALOX Sports</a></li>
