@@ -5,9 +5,9 @@
     "status": "live",
     "statusLabel": "Draait in bedrijf",
     "map": "C:/Users/mstic/Desktop/Samih Tichtti/voor-papa/eemlandboekt",
-    "periode": "januari – oktober 2026",
+    "periode": "januari – november 2026",
     "eersteDag": "2026-01-21",
-    "laatsteDag": "2026-10-23",
+    "laatsteDag": "2026-11-03",
     "eenRegel": "Offertes, facturen, urenbriefjes scannen en btw-aangifte in één systeem.",
     "voorWie": "De complete administratie van een bouwbedrijf, van offerte tot btw-aangifte, in één systeem dat elke dag gebruikt wordt.",
     "voorbeeld": "De stapel papieren urenbriefjes gaat door de scanner. Het systeem leest ze uit, telt na of de totalen op het briefje zelf wel kloppen, en zet de uren op het juiste project. Aan het eind van het kwartaal rolt de btw-aangifte er kant-en-klaar uit.",
@@ -58,9 +58,9 @@
     "status": "live",
     "statusLabel": "Live online",
     "map": "C:/Users/mstic/Desktop/funstudios",
-    "periode": "september – oktober 2026",
+    "periode": "september – november 2026",
     "eersteDag": "2026-09-07",
-    "laatsteDag": "2026-10-21",
+    "laatsteDag": "2026-11-01",
     "eenRegel": "Eventsite met boekingsflow: photo booths, low fog en indoor vuurwerk.",
     "voorWie": "Voor een entertainmentbedrijf: photo booths, 360 booth, low fog, indoor vuurwerk en lichtletters — met een boekingsflow die de aanvragen binnenhaalt.",
     "voorbeeld": "Iemand plant een bruiloft, klikt op “Plan mijn event” en verstuurt het formulier. Hij krijgt meteen een bevestiging in zijn mail. De aanvraag staat op dat moment al in het adminpaneel — ook als het mailen hapert, raakt er niets kwijt.",
@@ -110,7 +110,7 @@
       }
     ],
     "bereikbaar": true,
-    "gecontroleerd": "27 okt 2026",
+    "gecontroleerd": "10 nov 2026",
     "stappen": [
       "Bezoeker kiest een dienst",
       "Formulier invullen",
@@ -187,7 +187,7 @@
       }
     ],
     "bereikbaar": true,
-    "gecontroleerd": "27 okt 2026"
+    "gecontroleerd": "10 nov 2026"
   },
   {
     "status": "live",
@@ -240,7 +240,7 @@
       }
     ],
     "bereikbaar": true,
-    "gecontroleerd": "27 okt 2026"
+    "gecontroleerd": "10 nov 2026"
   },
   {
     "status": "live",
@@ -301,7 +301,7 @@
       }
     ],
     "bereikbaar": true,
-    "gecontroleerd": "27 okt 2026"
+    "gecontroleerd": "10 nov 2026"
   },
   {
     "status": "live",
@@ -360,7 +360,7 @@
       }
     ],
     "bereikbaar": true,
-    "gecontroleerd": "27 okt 2026"
+    "gecontroleerd": "10 nov 2026"
   },
   {
     "id": "glacio",
@@ -416,7 +416,7 @@
       }
     ],
     "bereikbaar": true,
-    "gecontroleerd": "27 okt 2026",
+    "gecontroleerd": "10 nov 2026",
     "github": "protuber033/glacio",
     "stappen": [
       "Drie vragen beantwoorden",
@@ -485,7 +485,7 @@
       }
     ],
     "bereikbaar": true,
-    "gecontroleerd": "27 okt 2026",
+    "gecontroleerd": "10 nov 2026",
     "stappen": [
       "Adres invullen",
       "Gevelfoto uploaden",
@@ -567,7 +567,7 @@
       "Club ziet de opbrengst"
     ],
     "bereikbaar": true,
-    "gecontroleerd": "27 okt 2026"
+    "gecontroleerd": "10 nov 2026"
   },
   {
     "id": "courtswap",
@@ -615,7 +615,7 @@
       }
     ],
     "bereikbaar": true,
-    "gecontroleerd": "27 okt 2026",
+    "gecontroleerd": "10 nov 2026",
     "stappen": [
       "Advertentie plaatsen met foto's",
       "Koper vindt hem op de kaart",
@@ -685,7 +685,7 @@
       "Inloggen op je eigen omgeving"
     ],
     "bereikbaar": true,
-    "gecontroleerd": "27 okt 2026"
+    "gecontroleerd": "10 nov 2026"
   },
   {
     "id": "remh",
@@ -745,7 +745,7 @@
       }
     ],
     "bereikbaar": false,
-    "gecontroleerd": "27 okt 2026",
+    "gecontroleerd": "10 nov 2026",
     "stappen": [
       "Dienst kiezen",
       "Configureren",
@@ -753,6 +753,42 @@
       "Offerte als pdf",
       "Binnen in het beheerdeel"
     ]
+  },
+  {
+    "id": "design4bouw",
+    "naam": "design4bouw",
+    "status": "prototype",
+    "statusLabel": "Prototype",
+    "map": "C:/Users/mstic/Desktop/design4bouw",
+    "periode": "november 2026",
+    "eersteDag": "2026-11-02",
+    "laatsteDag": "2026-11-03",
+    "eenRegel": "Nieuwe website voor [Design4Bouw](https://design4bouw.nl) (Bilthoven), webbureau voor de bouw en techniek.",
+    "voorWie": "Nieuwe website voor [Design4Bouw](https://design4bouw.nl) (Bilthoven), webbureau voor de bouw en techniek.",
+    "voorbeeld": "Nog te schrijven: wat merkt een gebruiker hiervan in de praktijk?",
+    "doet": [
+      "Nog te schrijven."
+    ],
+    "techniek": [
+      "Express",
+      "Motion",
+      "Mail",
+      "React",
+      "Tailwind",
+      "zod",
+      "sharp",
+      "Vite"
+    ],
+    "tags": [
+      "software"
+    ],
+    "url": null,
+    "urlLabel": null,
+    "besloten": "Draait lokaal.",
+    "tegel": null,
+    "tegelTekst": "NOG GEEN SCHERMAFBEELDING",
+    "beelden": [],
+    "concept": true
   },
   {
     "id": "cfmoto-systeem",

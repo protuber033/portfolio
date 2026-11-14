@@ -1306,6 +1306,65 @@ p, .kaart-regel, .paneel-lead, li { text-wrap: pretty; }
 }
 .filter { border-radius: 999px; }
 
+/* ---------- de twee zoekvelden ----------
+   Allebei zagen ze er onaf uit. Boven brak "Ctrl K" over twee regels, omdat
+   het vakje smaller was dan de tekst erin; daardoor werd de hele knop
+   scheef en hoger dan de rest van de balk. En het veld in de werkbalk was
+   een lege grijze rechthoek zonder loep, zodat je er niet aan zag dat je
+   erin kon typen. Ze horen nu bij elkaar en bij de filterknoppen ernaast:
+   pilvormig, met een loep ervoor en een toetsaanwijzing erachter. */
+:root {
+  --loep: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='none' stroke='black' stroke-width='1.7'%3E%3Ccircle cx='7' cy='7' r='4.6'/%3E%3Cpath d='M10.8 10.8 14 14' stroke-linecap='round'/%3E%3C/svg%3E");
+}
+
+/* het knopje in de balk bovenin */
+.palet-hint {
+  gap: 8px; border-radius: 999px; padding: 7px 9px 7px 13px;
+  white-space: nowrap;
+  background: rgba(255, 255, 255, .04);
+  transition: border-color .2s ease, background .2s ease, color .2s ease;
+}
+.palet-hint:hover { background: rgba(91, 140, 255, .1); border-color: var(--accent); }
+.palet-hint svg { width: 14px; height: 14px; flex: none; }
+.palet-hint kbd {
+  white-space: nowrap;          /* hier ging het mis: "Ctrl K" brak af */
+  line-height: 1.5; padding: 1px 7px; border-radius: 6px;
+  background: rgba(255, 255, 255, .05);
+}
+
+/* het veld in de werkbalk van het werk */
+.zoek input {
+  /* De toetsaanwijzing hangt aan het label, niet aan het veld. Zonder deze
+     breedte is het veld op een smal scherm smaller dan zijn label en staat
+     die aanwijzing ineens náást het veld in plaats van erin. */
+  width: 100%; min-width: 260px; border-radius: 999px;
+  padding: 11px 38px 11px 38px;
+  background: rgba(255, 255, 255, .04);
+  transition: border-color .2s ease, background .2s ease, box-shadow .2s ease;
+}
+.zoek input:hover { border-color: var(--rand-op); }
+.zoek input:focus {
+  background: var(--vlak);
+  box-shadow: 0 0 0 3px var(--accent-zacht);
+}
+.zoek::before {
+  content: ''; position: absolute; left: 15px; top: 50%;
+  width: 15px; height: 15px; transform: translateY(-50%);
+  pointer-events: none; background-color: var(--tekst-3);
+  -webkit-mask: var(--loep) center / contain no-repeat;
+  mask: var(--loep) center / contain no-repeat;
+  transition: background-color .2s ease;
+}
+.zoek:focus-within::before { background-color: var(--accent); }
+.sneltoets { right: 13px; border-radius: 6px; padding: 2px 7px; }
+/* typt iemand, dan is de aanwijzing "druk op /" alleen nog in de weg */
+.zoek:focus-within .sneltoets { opacity: 0; }
+
+/* Safari zet er zijn eigen kruisje in dat niet bij de rest past, en op een
+   type="search" staat standaard ook nog een binnenrand. */
+.zoek input::-webkit-search-decoration,
+.zoek input::-webkit-search-cancel-button { -webkit-appearance: none; }
+
 .raster { grid-template-columns: repeat(auto-fill, minmax(330px, 1fr)); gap: clamp(16px, 2vw, 24px); }
 .kaart-knop { border-radius: 18px; }
 .kaart-knop:hover { transform: translateY(-5px); box-shadow: 0 18px 40px rgba(0, 0, 0, .45); }
@@ -1394,6 +1453,9 @@ p, .kaart-regel, .paneel-lead, li { text-wrap: pretty; }
      blijven laten plakken kost de helft van het scherm, en je scrolt juist
      om de kaarten te zien. */
   .regelbalk { position: static; backdrop-filter: none; }
+  /* op een telefoon is er geen toets om op te drukken */
+  .sneltoets { display: none; }
+  .zoek input { min-width: 0; padding-right: 16px; }
 
   .held { padding-top: clamp(54px, 16vw, 90px); }
   .held-doek { opacity: .22; }
@@ -1452,7 +1514,7 @@ p, .kaart-regel, .paneel-lead, li { text-wrap: pretty; }
 }
 .verder a:hover { border-color: var(--rand-op); color: var(--tekst); }
 </style>
-<script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"CreativeWork","@id":"https://eemland-digital.nl/werk/funstudios/#project","name":"Fun Studios","headline":"Fun Studios","description":"Voor een entertainmentbedrijf: photo booths, 360 booth, low fog, indoor vuurwerk en lichtletters — met een boekingsflow die de aanvragen binnenhaalt.","abstract":"Eventsite met boekingsflow: photo booths, low fog en indoor vuurwerk.","url":"https://eemland-digital.nl/werk/funstudios/","inLanguage":"nl-NL","author":{"@id":"https://eemland-digital.nl/#bedrijf"},"creator":{"@id":"https://eemland-digital.nl/#bedrijf"},"dateCreated":"2026-09-07","dateModified":"2026-10-21","keywords":"website, React, Vite, Tailwind, Motion, Express, sharp","genre":"Live online","image":["https://eemland-digital.nl/img/funstudios-1.webp","https://eemland-digital.nl/img/funstudios-2.webp","https://eemland-digital.nl/img/funstudios-3.webp"],"sameAs":["https://www.funstudios.nl"]},{"@type":"ProfessionalService","@id":"https://eemland-digital.nl/#bedrijf","name":"Eemland Digital","description":"Websites en bedrijfssoftware voor Nederlandse bedrijven. Geen mooie plaatjes die niets doen — dingen die elke dag gebruikt worden.","url":"https://eemland-digital.nl/","email":"mailto:info@eemland-digital.nl","image":"https://eemland-digital.nl/img/kozijnfabriek-1.webp","sameAs":["https://github.com/protuber033"],"knowsLanguage":["nl","en"],"priceRange":"Op aanvraag","address":{"@type":"PostalAddress","addressLocality":"Amersfoort","addressCountry":"NL"},"areaServed":[{"@type":"Place","name":"Amersfoort"},{"@type":"Place","name":"Utrecht"},{"@type":"Place","name":"Amsterdam"},{"@type":"Place","name":"Nederland"}],"knowsAbout":["Afstandsberekening","Anthropic SDK","Capacitor","Cloudinary","Docker","ESP32","Express","Flask","Framer Motion","GitLab CI","Google Gemini","Google Maps","MapLibre","Motion","MySQL","Next.js","Node","PDFKit","PostgreSQL","Prisma","Python","Railway","React","React Router","React Three Fiber","Rechten per rol","SVG","SVG-grafiek","SVG-kaart","Server-sent events","Server-side rekenen","Sessies","Sessies per bezoeker","Slepen en neerzetten","Supabase","Supabase Storage","Tailwind","TypeScript","Vite","jsPDF","pdf-lib","sharp","three.js","zustand"],"hasOfferCatalog":{"@type":"OfferCatalog","name":"Waar ik je mee kan helpen","itemListElement":[{"@type":"Offer","itemOffered":{"@type":"Service","name":"Beeldherkenning","alternateName":"Een foto erin, gegevens eruit","description":"Een gevelfoto waar de kozijnen uit herkend worden. Een papieren urenbriefje dat gescand én nagerekend wordt. Werk dat anders met de hand overgetypt moet worden."}},{"@type":"Offer","itemOffered":{"@type":"Service","name":"Administratie","alternateName":"De hele papierwinkel in één systeem","description":"Aanvraag, offerte, order, factuur, btw en jaarcijfers achter elkaar, zonder dat iemand hetzelfde nummer drie keer overtypt. Pdf's automatisch opgemaakt."}},{"@type":"Offer","itemOffered":{"@type":"Service","name":"3D in de browser","alternateName":"Producten die de klant zelf kan draaien","description":"Een dakkapel die echt in het dakvlak staat. Een perceel in 3D met de bouwzone eroverheen. Alles in de browser, zonder plug-in."}},{"@type":"Offer","itemOffered":{"@type":"Service","name":"Kaart en adresdata","alternateName":"Nederlandse adres- en perceeldata","description":"Adres opzoeken via PDOK, perceelgrenzen en bouwjaren erbij, Street View voor de gevel, zoeken op afstand. Met een gratis alternatief als een betaalde kaartdienst uitvalt."}},{"@type":"Offer","itemOffered":{"@type":"Service","name":"Beheer en rollen","alternateName":"Dashboards waar personeel mee werkt","description":"Inloggen, rechten per rol, de zakelijke mailbox erin, planning en leveranciersorders. Met gehashte wachtwoorden en een database die standaard niets vrijgeeft."}},{"@type":"Offer","itemOffered":{"@type":"Service","name":"Live zetten","alternateName":"Van laptop naar eigen domein","description":"Hosting, domein, ssl, database met back-ups en zakelijke mail. En waar het nodig is verder dan de browser: dezelfde code als app voor iOS en Android, of sensoren die hun metingen naar een webserver sturen."}}]}},{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Het werk","item":"https://eemland-digital.nl/"},{"@type":"ListItem","position":2,"name":"Fun Studios","item":"https://eemland-digital.nl/werk/funstudios/"}]}]}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"CreativeWork","@id":"https://eemland-digital.nl/werk/funstudios/#project","name":"Fun Studios","headline":"Fun Studios","description":"Voor een entertainmentbedrijf: photo booths, 360 booth, low fog, indoor vuurwerk en lichtletters — met een boekingsflow die de aanvragen binnenhaalt.","abstract":"Eventsite met boekingsflow: photo booths, low fog en indoor vuurwerk.","url":"https://eemland-digital.nl/werk/funstudios/","inLanguage":"nl-NL","author":{"@id":"https://eemland-digital.nl/#bedrijf"},"creator":{"@id":"https://eemland-digital.nl/#bedrijf"},"dateCreated":"2026-09-07","dateModified":"2026-11-01","keywords":"website, React, Vite, Tailwind, Motion, Express, sharp","genre":"Live online","image":["https://eemland-digital.nl/img/funstudios-1.webp","https://eemland-digital.nl/img/funstudios-2.webp","https://eemland-digital.nl/img/funstudios-3.webp"],"sameAs":["https://www.funstudios.nl"]},{"@type":"ProfessionalService","@id":"https://eemland-digital.nl/#bedrijf","name":"Eemland Digital","description":"Websites en bedrijfssoftware voor Nederlandse bedrijven. Geen mooie plaatjes die niets doen — dingen die elke dag gebruikt worden.","url":"https://eemland-digital.nl/","email":"mailto:info@eemland-digital.nl","image":"https://eemland-digital.nl/img/kozijnfabriek-1.webp","sameAs":["https://github.com/protuber033"],"knowsLanguage":["nl","en"],"priceRange":"Op aanvraag","address":{"@type":"PostalAddress","addressLocality":"Amersfoort","addressCountry":"NL"},"areaServed":[{"@type":"Place","name":"Amersfoort"},{"@type":"Place","name":"Utrecht"},{"@type":"Place","name":"Amsterdam"},{"@type":"Place","name":"Nederland"}],"knowsAbout":["Afstandsberekening","Anthropic SDK","Capacitor","Cloudinary","Docker","ESP32","Express","Flask","Framer Motion","GitLab CI","Google Gemini","Google Maps","MapLibre","Motion","MySQL","Next.js","Node","PDFKit","PostgreSQL","Prisma","Python","Railway","React","React Router","React Three Fiber","Rechten per rol","SVG","SVG-grafiek","SVG-kaart","Server-sent events","Server-side rekenen","Sessies","Sessies per bezoeker","Slepen en neerzetten","Supabase","Supabase Storage","Tailwind","TypeScript","Vite","jsPDF","pdf-lib","sharp","three.js","zustand"],"hasOfferCatalog":{"@type":"OfferCatalog","name":"Waar ik je mee kan helpen","itemListElement":[{"@type":"Offer","itemOffered":{"@type":"Service","name":"Beeldherkenning","alternateName":"Een foto erin, gegevens eruit","description":"Een gevelfoto waar de kozijnen uit herkend worden. Een papieren urenbriefje dat gescand én nagerekend wordt. Werk dat anders met de hand overgetypt moet worden."}},{"@type":"Offer","itemOffered":{"@type":"Service","name":"Administratie","alternateName":"De hele papierwinkel in één systeem","description":"Aanvraag, offerte, order, factuur, btw en jaarcijfers achter elkaar, zonder dat iemand hetzelfde nummer drie keer overtypt. Pdf's automatisch opgemaakt."}},{"@type":"Offer","itemOffered":{"@type":"Service","name":"3D in de browser","alternateName":"Producten die de klant zelf kan draaien","description":"Een dakkapel die echt in het dakvlak staat. Een perceel in 3D met de bouwzone eroverheen. Alles in de browser, zonder plug-in."}},{"@type":"Offer","itemOffered":{"@type":"Service","name":"Kaart en adresdata","alternateName":"Nederlandse adres- en perceeldata","description":"Adres opzoeken via PDOK, perceelgrenzen en bouwjaren erbij, Street View voor de gevel, zoeken op afstand. Met een gratis alternatief als een betaalde kaartdienst uitvalt."}},{"@type":"Offer","itemOffered":{"@type":"Service","name":"Beheer en rollen","alternateName":"Dashboards waar personeel mee werkt","description":"Inloggen, rechten per rol, de zakelijke mailbox erin, planning en leveranciersorders. Met gehashte wachtwoorden en een database die standaard niets vrijgeeft."}},{"@type":"Offer","itemOffered":{"@type":"Service","name":"Live zetten","alternateName":"Van laptop naar eigen domein","description":"Hosting, domein, ssl, database met back-ups en zakelijke mail. En waar het nodig is verder dan de browser: dezelfde code als app voor iOS en Android, of sensoren die hun metingen naar een webserver sturen."}}]}},{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Het werk","item":"https://eemland-digital.nl/"},{"@type":"ListItem","position":2,"name":"Fun Studios","item":"https://eemland-digital.nl/werk/funstudios/"}]}]}</script>
 </head>
 <body>
 <a class="overslaan" href="#project">Direct naar dit project</a>
@@ -1480,7 +1542,7 @@ p, .kaart-regel, .paneel-lead, li { text-wrap: pretty; }
     <div class="los-doos">
       <article class="paneel" id="paneel-funstudios" data-id="funstudios">
         <header class="paneel-kop">
-          <p class="paneel-meta"><span class="stip live" aria-hidden="true"></span>Live online <span class="punt">·</span> september – oktober 2026</p>
+          <p class="paneel-meta"><span class="stip live" aria-hidden="true"></span>Live online <span class="punt">·</span> september – november 2026</p>
           <h1>Fun Studios</h1>
           <p class="paneel-lead">Voor een entertainmentbedrijf: photo booths, 360 booth, low fog, indoor vuurwerk en lichtletters — met een boekingsflow die de aanvragen binnenhaalt.</p>
         </header>

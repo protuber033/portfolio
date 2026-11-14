@@ -1306,6 +1306,65 @@ p, .kaart-regel, .paneel-lead, li { text-wrap: pretty; }
 }
 .filter { border-radius: 999px; }
 
+/* ---------- de twee zoekvelden ----------
+   Allebei zagen ze er onaf uit. Boven brak "Ctrl K" over twee regels, omdat
+   het vakje smaller was dan de tekst erin; daardoor werd de hele knop
+   scheef en hoger dan de rest van de balk. En het veld in de werkbalk was
+   een lege grijze rechthoek zonder loep, zodat je er niet aan zag dat je
+   erin kon typen. Ze horen nu bij elkaar en bij de filterknoppen ernaast:
+   pilvormig, met een loep ervoor en een toetsaanwijzing erachter. */
+:root {
+  --loep: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='none' stroke='black' stroke-width='1.7'%3E%3Ccircle cx='7' cy='7' r='4.6'/%3E%3Cpath d='M10.8 10.8 14 14' stroke-linecap='round'/%3E%3C/svg%3E");
+}
+
+/* het knopje in de balk bovenin */
+.palet-hint {
+  gap: 8px; border-radius: 999px; padding: 7px 9px 7px 13px;
+  white-space: nowrap;
+  background: rgba(255, 255, 255, .04);
+  transition: border-color .2s ease, background .2s ease, color .2s ease;
+}
+.palet-hint:hover { background: rgba(91, 140, 255, .1); border-color: var(--accent); }
+.palet-hint svg { width: 14px; height: 14px; flex: none; }
+.palet-hint kbd {
+  white-space: nowrap;          /* hier ging het mis: "Ctrl K" brak af */
+  line-height: 1.5; padding: 1px 7px; border-radius: 6px;
+  background: rgba(255, 255, 255, .05);
+}
+
+/* het veld in de werkbalk van het werk */
+.zoek input {
+  /* De toetsaanwijzing hangt aan het label, niet aan het veld. Zonder deze
+     breedte is het veld op een smal scherm smaller dan zijn label en staat
+     die aanwijzing ineens náást het veld in plaats van erin. */
+  width: 100%; min-width: 260px; border-radius: 999px;
+  padding: 11px 38px 11px 38px;
+  background: rgba(255, 255, 255, .04);
+  transition: border-color .2s ease, background .2s ease, box-shadow .2s ease;
+}
+.zoek input:hover { border-color: var(--rand-op); }
+.zoek input:focus {
+  background: var(--vlak);
+  box-shadow: 0 0 0 3px var(--accent-zacht);
+}
+.zoek::before {
+  content: ''; position: absolute; left: 15px; top: 50%;
+  width: 15px; height: 15px; transform: translateY(-50%);
+  pointer-events: none; background-color: var(--tekst-3);
+  -webkit-mask: var(--loep) center / contain no-repeat;
+  mask: var(--loep) center / contain no-repeat;
+  transition: background-color .2s ease;
+}
+.zoek:focus-within::before { background-color: var(--accent); }
+.sneltoets { right: 13px; border-radius: 6px; padding: 2px 7px; }
+/* typt iemand, dan is de aanwijzing "druk op /" alleen nog in de weg */
+.zoek:focus-within .sneltoets { opacity: 0; }
+
+/* Safari zet er zijn eigen kruisje in dat niet bij de rest past, en op een
+   type="search" staat standaard ook nog een binnenrand. */
+.zoek input::-webkit-search-decoration,
+.zoek input::-webkit-search-cancel-button { -webkit-appearance: none; }
+
 .raster { grid-template-columns: repeat(auto-fill, minmax(330px, 1fr)); gap: clamp(16px, 2vw, 24px); }
 .kaart-knop { border-radius: 18px; }
 .kaart-knop:hover { transform: translateY(-5px); box-shadow: 0 18px 40px rgba(0, 0, 0, .45); }
@@ -1394,6 +1453,9 @@ p, .kaart-regel, .paneel-lead, li { text-wrap: pretty; }
      blijven laten plakken kost de helft van het scherm, en je scrolt juist
      om de kaarten te zien. */
   .regelbalk { position: static; backdrop-filter: none; }
+  /* op een telefoon is er geen toets om op te drukken */
+  .sneltoets { display: none; }
+  .zoek input { min-width: 0; padding-right: 16px; }
 
   .held { padding-top: clamp(54px, 16vw, 90px); }
   .held-doek { opacity: .22; }
@@ -1574,7 +1636,7 @@ p, .kaart-regel, .paneel-lead, li { text-wrap: pretty; }
         <div class="groep-kop">
           <h3>Draait nu live <span class="telling">12</span></h3>
           <p>Staat vandaag online, zelf te bekijken.</p>
-          <span class="gecheckt"><span class="stip weg"></span>11 van de 12 reageerden bij de laatste controle op 27 okt 2026</span>
+          <span class="gecheckt"><span class="stip weg"></span>11 van de 12 reageerden bij de laatste controle op 10 nov 2026</span>
         </div>
         <ul class="raster">
         <li class="kaart" data-id="eemland" data-tags="software ai" data-zoek="eemland boekt offertes, facturen, urenbriefjes scannen en btw-aangifte in één systeem. de complete administratie van een bouwbedrijf, van offerte tot btw-aangifte, in één systeem dat elke dag gebruikt wordt. react 19 express postgresql supabase storage pdf-lib google gemini">
@@ -2036,7 +2098,7 @@ p, .kaart-regel, .paneel-lead, li { text-wrap: pretty; }
     </div>
     <div class="voet-onder">
       <p>Alle schermen op deze pagina zijn echte screenshots van de draaiende projecten. Klantgegevens zijn onleesbaar gemaakt.</p>
-      <p class="bijgewerkt">Bijgewerkt 28 oktober 2026 · 15 projecten</p>
+      <p class="bijgewerkt">Bijgewerkt 14 november 2026 · 15 projecten</p>
     </div>
   </div>
 </footer>
@@ -2047,7 +2109,7 @@ p, .kaart-regel, .paneel-lead, li { text-wrap: pretty; }
     <div id="venster-inhoud">
       <article class="paneel" id="paneel-eemland" data-id="eemland" hidden>
         <header class="paneel-kop">
-          <p class="paneel-meta"><span class="stip live" aria-hidden="true"></span>Draait in bedrijf <span class="punt">·</span> januari – oktober 2026</p>
+          <p class="paneel-meta"><span class="stip live" aria-hidden="true"></span>Draait in bedrijf <span class="punt">·</span> januari – november 2026</p>
           <h2>Eemland Boekt</h2>
           <p class="paneel-lead">De complete administratie van een bouwbedrijf, van offerte tot btw-aangifte, in één systeem dat elke dag gebruikt wordt.</p>
           <button type="button" class="deel" data-deel="eemland">Kopieer link naar dit project</button>
@@ -2091,7 +2153,7 @@ p, .kaart-regel, .paneel-lead, li { text-wrap: pretty; }
       </article>
       <article class="paneel" id="paneel-funstudios" data-id="funstudios" hidden>
         <header class="paneel-kop">
-          <p class="paneel-meta"><span class="stip live" aria-hidden="true"></span>Live online <span class="punt">·</span> september – oktober 2026</p>
+          <p class="paneel-meta"><span class="stip live" aria-hidden="true"></span>Live online <span class="punt">·</span> september – november 2026</p>
           <h2>Fun Studios</h2>
           <p class="paneel-lead">Voor een entertainmentbedrijf: photo booths, 360 booth, low fog, indoor vuurwerk en lichtletters — met een boekingsflow die de aanvragen binnenhaalt.</p>
           <button type="button" class="deel" data-deel="funstudios">Kopieer link naar dit project</button>
