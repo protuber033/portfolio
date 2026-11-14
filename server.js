@@ -6,6 +6,7 @@ import { extname, join, normalize, sep } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { scanStroom } from './tools/sitescan.mjs';
 import { beheerRoute } from './tools/beheer-routes.mjs';
+import { doorsturen } from './tools/doorsturen.mjs';
 import { gzipSync, brotliCompressSync, constants as zlibConstants } from 'node:zlib';
 
 const ROOT = fileURLToPath(new URL('.', import.meta.url));
@@ -145,6 +146,9 @@ async function afhandelen(req, res) {
   }
 
   const url = new URL(req.url, 'http://localhost');
+
+  // Klantsites onder een map (zoals /herbstreatment) leven op een eigen service.
+  if (doorsturen(req, res, url)) return;
 
   if (url.pathname === '/api/scan') {
     await scanAfhandelen(req, res, url);
