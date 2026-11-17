@@ -5,7 +5,11 @@
 // De klantsite moet zelf onder hetzelfde pad gebouwd zijn (Vite: base
 // '/herbstreatment/'), anders kloppen de verwijzingen naar scripts en beelden niet.
 // Een nieuwe klant toevoegen = één regel hieronder.
-import { request } from 'node:https';
+import { Agent, request } from 'node:https';
+
+// Keep the connection to the client site open between requests: saves a new secure
+// handshake (a few hundred ms) on every page, photo and booking step.
+const verbinding = new Agent({ keepAlive: true, keepAliveMsecs: 30000, maxSockets: 64, maxFreeSockets: 16, timeout: 60000 });
 
 const DOORSTUREN = {
   // map: [host, cookie-voorvoegsel dat de klantsite zelf gebruikt]
@@ -45,7 +49,7 @@ export function doorsturen(req, res, url) {
   const bezoeker = String(req.headers['x-forwarded-for'] || req.socket.remoteAddress || '').split(',').pop().trim();
   if (bezoeker) kop['x-forwarded-for'] = bezoeker;
 
-  const naar = request({ host, path: url.pathname + url.search, method: req.method, headers: kop, timeout: 15000 }, (antwoord) => {
+  const naar = request({ host, path: url.pathname + url.search, method: req.method, headers: kop, timeout: 15000, agent: verbinding }, (antwoord) => {
     const terug = {};
     for (const k of MEE_TERUG) if (antwoord.headers[k]) terug[k] = antwoord.headers[k];
     // Een doorverwijzing van de klantsite naar zijn eigen Railway-adres houden we op ons domein.
