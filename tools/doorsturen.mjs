@@ -18,7 +18,9 @@ const DOORSTUREN = {
 
 // Alleen wat een bezoeker nodig heeft.
 const MEE_HEEN = ['accept', 'accept-encoding', 'accept-language', 'if-none-match', 'if-modified-since', 'range', 'user-agent', 'content-type', 'content-length'];
-const MEE_TERUG = ['content-type', 'content-encoding', 'content-length', 'cache-control', 'etag', 'last-modified', 'vary', 'location', 'content-range', 'accept-ranges', 'content-disposition', 'set-cookie'];
+const MEE_TERUG = ['content-type', 'content-encoding', 'content-length', 'cache-control', 'etag', 'last-modified', 'vary', 'location', 'content-range', 'accept-ranges', 'content-disposition', 'set-cookie',
+  // De beveiligingsregels van de klantsite zelf (die weet welke bronnen hij nodig heeft).
+  'content-security-policy', 'permissions-policy', 'referrer-policy', 'x-frame-options', 'x-content-type-options'];
 const SCHRIJVEN = ['POST', 'PUT', 'PATCH', 'DELETE'];
 
 /** Geeft true terug als het verzoek hier is afgehandeld. */
